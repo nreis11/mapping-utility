@@ -11,7 +11,7 @@ export class TypeSelector extends React.Component {
                       <div className="col-sm-1">
                         <div className="radio">
                           <label>
-                            <input type="radio" value="category" checked={true} />
+                            <input type="radio" value="category" name='type' checked={true} />
                             Category
                           </label>
                         </div>
@@ -19,7 +19,7 @@ export class TypeSelector extends React.Component {
                       <div className="col-sm-1">
                         <div className="radio">
                           <label>
-                            <input type="radio" value="industry" />
+                            <input type="radio" value="industry" name='type' />
                             Industry
                           </label>
                         </div>
@@ -27,7 +27,7 @@ export class TypeSelector extends React.Component {
                       <div className="col-sm-1">
                         <div className="radio">
                           <label>
-                            <input type="radio" value="state" />
+                            <input type="radio" value="state" name='type' />
                             State
                           </label>
                         </div>
@@ -35,7 +35,7 @@ export class TypeSelector extends React.Component {
                       <div className="col-sm-1">
                         <div className="radio">
                           <label>
-                            <input type="radio" value="country" />
+                            <input type="radio" value="country" name='type' />
                             Country
                           </label>
                         </div>

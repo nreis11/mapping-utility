@@ -7,6 +7,7 @@ import TypeSelector from './components/TypeSelector';
 import Header from './components/Header';
 import Tree from './components/Tree';
 import ActionBar from './components/ActionBar';
+import NodeInfo from './components/NodeInfo';
 
 class App extends Component {
   render() {
@@ -31,6 +32,14 @@ class App extends Component {
               <Tree internal={true}/>
               <ActionBar />
               <Tree internal={false}/>
+            </Row>
+            <Row className="show-grid">
+              <NodeInfo />
+              <Col sm={12} md={2} />
+              <NodeInfo />
+            </Row>
+            <Row className="show-grid">
+              <NodeInfo />
             </Row>
           </Grid>
         </Jumbotron>

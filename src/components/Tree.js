@@ -1,10 +1,9 @@
 import React from 'react';
-import { Well } from 'react-bootstrap';
+import { Button, Col, Well } from 'react-bootstrap';
+import './Tree.css';
 
 class Tree extends React.Component {
-    constructor(props) {
-      super(props)
-    }
+
     render() {
 
         const style = {
@@ -14,7 +13,13 @@ class Tree extends React.Component {
 
         return(
             <div className="col-sm-5">
-              <Well style={style} bsSize="large">Data</Well>
+              <Well style={style} bsSize="small">
+                {!this.props.internal && 
+                  <div className="container vertical-center">
+                      <Button bsStyle="success">Add/Edit</Button>
+                  </div>
+                }
+              </Well>
             </div>
         )
     }

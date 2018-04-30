@@ -13,7 +13,7 @@ class ActionBar extends React.Component {
         return(
             <div className="col-sm-2 text-center">
               <ButtonGroup style={buttonGroupStyle}>
-                <Button bsStyle="primary" block>&gt; Map &gt;<br /> (single) </Button>
+                <Button bsStyle="primary" block><FaForward /> Map <FaForward /><br /> (single) </Button>
                 <Button bsStyle="primary" block><FaForward /> Map Node <FaForward /><br /> (preserve) </Button>
                 <Button bsStyle="primary" block><FaForward /> Map Node <FaForward /><br /> (overwrite) </Button>
               </ButtonGroup>

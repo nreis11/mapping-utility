@@ -6,28 +6,28 @@ import FaOpen from 'react-icons/lib/fa/folder-open-o';
 const NavBar = (props) => {
     const headerStyle = {
       color: "white",
-      fontSize: "2em",
+      fontSize: ".5em",
     }
 
-    const centered = {
-      margin: "auto 0"
+    const btnGroupStyle = {
+      position: "absolute",
+      left: '0',
+      top: '0'
     }
 
     return(
 
 
       <Row className='show-grid'>
-        <Col xs={12}>
-          <Navbar style={{}} inverse fixedTop fluid>
-          <div className="container centered">
-            <h1 style={headerStyle}>Mapping Utility</h1>
-            <ButtonGroup style={{position: "absolute", left: '0'}}>
-              <Button><FaOpen /></Button>
-              <Button><FaFloppyO /></Button>
-            </ButtonGroup>
-          </div>
+          <Navbar className="text-center" style={{}} inverse fixedTop>
+              <h1 style={{display: "inline"}}>
+                <ButtonGroup style={btnGroupStyle}>l
+                  <Button><FaOpen /></Button>
+                  <Button><FaFloppyO /></Button>
+                </ButtonGroup>
+                <span style={headerStyle}>Mapping Utility</span>
+              </h1>
           </Navbar>
-        </Col>
       </Row>
     )
 }

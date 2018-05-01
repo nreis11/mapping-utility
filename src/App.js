@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Tree from './components/Tree';
 import ActionBar from './components/ActionBar';
 import NodeInfo from './components/NodeInfo';
+import ExportButton from './components/ExportButton';
 
 class App extends Component {
   render() {
@@ -37,7 +38,10 @@ class App extends Component {
               <NodeInfo />
             </Row>
             <Row className="show-grid">
-              <NodeInfo />
+              <div style={{display: "flex", width: "100%"}}>
+                <NodeInfo />
+                <ExportButton />
+              </div>
             </Row>
           </Grid>
         </Jumbotron>

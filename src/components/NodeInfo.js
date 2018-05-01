@@ -6,8 +6,8 @@ import { Col } from 'react-bootstrap';
 const NodeInfo = (props) => {
 
     return(
-        <Col sm={12} md={5}>
-            <p style={{marginBottom: 0}}>
+        <Col sm={12} md={5} style={{}}>
+            <p style={{marginBottom: '0', marginTop: '0'}}>
               <span className="info">Node Info</span>
             </p>
             <div className="info pull-left">

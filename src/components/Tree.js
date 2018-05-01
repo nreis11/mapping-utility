@@ -9,7 +9,8 @@ class Tree extends React.Component {
         const style = {
           border: "solid",
           height: '500px',
-          overflow: "hidden"
+          overflow: "hidden",
+          marginBottom: '0'
         }
 
         return(

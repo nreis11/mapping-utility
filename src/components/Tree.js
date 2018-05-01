@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Well } from 'react-bootstrap';
+import { Well } from 'react-bootstrap';
 import './Tree.css';
 
 class Tree extends React.Component {
@@ -8,17 +8,13 @@ class Tree extends React.Component {
 
         const style = {
           border: "solid",
-          height: '500px'
+          height: '500px',
+          overflow: "hidden"
         }
 
         return(
             <div className="col-sm-5">
               <Well style={style} bsSize="small">
-                {!this.props.internal && 
-                  <div className="container vertical-center">
-                      <Button bsStyle="success">Add/Edit</Button>
-                  </div>
-                }
               </Well>
             </div>
         )

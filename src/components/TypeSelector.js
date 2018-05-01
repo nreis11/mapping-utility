@@ -1,49 +1,25 @@
 import React from 'react';
+import { Col, DropdownButton, MenuItem } from 'react-bootstrap';
 
-
-export class TypeSelector extends React.Component {
+class TypeSelector extends React.Component {
     render() {
+      const style = {
+        margin: "0 15px"
+      }
+
         return(
-            // <div className="container">
-            //   <div className="row">
-
-                  <form>
-                      <div className="col-sm-1">
-                        <div className="radio">
-                          <label>
-                            <input type="radio" value="category" name='type' checked={true} />
-                            Category
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-1">
-                        <div className="radio">
-                          <label>
-                            <input type="radio" value="industry" name='type' />
-                            Industry
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-1">
-                        <div className="radio">
-                          <label>
-                            <input type="radio" value="state" name='type' />
-                            State
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-1">
-                        <div className="radio">
-                          <label>
-                            <input type="radio" value="country" name='type' />
-                            Country
-                          </label>
-                        </div>
-                      </div>
-                  </form>
-
-            //   </div>
-            // </div>
+            <Col>
+              <DropdownButton 
+                style={style}
+                title="Type"
+                key='type'
+                id='dropdown-type'>
+                  <MenuItem eventKey="1" active>Category</MenuItem>
+                  <MenuItem eventKey="2">Industry</MenuItem>
+                  <MenuItem eventKey="3">State</MenuItem>
+                  <MenuItem eventKey="4">Country</MenuItem>
+              </DropdownButton>
+            </Col>
         )
     }
 }

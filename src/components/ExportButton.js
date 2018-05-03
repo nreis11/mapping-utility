@@ -6,7 +6,7 @@ const ExportButton = (props) => {
     const btnStyle = {
       position: "absolute",
       right: 15,
-      bottom: 15,
+      bottom: 0,
     }
 
     const colStyle = {
@@ -16,7 +16,7 @@ const ExportButton = (props) => {
     }
 
     return(
-      <Col sm={12} md={5} mdOffset={2} style={colStyle}>
+      <Col sm={4} md={1} style={colStyle}>
         <Button style={btnStyle} bsStyle="success">Export</Button>
       </Col>
     )

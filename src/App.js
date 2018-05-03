@@ -8,23 +8,26 @@ import Tree from './components/Tree';
 import ActionBar from './components/ActionBar';
 import NodeInfo from './components/NodeInfo';
 import ExportButton from './components/ExportButton';
+import TypeSelector from './components/TypeSelector';
+import AddDataButton from './components/AddDataButton';
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <div className="main">
         <NavBar />
         <Jumbotron>
-          <Grid style={{margin: "0 5%"}} fluid>
+          <Grid fluid>
             <Row className="show-grid">
-              <Col sm={12} md={5}>
+              <Col md={5}>
                 <Header 
                   name={'eQuest'}
                   internal={true} />
+                <TypeSelector />
               </Col>
-              <Col sm={12} md={2}></Col>
-              <Col sm={12} md={5}>
+              <Col md={5} mdOffset={2}>
                 <Header name={'Board'} />
+                <AddDataButton />
               </Col>
             </Row>
             <Row className="show-grid">
@@ -33,13 +36,17 @@ class App extends Component {
               <Tree internal={false}/>
             </Row>
             <Row className="show-grid">
-              <NodeInfo />
-              <Col sm={12} md={2} />
-              <NodeInfo />
+              <NodeInfo heading={"eQuest"}
+              />
             </Row>
             <Row className="show-grid">
               <div style={{display: "flex", width: "100%"}}>
-                <NodeInfo />
+                <NodeInfo heading={"Mapped to: "}
+                />
+                <NodeInfo heading={"Board"}
+                          mdSize={4}
+                          mdOffsetSize={2}
+                />
                 <ExportButton />
               </div>
             </Row>

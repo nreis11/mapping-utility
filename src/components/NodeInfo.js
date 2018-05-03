@@ -1,25 +1,44 @@
 import React from 'react';
 import './NodeInfo.css';
+import PropTypes from 'prop-types';
 
-import { Col } from 'react-bootstrap';
+import { Col, Panel } from 'react-bootstrap';
 
 const NodeInfo = (props) => {
 
+    const panelHeadingStyle = {
+      padding: "2px"
+    }
+
     return(
-        <Col sm={12} md={5} style={{}}>
-            <p style={{marginBottom: '0', marginTop: '0'}}>
-              <span className="info">Node Info</span>
-            </p>
-            <div className="info pull-left">
-              <p>Label</p>
-            </div>
-            <div className="info pull-right">
-              <p className="text-right">Value</p>
-            </div>
-            <div className="clearfix"></div>
+        <Col md={props.mdSize} mdOffset={props.mdOffsetSize} style={{}}>
+            <Panel bsStyle="info" style={{marginBottom: '0', marginTop: '0'}}>
+              <Panel.Heading style={panelHeadingStyle}>
+                <Panel.Title componentClass="h3">{props.heading}</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body style={{padding: '8px'}}>
+                <div className="info pull-left">
+                  <span className=""><strong>Label</strong></span>
+                </div>
+                <div className="info pull-right">
+                  <span className=""><strong>Value</strong></span>
+                </div>
+                <div className="clearfix"></div>
+              </Panel.Body>
+            </Panel>
         </Col>
 
     )
+}
+
+NodeInfo.defaultProps = {
+  mdSize: 5,
+  mdOffset: 0
+}
+
+NodeInfo.propTypes = {
+  mdSize: PropTypes.number,
+  mdOffset: PropTypes.number
 }
 
 export default NodeInfo;

@@ -4,7 +4,7 @@ import { Col, Button } from 'react-bootstrap';
 const AddDataButton = (props) => {
     return(
       <Col sm={12} md={5}>
-        <Button bsStyle="success">Add/Edit</Button>
+        <Button bsStyle="success" bsSize="small">Add/Edit</Button>
       </Col>
     ) 
     

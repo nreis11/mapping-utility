@@ -1,14 +1,7 @@
-.vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
-
-  display: flex;
-  align-items: center;
+.internal {
+  min-height: 500px;
 }
 
-.centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+.board {
+  min-height: 600px;
 }

@@ -1,25 +1,47 @@
 import React from 'react';
-import { Col, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Col, Nav, NavItem } from 'react-bootstrap';
 
 class TypeSelector extends React.Component {
-    render() {
-      const style = {
-        margin: "0 15px",
+    constructor(props) {
+      super(props);
+      this.state = {
+        types: [
+          {id: 1, name: "Category"},
+          {id: 2, name: "Industry"},
+          {id: 3, name: "State"},
+          {id: 4, name: "Country"}
+        ],
+        activeKey: 1
       }
+
+      this.handleSelect = this.handleSelect.bind(this);
+      this.eachType = this.eachType.bind(this);
+    }
+
+    handleSelect(eventKey) {
+      this.setState({
+        activeKey: eventKey
+      });
+    }
+
+    eachType(type, i) {
+      return(
+        <NavItem key={type.id} eventKey={type.id} title={type.name}>
+          {type.name}
+        </NavItem>
+      )
+    }
+
+    render(props) {
 
         return(
           <Col>
-              <DropdownButton 
-                style={style}
-                title="Type"
-                key='type'
-                id='dropdown-type'
-              >
-                  <MenuItem eventKey="1" active>Category</MenuItem>
-                  <MenuItem eventKey="2">Industry</MenuItem>
-                  <MenuItem eventKey="3">State</MenuItem>
-                  <MenuItem eventKey="4">Country</MenuItem>
-              </DropdownButton>
+            <Nav 
+              bsStyle="pills"
+              activeKey={this.state.activeKey}
+              onSelect={k => this.handleSelect(k)}>
+                {this.state.types.map(this.eachType)}
+            </Nav>
           </Col>
         )
     }

@@ -4,7 +4,7 @@ import { Grid, Jumbotron, Row, Col } from 'react-bootstrap';
 
 import NavBar from './components/NavBar';
 import Header from './components/Header';
-import Tree from './components/Tree';
+import TreeContainer from './components/TreeContainer';
 import ActionBar from './components/ActionBar';
 import NodeInfo from './components/NodeInfo';
 import ExportButton from './components/ExportButton';
@@ -12,6 +12,7 @@ import TypeSelector from './components/TypeSelector';
 import AddDataButton from './components/AddDataButton';
 
 class App extends Component {
+
   render() {
     return (
       <div className="main">
@@ -31,9 +32,9 @@ class App extends Component {
               </Col>
             </Row>
             <Row className="show-grid">
-              <Tree internal={true}/>
+              <TreeContainer internal={true}/>
               <ActionBar />
-              <Tree internal={false}/>
+              <TreeContainer internal={false}/>
             </Row>
             <Row className="show-grid">
               <NodeInfo heading={"eQuest"}

@@ -11,7 +11,7 @@ const NodeInfo = (props) => {
     }
 
     return(
-        <Col md={props.mdSize} mdOffset={props.mdOffsetSize} style={{}}>
+        <Col md={props.mdSize} mdOffset={props.mdOffsetSize}>
             <Panel bsStyle="info" style={{marginBottom: '0', marginTop: '0'}}>
               <Panel.Heading style={panelHeadingStyle}>
                 <Panel.Title componentClass="h3">{props.heading}</Panel.Title>

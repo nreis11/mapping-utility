@@ -1,25 +1,27 @@
-import React from 'react';
-import { Col, Well } from 'react-bootstrap';
-import './TreeContainer.css';
+import React from "react";
+import { Col, Well } from "react-bootstrap";
+import "./TreeContainer.css";
 
 class TreeContainer extends React.Component {
-    render() {
+  componentDidMount() {
+    console.log("MOUNTED TREE");
+  }
 
-        const style = {
-          border: "solid",
-          height: '65vh',
-          overflow: "hidden",
-        }
+  render() {
+    const style = {
+      border: "solid",
+      height: "65vh",
+      overflow: "hidden"
+    };
 
-        // const treeContainerClass = this.props.internal ? "internal" : "board";
+    // const treeContainerClass = this.props.internal ? "internal" : "board";
 
-        return(
-            <Col md={5}>
-              <Well style={style} bsSize="small">
-              </Well>
-            </Col>
-        )
-    }
+    return (
+      <Col md={5}>
+        <Well style={style} bsSize="small" />
+      </Col>
+    );
+  }
 }
 
 export default TreeContainer;

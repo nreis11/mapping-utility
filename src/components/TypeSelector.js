@@ -1,53 +1,33 @@
-import React from 'react';
-import { Col, Nav, NavItem } from 'react-bootstrap';
+import React from "react";
+import { Col, Nav, NavItem } from "react-bootstrap";
 
 class TypeSelector extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        types: [
-          {id: 1, name: "Category"},
-          {id: 2, name: "Industry"},
-          {id: 3, name: "State"},
-          {id: 4, name: "Country"}
-        ],
-        activeKey: 1
-      }
+  constructor(props) {
+    super(props);
+    this.eachType = this.eachType.bind(this);
+  }
 
-      this.handleSelect = this.handleSelect.bind(this);
-      this.eachType = this.eachType.bind(this);
-    }
+  eachType(type, i) {
+    return (
+      <NavItem key={type.id} eventKey={type.id} title={type.name}>
+        {type.name}
+      </NavItem>
+    );
+  }
 
-    handleSelect(eventKey) {
-      this.setState({
-        activeKey: eventKey
-      });
-    }
-
-    eachType(type, i) {
-      return(
-        <NavItem key={type.id} eventKey={type.id} title={type.name}>
-          {type.name}
-        </NavItem>
-      )
-    }
-
-    render(props) {
-
-        return(
-          <Col>
-            <Nav 
-              bsStyle="pills"
-              activeKey={this.state.activeKey}
-              onSelect={k => this.handleSelect(k)}>
-                {this.state.types.map(this.eachType)}
-            </Nav>
-          </Col>
-        )
-    }
+  render(props) {
+    return (
+      <Col>
+        <Nav
+          bsStyle="pills"
+          activeKey={this.props.activeKey}
+          onSelect={k => this.props.onSelect(k)}
+        >
+          {this.props.types.map(this.eachType)}
+        </Nav>
+      </Col>
+    );
+  }
 }
 
 export default TypeSelector;
-
-
-

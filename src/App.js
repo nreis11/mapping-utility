@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import { Grid, Jumbotron, Row, Col } from "react-bootstrap";
+import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
 
 import NavBar from "./components/NavBar";
 import Header from "./components/Header";
@@ -11,27 +12,60 @@ import ExportButton from "./components/ExportButton";
 import TypeSelector from "./components/TypeSelector";
 import AddDataButton from "./components/AddDataButton";
 
+import { categories, industries, states, countries } from "./values/eqValues";
+
+const initialData = [categories, industries, states, countries];
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      intTreeData: "",
-      extTreeData: "",
+      intTreeData: this.getTreeData(),
+      extTreeData: [],
       types: [
-        { id: 1, name: "Category" },
-        { id: 2, name: "Industry" },
-        { id: 3, name: "State" },
-        { id: 4, name: "Country" }
+        { id: 1, name: "categories", label: "Category" },
+        { id: 2, name: "industries", label: "Industry" },
+        { id: 3, name: "states", label: "State" },
+        { id: 4, name: "countries", label: "Country" }
       ],
       activeType: 1
     };
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.getTreeData = this.getTreeData.bind(this);
+  }
+
+  getTreeData(id = 1) {
+    const treeData = initialData[id - 1];
+    return getTreeFromFlatData({
+      flatData: treeData.map(node => ({ ...node, title: node.label })),
+      getKey: node => node.id, // resolve a node's key
+      getParentKey: node => node.parent, // resolve a node's parent's key
+      rootKey: null // The value of the parent key when there is no parent (i.e., at root level)
+    });
   }
 
   handleTypeSelect(id) {
+    const type = this.state.types.filter(type => type.id === id);
+    // const newTreeData = this.getTreeData(type[0].id);
+    const newTreeData = this.getTreeData(type[0].id);
     this.setState({
-      activeType: id
+      activeType: id,
+      intTreeData: newTreeData
     });
+  }
+
+  handleChange(treeData, internal) {
+    console.log("HANDLING CHANGE");
+    if (internal) {
+      this.setState({
+        intTreeData: treeData
+      });
+    } else {
+      this.setState({
+        extTreeData: treeData
+      });
+    }
   }
 
   render() {
@@ -58,6 +92,7 @@ class App extends Component {
               <TreeContainer
                 internal={true}
                 treeData={this.state.intTreeData}
+                onChange={this.handleChange}
               />
               <ActionBar />
               <TreeContainer

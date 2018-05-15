@@ -9,8 +9,8 @@ class TypeSelector extends React.Component {
 
   eachType(type, i) {
     return (
-      <NavItem key={type.id} eventKey={type.id} title={type.name}>
-        {type.name}
+      <NavItem key={type.id} eventKey={type.id} title={type.label}>
+        {type.label}
       </NavItem>
     );
   }

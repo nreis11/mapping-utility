@@ -15,29 +15,38 @@ import Options from "./components/Options";
 
 import { categories, industries, states, countries } from "./values/eqValues";
 
-const initialData = [categories, industries, states, countries];
+const initialData = {
+  categories: categories,
+  industries: industries,
+  states: states,
+  countries: countries
+};
+
+const initialType = "categories";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      intTreeData: this.getTreeData(),
-      extTreeData: [],
-      types: [
-        { id: 1, name: "categories", label: "Category" },
-        { id: 2, name: "industries", label: "Industry" },
-        { id: 3, name: "states", label: "State" },
-        { id: 4, name: "countries", label: "Country" }
+      intTreeData: this.getTreeData(initialType),
+      extTreeData: [
+        { title: "Chicken", expanded: true, children: [{ title: "Egg" }] }
       ],
-      activeType: 1,
-      internalName: "eQuest",
-      activeIntId: "",
-      activeBoardId: ""
+      types: [
+        { name: "categories", label: "Category" },
+        { name: "industries", label: "Industry" },
+        { name: "states", label: "State" },
+        { name: "countries", label: "Country" }
+      ],
+      activeType: initialType,
+      activeIntNode: {},
+      activeBoardNode: {}
     };
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.getTreeData = this.getTreeData.bind(this);
     this.expandAll = this.expandAll.bind(this);
+    this.handleNodeClick = this.handleNodeClick.bind(this);
   }
 
   expandAll(expanded, keyName) {
@@ -51,8 +60,9 @@ class App extends Component {
     });
   }
 
-  getTreeData(id = 1) {
-    const treeData = initialData[id - 1];
+  getTreeData(name = "categories") {
+    const treeData = initialData[name];
+
     return getTreeFromFlatData({
       flatData: treeData.map(node => ({ ...node, title: node.label })),
       getKey: node => node.id, // resolve a node's key
@@ -61,12 +71,20 @@ class App extends Component {
     });
   }
 
-  handleTypeSelect(id) {
-    const type = this.state.types.filter(type => type.id === id);
-    const newTreeData = this.getTreeData(type[0].id);
+  handleTypeSelect(key) {
+    const type = this.state.types.find(type => type.name === key);
+    const newTreeData = this.getTreeData(type.name);
     this.setState({
-      activeType: id,
+      activeType: key,
       intTreeData: newTreeData
+    });
+  }
+
+  handleNodeClick(node) {
+    console.log("HANDLING CLICK, ID: ", node);
+    const activeNode = node;
+    this.setState({
+      activeIntNode: activeNode
     });
   }
 
@@ -78,8 +96,16 @@ class App extends Component {
   }
 
   render() {
+    // NEED TO WORK ON MAPPED NODE
     const intTreeKey = "intTreeData";
     const extTreeKey = "extTreeData";
+    const internalName = "eQuest";
+    // const mappingId = this.state.activeIntNode.mapping;
+    const mappingId = "353";
+    const mappedNode = this.state.extTreeData.find(
+      node => node.id === mappingId
+    );
+    console.log("MAPPING", mappedNode);
 
     return (
       <div className="main">
@@ -88,7 +114,7 @@ class App extends Component {
           <Grid fluid>
             <Row className="show-grid">
               <Col md={5}>
-                <Header name={this.state.internalName} />
+                <Header name={internalName} />
                 <TypeSelector
                   types={this.state.types}
                   activeKey={this.state.activeType}
@@ -107,6 +133,8 @@ class App extends Component {
                 keyName={intTreeKey}
                 treeData={this.state.intTreeData}
                 onChange={this.handleChange}
+                handleNodeClick={this.handleNodeClick}
+                activeNode={this.state.activeIntNode}
               />
               <ActionBar
                 intKeyName={intTreeKey}
@@ -116,10 +144,16 @@ class App extends Component {
               <TreeContainer
                 keyName={extTreeKey}
                 treeData={this.state.extTreeData}
+                onChange={this.handleChange}
+                handleNodeClick={this.handleNodeClick}
+                activeNode={this.state.activeBoardNode}
               />
             </Row>
             <Row className="show-grid">
-              <NodeInfo heading={this.state.internalName} />
+              <NodeInfo
+                heading={internalName}
+                node={this.state.activeIntNode}
+              />
             </Row>
             <Row className="show-grid">
               <NodeInfo heading={"Mapped to: "} />

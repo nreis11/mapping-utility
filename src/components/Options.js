@@ -1,5 +1,4 @@
 import React from "react";
-// import { Col } from "react-bootstrap";
 
 const Options = props => {
   const inputStyle = {
@@ -11,7 +10,7 @@ const Options = props => {
   };
 
   return (
-    <form style={{ display: "inline" }}>
+    <form>
       <label style={labelStyle}>
         Output Parents
         <input

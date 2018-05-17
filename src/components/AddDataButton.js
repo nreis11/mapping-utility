@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 
 const AddDataButton = props => {
   return (
-    <Button className="pull-left" bsStyle="success" bsSize="small">
+    <Button bsStyle="success" bsSize="small">
       Add/Edit
     </Button>
   );

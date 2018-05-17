@@ -17,17 +17,26 @@ class TreeContainer extends React.Component {
       overflow: "hidden"
     };
 
-    const name = this.props.keyName;
+    const { keyName, activeNode, treeData } = this.props;
+    // const activeNode = treeData.find(node => node.id === activeNode);
 
     return (
       <Col md={5}>
         <Well style={style} bsSize="small">
           <SortableTree
-            treeData={this.props.treeData}
-            onChange={treeData => this.props.onChange(treeData, name)}
+            treeData={treeData}
+            onChange={treeData => this.props.onChange(treeData, keyName)}
             canDrag={false}
             canDrop={() => false}
             rowHeight={45}
+            generateNodeProps={({ node }) => {
+              return {
+                onClick: () => this.props.handleNodeClick(node),
+                style: {
+                  color: activeNode.id === node.id ? "blue" : null
+                }
+              };
+            }}
           />
         </Well>
       </Col>

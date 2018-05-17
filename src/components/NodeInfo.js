@@ -5,25 +5,27 @@ import PropTypes from "prop-types";
 import { Col, Panel } from "react-bootstrap";
 
 const NodeInfo = props => {
+  const { mdOffsetSize, heading, node } = props;
+
   const panelHeadingStyle = {
     padding: "2px"
   };
 
   return (
-    <Col md={props.mdSize} mdOffset={props.mdOffsetSize}>
+    <Col md={5} mdOffset={mdOffsetSize}>
       <Panel bsStyle="info" style={{ marginBottom: "0", marginTop: "0" }}>
         <Panel.Heading style={panelHeadingStyle}>
-          <Panel.Title componentClass="h3">{props.heading}</Panel.Title>
+          <Panel.Title componentClass="h3">{heading}</Panel.Title>
         </Panel.Heading>
         <Panel.Body style={{ padding: "8px" }}>
           <div className="info pull-left">
             <span>
-              <strong>Label</strong>
+              <strong>{node ? node.label : null}</strong>
             </span>
           </div>
           <div className="info pull-right">
             <span>
-              <strong>Value</strong>
+              <strong>{node ? node.id : null}</strong>
             </span>
           </div>
           <div className="clearfix" />
@@ -33,8 +35,7 @@ const NodeInfo = props => {
   );
 };
 
-NodeInfo.defaultProps = {
-  mdSize: 5,
+NodeInfo.default = {
   mdOffset: 0
 };
 

@@ -1,25 +1,12 @@
-import React from 'react';
-import { Col, Button } from 'react-bootstrap';
+import React from "react";
+import { Button } from "react-bootstrap";
 
-const ExportButton = (props) => {
-
-    const btnStyle = {
-      position: "absolute",
-      right: 15,
-      bottom: 0,
-    }
-
-    const colStyle = {
-      paddingLeft: "15px",
-      paddingRight: "15px",
-      flex: "1",
-    }
-
-    return(
-      <Col sm={4} md={1} style={colStyle}>
-        <Button style={btnStyle} bsStyle="success">Export</Button>
-      </Col>
-    )
-}
+const ExportButton = props => {
+  return (
+    <Button className="pull-right" bsStyle="success">
+      Export
+    </Button>
+  );
+};
 
 export default ExportButton;

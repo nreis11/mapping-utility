@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import { Grid, Jumbotron, Row, Col } from "react-bootstrap";
-import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
+import { getTreeFromFlatData, toggleExpandedForAll } from "react-sortable-tree";
 
 import NavBar from "./components/NavBar";
 import Header from "./components/Header";
@@ -11,6 +11,7 @@ import NodeInfo from "./components/NodeInfo";
 import ExportButton from "./components/ExportButton";
 import TypeSelector from "./components/TypeSelector";
 import AddDataButton from "./components/AddDataButton";
+import Options from "./components/Options";
 
 import { categories, industries, states, countries } from "./values/eqValues";
 
@@ -28,11 +29,26 @@ class App extends Component {
         { id: 3, name: "states", label: "State" },
         { id: 4, name: "countries", label: "Country" }
       ],
-      activeType: 1
+      activeType: 1,
+      internalName: "eQuest",
+      activeIntId: "",
+      activeBoardId: ""
     };
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.getTreeData = this.getTreeData.bind(this);
+    this.expandAll = this.expandAll.bind(this);
+  }
+
+  expandAll(expanded, keyName) {
+    console.log("Expanded: ", expanded);
+    const value = this.state[keyName];
+    this.setState({
+      [keyName]: toggleExpandedForAll({
+        treeData: value,
+        expanded
+      })
+    });
   }
 
   getTreeData(id = 1) {
@@ -47,7 +63,6 @@ class App extends Component {
 
   handleTypeSelect(id) {
     const type = this.state.types.filter(type => type.id === id);
-    // const newTreeData = this.getTreeData(type[0].id);
     const newTreeData = this.getTreeData(type[0].id);
     this.setState({
       activeType: id,
@@ -55,20 +70,17 @@ class App extends Component {
     });
   }
 
-  handleChange(treeData, internal) {
+  handleChange(treeData, keyName) {
     console.log("HANDLING CHANGE");
-    if (internal) {
-      this.setState({
-        intTreeData: treeData
-      });
-    } else {
-      this.setState({
-        extTreeData: treeData
-      });
-    }
+    this.setState({
+      [keyName]: treeData
+    });
   }
 
   render() {
+    const intTreeKey = "intTreeData";
+    const extTreeKey = "extTreeData";
+
     return (
       <div className="main">
         <NavBar />
@@ -76,39 +88,42 @@ class App extends Component {
           <Grid fluid>
             <Row className="show-grid">
               <Col md={5}>
-                <Header name={"eQuest"} />
+                <Header name={this.state.internalName} />
                 <TypeSelector
                   types={this.state.types}
                   activeKey={this.state.activeType}
                   onSelect={this.handleTypeSelect}
                 />
               </Col>
-              <Col md={5} mdOffset={2}>
+              <Col md={5} mdOffset={2} className="flex-container">
                 <Header name={"Board"} />
                 <AddDataButton />
+                <Options />
+                <ExportButton />
               </Col>
             </Row>
             <Row className="show-grid">
               <TreeContainer
-                internal={true}
+                keyName={intTreeKey}
                 treeData={this.state.intTreeData}
                 onChange={this.handleChange}
               />
-              <ActionBar />
+              <ActionBar
+                intKeyName={intTreeKey}
+                extKeyName={extTreeKey}
+                expandOnClick={this.expandAll}
+              />
               <TreeContainer
-                internal={false}
+                keyName={extTreeKey}
                 treeData={this.state.extTreeData}
               />
             </Row>
             <Row className="show-grid">
-              <NodeInfo heading={"eQuest"} />
+              <NodeInfo heading={this.state.internalName} />
             </Row>
             <Row className="show-grid">
-              <div style={{ display: "flex", width: "100%" }}>
-                <NodeInfo heading={"Mapped to: "} />
-                <NodeInfo heading={"Board"} mdSize={4} mdOffsetSize={2} />
-                <ExportButton />
-              </div>
+              <NodeInfo heading={"Mapped to: "} />
+              <NodeInfo heading={"Board"} mdOffsetSize={2} />
             </Row>
           </Grid>
         </Jumbotron>

@@ -1,13 +1,12 @@
-import React from 'react';
-import { Col, Button } from 'react-bootstrap';
+import React from "react";
+import { Button } from "react-bootstrap";
 
-const AddDataButton = (props) => {
-    return(
-      <Col sm={12} md={5}>
-        <Button bsStyle="success" bsSize="small">Add/Edit</Button>
-      </Col>
-    ) 
-    
-}
+const AddDataButton = props => {
+  return (
+    <Button className="pull-left" bsStyle="success" bsSize="small">
+      Add/Edit
+    </Button>
+  );
+};
 
 export default AddDataButton;

@@ -6,20 +6,9 @@ import "react-sortable-tree/style.css"; // This only needs to be imported once i
 import "./TreeContainer.css";
 
 class TreeContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.handleChange = this.handleChange.bind(this);
-
-    console.log(typeof this.props.treeData);
-  }
-
   componentDidMount() {
     console.log("MOUNTED TREE");
   }
-
-  // handleChange(treeData) {
-  //   this.props.onChange(treeData);
-  // }
 
   render() {
     const style = {
@@ -28,15 +17,14 @@ class TreeContainer extends React.Component {
       overflow: "hidden"
     };
 
-    const internal = this.props.internal;
-    // const treeContainerClass = this.props.internal ? "internal" : "board";
+    const name = this.props.keyName;
 
     return (
       <Col md={5}>
         <Well style={style} bsSize="small">
           <SortableTree
             treeData={this.props.treeData}
-            onChange={treeData => this.props.onChange(treeData, internal)}
+            onChange={treeData => this.props.onChange(treeData, name)}
             canDrag={false}
             canDrop={() => false}
             rowHeight={45}

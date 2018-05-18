@@ -6,8 +6,15 @@
   min-height: 600px;
 }
 
-.active {
+mark {
+  background-color: yellow;
+  color: black;
+}
+
+.active-node {
+  border: solid;
 }
 
 .mapped {
+  color: blue;
 }

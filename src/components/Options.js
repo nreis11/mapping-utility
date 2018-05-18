@@ -1,6 +1,9 @@
 import React from "react";
 
 const Options = props => {
+  const outputParents = props.options.outputParents;
+  const parentsSelectable = props.options.parentsSelectable;
+
   const inputStyle = {
     marginLeft: "10px"
   };
@@ -16,8 +19,9 @@ const Options = props => {
         <input
           style={inputStyle}
           type="checkbox"
-          name="output-parents"
-          value="outputParents"
+          name="outputParents"
+          value={outputParents}
+          onChange={event => props.onOptionChange(event)}
         />
       </label>
       <label style={labelStyle}>
@@ -25,8 +29,9 @@ const Options = props => {
         <input
           style={inputStyle}
           type="checkbox"
-          name="parents-selectable"
-          value="parentsSelectable"
+          name="parentsSelectable"
+          value={parentsSelectable}
+          onChange={event => props.onOptionChange(event)}
         />
       </label>
     </form>

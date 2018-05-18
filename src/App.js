@@ -30,7 +30,12 @@ class App extends Component {
     this.state = {
       intTreeData: this.getTreeData(initialType),
       extTreeData: [
-        { title: "Chicken", expanded: true, children: [{ title: "Egg" }] }
+        {
+          id: 1,
+          title: "Chicken",
+          expanded: true,
+          children: [{ id: 2, title: "Egg" }]
+        }
       ],
       types: [
         { name: "categories", label: "Category" },
@@ -40,13 +45,18 @@ class App extends Component {
       ],
       activeType: initialType,
       activeIntNode: {},
-      activeBoardNode: {}
+      activeBoardNode: {},
+      options: {
+        outputParents: false,
+        parentsSelectable: false
+      }
     };
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.getTreeData = this.getTreeData.bind(this);
     this.expandAll = this.expandAll.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
+    this.handleOptionChange = this.handleOptionChange.bind(this);
   }
 
   expandAll(expanded, keyName) {
@@ -64,7 +74,7 @@ class App extends Component {
     const treeData = initialData[name];
 
     return getTreeFromFlatData({
-      flatData: treeData.map(node => ({ ...node, title: node.label })),
+      flatData: treeData.map(node => ({ ...node })),
       getKey: node => node.id, // resolve a node's key
       getParentKey: node => node.parent, // resolve a node's parent's key
       rootKey: null // The value of the parent key when there is no parent (i.e., at root level)
@@ -80,11 +90,22 @@ class App extends Component {
     });
   }
 
-  handleNodeClick(node) {
+  handleNodeClick(node, treeKey) {
     console.log("HANDLING CLICK, ID: ", node);
+    const activeKey =
+      treeKey === "intTreeData" ? "activeIntNode" : "activeBoardNode";
     const activeNode = node;
     this.setState({
-      activeIntNode: activeNode
+      [activeKey]: activeNode
+    });
+  }
+
+  handleOptionChange(event) {
+    const optionKey = event.target.name;
+    const options = { ...this.state.options };
+    options[optionKey] = event.target.checked;
+    this.setState({
+      options
     });
   }
 
@@ -96,16 +117,13 @@ class App extends Component {
   }
 
   render() {
-    // NEED TO WORK ON MAPPED NODE
     const intTreeKey = "intTreeData";
     const extTreeKey = "extTreeData";
     const internalName = "eQuest";
-    // const mappingId = this.state.activeIntNode.mapping;
-    const mappingId = "353";
+    const mappingId = this.state.activeIntNode.mapping;
     const mappedNode = this.state.extTreeData.find(
       node => node.id === mappingId
     );
-    console.log("MAPPING", mappedNode);
 
     return (
       <div className="main">
@@ -124,13 +142,16 @@ class App extends Component {
               <Col md={5} mdOffset={2} className="flex-container">
                 <Header name={"Board"} />
                 <AddDataButton />
-                <Options />
+                <Options
+                  options={this.state.options}
+                  onOptionChange={this.handleOptionChange}
+                />
                 <ExportButton />
               </Col>
             </Row>
             <Row className="show-grid">
               <TreeContainer
-                keyName={intTreeKey}
+                treeKey={intTreeKey}
                 treeData={this.state.intTreeData}
                 onChange={this.handleChange}
                 handleNodeClick={this.handleNodeClick}
@@ -142,7 +163,7 @@ class App extends Component {
                 expandOnClick={this.expandAll}
               />
               <TreeContainer
-                keyName={extTreeKey}
+                treeKey={extTreeKey}
                 treeData={this.state.extTreeData}
                 onChange={this.handleChange}
                 handleNodeClick={this.handleNodeClick}
@@ -156,8 +177,12 @@ class App extends Component {
               />
             </Row>
             <Row className="show-grid">
-              <NodeInfo heading={"Mapped to: "} />
-              <NodeInfo heading={"Board"} mdOffsetSize={2} />
+              <NodeInfo heading={"Mapped to: "} node={mappedNode} />
+              <NodeInfo
+                heading={"Board"}
+                node={this.state.activeBoardNode}
+                mdOffsetSize={2}
+              />
             </Row>
           </Grid>
         </Jumbotron>

@@ -20,7 +20,7 @@ const NodeInfo = props => {
         <Panel.Body style={{ padding: "8px" }}>
           <div className="info pull-left">
             <span>
-              <strong>{node ? node.label : null}</strong>
+              <strong>{node ? node.title : null}</strong>
             </span>
           </div>
           <div className="info pull-right">

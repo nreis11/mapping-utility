@@ -11,13 +11,14 @@ class TreeContainer extends React.Component {
   }
 
   render() {
+    const { treeKey, activeNode, treeData } = this.props;
+    // const treeHeight = treeKey === "intTreeData" ? "65vh" : "75vh";
+
     const style = {
       border: "solid",
       height: "65vh",
       overflow: "hidden"
     };
-
-    const { treeKey, activeNode, treeData } = this.props;
 
     return (
       <Col md={5}>
@@ -28,6 +29,7 @@ class TreeContainer extends React.Component {
             canDrag={false}
             canDrop={() => false}
             rowHeight={45}
+            scaffoldBlockPxWidth={30}
             generateNodeProps={({ node }) => {
               return {
                 onClick: () => this.props.handleNodeClick(node, treeKey),

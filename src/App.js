@@ -57,10 +57,18 @@ class App extends Component {
     this.expandAll = this.expandAll.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.handleSpaceBar = this.handleSpaceBar.bind(this);
+  }
+
+  componentDidMount() {
+    document.body.addEventListener("keydown", this.handleSpaceBar);
+  }
+
+  componentDidUnMount() {
+    document.body.removeEventListener("keydown", this.handleSpaceBar);
   }
 
   expandAll(expanded, keyName) {
-    console.log("Expanded: ", expanded);
     const value = this.state[keyName];
     this.setState({
       [keyName]: toggleExpandedForAll({
@@ -109,6 +117,31 @@ class App extends Component {
     });
   }
 
+  handleSpaceBar(event) {
+    // Map the internal node to the board node
+    const activeIntNode = this.state.activeIntNode;
+    const activeBoardNode = this.state.activeBoardNode;
+    if (event.keyCode === 32 && activeIntNode.id && activeBoardNode.id) {
+      event.preventDefault();
+      console.log("HANDLING SPACE: ", event.keyCode);
+      activeIntNode.mapping = activeBoardNode.id;
+      const intTreeData = { ...this.state.intTreeData };
+      // const intNodeIndex = intTreeData.findIndex(
+      //   node => node.id === activeIntNode.id
+      // );
+      console.log(typeof intTreeData);
+      // intTreeData[intNodeIndex] = activeIntNode;
+      // this.setState({
+      //   intTreeData
+      // });
+    }
+    // Grab active internal node
+    // Grab active board node
+    // Set int node mapping to board node.id
+
+    // Set active int node + 1
+  }
+
   handleChange(treeData, keyName) {
     console.log("HANDLING CHANGE");
     this.setState({
@@ -149,7 +182,7 @@ class App extends Component {
                 <ExportButton />
               </Col>
             </Row>
-            <Row className="show-grid">
+            <Row className="show-grid main-container">
               <TreeContainer
                 treeKey={intTreeKey}
                 treeData={this.state.intTreeData}
@@ -169,8 +202,6 @@ class App extends Component {
                 handleNodeClick={this.handleNodeClick}
                 activeNode={this.state.activeBoardNode}
               />
-            </Row>
-            <Row className="show-grid">
               <NodeInfo
                 heading={internalName}
                 node={this.state.activeIntNode}

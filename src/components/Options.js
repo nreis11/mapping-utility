@@ -1,4 +1,5 @@
 import React from "react";
+import { func } from "prop-types";
 
 const Options = props => {
   const outputParents = props.options.outputParents;
@@ -36,6 +37,10 @@ const Options = props => {
       </label>
     </form>
   );
+};
+
+Options.propTypes = {
+  onOptionChange: func.isRequired
 };
 
 export default Options;

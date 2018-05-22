@@ -112,34 +112,41 @@ class App extends Component {
     const optionKey = event.target.name;
     const options = { ...this.state.options };
     options[optionKey] = event.target.checked;
-    this.setState({
-      options
-    });
+    this.setState({ options });
   }
 
   handleSpaceBar(event) {
     // Map the internal node to the board node
     const activeIntNode = this.state.activeIntNode;
     const activeBoardNode = this.state.activeBoardNode;
+    const parentsSelectable = this.state.options["parentsSelectable"];
+
+    // Don't allow if parents aren't seletable
+    if (
+      event.keyCode === 32 &&
+      !parentsSelectable &&
+      activeBoardNode.children
+    ) {
+      alert("MAPPING NOT ALLOWED");
+      return;
+    }
+
+    // Only handle if both an internal and external node are selected
     if (event.keyCode === 32 && activeIntNode.id && activeBoardNode.id) {
       event.preventDefault();
       console.log("HANDLING SPACE: ", event.keyCode);
       activeIntNode.mapping = activeBoardNode.id;
-      const intTreeData = { ...this.state.intTreeData };
-      // const intNodeIndex = intTreeData.findIndex(
-      //   node => node.id === activeIntNode.id
-      // );
-      console.log(typeof intTreeData);
-      // intTreeData[intNodeIndex] = activeIntNode;
-      // this.setState({
-      //   intTreeData
-      // });
+      const intTreeData = [...this.state.intTreeData];
+      const intNodeIndex = intTreeData.findIndex(
+        node => node.id === activeIntNode.id
+      );
+      intTreeData[intNodeIndex] = activeIntNode;
+      let newActiveNode = intTreeData[intNodeIndex + 1];
+      this.setState({
+        intTreeData,
+        activeIntNode: newActiveNode
+      });
     }
-    // Grab active internal node
-    // Grab active board node
-    // Set int node mapping to board node.id
-
-    // Set active int node + 1
   }
 
   handleChange(treeData, keyName) {
@@ -153,9 +160,9 @@ class App extends Component {
     const intTreeKey = "intTreeData";
     const extTreeKey = "extTreeData";
     const internalName = "eQuest";
-    const mappingId = this.state.activeIntNode.mapping;
+    const mappedId = this.state.activeIntNode.mapping;
     const mappedNode = this.state.extTreeData.find(
-      node => node.id === mappingId
+      node => node.id === mappedId
     );
 
     return (
@@ -193,7 +200,7 @@ class App extends Component {
               <ActionBar
                 intKeyName={intTreeKey}
                 extKeyName={extTreeKey}
-                expandOnClick={this.expandAll}
+                expandAll={this.expandAll}
               />
               <TreeContainer
                 treeKey={extTreeKey}

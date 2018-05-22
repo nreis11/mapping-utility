@@ -26,17 +26,19 @@ class TreeContainer extends React.Component {
           <SortableTree
             treeData={treeData}
             onChange={treeData => this.props.onChange(treeData, treeKey)}
+            getNodeKey={({ node }) => node.id}
             canDrag={false}
             canDrop={() => false}
             rowHeight={45}
             scaffoldBlockPxWidth={30}
             generateNodeProps={({ node }) => {
+              let className = "";
+              className += activeNode.id === node.id ? "active-node" : "";
+              className += node.mapping ? " mapped" : "";
+
               return {
                 onClick: () => this.props.handleNodeClick(node, treeKey),
-                className: activeNode.id === node.id ? "active-node" : null,
-                style: {
-                  color: node.mapping ? "blue" : null
-                }
+                className: className
               };
             }}
           />

@@ -1,0 +1,39 @@
+- Calculations should be done in the render method
+- Event listeners have to be on actual HTML elements (not JSX)
+
+If no value is sent for expected props, you can set defaults like so:
+Button.defaultProps = {text: "I am a button"};
+
+Any time that you call this.setState(), this.setState() AUTOMATICALLY calls .render() as soon as the state has changed.
+
+In React, if you write a style value as a number, then the unit "px" is assumed.
+
+Stateless components are like anonymous functions. Make sure to send in props as arg.
+
+A good rule of thumb is that elements inside the map() call need keys.
+
+In React, when you give an <input /> a value attribute, then something strange happens: the <input /> BECOMES controlled. It stops using its internal storage. This is a more 'React' way of doing things.
+
+There are three mounting lifecycle methods:
+
+componentWillMount
+render
+componentDidMount
+
+componentWillMount does NOT get called, because mounting lifecycle events only execute the first time that a component renders.
+
+There are five updating lifecycle methods:
+
+componentWillReceiveProps
+shouldComponentUpdate
+componentWillUpdate
+render
+componentDidUpdate
+
+To add eslint support:
+npm install --save-dev eslint-config-react-app babel-eslint@^7.2.3 eslint@^4.1.1 eslint-plugin-flowtype@^2.34.1 eslint-plugin-import@^2.6.0 eslint-plugin-jsx-a11y@^5.1.1 eslint-plugin-react@^7.1.0
+
+Then change .eslintrc file to { extends: "react-app"}
+
+To tidy up JS code:
+Install JsPrettier

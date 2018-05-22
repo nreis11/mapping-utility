@@ -16,14 +16,12 @@ class TypeSelector extends React.Component {
   }
 
   render(props) {
+    const { activeKey, onSelect, types } = this.props;
+
     return (
-      <Col>
-        <Nav
-          bsStyle="pills"
-          activeKey={this.props.activeKey}
-          onSelect={k => this.props.onSelect(k)}
-        >
-          {this.props.types.map(this.eachType)}
+      <Col className="pull-right">
+        <Nav bsStyle="pills" activeKey={activeKey} onSelect={k => onSelect(k)}>
+          {types.map(this.eachType)}
         </Nav>
       </Col>
     );

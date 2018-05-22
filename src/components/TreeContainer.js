@@ -1,4 +1,6 @@
 import React from "react";
+import { func, shape, string, arrayOf, object } from "prop-types";
+
 import { Col, Well } from "react-bootstrap";
 import SortableTree from "react-sortable-tree";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
@@ -11,7 +13,13 @@ class TreeContainer extends React.Component {
   }
 
   render() {
-    const { treeKey, activeNode, treeData } = this.props;
+    const {
+      treeKey,
+      activeNode,
+      treeData,
+      onChange,
+      handleNodeClick
+    } = this.props;
     // const treeHeight = treeKey === "intTreeData" ? "65vh" : "75vh";
 
     const style = {
@@ -25,7 +33,7 @@ class TreeContainer extends React.Component {
         <Well style={style} bsSize="small">
           <SortableTree
             treeData={treeData}
-            onChange={treeData => this.props.onChange(treeData, treeKey)}
+            onChange={treeData => onChange(treeData, treeKey)}
             getNodeKey={({ node }) => node.id}
             canDrag={false}
             canDrop={() => false}
@@ -37,7 +45,7 @@ class TreeContainer extends React.Component {
               className += node.mapping ? " mapped" : "";
 
               return {
-                onClick: () => this.props.handleNodeClick(node, treeKey),
+                onClick: () => handleNodeClick(node, treeKey),
                 className: className
               };
             }}
@@ -47,5 +55,13 @@ class TreeContainer extends React.Component {
     );
   }
 }
+
+TreeContainer.propTypes = {
+  treeKey: string,
+  activeNode: shape({}),
+  treeData: arrayOf(object).isRequired,
+  onChange: func.isRequired,
+  handleNodeClick: func
+};
 
 export default TreeContainer;

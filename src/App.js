@@ -99,7 +99,7 @@ class App extends Component {
   }
 
   handleNodeClick(node, treeKey) {
-    console.log("HANDLING CLICK, ID: ", node);
+    console.log("HANDLING CLICK", node);
     const activeKey =
       treeKey === "intTreeData" ? "activeIntNode" : "activeBoardNode";
     const activeNode = node;
@@ -121,7 +121,7 @@ class App extends Component {
     const activeBoardNode = this.state.activeBoardNode;
     const parentsSelectable = this.state.options["parentsSelectable"];
 
-    // Don't allow if parents aren't seletable
+    // Don't allow if parents aren't selectable and selected node is a parent
     if (
       event.keyCode === 32 &&
       !parentsSelectable &&
@@ -150,7 +150,6 @@ class App extends Component {
   }
 
   handleChange(treeData, keyName) {
-    console.log("HANDLING CHANGE");
     this.setState({
       [keyName]: treeData
     });

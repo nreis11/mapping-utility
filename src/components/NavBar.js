@@ -1,38 +1,45 @@
 import React from "react";
-import { Row, Navbar, ButtonGroup, Button } from "react-bootstrap";
+import { Row, Navbar, ButtonGroup, Button, Nav } from "react-bootstrap";
 import FaFloppyO from "react-icons/lib/fa/floppy-o";
 import FaOpen from "react-icons/lib/fa/folder-open-o";
+
+import "./NavBar.css";
+import HelpModal from "./modals/HelpModal";
 
 const NavBar = props => {
   const headerStyle = {
     color: "white",
-    fontSize: ".5em"
+    fontSize: ".5em",
+    marginRight: "15px"
   };
 
-  const btnGroupStyle = {
-    position: "absolute",
-    left: "0",
-    top: "0",
-    height: "100%"
-  };
+  // const btnGroupStyle = {
+  //   position: "absolute",
+  //   left: "0",
+  //   top: "0",
+  //   height: "100%"
+  // };
 
-  const navBtnStyle = {
-    height: "100%"
-  };
+  // const navBtnStyle = {
+  //   height: "100%"
+  // };
 
   return (
     <Row className="show-grid">
-      <Navbar className="text-center" inverse fixedTop>
+      <Navbar className="padded" inverse fixedTop fluid>
         <h1 style={{ display: "inline" }}>
-          <ButtonGroup style={btnGroupStyle}>
-            <Button style={navBtnStyle}>
+          <span style={headerStyle}>Mapping Utility</span>
+          <ButtonGroup style={{}}>
+            <Button style={{}}>
               <FaOpen />
             </Button>
-            <Button style={navBtnStyle}>
+            <Button style={{}}>
               <FaFloppyO />
             </Button>
           </ButtonGroup>
-          <span style={headerStyle}>Mapping Utility</span>
+          <Nav pullRight>
+            <HelpModal />
+          </Nav>
         </h1>
       </Navbar>
     </Row>

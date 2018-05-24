@@ -149,9 +149,9 @@ class App extends Component {
     }
   }
 
-  handleChange(treeData, keyName) {
+  handleChange(treeData, treeKey) {
     this.setState({
-      [keyName]: treeData
+      [treeKey]: treeData
     });
   }
 

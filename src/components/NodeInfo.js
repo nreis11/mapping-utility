@@ -17,7 +17,7 @@ const NodeInfo = props => {
         <Panel.Heading style={panelHeadingStyle}>
           <Panel.Title componentClass="h3">{heading}</Panel.Title>
         </Panel.Heading>
-        <Panel.Body style={{ padding: "8px", height: "5vh" }}>
+        <Panel.Body style={{ padding: "8px", height: "4vh" }}>
           <div className="info pull-left">
             <span>
               <strong>{node ? node.title : null}</strong>

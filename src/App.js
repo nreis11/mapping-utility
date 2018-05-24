@@ -32,9 +32,9 @@ class App extends Component {
       extTreeData: [
         {
           id: 1,
-          title: "Chicken",
+          title: "Parent",
           expanded: true,
-          children: [{ id: 2, title: "Egg" }]
+          children: [{ id: 2, title: "Child" }]
         }
       ],
       types: [
@@ -45,11 +45,12 @@ class App extends Component {
       ],
       activeType: initialType,
       activeIntNode: {},
-      activeBoardNode: {},
+      activeExtNode: {},
       options: {
         outputParents: false,
         parentsSelectable: false
-      }
+      },
+      highlightMissingMaps: false
     };
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -58,6 +59,7 @@ class App extends Component {
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.handleSpaceBar = this.handleSpaceBar.bind(this);
+    this.highlightMissingMaps = this.highlightMissingMaps.bind(this);
   }
 
   componentDidMount() {
@@ -101,7 +103,7 @@ class App extends Component {
   handleNodeClick(node, treeKey) {
     console.log("HANDLING CLICK", node);
     const activeKey =
-      treeKey === "intTreeData" ? "activeIntNode" : "activeBoardNode";
+      treeKey === "intTreeData" ? "activeIntNode" : "activeExtNode";
     const activeNode = node;
     this.setState({
       [activeKey]: activeNode
@@ -115,27 +117,30 @@ class App extends Component {
     this.setState({ options });
   }
 
+  highlightMissingMaps() {
+    console.log("Handling Missing maps");
+    this.setState(prevState => ({
+      highlightMissingMaps: !prevState.highlightMissingMaps
+    }));
+  }
+
   handleSpaceBar(event) {
-    // Map the internal node to the board node
+    // Map the internal node to the external node
     const activeIntNode = this.state.activeIntNode;
-    const activeBoardNode = this.state.activeBoardNode;
+    const activeExtNode = this.state.activeExtNode;
     const parentsSelectable = this.state.options["parentsSelectable"];
 
     // Don't allow if parents aren't selectable and selected node is a parent
-    if (
-      event.keyCode === 32 &&
-      !parentsSelectable &&
-      activeBoardNode.children
-    ) {
+    if (event.keyCode === 32 && !parentsSelectable && activeExtNode.children) {
       alert("MAPPING NOT ALLOWED");
       return;
     }
 
     // Only handle if both an internal and external node are selected
-    if (event.keyCode === 32 && activeIntNode.id && activeBoardNode.id) {
+    if (event.keyCode === 32 && activeIntNode.id && activeExtNode.id) {
       event.preventDefault();
       console.log("HANDLING SPACE: ", event.keyCode);
-      activeIntNode.mapping = activeBoardNode.id;
+      activeIntNode.mapping = activeExtNode.id;
       const intTreeData = [...this.state.intTreeData];
       const intNodeIndex = intTreeData.findIndex(
         node => node.id === activeIntNode.id
@@ -159,10 +164,12 @@ class App extends Component {
     const intTreeKey = "intTreeData";
     const extTreeKey = "extTreeData";
     const internalName = "eQuest";
+    const externalName = "Board";
     const mappedId = this.state.activeIntNode.mapping;
     const mappedNode = this.state.extTreeData.find(
       node => node.id === mappedId
     );
+    const highlightMissingMaps = this.state.highlightMissingMaps;
 
     return (
       <div className="main">
@@ -179,7 +186,7 @@ class App extends Component {
                 />
               </Col>
               <Col md={5} mdOffset={2} className="flex-container">
-                <Header name={"Board"} />
+                <Header name={externalName} />
                 <AddDataButton />
                 <Options
                   options={this.state.options}
@@ -195,10 +202,12 @@ class App extends Component {
                 onChange={this.handleChange}
                 handleNodeClick={this.handleNodeClick}
                 activeNode={this.state.activeIntNode}
+                highlightMissingMaps={highlightMissingMaps}
               />
               <ActionBar
                 intKeyName={intTreeKey}
                 extKeyName={extTreeKey}
+                onHighlightMissingMaps={this.highlightMissingMaps}
                 expandAll={this.expandAll}
               />
               <TreeContainer
@@ -206,7 +215,7 @@ class App extends Component {
                 treeData={this.state.extTreeData}
                 onChange={this.handleChange}
                 handleNodeClick={this.handleNodeClick}
-                activeNode={this.state.activeBoardNode}
+                activeNode={this.state.activeExtNode}
               />
               <NodeInfo
                 heading={internalName}
@@ -214,10 +223,10 @@ class App extends Component {
               />
             </Row>
             <Row className="show-grid">
-              <NodeInfo heading={"Mapped to: "} node={mappedNode} />
+              <NodeInfo heading={"Mapped to:"} node={mappedNode} />
               <NodeInfo
-                heading={"Board"}
-                node={this.state.activeBoardNode}
+                heading={externalName}
+                node={this.state.activeExtNode}
                 mdOffsetSize={2}
               />
             </Row>

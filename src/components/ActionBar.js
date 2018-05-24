@@ -10,7 +10,7 @@ const ActionBar = props => {
     marginBottom: "15%"
   };
 
-  const { expandAll, intKeyName, extKeyName } = props;
+  const { expandAll, intKeyName, extKeyName, onHighlightMissingMaps } = props;
 
   return (
     <Col md={2} className="text-center">
@@ -32,7 +32,7 @@ const ActionBar = props => {
         </Button>
       </ButtonGroup>
       <ButtonGroup style={buttonGroupStyle}>
-        <Button bsStyle="primary" block>
+        <Button bsStyle="primary" onClick={onHighlightMissingMaps} block>
           Highlight Missing Maps
         </Button>
         <Button bsStyle="primary" block>

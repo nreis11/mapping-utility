@@ -1,11 +1,3 @@
-.internal {
-  min-height: 500px;
-}
-
-.board {
-  min-height: 600px;
-}
-
 mark {
   background-color: yellow;
   color: black;
@@ -17,4 +9,8 @@ mark {
 
 .mapped {
   color: blue;
+}
+
+.missing-map {
+  color: red;
 }

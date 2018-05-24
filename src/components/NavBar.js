@@ -13,27 +13,16 @@ const NavBar = props => {
     marginRight: "15px"
   };
 
-  // const btnGroupStyle = {
-  //   position: "absolute",
-  //   left: "0",
-  //   top: "0",
-  //   height: "100%"
-  // };
-
-  // const navBtnStyle = {
-  //   height: "100%"
-  // };
-
   return (
     <Row className="show-grid">
       <Navbar className="padded" inverse fixedTop fluid>
         <h1 style={{ display: "inline" }}>
           <span style={headerStyle}>Mapping Utility</span>
           <ButtonGroup style={{}}>
-            <Button style={{}}>
+            <Button>
               <FaOpen />
             </Button>
-            <Button style={{}}>
+            <Button>
               <FaFloppyO />
             </Button>
           </ButtonGroup>

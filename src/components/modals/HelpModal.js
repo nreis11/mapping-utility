@@ -26,7 +26,7 @@ class HelpModal extends React.Component {
   render() {
     return (
       <Col>
-        <Button bsStyle="info" onClick={this.handleShow}>
+        <Button onClick={this.handleShow}>
           <QuestionMark />
         </Button>
 

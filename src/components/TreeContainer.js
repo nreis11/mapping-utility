@@ -1,5 +1,5 @@
 import React from "react";
-import { func, shape, string, arrayOf, object } from "prop-types";
+import { func, shape, string, arrayOf, object, bool } from "prop-types";
 
 import { Col, Well } from "react-bootstrap";
 import SortableTree from "react-sortable-tree";
@@ -18,7 +18,8 @@ class TreeContainer extends React.Component {
       activeNode,
       treeData,
       onChange,
-      handleNodeClick
+      handleNodeClick,
+      highlightMissingMaps
     } = this.props;
     // const treeHeight = treeKey === "intTreeData" ? "65vh" : "75vh";
 
@@ -27,6 +28,8 @@ class TreeContainer extends React.Component {
       height: "65vh",
       overflow: "hidden"
     };
+
+    const missingMapClass = highlightMissingMaps ? " missing-map" : "";
 
     return (
       <Col md={5}>
@@ -42,7 +45,7 @@ class TreeContainer extends React.Component {
             generateNodeProps={({ node }) => {
               let className = "";
               className += activeNode.id === node.id ? "active-node" : "";
-              className += node.mapping ? " mapped" : "";
+              className += node.mapping ? " mapped" : missingMapClass;
 
               return {
                 onClick: () => handleNodeClick(node, treeKey),
@@ -61,7 +64,8 @@ TreeContainer.propTypes = {
   activeNode: shape({}),
   treeData: arrayOf(object).isRequired,
   onChange: func.isRequired,
-  handleNodeClick: func
+  handleNodeClick: func,
+  highlightMissingMaps: bool
 };
 
 export default TreeContainer;

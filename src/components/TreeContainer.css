@@ -14,3 +14,16 @@ mark {
 .missing-map {
   color: red;
 }
+
+.norm-well {
+  border: solid;
+  height: 65vh;
+  overflow: hidden;
+}
+
+.edit-mode-well {
+  border: solid;
+  overflow: hidden;
+  height: 80vh;
+}
+

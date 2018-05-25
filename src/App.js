@@ -10,7 +10,9 @@ import ActionBar from "./components/ActionBar";
 import NodeInfo from "./components/NodeInfo";
 import ExportButton from "./components/ExportButton";
 import TypeSelector from "./components/TypeSelector";
-import AddDataButton from "./components/AddDataButton";
+// import AddDataButton from "./components/AddDataButton";
+import EditModal from "./components/modals/EditModal";
+
 import Options from "./components/Options";
 
 import { categories, industries, states, countries } from "./values/eqValues";
@@ -187,7 +189,11 @@ class App extends Component {
               </Col>
               <Col md={5} mdOffset={2} className="flex-container">
                 <Header name={externalName} />
-                <AddDataButton />
+                <EditModal
+                  treeKey={extTreeKey}
+                  treeData={this.state.extTreeData}
+                  onChange={this.handleChange}
+                />
                 <Options
                   options={this.state.options}
                   onOptionChange={this.handleOptionChange}

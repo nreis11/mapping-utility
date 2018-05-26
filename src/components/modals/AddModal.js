@@ -1,10 +1,9 @@
 import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
 import PlusSign from "react-icons/lib/fa/plus";
+import AddNodesForm from "./AddNodesForm";
 
-import TreeContainer from "../TreeContainer";
-
-class EditModal extends React.Component {
+class AddModal extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -12,8 +11,7 @@ class EditModal extends React.Component {
     this.handleClose = this.handleClose.bind(this);
 
     this.state = {
-      show: false,
-      editMode: true
+      show: false
     };
   }
 
@@ -25,33 +23,30 @@ class EditModal extends React.Component {
     this.setState({ show: true });
   }
 
-  render() {
-    const { treeKey, treeData, onChange } = this.props;
+  handleImport() {
+    console.log("HANDLING IMPORT");
+  }
 
+  render() {
     return (
       <Col>
         <Button bsStyle="info" bsSize="small" onClick={this.handleShow}>
-          <PlusSign /> Add/Edit
+          <PlusSign /> Add Nodes
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
           <Modal.Header closeButton>
-            <Modal.Title>Add/Edit</Modal.Title>
+            <Modal.Title>Add Nodes</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <TreeContainer
-              treeKey={treeKey}
-              treeData={treeData}
-              onChange={onChange}
-              editMode={this.state.editMode}
-              handleClose={this.handleClose}
-            />
+            <AddNodesForm />
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleClose}>Close</Button>
+            <Button onClick={this.handleClose}>Cancel</Button>
+            <Button onClick={this.handleImport}>Import Nodes</Button>
           </Modal.Footer>
         </Modal>
       </Col>
     );
   }
 }
-export default EditModal;
+export default AddModal;

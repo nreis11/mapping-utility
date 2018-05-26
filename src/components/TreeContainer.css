@@ -15,15 +15,8 @@ mark {
   color: red;
 }
 
-.norm-well {
+.well {
   border: solid;
   height: 65vh;
   overflow: hidden;
 }
-
-.edit-mode-well {
-  border: solid;
-  overflow: hidden;
-  height: 80vh;
-}
-

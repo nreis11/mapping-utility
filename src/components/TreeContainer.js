@@ -45,8 +45,8 @@ class TreeContainer extends React.Component {
             getNodeKey={({ node }) => node.id}
             canDrag={false}
             canDrop={() => false}
-            rowHeight={45}
-            scaffoldBlockPxWidth={30}
+            rowHeight={50}
+            scaffoldBlockPxWidth={35}
             generateNodeProps={({ node, path }) => {
               let className = "";
               if (!editMode) {

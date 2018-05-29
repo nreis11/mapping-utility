@@ -12,7 +12,7 @@ const Header = ({ name }) => (
 );
 
 Header.propTypes = {
-  name: string
+  name: string.isRequired
 };
 
 export default Header;

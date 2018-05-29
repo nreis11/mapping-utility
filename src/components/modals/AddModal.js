@@ -28,9 +28,16 @@ class AddModal extends React.Component {
   }
 
   render() {
+    const { handleAddNodesToExtTree } = this.props;
+
     return (
       <Col>
-        <Button bsStyle="info" bsSize="small" onClick={this.handleShow}>
+        <Button
+          className="pull-left"
+          bsStyle="info"
+          bsSize="small"
+          onClick={this.handleShow}
+        >
           <PlusSign /> Add Nodes
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
@@ -38,11 +45,13 @@ class AddModal extends React.Component {
             <Modal.Title>Add Nodes</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddNodesForm />
+            <AddNodesForm handleAddNodesToExtTree={handleAddNodesToExtTree} />
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.handleClose}>Cancel</Button>
-            <Button onClick={this.handleImport}>Import Nodes</Button>
+            <Button bsStyle="info" onClick={this.handleImport}>
+              Import Nodes
+            </Button>
           </Modal.Footer>
         </Modal>
       </Col>

@@ -2,7 +2,6 @@ import React from "react";
 import { func, shape, string, arrayOf, object, bool } from "prop-types";
 import PlusSign from "react-icons/lib/fa/plus";
 import TrashIcon from "react-icons/lib/fa/trash";
-import AddModal from "./modals/AddModal";
 
 import { Col, Well } from "react-bootstrap";
 import SortableTree, {
@@ -97,7 +96,6 @@ class TreeContainer extends React.Component {
             }}
           />
         </Well>
-        {editMode && <AddModal />}
       </Col>
     );
   }

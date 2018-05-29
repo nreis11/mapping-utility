@@ -3,6 +3,7 @@ import { Modal, Col, Button } from "react-bootstrap";
 import PlusSign from "react-icons/lib/fa/plus";
 
 import TreeContainer from "../TreeContainer";
+import AddModal from "./AddModal";
 
 class EditModal extends React.Component {
   constructor(props, context) {
@@ -12,8 +13,7 @@ class EditModal extends React.Component {
     this.handleClose = this.handleClose.bind(this);
 
     this.state = {
-      show: false,
-      editMode: true
+      show: false
     };
   }
 
@@ -26,7 +26,7 @@ class EditModal extends React.Component {
   }
 
   render() {
-    const { treeKey, treeData, onChange } = this.props;
+    const { treeKey, treeData, onChange, handleAddNodesToExtTree } = this.props;
 
     return (
       <Col>
@@ -42,11 +42,13 @@ class EditModal extends React.Component {
               treeKey={treeKey}
               treeData={treeData}
               onChange={onChange}
-              editMode={this.state.editMode}
+              editMode={true}
               handleClose={this.handleClose}
+              handleAddNodesToExtTree={handleAddNodesToExtTree}
             />
           </Modal.Body>
           <Modal.Footer>
+            <AddModal handleAddNodesToExtTree={handleAddNodesToExtTree} />
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>

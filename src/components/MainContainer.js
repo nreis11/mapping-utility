@@ -16,13 +16,11 @@ const initialData = {
   countries: countries
 };
 
-const initialType = "categories";
-
 class MainContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      intTreeData: this.getTreeData(initialType),
+      intTreeData: this.getTreeData("categories"),
       extTreeData: [
         {
           id: 1,
@@ -47,6 +45,7 @@ class MainContainer extends Component {
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.handleSpaceBar = this.handleSpaceBar.bind(this);
     this.highlightMissingMaps = this.highlightMissingMaps.bind(this);
+    this.handleAddNodesToExtTree = this.handleAddNodesToExtTree.bind(this);
   }
 
   componentDidMount() {
@@ -79,6 +78,7 @@ class MainContainer extends Component {
   }
 
   handleTypeSelect(name) {
+    // Implement a check to see if mapping has occured before changing type
     const newTreeData = this.getTreeData(name);
     this.setState({
       intTreeData: newTreeData
@@ -117,6 +117,7 @@ class MainContainer extends Component {
 
     // Don't allow if parents aren't selectable and selected node is a parent
     if (event.keyCode === 32 && !parentsSelectable && activeExtNode.children) {
+      event.preventDefault();
       alert("MAPPING NOT ALLOWED");
       return;
     }
@@ -137,6 +138,13 @@ class MainContainer extends Component {
         activeIntNode: newActiveNode
       });
     }
+  }
+
+  handleAddNodesToExtTree(newNodes) {
+    console.log("HANDLING ADD");
+    this.setState(state => ({
+      extTreeData: state.extTreeData.concat(...newNodes)
+    }));
   }
 
   handleChange(treeData, treeKey) {
@@ -170,6 +178,7 @@ class MainContainer extends Component {
             options={options}
             handleChange={this.handleChange}
             handleOptionChange={this.handleOptionChange}
+            handleAddNodesToExtTree={this.handleAddNodesToExtTree}
           />
 
           <Row className="show-grid">

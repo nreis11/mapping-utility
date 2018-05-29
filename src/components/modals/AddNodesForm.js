@@ -4,21 +4,22 @@ import {
   FormGroup,
   FormControl,
   ControlLabel,
+  Button,
   HelpBlock
 } from "react-bootstrap";
 
 class AddNodesForm extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.handleChange = this.handleChange.bind(this);
+  constructor(props) {
+    super(props);
 
     this.state = {
-      nodes: "",
-      delimiter: "",
-      value: "1",
-      label: "2"
+      rawData: "",
+      delimiter: "|",
+      valueIdx: "1",
+      labelIdx: "2"
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   getValidationState(name) {
@@ -29,14 +30,10 @@ class AddNodesForm extends React.Component {
         else if (length > 1) return "error";
         return null;
       case "value":
-        const value = this.state.value;
-        if (isNaN(value)) {
-          return "error";
-        }
-        break;
       case "label":
-        const label = this.state.label;
-        if (isNaN(label)) {
+        const value =
+          name === "value" ? this.state.valueIdx : this.state.labelIdx;
+        if (isNaN(value) || value.length > 1) {
           return "error";
         }
         break;
@@ -50,16 +47,35 @@ class AddNodesForm extends React.Component {
     this.setState({ [name]: value });
   }
 
+  handleSubmit(e) {
+    e.preventDefault();
+    const { delimiter, valueIdx, labelIdx, rawData } = this.state;
+    // Create array of nodes to concat
+    const idIdx = valueIdx < labelIdx ? 0 : 1;
+    const titleIdx = valueIdx < labelIdx ? 1 : 0;
+    const nodesArr = rawData.split("\n").map(node => {
+      let nodeArr = node.split(delimiter);
+      return {
+        id: nodeArr[idIdx],
+        title: nodeArr[titleIdx],
+        expanded: false,
+        children: []
+      };
+    });
+
+    this.props.handleAddNodesToExtTree(nodesArr);
+  }
+
   render() {
     return (
-      <Form>
+      <Form onSubmit={this.handleSubmit}>
         <FormGroup controlId="formAddNodes">
           <ControlLabel>Add Data Here</ControlLabel>
           <FormControl
             type="text"
-            name="nodes"
+            name="rawData"
             componentClass="textarea"
-            value={this.state.nodes}
+            value={this.state.rawData}
             placeholder="Value|Label"
             onChange={this.handleChange}
             style={{ height: "40vh" }}
@@ -87,8 +103,8 @@ class AddNodesForm extends React.Component {
           <ControlLabel>Value Position</ControlLabel>
           <FormControl
             type="text"
-            name="value"
-            value={this.state.value}
+            name="valueIdx"
+            value={this.state.valueIdx}
             placeholder="Enter 1 or 2"
             onChange={this.handleChange}
           />
@@ -101,13 +117,14 @@ class AddNodesForm extends React.Component {
           <ControlLabel>Label Position</ControlLabel>
           <FormControl
             type="text"
-            name="label"
-            value={this.state.label}
+            name="labelIdx"
+            value={this.state.labelIdx}
             placeholder="Enter 1 or 2"
             onChange={this.handleChange}
           />
           <FormControl.Feedback />
         </FormGroup>
+        <Button type="submit">Submit</Button>
       </Form>
     );
   }

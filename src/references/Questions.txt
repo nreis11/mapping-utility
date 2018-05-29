@@ -1,0 +1,2 @@
+1. Should I be using a JS object to store my tree data or use an array?
+It's probably best to keep as array because when imported, a tree is created with children arrays inside nodes.

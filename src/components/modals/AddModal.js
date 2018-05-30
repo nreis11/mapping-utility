@@ -1,11 +1,11 @@
 import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
 import PlusSign from "react-icons/lib/fa/plus";
-import AddNodesForm from "./AddNodesForm";
+import AddNodesForm from "./forms/AddNodesForm";
 
 class AddModal extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -21,10 +21,6 @@ class AddModal extends React.Component {
 
   handleShow() {
     this.setState({ show: true });
-  }
-
-  handleImport() {
-    console.log("HANDLING IMPORT");
   }
 
   render() {
@@ -45,14 +41,15 @@ class AddModal extends React.Component {
             <Modal.Title>Add Nodes</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <AddNodesForm handleAddNodesToExtTree={handleAddNodesToExtTree} />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.handleClose}>Cancel</Button>
-            <Button bsStyle="info" onClick={this.handleImport}>
-              Import Nodes
+            <AddNodesForm
+              handleAddNodesToExtTree={handleAddNodesToExtTree}
+              onClose={this.handleClose}
+            />
+            <Button className="pull-right" onClick={this.handleClose}>
+              Cancel
             </Button>
-          </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer />
         </Modal>
       </Col>
     );

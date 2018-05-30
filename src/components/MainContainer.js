@@ -21,14 +21,7 @@ class MainContainer extends Component {
     super(props);
     this.state = {
       intTreeData: this.getTreeData("categories"),
-      extTreeData: [
-        {
-          id: 1,
-          title: "Parent",
-          expanded: true,
-          children: [{ id: 2, title: "Child" }]
-        }
-      ],
+      extTreeData: [],
       activeIntNode: {},
       activeExtNode: {},
       options: {

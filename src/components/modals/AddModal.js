@@ -43,7 +43,7 @@ class AddModal extends React.Component {
           <Modal.Body>
             <AddNodesForm
               handleAddNodesToExtTree={handleAddNodesToExtTree}
-              onClose={this.handleClose}
+              handleClose={this.handleClose}
             />
             <Button className="pull-right" onClick={this.handleClose}>
               Cancel

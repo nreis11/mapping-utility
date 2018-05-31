@@ -1,0 +1,24 @@
+App
+  NavBar
+  MainContainer
+    HeaderRow
+      Header
+      TypeSelector
+      Header
+      EditModal
+        AddModal
+          AddNodesForm
+            RawDataForm
+            IdxForm
+            DelimiterForm
+      Options
+      ExportButton
+    TreeRow
+      TreeContainer
+        SortableTree(IntTree)
+        ActionBar
+        SortableTree(ExtTree)
+    NodeInfoRow
+      NodeInfo(Int)
+      NodeInfo(Mapping)
+      NodeInfo(Ext)

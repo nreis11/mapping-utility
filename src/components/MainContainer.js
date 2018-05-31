@@ -59,7 +59,7 @@ class MainContainer extends Component {
     });
   }
 
-  getTreeData(name = "categories") {
+  getTreeData(name) {
     const treeData = initialData[name];
 
     return getTreeFromFlatData({
@@ -109,7 +109,11 @@ class MainContainer extends Component {
     const parentsSelectable = this.state.options["parentsSelectable"];
 
     // Don't allow if parents aren't selectable and selected node is a parent
-    if (event.keyCode === 32 && !parentsSelectable && activeExtNode.children) {
+    if (
+      event.keyCode === 32 &&
+      !parentsSelectable &&
+      activeExtNode.children.length
+    ) {
       event.preventDefault();
       alert("MAPPING NOT ALLOWED");
       return;
@@ -156,6 +160,7 @@ class MainContainer extends Component {
       node => node.id === mappedId
     );
     const highlightMissingMaps = this.state.highlightMissingMaps;
+    const intTreeData = this.state.intTreeData;
     const extTreeData = this.state.extTreeData;
     const options = this.state.options;
 
@@ -172,12 +177,13 @@ class MainContainer extends Component {
             handleChange={this.handleChange}
             handleOptionChange={this.handleOptionChange}
             handleAddNodesToExtTree={this.handleAddNodesToExtTree}
+            handleClearExtTree={this.handleClearExtTree}
           />
 
           <Row className="show-grid">
             <TreeContainer
               treeKey={intTreeKey}
-              treeData={this.state.intTreeData}
+              treeData={intTreeData}
               onChange={this.handleChange}
               handleNodeClick={this.handleNodeClick}
               activeNode={this.state.activeIntNode}

@@ -2,15 +2,17 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import RawDataForm from "./RawDataForm";
 import DelimiterForm from "./DelimiterForm";
-import ValueIdxForm from "./ValueIdxForm";
-import LabelIdxForm from "./LabelIdxForm";
+import IdxForm from "./IdxForm";
+import { func } from "prop-types";
 
 class AddNodesForm extends React.Component {
   constructor(props) {
     super(props);
 
+    // TEMP RAWDATA
     this.state = {
-      rawData: "",
+      rawData:
+        "51|Bar\n52|Management\n53|Kitchen\n54|Floor\n16|Barista\n166|Hotel\n382|Counter",
       delimiter: "|",
       valueIdx: 1,
       labelIdx: 2
@@ -27,15 +29,18 @@ class AddNodesForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { delimiter, valueIdx, labelIdx, rawData } = this.state;
-    if (!rawData) return;
+    if (!rawData) {
+      this.props.handleClose();
+      return;
+    }
     // Create array of nodes to concat
     const idIdx = valueIdx < labelIdx ? 0 : 1;
     const titleIdx = valueIdx < labelIdx ? 1 : 0;
-    const nodesArr = rawData.split("\n").map(node => {
-      let nodeArr = node.split(delimiter);
+    const nodesArr = rawData.split("\n").map(line => {
+      let lineArr = line.split(delimiter);
       return {
-        id: nodeArr[idIdx],
-        title: nodeArr[titleIdx],
+        id: lineArr[idIdx],
+        title: lineArr[titleIdx],
         expanded: false,
         parent: null,
         children: []
@@ -43,11 +48,13 @@ class AddNodesForm extends React.Component {
     });
 
     this.props.handleAddNodesToExtTree(nodesArr);
-    this.props.onClose();
+    this.props.handleClose();
   }
 
   render() {
     const { rawData, delimiter, valueIdx, labelIdx } = this.state;
+    const valueIdxKey = "valueIdx";
+    const labelIdxKey = "labelIdx";
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -57,8 +64,16 @@ class AddNodesForm extends React.Component {
           delimiter={delimiter}
         />
         <DelimiterForm onChange={this.handleChange} delimiter={delimiter} />
-        <ValueIdxForm onChange={this.handleChange} valueIdx={valueIdx} />
-        <LabelIdxForm onChange={this.handleChange} labelIdx={labelIdx} />
+        <IdxForm
+          onChange={this.handleChange}
+          idx={valueIdx}
+          name={valueIdxKey}
+        />
+        <IdxForm
+          onChange={this.handleChange}
+          idx={labelIdx}
+          name={labelIdxKey}
+        />
         <Button bsStyle="info" className="pull-right" type="submit">
           Import Nodes
         </Button>
@@ -66,5 +81,10 @@ class AddNodesForm extends React.Component {
     );
   }
 }
+
+AddNodesForm.propTypes = {
+  handleAddNodesToExtTree: func.isRequired,
+  handleClose: func.isRequired
+};
 
 export default AddNodesForm;

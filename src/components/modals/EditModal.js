@@ -11,6 +11,7 @@ class EditModal extends React.Component {
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleClearAll = this.handleClearAll.bind(this);
 
     this.state = {
       show: false
@@ -23,6 +24,11 @@ class EditModal extends React.Component {
 
   handleShow() {
     this.setState({ show: true });
+  }
+
+  handleClearAll() {
+    const { treeKey, onChange } = this.props;
+    onChange([], treeKey);
   }
 
   render() {
@@ -49,6 +55,14 @@ class EditModal extends React.Component {
           </Modal.Body>
           <Modal.Footer>
             <AddModal handleAddNodesToExtTree={handleAddNodesToExtTree} />
+            <Button
+              className="pull-left"
+              bsStyle="danger"
+              bsSize="small"
+              onClick={this.handleClearAll}
+            >
+              Clear All
+            </Button>
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>

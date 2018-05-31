@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { string, func } from "prop-types";
 
 class DelimiterForm extends Component {
   getValidationState() {
@@ -31,5 +32,14 @@ class DelimiterForm extends Component {
     );
   }
 }
+
+DelimiterForm.propTypes = {
+  onChange: func.isRequired,
+  delimiter: string
+};
+
+DelimiterForm.default = {
+  delimiter: ""
+};
 
 export default DelimiterForm;

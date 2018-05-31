@@ -30,7 +30,7 @@ class RawDataForm extends Component {
           name="rawData"
           componentClass="textarea"
           value={rawData}
-          placeholder="Value|Label"
+          placeholder="Ex. Value|Label"
           onChange={onChange}
           style={{ height: "40vh" }}
         />

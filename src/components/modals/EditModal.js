@@ -56,8 +56,10 @@ class EditModal extends React.Component {
               onChange={onChange}
               editMode={true}
               handleClose={this.handleClose}
-              handleAddNodesToExtTree={handleAddNodesToExtTree}
               handleRemoveNode={handleRemoveNode}
+              addChildrenBtn={
+                <AddModal handleAddNodesToExtTree={handleAddNodesToExtTree} />
+              }
             />
           </Modal.Body>
           <Modal.Footer>

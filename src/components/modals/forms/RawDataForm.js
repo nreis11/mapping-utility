@@ -4,13 +4,17 @@ import { string, func } from "prop-types";
 
 class RawDataForm extends Component {
   getValidationState() {
+    // Check that every line has a delimiter
     const { delimiter, rawData } = this.props;
     if (delimiter && rawData) {
-      const arr = rawData.split("\n").filter(line => {
-        return !line.includes(delimiter);
-      });
-      if (arr.length) {
+      const missingDelimiterArr = rawData
+        .trim()
+        .split("\n")
+        .filter(line => !line.includes(delimiter));
+      if (missingDelimiterArr.length) {
         return "error";
+      } else {
+        return "success";
       }
     }
     return null;
@@ -24,7 +28,7 @@ class RawDataForm extends Component {
         controlId="formAddNodes"
         validationState={this.getValidationState()}
       >
-        <ControlLabel>Add Data Here</ControlLabel>
+        <ControlLabel>Data</ControlLabel>
         <FormControl
           type="text"
           name="rawData"

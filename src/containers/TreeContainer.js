@@ -4,7 +4,7 @@ import PlusSign from "react-icons/lib/fa/plus";
 import TrashIcon from "react-icons/lib/fa/trash";
 
 import { Col, Well } from "react-bootstrap";
-import SortableTree, { addNodeUnderParent } from "react-sortable-tree";
+import SortableTree from "react-sortable-tree";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
 
 import "./TreeContainer.css";

@@ -13,14 +13,14 @@ import NodeInfo from "../components/NodeInfo";
 
 import { categories, industries, states, countries } from "../values/eqValues";
 
-const initialData = {
-  categories: categories,
-  industries: industries,
-  states: states,
-  countries: countries
-};
-
 class MainContainer extends Component {
+  static initialData = {
+    categories: categories,
+    industries: industries,
+    states: states,
+    countries: countries
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +44,7 @@ class MainContainer extends Component {
     this.highlightMissingMaps = this.highlightMissingMaps.bind(this);
     this.handleAddNodesToExtTree = this.handleAddNodesToExtTree.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
+    this.handleExport = this.handleExport.bind(this);
   }
 
   // componentDidMount() {
@@ -65,7 +66,7 @@ class MainContainer extends Component {
   }
 
   getTreeData(name) {
-    const treeData = initialData[name];
+    const treeData = MainContainer.initialData[name];
 
     return getTreeFromFlatData({
       flatData: treeData.map(node => ({ ...node })),
@@ -145,6 +146,7 @@ class MainContainer extends Component {
   }
 
   handleChange(treeData, treeKey) {
+    // Using this to clear tree as well
     this.setState({
       [treeKey]: treeData
     });
@@ -158,6 +160,12 @@ class MainContainer extends Component {
         getNodeKey
       })
     }));
+  }
+
+  handleExport() {
+    alert("Handling export");
+    // Need to grab intTreeData and ExtTreeData
+    // If output parents, need to grab path of mapped mode
   }
 
   render() {
@@ -188,6 +196,7 @@ class MainContainer extends Component {
             handleOptionChange={this.handleOptionChange}
             handleAddNodesToExtTree={this.handleAddNodesToExtTree}
             handleRemoveNode={this.handleRemoveNode}
+            handleExport={this.handleExport}
           />
 
           <Row className="show-grid">

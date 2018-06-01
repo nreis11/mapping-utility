@@ -42,3 +42,8 @@ Install JsPrettier
 
 To test:
 CI=true npm test
+
+To make a copy of an array before setting state, use .slice()
+
+A controlled component is like how a parent decides what a baby is going to wear. The baby
+never decides what it's wearing.

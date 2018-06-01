@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 
 import NavBar from "./components/NavBar";
-import MainContainer from "./components/MainContainer";
+import MainContainer from "./containers/MainContainer";
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
-
     return (
       <div>
         <NavBar />

@@ -1,6 +1,6 @@
 import React from "react";
 import "./NodeInfo.css";
-import PropTypes from "prop-types";
+import { string, number, shape } from "prop-types";
 
 import { Col, Panel } from "react-bootstrap";
 
@@ -40,9 +40,9 @@ NodeInfo.default = {
 };
 
 NodeInfo.propTypes = {
-  mdSize: PropTypes.number,
-  mdOffset: PropTypes.number,
-  heading: PropTypes.string
+  mdOffset: number,
+  heading: string,
+  node: shape({})
 };
 
 export default NodeInfo;

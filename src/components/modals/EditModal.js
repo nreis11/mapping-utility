@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
 import PlusSign from "react-icons/lib/fa/plus";
 
-import TreeContainer from "../TreeContainer";
+import TreeContainer from "../../containers/TreeContainer";
 import AddModal from "./AddModal";
 
 class EditModal extends React.Component {
@@ -32,7 +32,13 @@ class EditModal extends React.Component {
   }
 
   render() {
-    const { treeKey, treeData, onChange, handleAddNodesToExtTree } = this.props;
+    const {
+      treeKey,
+      treeData,
+      onChange,
+      handleAddNodesToExtTree,
+      handleRemoveNode
+    } = this.props;
 
     return (
       <Col>
@@ -51,6 +57,7 @@ class EditModal extends React.Component {
               editMode={true}
               handleClose={this.handleClose}
               handleAddNodesToExtTree={handleAddNodesToExtTree}
+              handleRemoveNode={handleRemoveNode}
             />
           </Modal.Body>
           <Modal.Footer>

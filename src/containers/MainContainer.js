@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { Grid, Jumbotron, Row } from "react-bootstrap";
-import { getTreeFromFlatData, toggleExpandedForAll } from "react-sortable-tree";
+import {
+  getTreeFromFlatData,
+  toggleExpandedForAll,
+  removeNodeAtPath
+} from "react-sortable-tree";
 
-import HeaderRow from "./HeaderRow";
+import HeaderRow from "../components/HeaderRow";
 import TreeContainer from "./TreeContainer";
-import ActionBar from "./ActionBar";
-import NodeInfo from "./NodeInfo";
+import ActionBar from "../components/TreeContainer/ActionBar";
+import NodeInfo from "../components/NodeInfo";
 
 import { categories, industries, states, countries } from "../values/eqValues";
 
@@ -39,15 +43,16 @@ class MainContainer extends Component {
     this.handleSpaceBar = this.handleSpaceBar.bind(this);
     this.highlightMissingMaps = this.highlightMissingMaps.bind(this);
     this.handleAddNodesToExtTree = this.handleAddNodesToExtTree.bind(this);
+    this.handleRemoveNode = this.handleRemoveNode.bind(this);
   }
 
-  componentDidMount() {
-    document.body.addEventListener("keydown", this.handleSpaceBar);
-  }
+  // componentDidMount() {
+  //   document.body.addEventListener("keydown", this.handleSpaceBar);
+  // }
 
-  componentDidUnMount() {
-    document.body.removeEventListener("keydown", this.handleSpaceBar);
-  }
+  // componentDidUnMount() {
+  //   document.body.removeEventListener("keydown", this.handleSpaceBar);
+  // }
 
   expandAll(expanded, keyName) {
     const value = this.state[keyName];
@@ -82,9 +87,8 @@ class MainContainer extends Component {
     console.log("HANDLING CLICK", node);
     const activeKey =
       treeKey === "intTreeData" ? "activeIntNode" : "activeExtNode";
-    const activeNode = node;
     this.setState({
-      [activeKey]: activeNode
+      [activeKey]: node
     });
   }
 
@@ -109,11 +113,7 @@ class MainContainer extends Component {
     const parentsSelectable = this.state.options["parentsSelectable"];
 
     // Don't allow if parents aren't selectable and selected node is a parent
-    if (
-      event.keyCode === 32 &&
-      !parentsSelectable &&
-      activeExtNode.children.length
-    ) {
+    if (event.keyCode === 32 && !parentsSelectable && activeExtNode.children) {
       event.preventDefault();
       alert("MAPPING NOT ALLOWED");
       return;
@@ -150,6 +150,16 @@ class MainContainer extends Component {
     });
   }
 
+  handleRemoveNode(path, getNodeKey) {
+    this.setState(state => ({
+      extTreeData: removeNodeAtPath({
+        treeData: state.extTreeData,
+        path,
+        getNodeKey
+      })
+    }));
+  }
+
   render() {
     const intTreeKey = "intTreeData";
     const extTreeKey = "extTreeData";
@@ -177,7 +187,7 @@ class MainContainer extends Component {
             handleChange={this.handleChange}
             handleOptionChange={this.handleOptionChange}
             handleAddNodesToExtTree={this.handleAddNodesToExtTree}
-            handleClearExtTree={this.handleClearExtTree}
+            handleRemoveNode={this.handleRemoveNode}
           />
 
           <Row className="show-grid">

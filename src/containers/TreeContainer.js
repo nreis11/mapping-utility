@@ -4,17 +4,19 @@ import PlusSign from "react-icons/lib/fa/plus";
 import TrashIcon from "react-icons/lib/fa/trash";
 
 import { Col, Well } from "react-bootstrap";
-import SortableTree, {
-  addNodeUnderParent,
-  removeNodeAtPath
-} from "react-sortable-tree";
+import SortableTree, { addNodeUnderParent } from "react-sortable-tree";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
 
 import "./TreeContainer.css";
 
 class TreeContainer extends React.Component {
-  componentDidMount() {
-    console.log("MOUNTED TREE");
+  constructor(props) {
+    super(props);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+  }
+
+  handleKeyDown(e) {
+    console.log("Keycode: ", e.keyCode);
   }
 
   render() {
@@ -25,7 +27,8 @@ class TreeContainer extends React.Component {
       onChange,
       handleNodeClick,
       highlightMissingMaps,
-      editMode
+      editMode,
+      handleRemoveNode
     } = this.props;
     // const treeHeight = treeKey === "intTreeData" ? "65vh" : "75vh";
 
@@ -36,15 +39,14 @@ class TreeContainer extends React.Component {
     const getNodeKey = ({ treeIndex }) => treeIndex;
 
     return (
-      <Col md={colSize}>
+      <Col md={colSize} onKeyDown={this.handleKeyDown}>
         <Well className="well">
           <SortableTree
             treeData={treeData}
             onChange={treeData => onChange(treeData, treeKey)}
-            getNodeKey={({ node }) => node.id}
             canDrag={false}
             canDrop={() => false}
-            rowHeight={50}
+            rowHeight={45}
             scaffoldBlockPxWidth={35}
             generateNodeProps={({ node, path }) => {
               let className = "";
@@ -56,33 +58,24 @@ class TreeContainer extends React.Component {
               const buttons = editMode
                 ? [
                     <button
-                      onClick={() =>
-                        this.setState(state => ({
-                          treeData: addNodeUnderParent({
-                            treeData: treeData,
-                            parentKey: path[path.length - 1],
-                            expandParent: true,
-                            getNodeKey,
-                            newNode: {
-                              title: "New Title"
-                            }
-                          }).treeData
-                        }))
+                      onClick={
+                        () => console.log(path)
+                        // this.setState(state => ({
+                        //   treeData: addNodeUnderParent({
+                        //     treeData: treeData,
+                        //     parentKey: path[path.length - 1],
+                        //     expandParent: true,
+                        //     getNodeKey,
+                        //     newNode: {
+                        //       title: "New Title"
+                        //     }
+                        //   }).treeData
+                        // }))
                       }
                     >
                       <PlusSign />
                     </button>,
-                    <button
-                      onClick={() =>
-                        this.setState(state => ({
-                          treeData: removeNodeAtPath({
-                            treeData: treeData,
-                            path,
-                            getNodeKey
-                          })
-                        }))
-                      }
-                    >
+                    <button onClick={() => handleRemoveNode(path, getNodeKey)}>
                       <TrashIcon />
                     </button>
                   ]

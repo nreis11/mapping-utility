@@ -42,8 +42,7 @@ class AddNodesForm extends React.Component {
         id: lineArr[idIdx],
         title: lineArr[titleIdx],
         expanded: false,
-        parent: null,
-        children: []
+        parent: null
       };
     });
 

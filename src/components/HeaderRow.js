@@ -18,7 +18,8 @@ const HeaderRow = props => {
     options,
     handleChange,
     handleOptionChange,
-    handleAddNodesToExtTree
+    handleAddNodesToExtTree,
+    handleRemoveNode
   } = props;
 
   return (
@@ -34,6 +35,7 @@ const HeaderRow = props => {
           treeData={extTreeData}
           onChange={handleChange}
           handleAddNodesToExtTree={handleAddNodesToExtTree}
+          handleRemoveNode={handleRemoveNode}
         />
         <Options options={options} onOptionChange={handleOptionChange} />
         <ExportButton />

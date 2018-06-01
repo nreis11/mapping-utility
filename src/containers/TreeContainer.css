@@ -4,7 +4,7 @@ mark {
 }
 
 .active-node {
-  border: solid;
+  border: solid yellow;
 }
 
 .mapped {
@@ -20,3 +20,4 @@ mark {
   height: 65vh;
   overflow: hidden;
 }
+

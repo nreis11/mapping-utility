@@ -3,13 +3,16 @@ import { Grid, Jumbotron, Row } from "react-bootstrap";
 import {
   getTreeFromFlatData,
   toggleExpandedForAll,
-  removeNodeAtPath
+  removeNodeAtPath,
+  getNodeAtPath
 } from "react-sortable-tree";
 
-import HeaderRow from "../components/HeaderRow";
+import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";
 import ActionBar from "../components/TreeContainer/ActionBar";
 import NodeInfo from "../components/NodeInfo";
+import HeaderInt from "../components/HeaderContainer/HeaderInt";
+import HeaderExt from "../components/HeaderContainer/HeaderExt";
 
 import { categories, industries, states, countries } from "../values/eqValues";
 
@@ -25,7 +28,14 @@ class MainContainer extends Component {
     super(props);
     this.state = {
       intTreeData: this.getTreeData("categories"),
-      extTreeData: [],
+      extTreeData: [
+        {
+          id: 1,
+          title: "Parent",
+          expanded: true,
+          children: [{ id: 2, title: "Child" }]
+        }
+      ],
       activeIntNode: {},
       activeExtNode: {},
       options: {
@@ -55,10 +65,10 @@ class MainContainer extends Component {
   //   document.body.removeEventListener("keydown", this.handleSpaceBar);
   // }
 
-  expandAll(expanded, keyName) {
-    const value = this.state[keyName];
+  expandAll(expanded, key) {
+    const value = this.state[key];
     this.setState({
-      [keyName]: toggleExpandedForAll({
+      [key]: toggleExpandedForAll({
         treeData: value,
         expanded
       })
@@ -84,8 +94,10 @@ class MainContainer extends Component {
     });
   }
 
-  handleNodeClick(node, treeKey) {
+  handleNodeClick(node, path, treeKey) {
     console.log("HANDLING CLICK", node);
+    console.log("Path", path);
+
     const activeKey =
       treeKey === "intTreeData" ? "activeIntNode" : "activeExtNode";
     this.setState({
@@ -173,9 +185,13 @@ class MainContainer extends Component {
     const extTreeKey = "extTreeData";
     const internalName = "eQuest";
     const externalName = "Board";
-    const mappedId = this.state.activeIntNode.mapping;
-    const mappedNode = this.state.extTreeData.find(
-      node => node.id === mappedId
+    const mappedPath = this.state.activeIntNode.mapping;
+    // Figure out how to get the node key
+    const mappedNode = getNodeAtPath(
+      this.state.extTreeData,
+      mappedPath,
+      getNodeKey,
+      (ignoreCollapsed = false)
     );
     const highlightMissingMaps = this.state.highlightMissingMaps;
     const intTreeData = this.state.intTreeData;
@@ -185,19 +201,23 @@ class MainContainer extends Component {
     return (
       <Jumbotron>
         <Grid fluid>
-          <HeaderRow
-            internalName={internalName}
-            handleTypeSelect={this.handleTypeSelect}
-            externalName={externalName}
-            extTreeKey={extTreeKey}
-            extTreeData={extTreeData}
-            options={options}
-            handleChange={this.handleChange}
-            handleOptionChange={this.handleOptionChange}
-            handleAddNodesToExtTree={this.handleAddNodesToExtTree}
-            handleRemoveNode={this.handleRemoveNode}
-            handleExport={this.handleExport}
-          />
+          <HeaderContainer>
+            <HeaderInt
+              internalName={internalName}
+              handleTypeSelect={this.handleTypeSelect}
+            />
+            <HeaderExt
+              externalName={externalName}
+              extTreeKey={extTreeKey}
+              extTreeData={extTreeData}
+              options={options}
+              handleChange={this.handleChange}
+              handleOptionChange={this.handleOptionChange}
+              handleAddNodesToExtTree={this.handleAddNodesToExtTree}
+              handleRemoveNode={this.handleRemoveNode}
+              handleExport={this.handleExport}
+            />
+          </HeaderContainer>
 
           <Row className="show-grid">
             <TreeContainer
@@ -209,8 +229,8 @@ class MainContainer extends Component {
               highlightMissingMaps={highlightMissingMaps}
             />
             <ActionBar
-              intKeyName={intTreeKey}
-              extKeyName={extTreeKey}
+              intKey={intTreeKey}
+              extKey={extTreeKey}
               onHighlightMissingMaps={this.highlightMissingMaps}
               expandAll={this.expandAll}
             />

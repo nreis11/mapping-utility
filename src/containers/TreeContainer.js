@@ -82,7 +82,9 @@ class TreeContainer extends React.Component {
                 : [];
 
               return {
-                onClick: editMode ? null : () => handleNodeClick(node, treeKey),
+                onClick: editMode
+                  ? null
+                  : () => handleNodeClick(node, path, treeKey),
                 className: className,
                 buttons: buttons
               };

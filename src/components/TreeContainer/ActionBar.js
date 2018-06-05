@@ -10,7 +10,7 @@ const ActionBar = props => {
     marginBottom: "15%"
   };
 
-  const { expandAll, intKeyName, extKeyName, onHighlightMissingMaps } = props;
+  const { expandAll, intKey, extKey, onHighlightMissingMaps } = props;
 
   return (
     <Col md={2} className="text-center">
@@ -43,20 +43,20 @@ const ActionBar = props => {
         </Button>
       </ButtonGroup>
       <ButtonGroup style={buttonGroupStyle}>
-        <Button bsStyle="primary" onClick={() => expandAll(true, intKeyName)}>
+        <Button bsStyle="primary" onClick={() => expandAll(true, intKey)}>
           <FaBackward />
         </Button>
         <Button disabled>Expand All</Button>
-        <Button bsStyle="primary" onClick={() => expandAll(true, extKeyName)}>
+        <Button bsStyle="primary" onClick={() => expandAll(true, extKey)}>
           <FaForward />
         </Button>
       </ButtonGroup>
       <ButtonGroup style={buttonGroupStyle}>
-        <Button bsStyle="primary" onClick={() => expandAll(false, intKeyName)}>
+        <Button bsStyle="primary" onClick={() => expandAll(false, intKey)}>
           <FaBackward />
         </Button>
         <Button disabled>Collapse All</Button>
-        <Button bsStyle="primary" onClick={() => expandAll(false, extKeyName)}>
+        <Button bsStyle="primary" onClick={() => expandAll(false, extKey)}>
           <FaForward />
         </Button>
       </ButtonGroup>

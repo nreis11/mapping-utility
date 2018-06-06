@@ -4,8 +4,7 @@ mark {
 }
 
 .active-node {
-  border: solid;
-  background-color: yellow !important;
+  border: solid gray;
 }
 
 .mapped {

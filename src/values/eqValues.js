@@ -1,5 +1,5 @@
 module.exports.categories = [
-    { id: "eqDEFAULT", title: "(Default)", parent: null, mapping: [0, 1] },
+    { id: "eqDEFAULT", title: "(Default)", parent: null, mapping: null },
     {
         id: "eq17000000",
         title: "Architecture and Engineering",

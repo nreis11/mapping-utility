@@ -4,7 +4,7 @@ import {
   getTreeFromFlatData,
   toggleExpandedForAll,
   removeNodeAtPath,
-  getNodeAtPath
+  addNodeUnderParent
 } from "react-sortable-tree";
 
 import HeaderContainer from "../containers/HeaderContainer";
@@ -13,6 +13,10 @@ import ActionBar from "../components/TreeContainer/ActionBar";
 import NodeInfo from "../components/NodeInfo";
 import HeaderInt from "../components/HeaderContainer/HeaderInt";
 import HeaderExt from "../components/HeaderContainer/HeaderExt";
+import ExportButton from "../components/HeaderContainer/ExportButton";
+import Header from "../components/HeaderContainer/Header";
+import EditModal from "../components/modals/EditModal";
+import Options from "../components/HeaderContainer/Options";
 
 import { categories, industries, states, countries } from "../values/eqValues";
 
@@ -150,11 +154,28 @@ class MainContainer extends Component {
     }
   }
 
-  handleAddNodesToExtTree(newNodes) {
+  handleAddNodesToExtTree(newNodes, nodeInfo) {
     console.log("HANDLING ADD");
-    this.setState(state => ({
-      extTreeData: state.extTreeData.concat(...newNodes)
-    }));
+    // If adding children
+    if (nodeInfo) {
+      const { path } = nodeInfo;
+      const getNodeKey = ({ treeIndex }) => treeIndex;
+      newNodes.forEach(node => {
+        this.setState(state => ({
+          extTreeData: addNodeUnderParent({
+            treeData: state.extTreeData,
+            parentKey: path[path.length - 1],
+            expandParent: true,
+            getNodeKey,
+            newNode: node
+          }).treeData
+        }));
+      });
+    } else {
+      this.setState(state => ({
+        extTreeData: state.extTreeData.concat(...newNodes)
+      }));
+    }
   }
 
   handleChange(treeData, treeKey) {
@@ -185,18 +206,14 @@ class MainContainer extends Component {
     const extTreeKey = "extTreeData";
     const internalName = "eQuest";
     const externalName = "Board";
-    const mappedPath = this.state.activeIntNode.mapping;
     // Figure out how to get the node key
-    const mappedNode = getNodeAtPath(
-      this.state.extTreeData,
-      mappedPath,
-      getNodeKey,
-      (ignoreCollapsed = false)
-    );
+    const mappedId = this.state.activeIntNode.mapping;
+    // const mappedNode = this.state.extTreeData.find(
+    //   node => node.id === mappedId
+    // );
+    const mappedNode = 1;
     const highlightMissingMaps = this.state.highlightMissingMaps;
-    const intTreeData = this.state.intTreeData;
-    const extTreeData = this.state.extTreeData;
-    const options = this.state.options;
+    const { intTreeData, extTreeData, options } = this.state;
 
     return (
       <Jumbotron>
@@ -206,17 +223,21 @@ class MainContainer extends Component {
               internalName={internalName}
               handleTypeSelect={this.handleTypeSelect}
             />
-            <HeaderExt
-              externalName={externalName}
-              extTreeKey={extTreeKey}
-              extTreeData={extTreeData}
-              options={options}
-              handleChange={this.handleChange}
-              handleOptionChange={this.handleOptionChange}
-              handleAddNodesToExtTree={this.handleAddNodesToExtTree}
-              handleRemoveNode={this.handleRemoveNode}
-              handleExport={this.handleExport}
-            />
+            <HeaderExt>
+              <Header name={externalName} />
+              <EditModal
+                treeKey={extTreeKey}
+                treeData={extTreeData}
+                onChange={this.handleChange}
+                onAddNodes={this.handleAddNodesToExtTree}
+                handleRemoveNode={this.handleRemoveNode}
+              />
+              <Options
+                options={options}
+                onOptionChange={this.handleOptionChange}
+              />
+              <ExportButton handleExport={this.handleExport} />
+            </HeaderExt>
           </HeaderContainer>
 
           <Row className="show-grid">
@@ -242,6 +263,7 @@ class MainContainer extends Component {
               activeNode={this.state.activeExtNode}
             />
           </Row>
+
           <Row className="show-grid">
             <NodeInfo heading={internalName} node={this.state.activeIntNode} />
           </Row>

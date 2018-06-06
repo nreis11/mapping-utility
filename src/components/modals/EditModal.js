@@ -36,7 +36,7 @@ class EditModal extends React.Component {
       treeKey,
       treeData,
       onChange,
-      handleAddNodesToExtTree,
+      onAddNodes,
       handleRemoveNode
     } = this.props;
 
@@ -55,15 +55,12 @@ class EditModal extends React.Component {
               treeData={treeData}
               onChange={onChange}
               editMode={true}
-              handleClose={this.handleClose}
               handleRemoveNode={handleRemoveNode}
-              addChildrenBtn={
-                <AddModal handleAddNodesToExtTree={handleAddNodesToExtTree} />
-              }
+              onAddNodes={onAddNodes}
             />
           </Modal.Body>
           <Modal.Footer>
-            <AddModal handleAddNodesToExtTree={handleAddNodesToExtTree} />
+            <AddModal onAddNodes={onAddNodes} nodeInfo={null} />
             <Button
               className="pull-left"
               bsStyle="danger"

@@ -1,10 +1,10 @@
 import React from "react";
 import { func, shape, string, arrayOf, object, bool } from "prop-types";
-import PlusSign from "react-icons/lib/fa/plus";
 import TrashIcon from "react-icons/lib/fa/trash";
 
 import { Col, Well } from "react-bootstrap";
 import SortableTree from "react-sortable-tree";
+import AddModal from "../components/modals/AddModal";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
 
 import "./TreeContainer.css";
@@ -28,7 +28,8 @@ class TreeContainer extends React.Component {
       handleNodeClick,
       highlightMissingMaps,
       editMode,
-      handleRemoveNode
+      handleRemoveNode,
+      onAddNodes
     } = this.props;
     // const treeHeight = treeKey === "intTreeData" ? "65vh" : "75vh";
 
@@ -48,7 +49,8 @@ class TreeContainer extends React.Component {
             canDrop={() => false}
             rowHeight={45}
             scaffoldBlockPxWidth={35}
-            generateNodeProps={({ node, path }) => {
+            generateNodeProps={rowInfo => {
+              const { node, path } = rowInfo;
               let className = "";
               if (!editMode) {
                 className += activeNode.id === node.id ? "active-node" : "";
@@ -57,24 +59,7 @@ class TreeContainer extends React.Component {
 
               const buttons = editMode
                 ? [
-                    <button
-                      onClick={
-                        () => console.log(path)
-                        // this.setState(state => ({
-                        //   treeData: addNodeUnderParent({
-                        //     treeData: treeData,
-                        //     parentKey: path[path.length - 1],
-                        //     expandParent: true,
-                        //     getNodeKey,
-                        //     newNode: {
-                        //       title: "New Title"
-                        //     }
-                        //   }).treeData
-                        // }))
-                      }
-                    >
-                      <PlusSign />
-                    </button>,
+                    <AddModal onAddNodes={onAddNodes} nodeInfo={rowInfo} />,
                     <button onClick={() => handleRemoveNode(path, getNodeKey)}>
                       <TrashIcon />
                     </button>
@@ -97,17 +82,19 @@ class TreeContainer extends React.Component {
 }
 
 TreeContainer.propTypes = {
-  treeKey: string,
+  treeKey: string.isRequired,
   activeNode: shape({}),
   treeData: arrayOf(object).isRequired,
   onChange: func.isRequired,
   handleNodeClick: func,
   highlightMissingMaps: bool,
-  editMode: bool.isRequired
+  editMode: bool.isRequired,
+  onAddNodes: func
 };
 
 TreeContainer.defaultProps = {
-  editMode: false
+  editMode: false,
+  onAddNodes: null
 };
 
 export default TreeContainer;

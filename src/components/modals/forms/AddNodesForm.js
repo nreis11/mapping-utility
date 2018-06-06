@@ -29,6 +29,7 @@ class AddNodesForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { delimiter, valueIdx, labelIdx, rawData } = this.state;
+    const { nodeInfo, handleClose, onAddNodes } = this.props;
     if (!rawData) {
       this.props.handleClose();
       return;
@@ -46,8 +47,8 @@ class AddNodesForm extends React.Component {
       };
     });
 
-    this.props.handleAddNodesToExtTree(nodesArr);
-    this.props.handleClose();
+    onAddNodes(nodesArr, nodeInfo);
+    handleClose();
   }
 
   render() {
@@ -82,7 +83,7 @@ class AddNodesForm extends React.Component {
 }
 
 AddNodesForm.propTypes = {
-  handleAddNodesToExtTree: func.isRequired,
+  onAddNodes: func.isRequired,
   handleClose: func.isRequired
 };
 

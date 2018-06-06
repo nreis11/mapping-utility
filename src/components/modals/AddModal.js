@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
 import PlusSign from "react-icons/lib/fa/plus";
+import { func, shape } from "prop-types";
 import AddNodesForm from "./forms/AddNodesForm";
 
 class AddModal extends React.Component {
@@ -23,27 +24,43 @@ class AddModal extends React.Component {
     this.setState({ show: true });
   }
 
+  renderButton(nodeInfo) {
+    // Render mini button on node
+    if (nodeInfo) {
+      return (
+        <button onClick={this.handleShow}>
+          <PlusSign />
+        </button>
+      );
+    }
+    return (
+      <Button
+        className="pull-left"
+        bsStyle="info"
+        bsSize="small"
+        onClick={this.handleShow}
+      >
+        <PlusSign /> Add Nodes
+      </Button>
+    );
+  }
+
   render() {
-    const { handleAddNodesToExtTree } = this.props;
+    const { onAddNodes, nodeInfo } = this.props;
+    const addButton = this.renderButton(nodeInfo);
 
     return (
       <Col>
-        <Button
-          className="pull-left"
-          bsStyle="info"
-          bsSize="small"
-          onClick={this.handleShow}
-        >
-          <PlusSign /> Add Nodes
-        </Button>
+        {addButton}
         <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
           <Modal.Header closeButton>
             <Modal.Title>Add Nodes</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <AddNodesForm
-              handleAddNodesToExtTree={handleAddNodesToExtTree}
+              onAddNodes={onAddNodes}
               handleClose={this.handleClose}
+              nodeInfo={nodeInfo}
             />
             <Button className="pull-right" onClick={this.handleClose}>
               Cancel
@@ -56,3 +73,12 @@ class AddModal extends React.Component {
   }
 }
 export default AddModal;
+
+AddModal.propTypes = {
+  onAddNodes: func.isRequired,
+  nodeInfo: shape({})
+};
+
+AddModal.defaultProps = {
+  nodeInfo: null
+};

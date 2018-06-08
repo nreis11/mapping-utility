@@ -4,7 +4,8 @@ import {
   getTreeFromFlatData,
   toggleExpandedForAll,
   removeNodeAtPath,
-  addNodeUnderParent
+  addNodeUnderParent,
+  getNodeAtPath
 } from "react-sortable-tree";
 
 import HeaderContainer from "../containers/HeaderContainer";
@@ -185,7 +186,8 @@ class MainContainer extends Component {
     });
   }
 
-  handleRemoveNode(path, getNodeKey) {
+  handleRemoveNode(path) {
+    const getNodeKey = ({ treeIndex }) => treeIndex;
     this.setState(state => ({
       extTreeData: removeNodeAtPath({
         treeData: state.extTreeData,
@@ -207,13 +209,16 @@ class MainContainer extends Component {
     const internalName = "eQuest";
     const externalName = "Board";
     // Figure out how to get the node key
-    const mappedId = this.state.activeIntNode.mapping;
+    // const mappedId = this.state.activeIntNode.mapping;
     // const mappedNode = this.state.extTreeData.find(
     //   node => node.id === mappedId
     // );
-    const mappedNode = 1;
     const highlightMissingMaps = this.state.highlightMissingMaps;
     const { intTreeData, extTreeData, options } = this.state;
+    // const getNodeKey = ({ node }) => node.id;
+    // const mappedNode = getNodeAtPath(extTreeData, [0], getNodeKey);
+    const mappedNode = {};
+    // console.log(mappedNode);
 
     return (
       <Jumbotron>
@@ -225,13 +230,16 @@ class MainContainer extends Component {
             />
             <HeaderExt>
               <Header name={externalName} />
-              <EditModal
-                treeKey={extTreeKey}
-                treeData={extTreeData}
-                onChange={this.handleChange}
-                onAddNodes={this.handleAddNodesToExtTree}
-                handleRemoveNode={this.handleRemoveNode}
-              />
+              <EditModal>
+                <TreeContainer
+                  treeKey={extTreeKey}
+                  treeData={extTreeData}
+                  onChange={this.handleChange}
+                  editMode={true}
+                  handleRemoveNode={this.handleRemoveNode}
+                  onAddNodes={this.handleAddNodesToExtTree}
+                />
+              </EditModal>
               <Options
                 options={options}
                 onOptionChange={this.handleOptionChange}
@@ -257,7 +265,7 @@ class MainContainer extends Component {
             />
             <TreeContainer
               treeKey={extTreeKey}
-              treeData={this.state.extTreeData}
+              treeData={extTreeData}
               onChange={this.handleChange}
               handleNodeClick={this.handleNodeClick}
               activeNode={this.state.activeExtNode}

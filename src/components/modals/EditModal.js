@@ -2,7 +2,6 @@ import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
 import PlusSign from "react-icons/lib/fa/plus";
 
-import TreeContainer from "../../containers/TreeContainer";
 import AddModal from "./AddModal";
 
 class EditModal extends React.Component {
@@ -27,18 +26,12 @@ class EditModal extends React.Component {
   }
 
   handleClearAll() {
-    const { treeKey, onChange } = this.props;
+    const { treeKey, onChange } = this.props.children.props;
     onChange([], treeKey);
   }
 
   render() {
-    const {
-      treeKey,
-      treeData,
-      onChange,
-      onAddNodes,
-      handleRemoveNode
-    } = this.props;
+    const { onAddNodes } = this.props.children.props;
 
     return (
       <Col>
@@ -49,16 +42,7 @@ class EditModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>Add/Edit</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <TreeContainer
-              treeKey={treeKey}
-              treeData={treeData}
-              onChange={onChange}
-              editMode={true}
-              handleRemoveNode={handleRemoveNode}
-              onAddNodes={onAddNodes}
-            />
-          </Modal.Body>
+          <Modal.Body>{this.props.children}</Modal.Body>
           <Modal.Footer>
             <AddModal onAddNodes={onAddNodes} nodeInfo={null} />
             <Button

@@ -36,12 +36,13 @@ const NodeInfo = props => {
 };
 
 NodeInfo.default = {
-  mdOffset: 0
+  mdOffset: 0,
+  node: null
 };
 
 NodeInfo.propTypes = {
   mdOffset: number,
-  heading: string,
+  heading: string.isRequired,
   node: shape({})
 };
 

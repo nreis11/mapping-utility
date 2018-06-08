@@ -60,7 +60,7 @@ class TreeContainer extends React.Component {
               const buttons = editMode
                 ? [
                     <AddModal onAddNodes={onAddNodes} nodeInfo={rowInfo} />,
-                    <button onClick={() => handleRemoveNode(path, getNodeKey)}>
+                    <button onClick={() => handleRemoveNode(path)}>
                       <TrashIcon />
                     </button>
                   ]

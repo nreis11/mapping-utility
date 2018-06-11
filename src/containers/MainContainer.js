@@ -12,12 +12,12 @@ import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";
 import ActionBar from "../components/TreeContainer/ActionBar";
 import NodeInfo from "../components/NodeInfo";
-import HeaderInt from "../components/HeaderContainer/HeaderInt";
-import HeaderExt from "../components/HeaderContainer/HeaderExt";
+import HeaderSmallContainer from "../components/HeaderContainer/HeaderSmallContainer";
 import ExportButton from "../components/HeaderContainer/ExportButton";
 import Header from "../components/HeaderContainer/Header";
 import EditModal from "../components/modals/EditModal";
 import Options from "../components/HeaderContainer/Options";
+import TypeSelector from "../components/HeaderContainer/TypeSelector";
 
 import { categories, industries, states, countries } from "../values/eqValues";
 
@@ -224,11 +224,11 @@ class MainContainer extends Component {
       <Jumbotron>
         <Grid fluid>
           <HeaderContainer>
-            <HeaderInt
-              internalName={internalName}
-              handleTypeSelect={this.handleTypeSelect}
-            />
-            <HeaderExt>
+            <HeaderSmallContainer>
+              <Header name={internalName} />
+              <TypeSelector onSelect={this.handleTypeSelect} />
+            </HeaderSmallContainer>
+            <HeaderSmallContainer mdOffset={2} className={"flex-container"}>
               <Header name={externalName} />
               <EditModal>
                 <TreeContainer
@@ -245,7 +245,7 @@ class MainContainer extends Component {
                 onOptionChange={this.handleOptionChange}
               />
               <ExportButton handleExport={this.handleExport} />
-            </HeaderExt>
+            </HeaderSmallContainer>
           </HeaderContainer>
 
           <Row className="show-grid">

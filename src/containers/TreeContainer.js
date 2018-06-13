@@ -69,7 +69,7 @@ class TreeContainer extends React.Component {
               return {
                 onClick: editMode
                   ? null
-                  : () => handleNodeClick(node, path, treeKey),
+                  : () => handleNodeClick(rowInfo, treeKey),
                 className: className,
                 buttons: buttons
               };
@@ -89,12 +89,15 @@ TreeContainer.propTypes = {
   handleNodeClick: func,
   highlightMissingMaps: bool,
   editMode: bool.isRequired,
-  onAddNodes: func
+  onAddNodes: func,
+  handleRemoveNode: func
 };
 
 TreeContainer.defaultProps = {
   editMode: false,
-  onAddNodes: null
+  onAddNodes: null,
+  handleRemoveNode: null,
+  activeNode: {}
 };
 
 export default TreeContainer;

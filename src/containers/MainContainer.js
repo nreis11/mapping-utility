@@ -5,7 +5,8 @@ import {
   toggleExpandedForAll,
   removeNodeAtPath,
   addNodeUnderParent,
-  getNodeAtPath
+  getNodeAtPath,
+  changeNodeAtPath
 } from "react-sortable-tree";
 
 import HeaderContainer from "../containers/HeaderContainer";
@@ -41,8 +42,8 @@ class MainContainer extends Component {
           children: [{ id: 2, title: "Child" }]
         }
       ],
-      activeIntNode: {},
-      activeExtNode: {},
+      activeIntNodeInfo: {},
+      activeExtNodeInfo: {},
       options: {
         outputParents: false,
         parentsSelectable: false
@@ -62,13 +63,13 @@ class MainContainer extends Component {
     this.handleExport = this.handleExport.bind(this);
   }
 
-  // componentDidMount() {
-  //   document.body.addEventListener("keydown", this.handleSpaceBar);
-  // }
+  componentDidMount() {
+    document.body.addEventListener("keydown", this.handleSpaceBar);
+  }
 
-  // componentDidUnMount() {
-  //   document.body.removeEventListener("keydown", this.handleSpaceBar);
-  // }
+  componentDidUnMount() {
+    document.body.removeEventListener("keydown", this.handleSpaceBar);
+  }
 
   expandAll(expanded, key) {
     const value = this.state[key];
@@ -99,14 +100,11 @@ class MainContainer extends Component {
     });
   }
 
-  handleNodeClick(node, path, treeKey) {
-    console.log("HANDLING CLICK", node);
-    console.log("Path", path);
-
+  handleNodeClick(rowInfo, treeKey) {
     const activeKey =
-      treeKey === "intTreeData" ? "activeIntNode" : "activeExtNode";
+      treeKey === "intTreeData" ? "activeIntNodeInfo" : "activeExtNodeInfo";
     this.setState({
-      [activeKey]: node
+      [activeKey]: rowInfo
     });
   }
 
@@ -126,8 +124,10 @@ class MainContainer extends Component {
 
   handleSpaceBar(event) {
     // Map the internal node to the external node
-    const activeIntNode = this.state.activeIntNode;
-    const activeExtNode = this.state.activeExtNode;
+    const activeIntNodeInfo = this.state.activeIntNodeInfo;
+    const activeIntNode = this.state.activeIntNodeInfo.node;
+    const activeExtNodeInfo = this.state.activeExtNodeInfo;
+    const activeExtNode = this.state.activeExtNodeInfo.node;
     const parentsSelectable = this.state.options["parentsSelectable"];
 
     // Don't allow if parents aren't selectable and selected node is a parent
@@ -140,18 +140,35 @@ class MainContainer extends Component {
     // Only handle if both an internal and external node are selected
     if (event.keyCode === 32 && activeIntNode.id && activeExtNode.id) {
       event.preventDefault();
+      const getNodeKey = ({ node }) => node.id;
+      const { node, path } = activeIntNodeInfo;
       console.log("HANDLING SPACE: ", event.keyCode);
-      activeIntNode.mapping = activeExtNode.id;
-      const intTreeData = [...this.state.intTreeData];
-      const intNodeIndex = intTreeData.findIndex(
-        node => node.id === activeIntNode.id
-      );
-      intTreeData[intNodeIndex] = activeIntNode;
-      let newActiveNode = intTreeData[intNodeIndex + 1];
-      this.setState({
+      const mapping = activeExtNodeInfo;
+      const nextIdx = path[path.length - 1] + 1;
+      const newPath = [...path.slice(0, -1), nextIdx];
+      console.log(newPath);
+      const intTreeData = this.state.intTreeData;
+      const newActiveNode = getNodeAtPath({
         intTreeData,
-        activeIntNode: newActiveNode
+        newPath,
+        getNodeKey
       });
+      console.log(newActiveNode);
+      // this.setState(state => ({
+      //   intTreeData: changeNodeAtPath({
+      //     treeData: state.intTreeData,
+      //     path,
+      //     getNodeKey,
+      //     newNode: { ...node, mapping }
+      //   }),
+      //   activeIntNodeInfo: { node: newActiveNode, path: newPath }
+      // }));
+      // intTreeData[intNodeIndex] = activeIntNode;
+      // let newActiveNode = intTreeData[intNodeIndex + 1];
+      // this.setState({
+      //   intTreeData,
+      //   activeIntNode: newActiveNode
+      // });
     }
   }
 
@@ -187,6 +204,8 @@ class MainContainer extends Component {
   }
 
   handleRemoveNode(path) {
+    // Why doesn't this work?
+    // const getNodeKey = ({ node }) => node.id;
     const getNodeKey = ({ treeIndex }) => treeIndex;
     this.setState(state => ({
       extTreeData: removeNodeAtPath({
@@ -208,16 +227,12 @@ class MainContainer extends Component {
     const extTreeKey = "extTreeData";
     const internalName = "eQuest";
     const externalName = "Board";
-    // Figure out how to get the node key
-    // const mappedId = this.state.activeIntNode.mapping;
-    // const mappedNode = this.state.extTreeData.find(
-    //   node => node.id === mappedId
-    // );
+    const activeIntNode = this.state.activeIntNodeInfo.node || {};
+    const activeExtNode = this.state.activeExtNodeInfo.node || {};
+    const mappedNode = activeIntNode.mapping ? activeIntNode.mapping.node : {};
     const highlightMissingMaps = this.state.highlightMissingMaps;
     const { intTreeData, extTreeData, options } = this.state;
     // const getNodeKey = ({ node }) => node.id;
-    // const mappedNode = getNodeAtPath(extTreeData, [0], getNodeKey);
-    const mappedNode = {};
     // console.log(mappedNode);
 
     return (
@@ -254,7 +269,7 @@ class MainContainer extends Component {
               treeData={intTreeData}
               onChange={this.handleChange}
               handleNodeClick={this.handleNodeClick}
-              activeNode={this.state.activeIntNode}
+              activeNode={activeIntNode}
               highlightMissingMaps={highlightMissingMaps}
             />
             <ActionBar
@@ -268,18 +283,18 @@ class MainContainer extends Component {
               treeData={extTreeData}
               onChange={this.handleChange}
               handleNodeClick={this.handleNodeClick}
-              activeNode={this.state.activeExtNode}
+              activeNode={activeExtNode}
             />
           </Row>
 
           <Row className="show-grid">
-            <NodeInfo heading={internalName} node={this.state.activeIntNode} />
+            <NodeInfo heading={internalName} node={activeIntNode} />
           </Row>
           <Row className="show-grid">
             <NodeInfo heading={"Mapped to:"} node={mappedNode} />
             <NodeInfo
               heading={externalName}
-              node={this.state.activeExtNode}
+              node={activeExtNode}
               mdOffsetSize={2}
             />
           </Row>

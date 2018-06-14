@@ -31,7 +31,7 @@ class AddNodesForm extends React.Component {
     const { delimiter, valueIdx, labelIdx, rawData } = this.state;
     const { nodeInfo, handleClose, onAddNodes } = this.props;
     if (!rawData) {
-      this.props.handleClose();
+      handleClose();
       return;
     }
     // Create array of nodes to concat

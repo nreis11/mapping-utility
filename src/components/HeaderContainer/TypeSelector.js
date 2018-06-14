@@ -17,7 +17,6 @@ class TypeSelector extends React.Component {
   }
 
   handleSelect(key) {
-    console.log("KEY", key);
     const type = this.state.types.find(type => type.name === key);
     const name = type.name;
     this.setState({

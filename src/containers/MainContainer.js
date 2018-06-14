@@ -6,7 +6,8 @@ import {
   removeNodeAtPath,
   addNodeUnderParent,
   getNodeAtPath,
-  changeNodeAtPath
+  changeNodeAtPath,
+  walk
 } from "react-sortable-tree";
 
 import HeaderContainer from "../containers/HeaderContainer";
@@ -63,13 +64,13 @@ class MainContainer extends Component {
     this.handleExport = this.handleExport.bind(this);
   }
 
-  componentDidMount() {
-    document.body.addEventListener("keydown", this.handleSpaceBar);
-  }
+  // componentDidMount() {
+  //   document.body.addEventListener("keydown", this.handleSpaceBar);
+  // }
 
-  componentDidUnMount() {
-    document.body.removeEventListener("keydown", this.handleSpaceBar);
-  }
+  // componentDidUnMount() {
+  //   document.body.removeEventListener("keydown", this.handleSpaceBar);
+  // }
 
   expandAll(expanded, key) {
     const value = this.state[key];
@@ -94,6 +95,17 @@ class MainContainer extends Component {
 
   handleTypeSelect(name) {
     // Implement a check to see if mapping has occured before changing type
+    const getNodeKey = ({ treeIndex }) => treeIndex;
+    const currTreeData = this.state.intTreeData;
+    // NEED TO FIGURE OUT WHY NOT logging
+    const checkForMapping = node => console.log(node);
+    // node.mapping ? alert("Mapping found") : console.log("no mapping found");
+    walk({
+      currTreeData,
+      getNodeKey,
+      checkForMapping,
+      ignoreCollapsed: false
+    });
     const newTreeData = this.getTreeData(name);
     this.setState({
       intTreeData: newTreeData
@@ -233,7 +245,6 @@ class MainContainer extends Component {
     const highlightMissingMaps = this.state.highlightMissingMaps;
     const { intTreeData, extTreeData, options } = this.state;
     // const getNodeKey = ({ node }) => node.id;
-    // console.log(mappedNode);
 
     return (
       <Jumbotron>

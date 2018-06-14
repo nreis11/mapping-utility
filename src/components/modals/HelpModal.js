@@ -68,8 +68,8 @@ class HelpModal extends React.Component {
             <p>
               <strong>Shift-Delete:</strong>
               <br />
-              Delte current node & everything under that node, then move down to
-              the next node.
+              Delete current node & everything under that node, then move down
+              to the next node.
             </p>
 
             <p>

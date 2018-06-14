@@ -25,15 +25,12 @@ class AddModal extends React.Component {
   }
 
   renderButton(nodeInfo) {
-    // Render mini button on node
-    if (nodeInfo) {
-      return (
-        <button onClick={this.handleShow}>
-          <PlusSign />
-        </button>
-      );
-    }
-    return (
+    // Render mini button on node or edit modal button
+    return nodeInfo ? (
+      <button onClick={this.handleShow}>
+        <PlusSign />
+      </button>
+    ) : (
       <Button
         className="pull-left"
         bsStyle="info"

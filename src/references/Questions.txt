@@ -1,9 +1,19 @@
 1. Should I be using a JS object to store my tree data or use an array?
 It's probably best to keep as array because when imported, a tree is created with children arrays inside nodes.
 
-2. Would it make more sense to c
-
-
+2. What makes more sense? 
+Save mapping path using tree indices or using the keys
+If I save the keys, I need to relocate the mapped node to display the title, but in the export,
+I don't need to use a lookup to retrive the keys
 
 Features to add
 - When find prompt triggered (CTRL - F), autocomplete field with Internal Node Label
+
+Logic
+- User selects node in each tree
+  - Get active node
+- User maps ext node to int node
+  - Get active ext node and add mapping to int
+- Next child in int tree becomes active node
+- User exports mapping
+

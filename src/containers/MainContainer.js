@@ -37,14 +37,14 @@ class MainContainer extends Component {
       intTreeData: this.getTreeData("categories"),
       extTreeData: [
         {
-          id: 1,
+          id: 100,
           title: "Parent",
           expanded: true,
-          children: [{ id: 2, title: "Child" }]
+          children: [{ id: 101, title: "Child" }]
         }
       ],
-      activeIntNodeInfo: {},
-      activeExtNodeInfo: {},
+      activeIntNodeInfo: null,
+      activeExtNodeInfo: null,
       options: {
         outputParents: false,
         parentsSelectable: false
@@ -62,15 +62,16 @@ class MainContainer extends Component {
     this.handleAddNodesToExtTree = this.handleAddNodesToExtTree.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
     this.handleExport = this.handleExport.bind(this);
+    this.determineNextIdx = this.determineNextIdx.bind(this);
   }
 
-  // componentDidMount() {
-  //   document.body.addEventListener("keydown", this.handleSpaceBar);
-  // }
+  componentDidMount() {
+    document.body.addEventListener("keydown", this.handleSpaceBar);
+  }
 
-  // componentDidUnMount() {
-  //   document.body.removeEventListener("keydown", this.handleSpaceBar);
-  // }
+  componentDidUnMount() {
+    document.body.removeEventListener("keydown", this.handleSpaceBar);
+  }
 
   expandAll(expanded, key) {
     const value = this.state[key];
@@ -113,6 +114,7 @@ class MainContainer extends Component {
   }
 
   handleNodeClick(rowInfo, treeKey) {
+    console.log("Node Info", rowInfo);
     const activeKey =
       treeKey === "intTreeData" ? "activeIntNodeInfo" : "activeExtNodeInfo";
     this.setState({
@@ -142,6 +144,10 @@ class MainContainer extends Component {
     const activeExtNode = this.state.activeExtNodeInfo.node;
     const parentsSelectable = this.state.options["parentsSelectable"];
 
+    if (event.keyCode === 32 && (!activeIntNode || !activeExtNode)) {
+      alert("Please select a node from each tree");
+    }
+
     // Don't allow if parents aren't selectable and selected node is a parent
     if (event.keyCode === 32 && !parentsSelectable && activeExtNode.children) {
       event.preventDefault();
@@ -152,36 +158,47 @@ class MainContainer extends Component {
     // Only handle if both an internal and external node are selected
     if (event.keyCode === 32 && activeIntNode.id && activeExtNode.id) {
       event.preventDefault();
-      const getNodeKey = ({ node }) => node.id;
+      const getNodeKey = ({ treeIndex }) => treeIndex;
       const { node, path } = activeIntNodeInfo;
       console.log("HANDLING SPACE: ", event.keyCode);
-      const mapping = activeExtNodeInfo;
-      const nextIdx = path[path.length - 1] + 1;
-      const newPath = [...path.slice(0, -1), nextIdx];
-      console.log(newPath);
-      const intTreeData = this.state.intTreeData;
-      const newActiveNode = getNodeAtPath({
-        intTreeData,
-        newPath,
+      const mapping = activeExtNodeInfo.node;
+      // const nextIdx = path[path.length - 1] + 1;
+
+      const nextPath = this.determineNextIdx(node, path);
+      // console.log("NEXT IDX", nextIdx);
+      // const newPath = [...path.slice(0, -1), ...nextIdx];
+      // need to figure out why path isn't working when node is expanded
+      console.log("New Path: ", nextPath);
+      const newActiveNodeInfo = getNodeAtPath({
+        treeData: this.state.intTreeData,
+        path: nextPath,
         getNodeKey
       });
-      console.log(newActiveNode);
-      // this.setState(state => ({
-      //   intTreeData: changeNodeAtPath({
-      //     treeData: state.intTreeData,
-      //     path,
-      //     getNodeKey,
-      //     newNode: { ...node, mapping }
-      //   }),
-      //   activeIntNodeInfo: { node: newActiveNode, path: newPath }
-      // }));
-      // intTreeData[intNodeIndex] = activeIntNode;
-      // let newActiveNode = intTreeData[intNodeIndex + 1];
-      // this.setState({
-      //   intTreeData,
-      //   activeIntNode: newActiveNode
-      // });
+      console.log("NEW ACTIVE NODE", newActiveNodeInfo);
+      this.setState(state => ({
+        intTreeData: changeNodeAtPath({
+          treeData: state.intTreeData,
+          path,
+          getNodeKey,
+          newNode: { ...node, mapping }
+        }),
+        activeIntNodeInfo: {
+          node: newActiveNodeInfo.node,
+          path: nextPath,
+          treeIndex: newActiveNodeInfo.treeIndex
+        }
+      }));
     }
+  }
+
+  determineNextIdx(node, path) {
+    const lastIdx = path[path.length - 1];
+    const nextPath = [...path];
+    if (node.expanded) {
+      return nextPath.push(nextPath[lastIdx] + 1);
+    }
+    nextPath[lastIdx]++;
+    return nextPath;
   }
 
   handleAddNodesToExtTree(newNodes, nodeInfo) {
@@ -217,7 +234,7 @@ class MainContainer extends Component {
 
   handleRemoveNode(path) {
     // Why doesn't this work?
-    // const getNodeKey = ({ node }) => node.id;
+    // const getNodeKey ({ node }) => node.id;
     const getNodeKey = ({ treeIndex }) => treeIndex;
     this.setState(state => ({
       extTreeData: removeNodeAtPath({
@@ -235,16 +252,23 @@ class MainContainer extends Component {
   }
 
   render() {
+    const {
+      intTreeData,
+      extTreeData,
+      options,
+      activeIntNodeInfo,
+      activeExtNodeInfo
+    } = this.state;
     const intTreeKey = "intTreeData";
     const extTreeKey = "extTreeData";
     const internalName = "eQuest";
     const externalName = "Board";
-    const activeIntNode = this.state.activeIntNodeInfo.node || {};
-    const activeExtNode = this.state.activeExtNodeInfo.node || {};
+    const activeIntNode =
+      activeIntNodeInfo === null ? {} : activeIntNodeInfo.node;
+    const activeExtNode =
+      activeExtNodeInfo === null ? {} : activeExtNodeInfo.node;
     const mappedNode = activeIntNode.mapping ? activeIntNode.mapping.node : {};
     const highlightMissingMaps = this.state.highlightMissingMaps;
-    const { intTreeData, extTreeData, options } = this.state;
-    // const getNodeKey = ({ node }) => node.id;
 
     return (
       <Jumbotron>

@@ -55,7 +55,7 @@ class MainContainer extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.getTreeData = this.getTreeData.bind(this);
     this.expandAll = this.expandAll.bind(this);
-    this.handleNodeClick = this.handleNodeClick.bind(this);
+    this.handleSelectNode = this.handleSelectNode.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.handleSpaceBar = this.handleSpaceBar.bind(this);
     this.highlightMissingMaps = this.highlightMissingMaps.bind(this);
@@ -65,19 +65,19 @@ class MainContainer extends Component {
     this.determineNextIdx = this.determineNextIdx.bind(this);
   }
 
-  componentDidMount() {
-    document.body.addEventListener("keydown", this.handleSpaceBar);
-  }
+  // componentDidMount() {
+  //   document.body.addEventListener("keydown", this.handleSpaceBar);
+  // }
 
-  componentDidUnMount() {
-    document.body.removeEventListener("keydown", this.handleSpaceBar);
-  }
+  // componentDidUnMount() {
+  //   document.body.removeEventListener("keydown", this.handleSpaceBar);
+  // }
 
   expandAll(expanded, key) {
-    const value = this.state[key];
+    const treeData = this.state[key];
     this.setState({
       [key]: toggleExpandedForAll({
-        treeData: value,
+        treeData: treeData,
         expanded
       })
     });
@@ -87,7 +87,7 @@ class MainContainer extends Component {
     const treeData = MainContainer.initialData[name];
 
     return getTreeFromFlatData({
-      flatData: treeData.map(node => ({ ...node })),
+      flatData: treeData.map(node => ({ ...node, expanded: false })),
       getKey: node => node.id, // resolve a node's key
       getParentKey: node => node.parent, // resolve a node's parent's key
       rootKey: null // The value of the parent key when there is no parent (i.e., at root level)
@@ -98,13 +98,13 @@ class MainContainer extends Component {
     // Implement a check to see if mapping has occured before changing type
     const getNodeKey = ({ treeIndex }) => treeIndex;
     const currTreeData = this.state.intTreeData;
-    // NEED TO FIGURE OUT WHY NOT logging
-    const checkForMapping = node => console.log(node);
-    // node.mapping ? alert("Mapping found") : console.log("no mapping found");
+    const checkForMapping = node =>
+      node.mapping ? alert("Mapping found") : null;
+
     walk({
-      currTreeData,
+      treeData: currTreeData,
       getNodeKey,
-      checkForMapping,
+      callback: checkForMapping,
       ignoreCollapsed: false
     });
     const newTreeData = this.getTreeData(name);
@@ -113,7 +113,7 @@ class MainContainer extends Component {
     });
   }
 
-  handleNodeClick(rowInfo, treeKey) {
+  handleSelectNode(rowInfo, treeKey) {
     console.log("Node Info", rowInfo);
     const activeKey =
       treeKey === "intTreeData" ? "activeIntNodeInfo" : "activeExtNodeInfo";
@@ -303,8 +303,8 @@ class MainContainer extends Component {
               treeKey={intTreeKey}
               treeData={intTreeData}
               onChange={this.handleChange}
-              handleNodeClick={this.handleNodeClick}
-              activeNode={activeIntNode}
+              handleSelectNode={this.handleSelectNode}
+              activeNodeInfo={activeIntNodeInfo}
               highlightMissingMaps={highlightMissingMaps}
             />
             <ActionBar
@@ -317,8 +317,8 @@ class MainContainer extends Component {
               treeKey={extTreeKey}
               treeData={extTreeData}
               onChange={this.handleChange}
-              handleNodeClick={this.handleNodeClick}
-              activeNode={activeExtNode}
+              handleSelectNode={this.handleSelectNode}
+              activeNodeInfo={activeExtNodeInfo}
             />
           </Row>
 
@@ -330,7 +330,7 @@ class MainContainer extends Component {
             <NodeInfo
               heading={externalName}
               node={activeExtNode}
-              mdOffsetSize={2}
+              mdOffset={2}
             />
           </Row>
         </Grid>

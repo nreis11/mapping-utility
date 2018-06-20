@@ -45,13 +45,14 @@ class RawDataForm extends Component {
 }
 
 RawDataForm.propTypes = {
-  rawData: string.isRequired,
+  rawData: string,
   onChange: func.isRequired,
   delimiter: string
 };
 
 RawDataForm.default = {
-  delimiter: ""
+  delimiter: "",
+  rawData: ""
 };
 
 export default RawDataForm;

@@ -5,14 +5,14 @@ import { string, number, shape } from "prop-types";
 import { Col, Panel } from "react-bootstrap";
 
 const NodeInfo = props => {
-  const { mdOffsetSize, heading, node } = props;
+  const { mdOffset, heading, node } = props;
 
   const panelHeadingStyle = {
     padding: "2px"
   };
 
   return (
-    <Col md={5} mdOffset={mdOffsetSize}>
+    <Col md={5} mdOffset={mdOffset}>
       <Panel bsStyle="info" style={{ marginBottom: "0", marginTop: "0" }}>
         <Panel.Heading style={panelHeadingStyle}>
           <Panel.Title componentClass="h3">{heading}</Panel.Title>

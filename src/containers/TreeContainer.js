@@ -1,8 +1,9 @@
 import React from "react";
 import { func, shape, string, arrayOf, object, bool } from "prop-types";
 import TrashIcon from "react-icons/lib/fa/trash";
-
 import { Col, Well } from "react-bootstrap";
+
+import { getVisibleNodeInfoAtIndex } from "react-sortable-tree";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
@@ -31,20 +32,34 @@ class TreeContainer extends React.Component {
   }
 
   handleKeyDown(e) {
-    console.log("Keydown: ", e.keyCode);
+    e.preventDefault();
+    const { treeData, treeKey, activeNodeInfo, handleSelectNode } = this.props;
+    const getNodeKey = ({ node }) => node.id;
+
     const key = e.keyCode;
     if (key in keyboard) {
       keyboard[key] = true;
     }
 
+    // Get the current tree index
+    let { treeIndex } = activeNodeInfo;
+    const expanded = activeNodeInfo.node.expanded;
+    console.log("EXPANDED", expanded);
+
+    // Increase or decrease tree index depending on key
     if (keyboard[38]) {
       console.log("UP");
+      treeIndex -= 1;
     } else if (keyboard[40]) {
       console.log("DOWN");
+      treeIndex += 1;
     } else if (keyboard[37]) {
       console.log("LEFT");
     } else if (keyboard[39]) {
       console.log("RIGHT");
+      expanded ? (treeIndex += 1) : (activeNodeInfo.node.expanded = true);
+      handleSelectNode({ ...activeNodeInfo, treeIndex }, treeKey);
+      return;
     } else if (keyboard[16] && keyboard[32]) {
       console.log("SHIFT + SPACE");
       console.log("Select node and its children. Preserve existing mappings.");
@@ -73,6 +88,14 @@ class TreeContainer extends React.Component {
         "BACKSPACE Delete current node mapping and move up to the previous node."
       );
     }
+
+    // Set the new active node
+    const newActiveNodeInfo = getVisibleNodeInfoAtIndex({
+      treeData,
+      index: treeIndex,
+      getNodeKey
+    });
+    handleSelectNode({ ...newActiveNodeInfo, treeIndex }, treeKey);
   }
 
   handleKeyUp(e) {
@@ -86,10 +109,10 @@ class TreeContainer extends React.Component {
   render() {
     const {
       treeKey,
-      activeNode,
+      activeNodeInfo,
       treeData,
       onChange,
-      handleNodeClick,
+      handleSelectNode,
       highlightMissingMaps,
       editMode,
       handleRemoveNode,
@@ -98,10 +121,11 @@ class TreeContainer extends React.Component {
     // const treeHeight = treeKey === "intTreeData" ? "65vh" : "75vh";
 
     // const wellClassName = editMode ? "edit-mode-well" : "norm-well";
+    const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
     const colSize = editMode ? 12 : 5;
 
     const missingMapClass = highlightMissingMaps ? " missing-map" : "";
-    const getNodeKey = ({ treeIndex }) => treeIndex;
+    // const getNodeKey = ({ treeIndex }) => treeIndex;
 
     return (
       <Col
@@ -137,7 +161,7 @@ class TreeContainer extends React.Component {
               return {
                 onClick: editMode
                   ? null
-                  : () => handleNodeClick(rowInfo, treeKey),
+                  : () => handleSelectNode(rowInfo, treeKey),
                 className: className,
                 buttons: buttons
               };
@@ -154,7 +178,7 @@ TreeContainer.propTypes = {
   activeNode: shape({}),
   treeData: arrayOf(object).isRequired,
   onChange: func.isRequired,
-  handleNodeClick: func,
+  handleSelectNode: func,
   highlightMissingMaps: bool,
   editMode: bool.isRequired,
   onAddNodes: func,

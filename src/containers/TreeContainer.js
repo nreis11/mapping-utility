@@ -5,7 +5,10 @@ import { Col, Well } from "react-bootstrap";
 
 import {
   getVisibleNodeInfoAtIndex,
-  getVisibleNodeCount
+  getVisibleNodeCount,
+  map,
+  getNodeAtPath,
+  changeNodeAtPath
 } from "react-sortable-tree";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
@@ -36,7 +39,14 @@ class TreeContainer extends React.Component {
 
   handleKeyDown(e) {
     e.preventDefault();
-    const { treeData, treeKey, activeNodeInfo, handleSelectNode } = this.props;
+    const {
+      treeData,
+      treeKey,
+      activeNodeInfo,
+      handleSelectNode,
+      onChange
+    } = this.props;
+    console.log("ACTIVE NODE: ", activeNodeInfo);
     const getNodeKey = ({ node }) => node.id;
 
     const key = e.keyCode;
@@ -46,19 +56,18 @@ class TreeContainer extends React.Component {
 
     // Get the current tree index
     let { treeIndex } = activeNodeInfo;
+    const initialTreeIndex = treeIndex;
     let expanded = activeNodeInfo.node.expanded;
     const { children } = activeNodeInfo.node;
     const nodeCount = getVisibleNodeCount({ treeData });
-    console.log("COUNT: ", nodeCount);
-    console.log("EXPANDED", expanded);
 
     // Increase or decrease tree index depending on key
     if (keyboard[38]) {
       console.log("UP");
-      treeIndex = treeIndex > 0 ? treeIndex - 1 : 0;
+      treeIndex -= 1;
     } else if (keyboard[40]) {
       console.log("DOWN");
-      treeIndex = treeIndex + 1 < nodeCount ? treeIndex + 1 : treeIndex;
+      treeIndex += 1;
     } else if (keyboard[37]) {
       console.log("LEFT");
       expanded ? (expanded = false) : (treeIndex -= 1);
@@ -73,6 +82,23 @@ class TreeContainer extends React.Component {
       console.log(
         "Select node and its children. Overwrite any existing mappings."
       );
+      // Returns modified tree data array. Get first index.
+      const newNode = map({
+        treeData: [activeNodeInfo.node],
+        getNodeKey,
+        // Remember to change to actual mapping
+        callback: ({ node }) => ({ ...node, mapping: true }),
+        ignoreCollapsed: false
+      })[0];
+      const newTreeData = changeNodeAtPath({
+        treeData,
+        path: activeNodeInfo.path,
+        newNode: newNode,
+        getNodeKey,
+        ignoreCollapsed: true
+      });
+      onChange(newTreeData, treeKey);
+      treeIndex += 1;
     } else if (keyboard[16] && keyboard[8]) {
       console.log("SHIFT BACKSPACE");
       console.log(
@@ -80,6 +106,7 @@ class TreeContainer extends React.Component {
       );
     } else if (keyboard[32]) {
       console.log("SPACE");
+      console.log("Select single node");
     } else if (keyboard[46]) {
       console.log(
         "DELETE: Delete current node mapping and move down to the next node."
@@ -94,19 +121,27 @@ class TreeContainer extends React.Component {
       );
     }
 
+    // Check bounds
+    treeIndex = treeIndex < 0 ? 0 : treeIndex;
+    treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
+
     // Set the new active node
-    const newActiveNodeInfo = getVisibleNodeInfoAtIndex({
-      treeData,
-      index: treeIndex,
-      getNodeKey
-    });
-    newActiveNodeInfo.node.expanded = expanded;
+    let newActiveNodeInfo;
+    if (initialTreeIndex === treeIndex) {
+      activeNodeInfo.node.expanded = expanded;
+      newActiveNodeInfo = activeNodeInfo;
+    } else {
+      newActiveNodeInfo = getVisibleNodeInfoAtIndex({
+        treeData,
+        index: treeIndex,
+        getNodeKey
+      });
+    }
     // Add treeIndex
     handleSelectNode({ ...newActiveNodeInfo, treeIndex }, treeKey);
   }
 
   handleKeyUp(e) {
-    console.log("Keyup: ", e.keyCode);
     const key = e.keyCode;
     if (key in keyboard) {
       keyboard[key] = false;
@@ -147,6 +182,7 @@ class TreeContainer extends React.Component {
             canDrop={() => false}
             rowHeight={45}
             scaffoldBlockPxWidth={35}
+            getNodeKey={({ node }) => node.id}
             generateNodeProps={rowInfo => {
               const { node, path } = rowInfo;
               let className = "";

@@ -96,7 +96,7 @@ class MainContainer extends Component {
 
   handleTypeSelect(name) {
     // Implement a check to see if mapping has occured before changing type
-    const getNodeKey = ({ treeIndex }) => treeIndex;
+    const getNodeKey = ({ node }) => node.id;
     const currTreeData = this.state.intTreeData;
     const checkForMapping = node =>
       node.mapping ? alert("Mapping found") : null;
@@ -114,7 +114,7 @@ class MainContainer extends Component {
   }
 
   handleSelectNode(rowInfo, treeKey) {
-    console.log("Node Info", rowInfo);
+    // console.log("Node Info", rowInfo);
     const activeKey =
       treeKey === "intTreeData" ? "activeIntNodeInfo" : "activeExtNodeInfo";
     this.setState({
@@ -158,7 +158,7 @@ class MainContainer extends Component {
     // Only handle if both an internal and external node are selected
     if (event.keyCode === 32 && activeIntNode.id && activeExtNode.id) {
       event.preventDefault();
-      const getNodeKey = ({ treeIndex }) => treeIndex;
+      const getNodeKey = ({ node }) => node.id;
       const { node, path } = activeIntNodeInfo;
       console.log("HANDLING SPACE: ", event.keyCode);
       const mapping = activeExtNodeInfo.node;
@@ -206,7 +206,7 @@ class MainContainer extends Component {
     // If adding children
     if (nodeInfo) {
       const { path } = nodeInfo;
-      const getNodeKey = ({ treeIndex }) => treeIndex;
+      const getNodeKey = ({ node }) => node.id;
       newNodes.forEach(node => {
         this.setState(state => ({
           extTreeData: addNodeUnderParent({
@@ -235,7 +235,7 @@ class MainContainer extends Component {
   handleRemoveNode(path) {
     // Why doesn't this work?
     // const getNodeKey ({ node }) => node.id;
-    const getNodeKey = ({ treeIndex }) => treeIndex;
+    const getNodeKey = ({ node }) => node.id;
     this.setState(state => ({
       extTreeData: removeNodeAtPath({
         treeData: state.extTreeData,

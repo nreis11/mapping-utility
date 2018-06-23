@@ -1,15 +1,9 @@
 import React from "react";
-import { func, shape, string, arrayOf, object, bool } from "prop-types";
+import { func, string, arrayOf, object, bool } from "prop-types";
 import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
-import {
-  getVisibleNodeInfoAtIndex,
-  getVisibleNodeCount,
-  map,
-  getNodeAtPath,
-  changeNodeAtPath
-} from "react-sortable-tree";
+import { getVisibleNodeCount } from "react-sortable-tree";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
@@ -20,14 +14,7 @@ const keyboard = {
   37: false, // left,
   38: false, // up,
   39: false, // right,
-  40: false, // down,
-  32: false, // space,
-  16: false, // shift,
-  17: false, // ctrl
-  46: false, // del,
-  70: false, // F
-  71: false, // G
-  8: false // backspace
+  40: false // down,
 };
 
 class TreeContainer extends React.Component {
@@ -39,29 +26,26 @@ class TreeContainer extends React.Component {
 
   handleKeyDown(e) {
     e.preventDefault();
-    const {
-      treeData,
-      treeKey,
-      activeNodeInfo,
-      handleSelectNode,
-      onChange
-    } = this.props;
-    console.log("ACTIVE NODE: ", activeNodeInfo);
-    const getNodeKey = ({ node }) => node.id;
-
     const key = e.keyCode;
     if (key in keyboard) {
       keyboard[key] = true;
+    } else {
+      return;
     }
 
-    // Get the current tree index
+    const {
+      treeData,
+      activeNodeInfo,
+      getActiveNode,
+      treeKey,
+      handleSelectNode
+    } = this.props;
     let { treeIndex } = activeNodeInfo;
     const initialTreeIndex = treeIndex;
     let expanded = activeNodeInfo.node.expanded;
     const { children } = activeNodeInfo.node;
     const nodeCount = getVisibleNodeCount({ treeData });
 
-    // Increase or decrease tree index depending on key
     if (keyboard[38]) {
       console.log("UP");
       treeIndex -= 1;
@@ -74,71 +58,20 @@ class TreeContainer extends React.Component {
     } else if (keyboard[39]) {
       console.log("RIGHT");
       expanded ? (children ? (treeIndex += 1) : null) : (expanded = true);
-    } else if (keyboard[16] && keyboard[32]) {
-      console.log("SHIFT + SPACE");
-      console.log("Select node and its children. Preserve existing mappings.");
-    } else if (keyboard[17] && keyboard[32]) {
-      console.log("CTRL + SPACE");
-      console.log(
-        "Select node and its children. Overwrite any existing mappings."
-      );
-      // Returns modified tree data array. Get first index.
-      const newNode = map({
-        treeData: [activeNodeInfo.node],
-        getNodeKey,
-        // Remember to change to actual mapping
-        callback: ({ node }) => ({ ...node, mapping: true }),
-        ignoreCollapsed: false
-      })[0];
-      const newTreeData = changeNodeAtPath({
-        treeData,
-        path: activeNodeInfo.path,
-        newNode: newNode,
-        getNodeKey,
-        ignoreCollapsed: true
-      });
-      onChange(newTreeData, treeKey);
-      treeIndex += 1;
-    } else if (keyboard[16] && keyboard[8]) {
-      console.log("SHIFT BACKSPACE");
-      console.log(
-        "Delete current node & everything under that node, then move up to the previous node."
-      );
-    } else if (keyboard[32]) {
-      console.log("SPACE");
-      console.log("Select single node");
-    } else if (keyboard[46]) {
-      console.log(
-        "DELETE: Delete current node mapping and move down to the next node."
-      );
-    } else if (keyboard[16] && keyboard[46]) {
-      console.log(
-        "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
-      );
-    } else if (keyboard[8]) {
-      console.log(
-        "BACKSPACE Delete current node mapping and move up to the previous node."
-      );
     }
 
     // Check bounds
     treeIndex = treeIndex < 0 ? 0 : treeIndex;
     treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
 
-    // Set the new active node
-    let newActiveNodeInfo;
+    let newactiveNodeInfo;
     if (initialTreeIndex === treeIndex) {
       activeNodeInfo.node.expanded = expanded;
-      newActiveNodeInfo = activeNodeInfo;
+      newactiveNodeInfo = activeNodeInfo;
     } else {
-      newActiveNodeInfo = getVisibleNodeInfoAtIndex({
-        treeData,
-        index: treeIndex,
-        getNodeKey
-      });
+      newactiveNodeInfo = getActiveNode(treeData, treeIndex);
     }
-    // Add treeIndex
-    handleSelectNode({ ...newActiveNodeInfo, treeIndex }, treeKey);
+    handleSelectNode({ ...newactiveNodeInfo, treeIndex }, treeKey);
   }
 
   handleKeyUp(e) {
@@ -217,7 +150,6 @@ class TreeContainer extends React.Component {
 
 TreeContainer.propTypes = {
   treeKey: string.isRequired,
-  activeNode: shape({}),
   treeData: arrayOf(object).isRequired,
   onChange: func.isRequired,
   handleSelectNode: func,
@@ -230,8 +162,7 @@ TreeContainer.propTypes = {
 TreeContainer.defaultProps = {
   editMode: false,
   onAddNodes: null,
-  handleRemoveNode: null,
-  activeNode: {}
+  handleRemoveNode: null
 };
 
 export default TreeContainer;

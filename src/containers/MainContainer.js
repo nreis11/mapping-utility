@@ -203,7 +203,14 @@ class MainContainer extends Component {
   }
 
   handleKeyDown(e) {
-    e.preventDefault();
+    const key = e.keyCode;
+    if (key in keyboard) {
+      keyboard[key] = true;
+      e.preventDefault();
+    } else {
+      return;
+    }
+
     const {
       intTreeData,
       activeIntNodeInfo,
@@ -214,12 +221,6 @@ class MainContainer extends Component {
 
     const getNodeKey = ({ node }) => node.id;
 
-    const key = e.keyCode;
-    if (key in keyboard) {
-      keyboard[key] = true;
-    } else {
-      return;
-    }
 
     // Halt if both nodes aren't selected
     if (!activeIntNodeInfo || !activeExtNodeInfo) {

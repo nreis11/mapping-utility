@@ -25,10 +25,10 @@ class TreeContainer extends React.Component {
   }
 
   handleKeyDown(e) {
-    e.preventDefault();
     const key = e.keyCode;
     if (key in keyboard) {
       keyboard[key] = true;
+      e.preventDefault();
     } else {
       return;
     }
@@ -57,7 +57,7 @@ class TreeContainer extends React.Component {
       expanded ? (expanded = false) : (treeIndex -= 1);
     } else if (keyboard[39]) {
       console.log("RIGHT");
-      expanded ? (children ? (treeIndex += 1) : null) : (expanded = true);
+      expanded ? (children &&  (treeIndex += 1)) : (expanded = true);
     }
 
     // Check bounds
@@ -113,7 +113,7 @@ class TreeContainer extends React.Component {
             onChange={treeData => onChange(treeData, treeKey)}
             canDrag={false}
             canDrop={() => false}
-            rowHeight={45}
+            rowHeight={50}
             scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
             generateNodeProps={rowInfo => {

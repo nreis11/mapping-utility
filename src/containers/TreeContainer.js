@@ -4,6 +4,7 @@ import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
 import { getVisibleNodeCount } from "react-sortable-tree";
+import { getActiveNode } from "../helpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
@@ -33,13 +34,7 @@ class TreeContainer extends React.Component {
       return;
     }
 
-    const {
-      treeData,
-      activeNodeInfo,
-      getActiveNode,
-      treeKey,
-      handleSelectNode
-    } = this.props;
+    const { treeData, activeNodeInfo, treeKey, handleSelectNode } = this.props;
     let { treeIndex } = activeNodeInfo;
     const initialTreeIndex = treeIndex;
     let expanded = activeNodeInfo.node.expanded;
@@ -57,7 +52,7 @@ class TreeContainer extends React.Component {
       expanded ? (expanded = false) : (treeIndex -= 1);
     } else if (keyboard[39]) {
       console.log("RIGHT");
-      expanded ? (children &&  (treeIndex += 1)) : (expanded = true);
+      expanded ? children && (treeIndex += 1) : (expanded = true);
     }
 
     // Check bounds
@@ -88,7 +83,7 @@ class TreeContainer extends React.Component {
       treeData,
       onChange,
       handleSelectNode,
-      highlightMissingMaps,
+      highlightUnmapped,
       editMode,
       handleRemoveNode,
       onAddNodes
@@ -98,7 +93,7 @@ class TreeContainer extends React.Component {
     const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
     const colSize = editMode ? 12 : 5;
 
-    const missingMapClass = highlightMissingMaps ? " missing-map" : "";
+    const missingMapClass = highlightUnmapped ? " missing-map" : "";
     // const getNodeKey = ({ treeIndex }) => treeIndex;
 
     return (
@@ -113,7 +108,7 @@ class TreeContainer extends React.Component {
             onChange={treeData => onChange(treeData, treeKey)}
             canDrag={false}
             canDrop={() => false}
-            rowHeight={50}
+            rowHeight={42}
             scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
             generateNodeProps={rowInfo => {
@@ -153,7 +148,7 @@ TreeContainer.propTypes = {
   treeData: arrayOf(object).isRequired,
   onChange: func.isRequired,
   handleSelectNode: func,
-  highlightMissingMaps: bool,
+  highlightUnmapped: bool,
   editMode: bool.isRequired,
   onAddNodes: func,
   handleRemoveNode: func

@@ -10,7 +10,7 @@ const ActionBar = props => {
     marginBottom: "15%"
   };
 
-  const { expandAll, intKey, extKey, onHighlightMissingMaps } = props;
+  const { expandAll, intKey, extKey, onhighlightUnmapped } = props;
 
   return (
     <Col md={2} className="text-center">
@@ -32,8 +32,8 @@ const ActionBar = props => {
         </Button>
       </ButtonGroup>
       <ButtonGroup style={buttonGroupStyle}>
-        <Button bsStyle="primary" onClick={onHighlightMissingMaps} block>
-          Highlight Missing Maps
+        <Button bsStyle="primary" onClick={onhighlightUnmapped} block>
+          Highlight Unmapped
         </Button>
         <Button bsStyle="primary" block>
           <FaBackward /> Clear This Map

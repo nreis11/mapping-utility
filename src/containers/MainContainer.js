@@ -8,9 +8,7 @@ import {
   getNodeAtPath,
   changeNodeAtPath,
   walk,
-  getVisibleNodeInfoAtIndex,
-  getVisibleNodeCount,
-  map
+  getVisibleNodeCount
 } from "react-sortable-tree";
 
 import HeaderContainer from "../containers/HeaderContainer";
@@ -25,6 +23,7 @@ import Options from "../components/HeaderContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
 
 import { categories, industries, states, countries } from "../values/eqValues";
+import { getActiveNode, mapNode } from "../helpers";
 
 const keyboard = {
   32: false, // space,
@@ -62,7 +61,7 @@ class MainContainer extends Component {
         outputParents: false,
         parentsSelectable: false
       },
-      highlightMissingMaps: false
+      highlightUnmapped: false
     };
 
     this.intTreeKey = "intTreeData";
@@ -73,23 +72,21 @@ class MainContainer extends Component {
     this.expandAll = this.expandAll.bind(this);
     this.handleSelectNode = this.handleSelectNode.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
-    this.highlightMissingMaps = this.highlightMissingMaps.bind(this);
+    this.highlightUnmapped = this.highlightUnmapped.bind(this);
     this.handleAddNodesToExtTree = this.handleAddNodesToExtTree.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
     this.handleExport = this.handleExport.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
-    this.getActiveNode = this.getActiveNode.bind(this);
-    this.mapNode = this.mapNode.bind(this);
   }
 
-  // componentDidMount() {
-  //   console.log("MOUNTED");
-  //   // Set first node as selected
-  //   this.setState({
-  //     activeIntNodeInfo: this.getActiveNode(this.state.intTreeData, 0)
-  //   });
-  // }
+  componentDidMount() {
+    console.log("MOUNTED");
+    // Set first node as selected
+    this.setState({
+      activeIntNodeInfo: getActiveNode(this.state.intTreeData, 0)
+    });
+  }
 
   expandAll(expanded, key) {
     const treeData = this.state[key];
@@ -147,10 +144,10 @@ class MainContainer extends Component {
     this.setState({ options });
   }
 
-  highlightMissingMaps() {
-    console.log("Handling Missing maps");
+  highlightUnmapped() {
+    console.log("Handling unmapped");
     this.setState(prevState => ({
-      highlightMissingMaps: !prevState.highlightMissingMaps
+      highlightUnmapped: !prevState.highlightUnmapped
     }));
   }
 
@@ -218,9 +215,9 @@ class MainContainer extends Component {
       options
     } = this.state;
     const { parentsSelectable } = options;
+    const activeIntNode = activeIntNodeInfo.node;
 
     const getNodeKey = ({ node }) => node.id;
-
 
     // Halt if both nodes aren't selected
     if (!activeIntNodeInfo || !activeExtNodeInfo) {
@@ -235,111 +232,80 @@ class MainContainer extends Component {
 
     // Get the current tree index
     let { treeIndex } = activeIntNodeInfo;
+    let newNode;
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
     // Handle actions
     if (keyboard[16] && keyboard[32]) {
       console.log("SHIFT + SPACE");
       console.log("Select node and its children. Preserve existing mappings.");
-      const newNode = this.mapNode(
-        [activeIntNodeInfo.node],
-        activeExtNodeInfo.path,
-        false
-      )[0];
-      const newTreeData = changeNodeAtPath({
-        treeData: intTreeData,
-        path: activeIntNodeInfo.path,
-        newNode: newNode,
-        getNodeKey,
-        ignoreCollapsed: true
-      });
-      this.handleChange(newTreeData, this.intTreeKey);
+      newNode = mapNode([activeIntNode], activeExtNodeInfo.path, false);
+      treeIndex += 1;
     } else if (keyboard[17] && keyboard[32]) {
       console.log("CTRL + SPACE");
       console.log(
         "Select node and its children. Overwrite any existing mappings."
       );
-      // Map over node and descendants.
-      // Returns modified tree data array. Get 0 index.
-      const newNode = this.mapNode(
-        [activeIntNodeInfo.node],
-        activeExtNodeInfo.path,
-        true
-      )[0];
-      /// Replace node in tree with new mapping
-      const newTreeData = changeNodeAtPath({
-        treeData: intTreeData,
-        path: activeIntNodeInfo.path,
-        newNode: newNode,
-        getNodeKey,
-        ignoreCollapsed: true
-      });
-      this.handleChange(newTreeData, this.intTreeKey);
+      newNode = mapNode([activeIntNode], activeExtNodeInfo.path, true);
+      treeIndex += 1;
     } else if (keyboard[16] && keyboard[8]) {
       console.log("SHIFT BACKSPACE");
       console.log(
         "Delete current node & everything under that node, then move up to the previous node."
       );
+      newNode = mapNode([activeIntNode], null, true);
+      treeIndex -= 1;
     } else if (keyboard[32]) {
       console.log("SPACE");
       console.log("Select single node");
       // Get both active nodes
-      activeIntNodeInfo.node.mapping = activeExtNodeInfo.path;
-      const newTreeData = changeNodeAtPath({
-        treeData: intTreeData,
-        path: activeIntNodeInfo.path,
-        newNode: activeIntNodeInfo.node,
-        getNodeKey,
-        ignoreCollapsed: true
-      });
-      this.handleChange(newTreeData, this.intTreeKey);
+      activeIntNode.mapping = activeExtNodeInfo.path;
+      newNode = activeIntNode;
+      treeIndex += 1;
     } else if (keyboard[46]) {
       console.log(
         "DELETE: Delete current node mapping and move down to the next node."
       );
+      activeIntNode.mapping = null;
+      newNode = activeIntNode;
+      treeIndex += 1;
     } else if (keyboard[16] && keyboard[46]) {
       console.log(
         "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
       );
+      newNode = mapNode([activeIntNode], null, true);
+      treeIndex += 1;
     } else if (keyboard[8]) {
       console.log(
         "BACKSPACE Delete current node mapping and move up to the previous node."
       );
+      activeIntNode.mapping = null;
+      newNode = activeIntNode;
+      treeIndex -= 1;
     } else {
       return;
     }
 
-    // Proceed to next node
-    treeIndex += 1;
+    const newTreeData = changeNodeAtPath({
+      treeData: intTreeData,
+      path: activeIntNodeInfo.path,
+      newNode: newNode,
+      getNodeKey,
+      ignoreCollapsed: true
+    });
+    this.handleChange(newTreeData, this.intTreeKey);
 
     // Check bounds
     treeIndex = treeIndex < 0 ? 0 : treeIndex;
     treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
 
     // Set the new active node
-    const newactiveIntNodeInfo = this.getActiveNode(intTreeData, treeIndex);
+    const newactiveIntNodeInfo = getActiveNode(intTreeData, treeIndex);
     // Add treeIndex
     this.handleSelectNode(
       { ...newactiveIntNodeInfo, treeIndex },
       this.intTreeKey
     );
-  }
-
-  mapNode(treeData, mapping, overwrite = false) {
-    // Map node and its descendants
-    const getNodeKey = ({ node }) => node.id;
-    return map({
-      treeData,
-      getNodeKey,
-      callback: ({ node }) => {
-        if (overwrite) {
-          return { ...node, mapping: mapping };
-        } else {
-          return node.mapping ? node : { ...node, mapping: mapping };
-        }
-      },
-      ignoreCollapsed: false
-    });
   }
 
   handleKeyUp(e) {
@@ -349,15 +315,6 @@ class MainContainer extends Component {
     }
   }
 
-  getActiveNode(treeData, treeIndex) {
-    const getNodeKey = ({ node }) => node.id;
-    return getVisibleNodeInfoAtIndex({
-      treeData,
-      index: treeIndex,
-      getNodeKey
-    });
-  }
-
   render() {
     const {
       intTreeData,
@@ -365,7 +322,7 @@ class MainContainer extends Component {
       options,
       activeIntNodeInfo,
       activeExtNodeInfo,
-      highlightMissingMaps
+      highlightUnmapped
     } = this.state;
     const internalName = "eQuest";
     const externalName = "Board";
@@ -418,13 +375,13 @@ class MainContainer extends Component {
               onChange={this.handleChange}
               handleSelectNode={this.handleSelectNode}
               activeNodeInfo={activeIntNodeInfo}
-              highlightMissingMaps={highlightMissingMaps}
-              getActiveNode={this.getActiveNode}
+              highlightUnmapped={highlightUnmapped}
+              getActiveNode={getActiveNode}
             />
             <ActionBar
               intKey={this.intTreeKey}
               extKey={this.extTreeKey}
-              onHighlightMissingMaps={this.highlightMissingMaps}
+              onhighlightUnmapped={this.highlightUnmapped}
               expandAll={this.expandAll}
             />
             <TreeContainer
@@ -433,7 +390,7 @@ class MainContainer extends Component {
               onChange={this.handleChange}
               handleSelectNode={this.handleSelectNode}
               activeNodeInfo={activeExtNodeInfo}
-              getActiveNode={this.getActiveNode}
+              getActiveNode={getActiveNode}
             />
           </Row>
 

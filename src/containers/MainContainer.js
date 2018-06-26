@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Grid, Jumbotron, Row } from "react-bootstrap";
+import { Grid, Jumbotron, Row, Col } from "react-bootstrap";
 import {
   getTreeFromFlatData,
   toggleExpandedForAll,
-  removeNodeAtPath,
   addNodeUnderParent,
   getNodeAtPath,
   changeNodeAtPath,
@@ -20,6 +19,7 @@ import Header from "../components/HeaderContainer/Header";
 import EditModal from "../components/modals/EditModal";
 import Options from "../components/HeaderContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
+import ExportContainer from "./ExportContainer";
 
 import { categories, industries, states, countries } from "../values/eqValues";
 import { getActiveNode, mapNode } from "../helpers";
@@ -74,7 +74,6 @@ class MainContainer extends Component {
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.highlightUnmapped = this.highlightUnmapped.bind(this);
     this.handleAddNodesToExtTree = this.handleAddNodesToExtTree.bind(this);
-    this.handleRemoveNode = this.handleRemoveNode.bind(this);
     this.handleExport = this.handleExport.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
@@ -168,21 +167,9 @@ class MainContainer extends Component {
   }
 
   handleChange(treeData, treeKey = this.intTreeKey) {
-    // Using this to clear tree as well
     this.setState({
       [treeKey]: treeData
     });
-  }
-
-  handleRemoveNode(path) {
-    const getNodeKey = ({ node }) => node.id;
-    this.setState(state => ({
-      extTreeData: removeNodeAtPath({
-        treeData: state.extTreeData,
-        path,
-        getNodeKey
-      })
-    }));
   }
 
   handleExport() {
@@ -351,11 +338,6 @@ class MainContainer extends Component {
                   onAddNodes={this.handleAddNodesToExtTree}
                 />
               </EditModal>
-              <Options
-                options={options}
-                onOptionChange={this.handleOptionChange}
-              />
-              <ExportButton handleExport={this.handleExport} />
             </HeaderSmallContainer>
           </HeaderContainer>
 
@@ -389,14 +371,21 @@ class MainContainer extends Component {
 
           <Row className="show-grid">
             <NodeInfo heading={internalName} node={activeIntNode} />
-          </Row>
-          <Row className="show-grid">
-            <NodeInfo heading={"Mapped to:"} node={mappedNode} />
             <NodeInfo
               heading={externalName}
               node={activeExtNode}
               mdOffset={2}
             />
+          </Row>
+          <Row className="show-grid">
+            <NodeInfo heading={"Mapped to:"} node={mappedNode} />
+            <ExportContainer>
+              <Options
+                options={options}
+                onOptionChange={this.handleOptionChange}
+              />
+              <ExportButton handleExport={this.handleExport} />
+            </ExportContainer>
           </Row>
         </Grid>
       </Jumbotron>

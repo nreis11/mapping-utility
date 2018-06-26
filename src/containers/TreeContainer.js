@@ -3,7 +3,7 @@ import { func, string, arrayOf, object, bool } from "prop-types";
 import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
-import { getVisibleNodeCount } from "react-sortable-tree";
+import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
 import { getActiveNode } from "../helpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
@@ -23,6 +23,7 @@ class TreeContainer extends React.Component {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleRemoveNode = this.handleRemoveNode.bind(this);
   }
 
   handleKeyDown(e) {
@@ -77,6 +78,17 @@ class TreeContainer extends React.Component {
     }
   }
 
+  handleRemoveNode(path) {
+    const { treeData, treeKey, onChange } = this.props;
+    const getNodeKey = ({ node }) => node.id;
+    const newTreeData = removeNodeAtPath({
+      treeData,
+      path,
+      getNodeKey
+    });
+    onChange(newTreeData, treeKey);
+  }
+
   render() {
     const {
       treeKey,
@@ -86,7 +98,6 @@ class TreeContainer extends React.Component {
       handleSelectNode,
       highlightUnmapped,
       editMode,
-      handleRemoveNode,
       onAddNodes
     } = this.props;
     // const treeHeight = treeKey === "intTreeData" ? "65vh" : "75vh";
@@ -120,7 +131,7 @@ class TreeContainer extends React.Component {
               const buttons = editMode
                 ? [
                     <AddModal onAddNodes={onAddNodes} nodeInfo={rowInfo} />,
-                    <button onClick={() => handleRemoveNode(path)}>
+                    <button onClick={() => this.handleRemoveNode(path)}>
                       <TrashIcon />
                     </button>
                   ]
@@ -148,14 +159,12 @@ TreeContainer.propTypes = {
   handleSelectNode: func,
   highlightUnmapped: bool,
   editMode: bool.isRequired,
-  onAddNodes: func,
-  handleRemoveNode: func
+  onAddNodes: func
 };
 
 TreeContainer.defaultProps = {
   editMode: false,
   onAddNodes: null,
-  handleRemoveNode: null,
   highlightUnmapped: false,
   handleSelectNode: null
 };

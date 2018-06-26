@@ -2,8 +2,7 @@ import React from "react";
 import { func } from "prop-types";
 
 const Options = props => {
-  const outputParents = props.options.outputParents;
-  const parentsSelectable = props.options.parentsSelectable;
+  const { outputParents, parentsSelectable } = props.options;
 
   const inputStyle = {
     marginLeft: "10px"
@@ -14,7 +13,7 @@ const Options = props => {
   };
 
   return (
-    <form>
+    <form style={{ padding: "2vh", display: "inline-block" }}>
       <label style={labelStyle}>
         Output Parents
         <input

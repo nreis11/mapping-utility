@@ -7,7 +7,6 @@ import {
   addNodeUnderParent,
   getNodeAtPath,
   changeNodeAtPath,
-  walk,
   getVisibleNodeCount
 } from "react-sortable-tree";
 
@@ -61,7 +60,8 @@ class MainContainer extends Component {
         outputParents: false,
         parentsSelectable: false
       },
-      highlightUnmapped: false
+      highlightUnmapped: false,
+      showTypeAlert: false
     };
 
     this.intTreeKey = "intTreeData";
@@ -84,7 +84,10 @@ class MainContainer extends Component {
     console.log("MOUNTED");
     // Set first node as selected
     this.setState({
-      activeIntNodeInfo: getActiveNode(this.state.intTreeData, 0)
+      activeIntNodeInfo: {
+        ...getActiveNode(this.state.intTreeData, 0),
+        treeIndex: 0
+      }
     });
   }
 
@@ -111,17 +114,6 @@ class MainContainer extends Component {
 
   handleTypeSelect(name) {
     // Implement a check to see if mapping has occured before changing type
-    const getNodeKey = ({ node }) => node.id;
-    const currTreeData = this.state.intTreeData;
-    const checkForMapping = node =>
-      node.mapping ? console.log("Mapping found") : null;
-
-    walk({
-      treeData: currTreeData,
-      getNodeKey,
-      callback: checkForMapping,
-      ignoreCollapsed: false
-    });
     const newTreeData = this.getTreeData(name);
     this.setState({
       intTreeData: newTreeData
@@ -200,6 +192,7 @@ class MainContainer extends Component {
   }
 
   handleKeyDown(e) {
+    // Implement tab to handle tree focus
     const key = e.keyCode;
     if (key in keyboard) {
       keyboard[key] = true;
@@ -258,7 +251,6 @@ class MainContainer extends Component {
     } else if (keyboard[32]) {
       console.log("SPACE");
       console.log("Select single node");
-      // Get both active nodes
       activeIntNode.mapping = activeExtNodeInfo.path;
       newNode = activeIntNode;
       treeIndex += 1;
@@ -342,7 +334,10 @@ class MainContainer extends Component {
           <HeaderContainer>
             <HeaderSmallContainer>
               <Header name={internalName} />
-              <TypeSelector onSelect={this.handleTypeSelect} />
+              <TypeSelector
+                onSelect={this.handleTypeSelect}
+                treeData={intTreeData}
+              />
             </HeaderSmallContainer>
             <HeaderSmallContainer mdOffset={2} className={"flex-container"}>
               <Header name={externalName} />
@@ -376,7 +371,6 @@ class MainContainer extends Component {
               handleSelectNode={this.handleSelectNode}
               activeNodeInfo={activeIntNodeInfo}
               highlightUnmapped={highlightUnmapped}
-              getActiveNode={getActiveNode}
             />
             <ActionBar
               intKey={this.intTreeKey}
@@ -390,7 +384,6 @@ class MainContainer extends Component {
               onChange={this.handleChange}
               handleSelectNode={this.handleSelectNode}
               activeNodeInfo={activeExtNodeInfo}
-              getActiveNode={getActiveNode}
             />
           </Row>
 

@@ -1,5 +1,7 @@
 import React from "react";
 import { Col, Nav, NavItem } from "react-bootstrap";
+import { checkForMapping } from "../../helpers";
+import ChangeTypeAlert from "../MainContainer/ChangeTypeAlert";
 
 class TypeSelector extends React.Component {
   constructor(props) {
@@ -11,12 +13,29 @@ class TypeSelector extends React.Component {
         { name: "states", label: "State" },
         { name: "countries", label: "Country" }
       ],
-      activeType: "categories"
+      activeType: "categories",
+      showAlert: false
     };
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+  }
+
+  handleCancel() {
+    this.setState({
+      showAlert: false
+    });
   }
 
   handleSelect(key) {
+    // Check for mapping
+    const isMapping = checkForMapping(this.props.treeData);
+    if (isMapping) {
+      const showAlert = true;
+      this.setState({
+        showAlert
+      });
+      return;
+    }
     const type = this.state.types.find(type => type.name === key);
     const name = type.name;
     this.setState({
@@ -26,10 +45,11 @@ class TypeSelector extends React.Component {
   }
 
   render(props) {
-    const { types, activeType } = this.state;
+    const { types, activeType, showAlert } = this.state;
 
     return (
       <Col className="pull-right">
+        {showAlert && <ChangeTypeAlert handleCancel={this.handleCancel} />}
         <Nav
           bsStyle="pills"
           activeKey={activeType}

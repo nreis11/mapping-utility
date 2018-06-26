@@ -59,6 +59,7 @@ class TreeContainer extends React.Component {
     treeIndex = treeIndex < 0 ? 0 : treeIndex;
     treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
 
+    // Check if node changed. If it didn't, just update expanded prop
     let newactiveNodeInfo;
     if (initialTreeIndex === treeIndex) {
       activeNodeInfo.node.expanded = expanded;
@@ -92,9 +93,7 @@ class TreeContainer extends React.Component {
 
     const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
     const colSize = editMode ? 12 : 5;
-
     const missingMapClass = highlightUnmapped ? " missing-map" : "";
-    // const getNodeKey = ({ treeIndex }) => treeIndex;
 
     return (
       <Col
@@ -157,7 +156,9 @@ TreeContainer.propTypes = {
 TreeContainer.defaultProps = {
   editMode: false,
   onAddNodes: null,
-  handleRemoveNode: null
+  handleRemoveNode: null,
+  highlightUnmapped: false,
+  handleSelectNode: null
 };
 
 export default TreeContainer;

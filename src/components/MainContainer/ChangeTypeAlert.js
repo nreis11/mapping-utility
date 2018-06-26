@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
 const ChangeTypeAlert = props => {
-  const { handleCancel } = props;
+  const { handleCancel, handleConfirm } = props;
   return (
     <div className="static-modal">
       <Modal.Dialog>
@@ -17,7 +17,9 @@ const ChangeTypeAlert = props => {
 
         <Modal.Footer>
           <Button onClick={() => handleCancel()}>Cancel</Button>
-          <Button bsStyle="danger">Change Type</Button>
+          <Button onClick={() => handleConfirm()} bsStyle="danger">
+            Change Type
+          </Button>
         </Modal.Footer>
       </Modal.Dialog>
     </div>

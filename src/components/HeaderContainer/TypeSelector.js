@@ -14,33 +14,40 @@ class TypeSelector extends React.Component {
         { name: "countries", label: "Country" }
       ],
       activeType: "categories",
-      showAlert: false
+      showAlert: false,
+      selectedKey: null
     };
     this.handleSelect = this.handleSelect.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
+    this.handleCancelAlert = this.handleCancelAlert.bind(this);
   }
 
-  handleCancel() {
+  handleCancelAlert() {
     this.setState({
       showAlert: false
     });
   }
 
-  handleSelect(key) {
-    // Check for mapping
+  handleCheck(key) {
+    // Check for mapping. Alert user if mappings will be lost.
     const isMapping = checkForMapping(this.props.treeData);
     if (isMapping) {
-      const showAlert = true;
       this.setState({
-        showAlert
+        showAlert: true,
+        selectedKey: key
       });
       return;
     }
-    const type = this.state.types.find(type => type.name === key);
-    const name = type.name;
+    this.handleSelect(key);
+  }
+
+  handleSelect(key) {
+    key = key || this.state.selectedKey;
+    const { name } = this.state.types.find(type => type.name === key);
+    // const { name } = type;
     this.setState({
       activeType: name
     });
+    this.handleCancelAlert();
     this.props.onSelect(name);
   }
 
@@ -49,11 +56,16 @@ class TypeSelector extends React.Component {
 
     return (
       <Col className="pull-right">
-        {showAlert && <ChangeTypeAlert handleCancel={this.handleCancel} />}
+        {showAlert && (
+          <ChangeTypeAlert
+            handleCancel={this.handleCancelAlert}
+            handleConfirm={this.handleSelect}
+          />
+        )}
         <Nav
           bsStyle="pills"
           activeKey={activeType}
-          onSelect={this.handleSelect}
+          onSelect={key => this.handleCheck(key)}
         >
           {types.map(type => (
             <NavItem key={type.name} eventKey={type.name} title={type.label}>

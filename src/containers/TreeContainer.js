@@ -107,8 +107,7 @@ class TreeContainer extends React.Component {
             onChange={treeData => onChange(treeData, treeKey)}
             canDrag={false}
             canDrop={() => false}
-            rowHeight={42}
-            scaffoldBlockPxWidth={35}
+            rowHeight={43}
             getNodeKey={({ node }) => node.id}
             generateNodeProps={rowInfo => {
               const { node, path } = rowInfo;

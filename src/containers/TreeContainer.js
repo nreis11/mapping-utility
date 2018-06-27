@@ -100,11 +100,10 @@ class TreeContainer extends React.Component {
       editMode,
       onAddNodes
     } = this.props;
-    // const treeHeight = treeKey === "intTreeData" ? "65vh" : "75vh";
 
     const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
     const colSize = editMode ? 12 : 5;
-    const missingMapClass = highlightUnmapped ? " missing-map" : "";
+    const unMappedClassName = highlightUnmapped ? "un-mapped" : "";
 
     return (
       <Col
@@ -118,14 +117,15 @@ class TreeContainer extends React.Component {
             onChange={treeData => onChange(treeData, treeKey)}
             canDrag={false}
             canDrop={() => false}
-            rowHeight={43}
+            rowHeight={50}
+            scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
             generateNodeProps={rowInfo => {
               const { node, path } = rowInfo;
               let className = "";
               if (!editMode) {
                 className += activeNode.id === node.id ? "active-node" : "";
-                className += node.mapping ? " mapped" : missingMapClass;
+                className += node.mapping ? " mapped" : unMappedClassName;
               }
 
               const buttons = editMode

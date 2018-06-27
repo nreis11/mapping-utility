@@ -1,7 +1,7 @@
-mark {
+/* mark {
   background-color: yellow;
   color: black;
-}
+} */
 
 .active-node {
   box-shadow: 0 0 0 4px yellow;
@@ -11,7 +11,7 @@ mark {
   color: blue;
 }
 
-.missing-map {
+.un-mapped {
   color: red;
 }
 

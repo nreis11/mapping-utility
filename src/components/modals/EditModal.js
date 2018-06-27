@@ -47,6 +47,7 @@ class EditModal extends React.Component {
             <AddModal onAddNodes={onAddNodes} nodeInfo={null} />
             <Button
               className="pull-left"
+              style={{ marginLeft: 5 }}
               bsStyle="danger"
               bsSize="small"
               onClick={this.handleClearAll}

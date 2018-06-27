@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Jumbotron, Row, Col } from "react-bootstrap";
+import { Grid, Jumbotron, Row } from "react-bootstrap";
 import {
   getTreeFromFlatData,
   toggleExpandedForAll,
@@ -136,7 +136,6 @@ class MainContainer extends Component {
   }
 
   highlightUnmapped() {
-    console.log("Handling unmapped");
     this.setState(prevState => ({
       highlightUnmapped: !prevState.highlightUnmapped
     }));

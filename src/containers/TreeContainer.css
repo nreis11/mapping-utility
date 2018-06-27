@@ -3,6 +3,10 @@
   color: black;
 } */
 
+.rst__rowContents {
+  padding-right: 0;
+}
+
 .active-node {
   box-shadow: 0 0 0 4px yellow;
 }

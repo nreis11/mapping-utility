@@ -5,7 +5,6 @@ import {
   toggleExpandedForAll,
   addNodeUnderParent,
   getNodeAtPath,
-  changeNodeAtPath,
   getVisibleNodeCount
 } from "react-sortable-tree";
 
@@ -22,7 +21,7 @@ import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import ExportContainer from "./ExportContainer";
 
 import { categories, industries, states, countries } from "../values/eqValues";
-import { getActiveNode, mapNode } from "../helpers";
+import { getActiveNode, mapNode, modifyNodeAtPath } from "../helpers";
 
 const keyboard = {
   32: false, // space,
@@ -33,6 +32,8 @@ const keyboard = {
   71: false, // G
   8: false // backspace
 };
+
+const getNodeKey = ({ node }) => node.id;
 
 class MainContainer extends Component {
   static initialData = {
@@ -60,8 +61,7 @@ class MainContainer extends Component {
         outputParents: false,
         parentsSelectable: false
       },
-      highlightUnmapped: false,
-      showTypeAlert: false
+      highlightUnmapped: false
     };
 
     this.intTreeKey = "intTreeData";
@@ -73,7 +73,7 @@ class MainContainer extends Component {
     this.handleSelectNode = this.handleSelectNode.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.highlightUnmapped = this.highlightUnmapped.bind(this);
-    this.handleAddNodesToExtTree = this.handleAddNodesToExtTree.bind(this);
+    this.handleAddNodes = this.handleAddNodes.bind(this);
     this.handleExport = this.handleExport.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
@@ -119,12 +119,12 @@ class MainContainer extends Component {
     });
   }
 
-  handleSelectNode(rowInfo, treeKey) {
-    console.log("Node Info", rowInfo);
+  handleSelectNode(nodeInfo, treeKey) {
+    console.log("Node Info", nodeInfo);
     const activeKey =
-      treeKey === "intTreeData" ? "activeIntNodeInfo" : "activeExtNodeInfo";
+      treeKey === this.intTreeKey ? "activeIntNodeInfo" : "activeExtNodeInfo";
     this.setState({
-      [activeKey]: rowInfo
+      [activeKey]: nodeInfo
     });
   }
 
@@ -141,12 +141,11 @@ class MainContainer extends Component {
     }));
   }
 
-  handleAddNodesToExtTree(newNodes, nodeInfo) {
+  handleAddNodes(newNodes, nodeInfo) {
     console.log("HANDLING ADD");
     // If adding children
     if (nodeInfo) {
       const { path } = nodeInfo;
-      const getNodeKey = ({ node }) => node.id;
       newNodes.forEach(node => {
         this.setState(state => ({
           extTreeData: addNodeUnderParent({
@@ -195,8 +194,6 @@ class MainContainer extends Component {
     } = this.state;
     const { parentsSelectable } = options;
     const activeIntNode = activeIntNodeInfo.node;
-
-    const getNodeKey = ({ node }) => node.id;
 
     // Halt if both nodes aren't selected
     if (!activeIntNodeInfo || !activeExtNodeInfo) {
@@ -264,13 +261,8 @@ class MainContainer extends Component {
       return;
     }
 
-    const newTreeData = changeNodeAtPath({
-      treeData: intTreeData,
-      path: activeIntNodeInfo.path,
-      newNode: newNode,
-      getNodeKey,
-      ignoreCollapsed: true
-    });
+    const { path } = activeIntNodeInfo;
+    const newTreeData = modifyNodeAtPath(intTreeData, path, newNode);
     this.handleChange(newTreeData, this.intTreeKey);
 
     // Check bounds
@@ -325,7 +317,7 @@ class MainContainer extends Component {
                 treeData={intTreeData}
               />
             </HeaderSmallContainer>
-            <HeaderSmallContainer mdOffset={2} className={"flex-container"}>
+            <HeaderSmallContainer mdOffset={2}>
               <Header name={externalName} />
               <EditModal>
                 <TreeContainer
@@ -334,7 +326,7 @@ class MainContainer extends Component {
                   onChange={this.handleChange}
                   editMode={true}
                   handleRemoveNode={this.handleRemoveNode}
-                  onAddNodes={this.handleAddNodesToExtTree}
+                  onAddNodes={this.handleAddNodes}
                 />
               </EditModal>
             </HeaderSmallContainer>

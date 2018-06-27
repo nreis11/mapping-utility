@@ -35,7 +35,12 @@ class EditModal extends React.Component {
 
     return (
       <Col>
-        <Button bsStyle="info" bsSize="small" onClick={this.handleShow}>
+        <Button
+          bsStyle="info"
+          bsSize="small"
+          onClick={this.handleShow}
+          className={"pull-right"}
+        >
           <PlusSign /> Add/Edit
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
@@ -44,7 +49,7 @@ class EditModal extends React.Component {
           </Modal.Header>
           <Modal.Body>{this.props.children}</Modal.Body>
           <Modal.Footer>
-            <AddModal onAddNodes={onAddNodes} nodeInfo={null} />
+            <AddModal onAddNodes={onAddNodes} />
             <Button
               className="pull-left"
               style={{ marginLeft: 5 }}

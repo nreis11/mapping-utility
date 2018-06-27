@@ -1,4 +1,9 @@
-import { walk, map, getVisibleNodeInfoAtIndex } from "react-sortable-tree";
+import {
+  walk,
+  map,
+  getVisibleNodeInfoAtIndex,
+  changeNodeAtPath
+} from "react-sortable-tree";
 
 const getNodeKey = ({ node }) => node.id;
 
@@ -42,4 +47,14 @@ export function checkForMapping(treeData) {
   });
 
   return foundMapping;
+}
+
+export function modifyNodeAtPath(treeData, path, newNode) {
+  return changeNodeAtPath({
+    treeData,
+    path,
+    newNode,
+    getNodeKey,
+    ignoreCollapsed: true
+  });
 }

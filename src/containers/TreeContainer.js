@@ -122,10 +122,14 @@ class TreeContainer extends React.Component {
             getNodeKey={({ node }) => node.id}
             generateNodeProps={rowInfo => {
               const { node, path } = rowInfo;
-              let className = "";
+              let className = [];
               if (!editMode) {
-                className += activeNode.id === node.id ? "active-node" : "";
-                className += node.mapping ? " mapped" : unMappedClassName;
+                activeNode.id === node.id
+                  ? className.push("active-node")
+                  : className.push("");
+                node.mapping
+                  ? className.push("mapped")
+                  : className.push(unMappedClassName);
               }
 
               const buttons = editMode
@@ -141,7 +145,7 @@ class TreeContainer extends React.Component {
                 onClick: editMode
                   ? null
                   : () => handleSelectNode(rowInfo, treeKey),
-                className: className,
+                className: className.join(" "),
                 buttons: buttons
               };
             }}

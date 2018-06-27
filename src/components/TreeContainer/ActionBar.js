@@ -5,6 +5,8 @@ import { Col, Button, ButtonGroup } from "react-bootstrap";
 import FaForward from "react-icons/lib/fa/forward";
 import FaBackward from "react-icons/lib/fa/backward";
 
+import "./ActionBar.css";
+
 class ActionBar extends Component {
   constructor(props) {
     super(props);
@@ -21,12 +23,12 @@ class ActionBar extends Component {
     const { expandAll, intKey, extKey, onhighlightUnmapped } = this.props;
 
     const buttonGroupStyle = {
-      marginBottom: "15%"
+      margin: "0 auto"
     };
 
     return (
-      <Col md={2} className="text-center">
-        <ButtonGroup style={buttonGroupStyle}>
+      <Col md={2} className="text-center action-container">
+        <ButtonGroup style={{}}>
           <Button
             bsStyle="primary"
             data-cmd={"space"}
@@ -58,7 +60,7 @@ class ActionBar extends Component {
             (overwrite)
           </Button>
         </ButtonGroup>
-        <ButtonGroup style={buttonGroupStyle}>
+        <ButtonGroup style={{}}>
           <Button bsStyle="primary" onClick={onhighlightUnmapped} block>
             Highlight Unmapped
           </Button>

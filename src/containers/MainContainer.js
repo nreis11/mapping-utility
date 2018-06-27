@@ -11,7 +11,7 @@ import {
 import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";
 import ActionBar from "../components/TreeContainer/ActionBar";
-import NodeInfo from "../components/NodeInfo";
+import NodeInfo from "../components/MainContainer/NodeInfo";
 import HeaderSmallContainer from "../components/HeaderContainer/HeaderSmallContainer";
 import ExportButton from "../components/HeaderContainer/ExportButton";
 import Header from "../components/HeaderContainer/Header";
@@ -19,6 +19,7 @@ import EditModal from "../components/modals/EditModal";
 import Options from "../components/HeaderContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import ExportContainer from "./ExportContainer";
+import NavBar from "../components/NavBar";
 
 import { categories, industries, states, countries } from "../values/eqValues";
 import { getActiveNode, mapNode, modifyNodeAtPath } from "../helpers";
@@ -177,10 +178,19 @@ class MainContainer extends Component {
   }
 
   handleKeyDown(e) {
+    const {
+      intTreeData,
+      extTreeData,
+      activeIntNodeInfo,
+      activeExtNodeInfo,
+      options
+    } = this.state;
+    const { parentsSelectable } = options;
+    const activeIntNode = activeIntNodeInfo.node;
+
     // Implement tab to handle tree focus
     const key = e.keyCode || null;
     const cmd = e.target.dataset.cmd || null;
-
     if (key in keyboard) {
       keyboard[key] = true;
       e.preventDefault();
@@ -190,14 +200,10 @@ class MainContainer extends Component {
       }
     }
 
-    const {
-      intTreeData,
-      activeIntNodeInfo,
-      activeExtNodeInfo,
-      options
-    } = this.state;
-    const { parentsSelectable } = options;
-    const activeIntNode = activeIntNodeInfo.node;
+    // Halt on no ext data
+    if (extTreeData.length < 1) {
+      return;
+    }
 
     // Halt if both nodes aren't selected
     if (!activeIntNodeInfo || !activeExtNodeInfo) {
@@ -216,7 +222,10 @@ class MainContainer extends Component {
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
     // Handle actions
-    if ((keyboard[16] && keyboard[32]) || cmd === "shift-space") {
+    if (keyboard[17] && keyboard[70]) {
+      console.log("CTRL + F");
+      return;
+    } else if ((keyboard[16] && keyboard[32]) || cmd === "shift-space") {
       console.log("SHIFT + SPACE");
       console.log("Select node and its children. Preserve existing mappings.");
       newNode = mapNode([activeIntNode], activeExtNodeInfo.path, false);
@@ -311,80 +320,79 @@ class MainContainer extends Component {
       : {};
 
     return (
-      <Jumbotron>
-        <Grid fluid>
-          <HeaderContainer>
-            <HeaderSmallContainer>
-              <Header name={internalName} />
-              <TypeSelector
-                onSelect={this.handleTypeSelect}
-                treeData={intTreeData}
-              />
-            </HeaderSmallContainer>
-            <HeaderSmallContainer mdOffset={2}>
-              <Header name={externalName} />
-              <EditModal>
-                <TreeContainer
-                  treeKey={this.extTreeKey}
-                  treeData={extTreeData}
-                  onChange={this.handleChange}
-                  editMode={true}
-                  handleRemoveNode={this.handleRemoveNode}
-                  onAddNodes={this.handleAddNodes}
+      <div>
+        <NavBar />
+        <Jumbotron onKeyDown={this.handleKeyDown} onKeyUp={this.handleKeyUp}>
+          <Grid fluid>
+            <HeaderContainer>
+              <HeaderSmallContainer>
+                <Header name={internalName} />
+                <TypeSelector
+                  onSelect={this.handleTypeSelect}
+                  treeData={intTreeData}
                 />
-              </EditModal>
-            </HeaderSmallContainer>
-          </HeaderContainer>
+              </HeaderSmallContainer>
+              <HeaderSmallContainer mdOffset={2}>
+                <Header name={externalName} />
+                <EditModal>
+                  <TreeContainer
+                    treeKey={this.extTreeKey}
+                    treeData={extTreeData}
+                    onChange={this.handleChange}
+                    editMode={true}
+                    handleRemoveNode={this.handleRemoveNode}
+                    onAddNodes={this.handleAddNodes}
+                  />
+                </EditModal>
+              </HeaderSmallContainer>
+            </HeaderContainer>
 
-          <Row
-            className="show-grid"
-            onKeyDown={this.handleKeyDown}
-            onKeyUp={this.handleKeyUp}
-          >
-            <TreeContainer
-              treeKey={this.intTreeKey}
-              treeData={intTreeData}
-              onChange={this.handleChange}
-              handleSelectNode={this.handleSelectNode}
-              activeNodeInfo={activeIntNodeInfo}
-              highlightUnmapped={highlightUnmapped}
-            />
-            <ActionBar
-              intKey={this.intTreeKey}
-              extKey={this.extTreeKey}
-              onhighlightUnmapped={this.highlightUnmapped}
-              expandAll={this.expandAll}
-              onClick={this.handleKeyDown}
-            />
-            <TreeContainer
-              treeKey={this.extTreeKey}
-              treeData={extTreeData}
-              onChange={this.handleChange}
-              handleSelectNode={this.handleSelectNode}
-              activeNodeInfo={activeExtNodeInfo}
-            />
-          </Row>
-
-          <Row className="show-grid">
-            <NodeInfo heading={internalName} node={activeIntNode} />
-            <NodeInfo
-              heading={externalName}
-              node={activeExtNode}
-              mdOffset={2}
-            />
-          </Row>
-          <Row className="show-grid">
-            <NodeInfo heading={"Mapped to:"} node={mappedNode} />
-            <ExportContainer>
-              <Options
-                options={options}
-                onOptionChange={this.handleOptionChange}
+            <Row className="show-grid">
+              <TreeContainer
+                treeKey={this.intTreeKey}
+                treeData={intTreeData}
+                onChange={this.handleChange}
+                handleSelectNode={this.handleSelectNode}
+                activeNodeInfo={activeIntNodeInfo}
+                highlightUnmapped={highlightUnmapped}
               />
-              <ExportButton handleExport={this.handleExport} />
-            </ExportContainer>
-          </Row>
-        </Grid>
-      </Jumbotron>
+              <ActionBar
+                intKey={this.intTreeKey}
+                extKey={this.extTreeKey}
+                onhighlightUnmapped={this.highlightUnmapped}
+                expandAll={this.expandAll}
+                onClick={this.handleKeyDown}
+              />
+              <TreeContainer
+                treeKey={this.extTreeKey}
+                treeData={extTreeData}
+                onChange={this.handleChange}
+                handleSelectNode={this.handleSelectNode}
+                activeNodeInfo={activeExtNodeInfo}
+              />
+            </Row>
+
+            <Row className="show-grid">
+              <NodeInfo heading={internalName} node={activeIntNode} />
+              <NodeInfo
+                heading={externalName}
+                node={activeExtNode}
+                mdOffset={2}
+              />
+            </Row>
+            <Row className="show-grid">
+              <NodeInfo heading={"Mapped to:"} node={mappedNode} />
+              <ExportContainer>
+                <Options
+                  options={options}
+                  onOptionChange={this.handleOptionChange}
+                />
+                <ExportButton handleExport={this.handleExport} />
+              </ExportContainer>
+            </Row>
+          </Grid>
+        </Jumbotron>
+      </div>
     );
   }
 }

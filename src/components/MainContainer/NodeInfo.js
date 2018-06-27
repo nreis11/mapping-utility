@@ -13,7 +13,7 @@ const NodeInfo = props => {
 
   return (
     <Col md={5} mdOffset={mdOffset}>
-      <Panel bsStyle="info" style={{ marginBottom: "0", marginTop: "0" }}>
+      <Panel bsStyle="info" style={{ marginBottom: 10, marginTop: 0 }}>
         <Panel.Heading style={panelHeadingStyle}>
           <Panel.Title componentClass="h3">{heading}</Panel.Title>
         </Panel.Heading>

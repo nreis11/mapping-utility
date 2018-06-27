@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import NavBar from "./components/NavBar";
+// import NavBar from "./components/NavBar";
 import MainContainer from "./containers/MainContainer";
 
 class App extends Component {
@@ -12,7 +12,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NavBar />
         <MainContainer />
       </div>
     );

@@ -7,12 +7,12 @@ class TypeSelector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      types: [
-        { name: "categories", label: "Category" },
-        { name: "industries", label: "Industry" },
-        { name: "states", label: "State" },
-        { name: "countries", label: "Country" }
-      ],
+      types: {
+        categories: "Category",
+        industries: "Industry",
+        states: "State",
+        countries: "Country"
+      },
       activeType: "categories",
       showAlert: false,
       selectedKey: null
@@ -41,25 +41,22 @@ class TypeSelector extends React.Component {
   }
 
   handleSelect(key) {
-    key = key || this.state.selectedKey;
-    const { name } = this.state.types.find(type => type.name === key);
-    // const { name } = type;
     this.setState({
-      activeType: name
+      activeType: key
     });
     this.handleCancelAlert();
-    this.props.onSelect(name);
+    this.props.onSelect(key);
   }
 
   render(props) {
-    const { types, activeType, showAlert } = this.state;
+    const { types, activeType, showAlert, selectedKey } = this.state;
 
     return (
       <Col className="pull-right">
         {showAlert && (
           <ChangeTypeAlert
             handleCancel={this.handleCancelAlert}
-            handleConfirm={this.handleSelect}
+            handleConfirm={() => this.handleSelect(selectedKey)}
           />
         )}
         <Nav
@@ -67,9 +64,9 @@ class TypeSelector extends React.Component {
           activeKey={activeType}
           onSelect={key => this.handleCheck(key)}
         >
-          {types.map(type => (
-            <NavItem key={type.name} eventKey={type.name} title={type.label}>
-              {type.label}
+          {Object.keys(types).map(type => (
+            <NavItem key={type} eventKey={type} title={types[type]}>
+              {types[type]}
             </NavItem>
           ))}
         </Nav>

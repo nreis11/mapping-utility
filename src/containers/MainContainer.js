@@ -178,12 +178,16 @@ class MainContainer extends Component {
 
   handleKeyDown(e) {
     // Implement tab to handle tree focus
-    const key = e.keyCode;
+    const key = e.keyCode || null;
+    const cmd = e.target.dataset.cmd || null;
+
     if (key in keyboard) {
       keyboard[key] = true;
       e.preventDefault();
     } else {
-      return;
+      if (!cmd) {
+        return;
+      }
     }
 
     const {
@@ -212,12 +216,12 @@ class MainContainer extends Component {
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
     // Handle actions
-    if (keyboard[16] && keyboard[32]) {
+    if ((keyboard[16] && keyboard[32]) || cmd === "shift-space") {
       console.log("SHIFT + SPACE");
       console.log("Select node and its children. Preserve existing mappings.");
       newNode = mapNode([activeIntNode], activeExtNodeInfo.path, false);
       treeIndex += 1;
-    } else if (keyboard[17] && keyboard[32]) {
+    } else if ((keyboard[17] && keyboard[32]) || cmd === "ctrl-space") {
       console.log("CTRL + SPACE");
       console.log(
         "Select node and its children. Overwrite any existing mappings."
@@ -231,20 +235,20 @@ class MainContainer extends Component {
       );
       newNode = mapNode([activeIntNode], null, true);
       treeIndex -= 1;
-    } else if (keyboard[32]) {
+    } else if (keyboard[32] || cmd === "space") {
       console.log("SPACE");
       console.log("Select single node");
       activeIntNode.mapping = activeExtNodeInfo.path;
       newNode = activeIntNode;
       treeIndex += 1;
-    } else if (keyboard[46]) {
+    } else if (keyboard[46] || cmd === "delete") {
       console.log(
         "DELETE: Delete current node mapping and move down to the next node."
       );
       activeIntNode.mapping = null;
       newNode = activeIntNode;
       treeIndex += 1;
-    } else if (keyboard[16] && keyboard[46]) {
+    } else if ((keyboard[16] && keyboard[46]) || cmd === "shift-delete") {
       console.log(
         "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
       );
@@ -350,6 +354,7 @@ class MainContainer extends Component {
               extKey={this.extTreeKey}
               onhighlightUnmapped={this.highlightUnmapped}
               expandAll={this.expandAll}
+              onClick={this.handleKeyDown}
             />
             <TreeContainer
               treeKey={this.extTreeKey}

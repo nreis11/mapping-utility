@@ -24,7 +24,7 @@ class DelimiterForm extends Component {
           type="text"
           name="delimiter"
           value={delimiter}
-          placeholder="What seperates the value from the label?"
+          placeholder="What separates the value from the label?"
           onChange={onChange}
         />
         <FormControl.Feedback />

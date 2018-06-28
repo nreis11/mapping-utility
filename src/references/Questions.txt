@@ -6,6 +6,9 @@ Save mapping path using tree indices or using the keys
 If I save the keys, I need to relocate the mapped node to display the title, but in the export,
 I don't need to use a lookup to retrive the keys
 
+3. Should I use this for pretty printing XML?
+https://www.npmjs.com/package/xml-formatter
+
 Features to add
 - When find prompt triggered (CTRL - F), autocomplete field with Internal Node Label
 

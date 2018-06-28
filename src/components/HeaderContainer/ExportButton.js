@@ -7,7 +7,7 @@ const ExportButton = ({ handleExport }) => {
       onClick={() => handleExport()}
       bsStyle="success"
       className="pull-right"
-      style={{ margin: "2vh 0" }}
+      style={{ height: "100%" }}
     >
       Export
     </Button>

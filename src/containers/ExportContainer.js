@@ -3,7 +3,7 @@ import { Col } from "react-bootstrap";
 
 const ExportContainer = props => {
   return (
-    <Col mdOffset={2} md={5} style={{ height: "8vh" }}>
+    <Col style={{ height: "7vh" }} md={1}>
       {props.children}
     </Col>
   );

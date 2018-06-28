@@ -13,7 +13,7 @@ const Options = props => {
   };
 
   return (
-    <form style={{ padding: "2vh", display: "inline-block" }}>
+    <form className="pull-left" style={{ display: "inline-block" }}>
       <label style={labelStyle}>
         Output Parents
         <input

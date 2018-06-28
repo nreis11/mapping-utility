@@ -12,12 +12,13 @@ import TreeContainer from "./TreeContainer";
 import ActionBar from "../components/TreeContainer/ActionBar";
 import NodeInfo from "../components/MainContainer/NodeInfo";
 import HeaderSmallContainer from "../components/HeaderContainer/HeaderSmallContainer";
-import ExportButton from "../components/HeaderContainer/ExportButton";
+import ExportModal from "../components/modals/ExportModal";
 import Header from "../components/HeaderContainer/Header";
 import EditModal from "../components/modals/EditModal";
 import Options from "../components/HeaderContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import ExportContainer from "./ExportContainer";
+import OptionsContainer from "./OptionsContainer";
 import NavBar from "../components/NavBar";
 
 import { categories, industries, states, countries } from "../values/eqValues";
@@ -25,7 +26,8 @@ import {
   getTreeDataFromFlatData,
   getActiveNode,
   mapNode,
-  modifyNodeAtPath
+  modifyNodeAtPath,
+  exportMappingsToXML
 } from "../helpers";
 
 const keyboard = {
@@ -170,9 +172,7 @@ class MainContainer extends Component {
   }
 
   handleExport() {
-    alert("Handling export");
-    // Need to grab intTreeData
-    // If output parents, need to grab path of mapped mode
+    return exportMappingsToXML(this.state.intTreeData);
   }
 
   handleKeyDown(e) {
@@ -384,13 +384,14 @@ class MainContainer extends Component {
             </Row>
             <Row className="show-grid">
               <NodeInfo heading={"Mapped to:"} node={mappedNode} />
-              <ExportContainer>
+              <OptionsContainer>
                 <Options
                   options={options}
                   onOptionChange={this.handleOptionChange}
                 />
-                <ExportButton handleExport={this.handleExport} />
-              </ExportContainer>
+                <ExportModal handleExport={this.handleExport} />
+              </OptionsContainer>
+              {/* <ExportContainer /> */}
             </Row>
           </Grid>
         </Jumbotron>

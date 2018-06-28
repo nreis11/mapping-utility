@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Grid, Jumbotron, Row } from "react-bootstrap";
 import {
-  getTreeFromFlatData,
   toggleExpandedForAll,
   addNodeUnderParent,
   getNodeAtPath,
@@ -22,7 +21,12 @@ import ExportContainer from "./ExportContainer";
 import NavBar from "../components/NavBar";
 
 import { categories, industries, states, countries } from "../values/eqValues";
-import { getActiveNode, mapNode, modifyNodeAtPath } from "../helpers";
+import {
+  getTreeDataFromFlatData,
+  getActiveNode,
+  mapNode,
+  modifyNodeAtPath
+} from "../helpers";
 
 const keyboard = {
   32: false, // space,
@@ -102,14 +106,8 @@ class MainContainer extends Component {
   }
 
   getTreeData(name) {
-    const treeData = MainContainer.initialData[name];
-
-    return getTreeFromFlatData({
-      flatData: treeData.map(node => ({ ...node, expanded: false })),
-      getKey: node => node.id, // resolve a node's key
-      getParentKey: node => node.parent, // resolve a node's parent's key
-      rootKey: null // The value of the parent key when there is no parent (i.e., at root level)
-    });
+    const flatData = MainContainer.initialData[name];
+    return getTreeDataFromFlatData(flatData);
   }
 
   handleTypeSelect(name) {
@@ -322,7 +320,7 @@ class MainContainer extends Component {
     return (
       <div>
         <NavBar />
-        <Jumbotron onKeyDown={this.handleKeyDown} onKeyUp={this.handleKeyUp}>
+        <Jumbotron>
           <Grid fluid>
             <HeaderContainer>
               <HeaderSmallContainer>
@@ -347,7 +345,11 @@ class MainContainer extends Component {
               </HeaderSmallContainer>
             </HeaderContainer>
 
-            <Row className="show-grid">
+            <Row
+              className="show-grid"
+              onKeyDown={this.handleKeyDown}
+              onKeyUp={this.handleKeyUp}
+            >
               <TreeContainer
                 treeKey={this.intTreeKey}
                 treeData={intTreeData}

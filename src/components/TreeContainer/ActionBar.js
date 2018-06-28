@@ -28,7 +28,7 @@ class ActionBar extends Component {
 
     return (
       <Col md={2} className="text-center action-container">
-        <ButtonGroup style={{}}>
+        <ButtonGroup>
           <Button
             bsStyle="primary"
             data-cmd={"space"}
@@ -60,7 +60,7 @@ class ActionBar extends Component {
             (overwrite)
           </Button>
         </ButtonGroup>
-        <ButtonGroup style={{}}>
+        <ButtonGroup>
           <Button bsStyle="primary" onClick={onhighlightUnmapped} block>
             Highlight Unmapped
           </Button>
@@ -105,9 +105,10 @@ class ActionBar extends Component {
 }
 
 ActionBar.propTypes = {
-  expandAll: func,
-  intKeyName: string,
-  extKeyName: string
+  expandAll: func.isRequired,
+  onClick: func.isRequired,
+  intKey: string.isRequired,
+  extKey: string.isRequired
 };
 
 export default ActionBar;

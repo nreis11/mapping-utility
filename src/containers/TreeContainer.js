@@ -1,5 +1,5 @@
 import React from "react";
-import { func, string, arrayOf, object, bool } from "prop-types";
+import { func, string, arrayOf, object, bool, shape } from "prop-types";
 import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
@@ -120,6 +120,9 @@ class TreeContainer extends React.Component {
             rowHeight={45}
             scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
+            // Will eventually add search functionality
+            // searchQuery={activeNode.title}
+            // searchFocusOffset={0}
             generateNodeProps={rowInfo => {
               const { node, path } = rowInfo;
               let className = [];
@@ -146,7 +149,8 @@ class TreeContainer extends React.Component {
                   ? null
                   : () => handleSelectNode(rowInfo, treeKey),
                 className: className.join(" "),
-                buttons: buttons
+                buttons: buttons,
+                id: node.id
               };
             }}
           />
@@ -163,14 +167,16 @@ TreeContainer.propTypes = {
   handleSelectNode: func,
   highlightUnmapped: bool,
   editMode: bool.isRequired,
-  onAddNodes: func
+  onAddNodes: func,
+  activeNodeInfo: shape({})
 };
 
 TreeContainer.defaultProps = {
   editMode: false,
   onAddNodes: null,
   highlightUnmapped: false,
-  handleSelectNode: null
+  handleSelectNode: null,
+  activeNodeInfo: {}
 };
 
 export default TreeContainer;

@@ -44,19 +44,19 @@ class HelpModal extends React.Component {
             <p>
               <strong>Space:</strong>
               <br />
-              Select single node
+              Map single node
             </p>
 
             <p>
               <strong>Shift-Space:</strong>
               <br />
-              Select node and its children. Preserve existing mappings.
+              Map node and its children. Preserve existing mappings.
             </p>
 
             <p>
               <strong>Ctrl-Space:</strong>
               <br />
-              Select node and its children. Overwrite any existing mappings.
+              Map node and its children. Overwrite any existing mappings.
             </p>
 
             <p>
@@ -85,11 +85,11 @@ class HelpModal extends React.Component {
               the previous node.
             </p>
 
-            <p>
+            {/* <p>
               <strong>M:</strong>
               <br />
               Quick search of the selected eQuest code.
-            </p>
+            </p> */}
 
             <p>
               <strong>Ctrl-G:</strong>

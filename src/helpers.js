@@ -2,10 +2,20 @@ import {
   walk,
   map,
   getVisibleNodeInfoAtIndex,
-  changeNodeAtPath
+  changeNodeAtPath,
+  getTreeFromFlatData
 } from "react-sortable-tree";
 
 const getNodeKey = ({ node }) => node.id;
+
+export function getTreeDataFromFlatData(flatData) {
+  return getTreeFromFlatData({
+    flatData: flatData.map(node => ({ ...node, expanded: false })),
+    getKey: node => node.id, // resolve a node's key
+    getParentKey: node => node.parent, // resolve a node's parent's key
+    rootKey: null // The value of the parent key when there is no parent (i.e., at root level)
+  });
+}
 
 export function getActiveNode(treeData, treeIndex) {
   return getVisibleNodeInfoAtIndex({

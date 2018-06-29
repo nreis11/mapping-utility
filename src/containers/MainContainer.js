@@ -317,7 +317,7 @@ class MainContainer extends Component {
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     let mappedNode = null;
-    if (activeIntNode) {
+    if (activeIntNode !== null) {
       mappedNode = activeIntNode.mapping
         ? getNodeAtPath({
             treeData: extTreeData,

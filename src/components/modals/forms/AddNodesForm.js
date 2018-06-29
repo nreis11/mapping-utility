@@ -74,7 +74,12 @@ class AddNodesForm extends React.Component {
           idx={labelIdx}
           name={labelIdxKey}
         />
-        <Button bsStyle="info" className="pull-right" type="submit">
+        <Button
+          style={{ marginLeft: 5 }}
+          bsStyle="info"
+          className="pull-right"
+          type="submit"
+        >
           Import Nodes
         </Button>
       </Form>

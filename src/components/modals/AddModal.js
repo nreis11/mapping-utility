@@ -53,7 +53,7 @@ class AddModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>Add Nodes</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body style={{ height: "70vh" }}>
             <AddNodesForm
               onAddNodes={onAddNodes}
               handleClose={this.handleClose}

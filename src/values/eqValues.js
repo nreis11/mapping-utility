@@ -8787,7 +8787,7 @@ module.exports.states = [
     { id: "SV-SV", title: "San Vicente", parent: "SV", mapping: null },
     { id: "SV-SO", title: "Sonsonate", parent: "SV", mapping: null },
     { id: "SV-SU", title: "Usulután", parent: "SV", mapping: null },
-    { id: "GQ", title: "uatorial Guinea", parent: null, mapping: null },
+    { id: "GQ", title: "Equatorial Guinea", parent: null, mapping: null },
     {
         id: "GQ-C",
         title: "Región Continental",
@@ -14984,7 +14984,7 @@ module.exports.countries = [
     { id: "SV", title: "El Salvador   [SV]", parent: null, mapping: null },
     {
         id: "GQ",
-        title: "uatorial Guinea   [GQ]",
+        title: "Equatorial Guinea   [GQ]",
         parent: null,
         mapping: null
     },

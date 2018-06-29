@@ -13,7 +13,6 @@ class TypeSelector extends React.Component {
         states: "State",
         countries: "Country"
       },
-      activeType: "categories",
       showAlert: false,
       selectedKey: null
     };
@@ -41,15 +40,13 @@ class TypeSelector extends React.Component {
   }
 
   handleSelect(key) {
-    this.setState({
-      activeType: key
-    });
     this.handleCancelAlert();
     this.props.onSelect(key);
   }
 
-  render(props) {
-    const { types, activeType, showAlert, selectedKey } = this.state;
+  render() {
+    const { activeType } = this.props;
+    const { types, showAlert, selectedKey } = this.state;
 
     return (
       <Col className="pull-right">

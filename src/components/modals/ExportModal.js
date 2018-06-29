@@ -43,6 +43,7 @@ class ExportModal extends React.Component {
           onClick={this.handleShow}
           bsStyle="success"
           bsSize="small"
+          style={{ lineHeight: "13px" }}
         >
           Export
         </Button>
@@ -60,17 +61,17 @@ class ExportModal extends React.Component {
               className="pull-left"
               onCopy={() => this.setState({ copied: true })}
             >
-              <Button>
+              <Button bsStyle="info">
                 <CopyIcon />
               </Button>
             </CopyToClipboard>
             {this.state.copied ? (
-              <p
+              <span
                 className="pull-left"
                 style={{ paddingLeft: "5px", lineHeight: "34px" }}
               >
                 Copied.
-              </p>
+              </span>
             ) : null}
 
             <Button onClick={this.handleClose}>Close</Button>

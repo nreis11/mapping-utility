@@ -63,6 +63,7 @@ class MainContainer extends Component {
       ],
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
+      activeType: "categories",
       options: {
         outputParents: false,
         parentsSelectable: false
@@ -114,6 +115,7 @@ class MainContainer extends Component {
   handleTypeSelect(name) {
     const newTreeData = this.getTreeData(name);
     this.setState({
+      activeType: name,
       intTreeData: newTreeData
     });
   }
@@ -169,10 +171,8 @@ class MainContainer extends Component {
   }
 
   handleExport() {
-    return exportMappingsToXML(
-      this.state.intTreeData,
-      this.state.options.outputParents
-    );
+    const { intTreeData, activeType, options } = this.state;
+    return exportMappingsToXML(intTreeData, activeType, options.outputParents);
   }
 
   handleKeyDown(e) {
@@ -272,6 +272,12 @@ class MainContainer extends Component {
       return;
     }
 
+    // Unfocus buttons once clicked
+    if (cmd) {
+      e.target.blur();
+    }
+
+    // Replace active node with new mapping
     const { path } = activeIntNodeInfo;
     const newTreeData = modifyNodeAtPath(intTreeData, path, newNode);
     this.handleChange(newTreeData, this.intTreeKey);
@@ -301,21 +307,25 @@ class MainContainer extends Component {
       intTreeData,
       extTreeData,
       options,
+      activeType,
       activeIntNodeInfo,
       activeExtNodeInfo,
       highlightUnmapped
     } = this.state;
     const internalName = "eQuest";
     const externalName = "Board";
-    const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : {};
-    const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : {};
-    const mappedNode = activeIntNode.mapping
-      ? getNodeAtPath({
-          treeData: extTreeData,
-          path: activeIntNode.mapping,
-          getNodeKey: ({ node }) => node.id
-        }).node
-      : {};
+    const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
+    const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
+    let mappedNode = null;
+    if (activeIntNode) {
+      mappedNode = activeIntNode.mapping
+        ? getNodeAtPath({
+            treeData: extTreeData,
+            path: activeIntNode.mapping,
+            getNodeKey: ({ node }) => node.id
+          }).node
+        : {};
+    }
 
     return (
       <div>
@@ -327,6 +337,7 @@ class MainContainer extends Component {
                 <Header name={internalName} />
                 <TypeSelector
                   onSelect={this.handleTypeSelect}
+                  activeType={activeType}
                   treeData={intTreeData}
                 />
               </HeaderSmallContainer>

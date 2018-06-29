@@ -1,6 +1,8 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
+import { func } from "prop-types";
+
 const ChangeTypeAlert = props => {
   const { handleCancel, handleConfirm } = props;
   return (
@@ -24,6 +26,11 @@ const ChangeTypeAlert = props => {
       </Modal.Dialog>
     </div>
   );
+};
+
+ChangeTypeAlert.propTypes = {
+  handleCancel: func.isRequired,
+  handleConfirm: func.isRequired
 };
 
 export default ChangeTypeAlert;

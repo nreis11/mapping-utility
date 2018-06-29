@@ -71,28 +71,18 @@ export function modifyNodeAtPath(treeData, path, newNode) {
   });
 }
 
-export function exportMappingsToXML(treeData) {
-  return createXMLTemplate("country", treeData);
+export function exportMappingsToXML(treeData, outputParents = false) {
+  // NEED TO GRAB TYPE
+
   // Iterate through treedata, grab id and mapping
   // If output parents, need to grab path of mapped mode
   // Otherwise, grab last mapping index
-  // const callback = ({ node }) =>
-  //   console.log("ID: ", node.id, "Mapping: ", node.mapping);
-  // walk({
-  //   treeData: treeData,
-  //   getNodeKey,
-  //   callback: callback,
-  //   ignoreCollapsed: false
-  // });
-}
+  const type = "country";
+  let rootNode = xmlbuilder
+    .create("mapping", { encoding: "ISO-8859-1" })
+    .att("type", type);
+  const callback = ({ node }) => createNode(rootNode, node, outputParents);
 
-function createXMLTemplate(type, treeData) {
-  // let xml = '<?xml version="1.0" encoding="ISO-8859-1" ?><mapping></mapping>';
-  let rootNode = xmlbuilder.create("mapping").att("type", type);
-
-  const callback = ({ node }) =>
-    // console.log("ID: ", node.id, "Mapping: ", node.mapping);
-    createNode(rootNode, node);
   walk({
     treeData: treeData,
     getNodeKey,
@@ -100,23 +90,42 @@ function createXMLTemplate(type, treeData) {
     ignoreCollapsed: false
   });
   console.log(rootNode.end({ pretty: true }));
+  return rootNode.end({ pretty: true });
 }
 
-function createNode(rootNode, node) {
-  if (node.id === "DEFAULT" && node.mapping) {
-    const mapping = node.mapping[node.mapping.length - 1];
-    // let defaultNode = xmlbuilder
-    //   .create("default")
-    //   .ele("boardvalue", { tier: "1" })
-    //   .dat(mapping);
-    let defaultNode = rootNode.ele("default");
-    let boardNode = defaultNode.ele("boardvalue");
-    boardNode.att("tier", "1");
-    boardNode.dat(mapping);
-
-    return root;
+function createNode(rootNode, node, outputParents = false) {
+  if (!node.mapping) {
+    return;
   }
+
+  let mapping = node.mapping;
+  let childNode = rootNode.ele(node.id === "DEFAULT" ? "default" : "map");
+
+  if (node.id !== "DEFAULT") {
+    childNode.att("equestvalue", node.id);
+  }
+
+  if (outputParents) {
+    mapping.forEach((mapping, idx) => {
+      const tier = idx + 1;
+      childNode
+        .ele("boardvalue")
+        .att("tier", tier)
+        .dat(mapping);
+    });
+  } else {
+    // Grab last value
+    mapping = mapping[mapping.length - 1];
+    childNode
+      .ele("boardvalue")
+      .att("tier", 1)
+      .dat(mapping);
+  }
+
+  return rootNode;
 }
+
+// SAMPLE
 
 // <?xml version="1.0" encoding="ISO-8859-1" ?>
 // <mapping type="country">

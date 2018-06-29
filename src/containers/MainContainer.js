@@ -17,7 +17,6 @@ import Header from "../components/HeaderContainer/Header";
 import EditModal from "../components/modals/EditModal";
 import Options from "../components/HeaderContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
-// import ExportContainer from "./ExportContainer";
 import OptionsContainer from "./OptionsContainer";
 import NavBar from "../components/NavBar";
 
@@ -43,7 +42,7 @@ const keyboard = {
 const getNodeKey = ({ node }) => node.id;
 
 class MainContainer extends Component {
-  static initialData = {
+  static internalData = {
     categories: categories,
     industries: industries,
     states: states,
@@ -108,12 +107,11 @@ class MainContainer extends Component {
   }
 
   getTreeData(name) {
-    const flatData = MainContainer.initialData[name];
+    const flatData = MainContainer.internalData[name];
     return getTreeDataFromFlatData(flatData);
   }
 
   handleTypeSelect(name) {
-    // Implement a check to see if mapping has occured before changing type
     const newTreeData = this.getTreeData(name);
     this.setState({
       intTreeData: newTreeData
@@ -143,7 +141,6 @@ class MainContainer extends Component {
   }
 
   handleAddNodes(newNodes, nodeInfo) {
-    console.log("HANDLING ADD");
     // If adding children
     if (nodeInfo) {
       const { path } = nodeInfo;
@@ -172,7 +169,10 @@ class MainContainer extends Component {
   }
 
   handleExport() {
-    return exportMappingsToXML(this.state.intTreeData);
+    return exportMappingsToXML(
+      this.state.intTreeData,
+      this.state.options.outputParents
+    );
   }
 
   handleKeyDown(e) {

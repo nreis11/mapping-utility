@@ -1,0 +1,9 @@
+.pretty-print {
+    white-space: pre-wrap;
+}
+
+#export-modal-body {
+    height: 65vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

@@ -1,6 +1,10 @@
 import React from "react";
 import { Modal, Button, Col } from "react-bootstrap";
 import { func } from "prop-types";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import CopyIcon from "react-icons/lib/fa/copy";
+
+import "./ExportModal.css";
 
 class ExportModal extends React.Component {
   constructor(props, context) {
@@ -8,15 +12,17 @@ class ExportModal extends React.Component {
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleCopy = this.handleCopy.bind(this);
 
     this.state = {
       show: false,
-      output: ""
+      output: "",
+      copied: false
     };
   }
 
   handleClose() {
-    this.setState({ show: false });
+    this.setState({ show: false, copied: false });
   }
 
   handleShow() {
@@ -27,12 +33,17 @@ class ExportModal extends React.Component {
     });
   }
 
-  render() {
-    const { output } = this.state;
+  handleCopy() {}
 
+  render() {
     return (
-      <Col className="pull-right" style={{ display: "inline-block" }}>
-        <Button onClick={this.handleShow} bsStyle="success" bsSize="small">
+      <Col>
+        <Button
+          className="pull-right"
+          onClick={this.handleShow}
+          bsStyle="success"
+          bsSize="small"
+        >
           Export
         </Button>
 
@@ -40,8 +51,28 @@ class ExportModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>Export</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{output}</Modal.Body>
+          <Modal.Body id="export-modal-body">
+            <p className="pretty-print">{this.state.output}</p>
+          </Modal.Body>
           <Modal.Footer>
+            <CopyToClipboard
+              text={this.state.output}
+              className="pull-left"
+              onCopy={() => this.setState({ copied: true })}
+            >
+              <Button>
+                <CopyIcon />
+              </Button>
+            </CopyToClipboard>
+            {this.state.copied ? (
+              <p
+                className="pull-left"
+                style={{ paddingLeft: "5px", lineHeight: "34px" }}
+              >
+                Copied.
+              </p>
+            ) : null}
+
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>

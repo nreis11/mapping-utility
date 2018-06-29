@@ -11,7 +11,7 @@
     "react-icons": "^2.2.7",
     "react-scripts": "1.1.4",
     "react-sortable-tree": "^2.2.0",
-    "react-test-renderer": "^16.4.0"
+    "xmlbuilder": "^10.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -22,7 +22,6 @@
   "devDependencies": {
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "eslint": "^4.19.1",
-    "react-test-renderer": "^16.4.0"
+    "eslint": "^4.19.1"
   }
 }

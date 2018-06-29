@@ -17,7 +17,7 @@ import Header from "../components/HeaderContainer/Header";
 import EditModal from "../components/modals/EditModal";
 import Options from "../components/HeaderContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
-import ExportContainer from "./ExportContainer";
+// import ExportContainer from "./ExportContainer";
 import OptionsContainer from "./OptionsContainer";
 import NavBar from "../components/NavBar";
 
@@ -391,7 +391,6 @@ class MainContainer extends Component {
                 />
                 <ExportModal handleExport={this.handleExport} />
               </OptionsContainer>
-              {/* <ExportContainer /> */}
             </Row>
           </Grid>
         </Jumbotron>

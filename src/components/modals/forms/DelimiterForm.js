@@ -11,7 +11,7 @@ class DelimiterForm extends Component {
     return null;
   }
 
-  render(props) {
+  render() {
     const { delimiter, onChange } = this.props;
 
     return (

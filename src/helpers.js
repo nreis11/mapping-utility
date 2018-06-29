@@ -88,29 +88,33 @@ export function exportMappingsToXML(treeData) {
 
 function createXMLTemplate(type, treeData) {
   // let xml = '<?xml version="1.0" encoding="ISO-8859-1" ?><mapping></mapping>';
-  let xmlDoc = xmlbuilder.create("mapping", { type: type });
+  let rootNode = xmlbuilder.create("mapping").att("type", type);
 
   const callback = ({ node }) =>
     // console.log("ID: ", node.id, "Mapping: ", node.mapping);
-    createNode(node);
+    createNode(rootNode, node);
   walk({
     treeData: treeData,
     getNodeKey,
     callback: callback,
     ignoreCollapsed: false
   });
-  return;
+  console.log(rootNode.end({ pretty: true }));
 }
 
-function createNode(node) {
+function createNode(rootNode, node) {
   if (node.id === "DEFAULT" && node.mapping) {
     const mapping = node.mapping[node.mapping.length - 1];
-    let defaultNode = xmlbuilder
-      .create("default")
-      .ele("boardvalue", { tier: "1" })
-      .dat(mapping)
-      .end({ pretty: true });
-    console.log(defaultNode);
+    // let defaultNode = xmlbuilder
+    //   .create("default")
+    //   .ele("boardvalue", { tier: "1" })
+    //   .dat(mapping);
+    let defaultNode = rootNode.ele("default");
+    let boardNode = defaultNode.ele("boardvalue");
+    boardNode.att("tier", "1");
+    boardNode.dat(mapping);
+
+    return root;
   }
 }
 

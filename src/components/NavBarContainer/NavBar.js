@@ -4,21 +4,18 @@ import FaFloppyO from "react-icons/lib/fa/floppy-o";
 import FaOpen from "react-icons/lib/fa/folder-open-o";
 
 import "./NavBar.css";
-import HelpModal from "./modals/HelpModal";
+import SearchBar from "./SearchBar";
+import HelpModal from "./HelpModal";
 
 const NavBar = props => {
-  const headerStyle = {
-    color: "white",
-    fontSize: ".5em",
-    marginRight: "15px"
-  };
+  const { handleSearch, searchString } = props;
 
   return (
     <Row className="show-grid">
       <Navbar className="padded" inverse fixedTop fluid>
         <h1 style={{ display: "inline" }}>
-          <span style={headerStyle}>Mapping Utility</span>
-          <ButtonGroup style={{}}>
+          <span className="nav-header">Mapping Utility</span>
+          <ButtonGroup>
             <Button>
               <FaOpen />
             </Button>
@@ -26,6 +23,7 @@ const NavBar = props => {
               <FaFloppyO />
             </Button>
           </ButtonGroup>
+          <SearchBar searchString={searchString} handleSearch={handleSearch} />
           <Nav pullRight>
             <HelpModal />
           </Nav>

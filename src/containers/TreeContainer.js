@@ -102,12 +102,33 @@ class TreeContainer extends React.Component {
       handleSelectNode,
       highlightUnmapped,
       editMode,
-      onAddNodes
+      onAddNodes,
+      searchString
     } = this.props;
 
     const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
     const colSize = editMode ? 12 : 5;
     const unMappedClassName = highlightUnmapped ? "un-mapped" : "";
+
+    const customSearchMethod = ({ node, searchQuery }) =>
+      searchQuery &&
+      node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
+
+    // const selectPrevMatch = () =>
+    //   this.setState({
+    //     searchFocusIndex:
+    //       searchFocusIndex !== null
+    //         ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
+    //         : searchFoundCount - 1,
+    //   });
+
+    // const selectNextMatch = () =>
+    //   this.setState({
+    //     searchFocusIndex:
+    //       searchFocusIndex !== null
+    //         ? (searchFocusIndex + 1) % searchFoundCount
+    //         : 0,
+    //   });
 
     return (
       <Col
@@ -124,8 +145,8 @@ class TreeContainer extends React.Component {
             rowHeight={45}
             scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
-            // Will eventually add search functionality
-            // searchQuery={activeNode.title}
+            searchMethod={customSearchMethod}
+            searchQuery={searchString}
             // searchFocusOffset={0}
             generateNodeProps={rowInfo => {
               const { node, path } = rowInfo;

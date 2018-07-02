@@ -55,7 +55,7 @@ class ExportModal extends React.Component {
           Export
         </Button>
 
-        <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
+        <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Export</Modal.Title>
           </Modal.Header>
@@ -68,7 +68,9 @@ class ExportModal extends React.Component {
               onClick={this.handleDownload}
               className="pull-left"
             >
-              <DownloadIcon />
+              <span>
+                <DownloadIcon /> Download
+              </span>
             </Button>
             <CopyToClipboard
               text={this.state.output}
@@ -76,7 +78,7 @@ class ExportModal extends React.Component {
               onCopy={() => this.setState({ copied: true })}
             >
               <Button title="Copy">
-                <CopyIcon />
+                <CopyIcon /> Copy
               </Button>
             </CopyToClipboard>
             {this.state.copied && (

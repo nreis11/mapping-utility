@@ -18,7 +18,8 @@ import EditModal from "../components/modals/EditModal";
 import Options from "../components/HeaderContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import OptionsContainer from "./OptionsContainer";
-import NavBar from "../components/NavBar";
+import NavBarContainer from "./NavBarContainer";
+import NavBar from "../components/NavBarContainer/NavBar";
 
 import { categories, industries, states, countries } from "../values/eqValues";
 import {
@@ -68,7 +69,8 @@ class MainContainer extends Component {
         outputParents: false,
         parentsSelectable: false
       },
-      highlightUnmapped: false
+      highlightUnmapped: false,
+      searchString: ""
     };
 
     this.intTreeKey = "intTreeData";
@@ -84,6 +86,7 @@ class MainContainer extends Component {
     this.handleExport = this.handleExport.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -222,6 +225,7 @@ class MainContainer extends Component {
     // Handle actions
     if (keyboard[17] && keyboard[70]) {
       console.log("CTRL + F");
+      document.getElementById("searchInput").focus();
       return;
     } else if ((keyboard[16] && keyboard[32]) || cmd === "shift-space") {
       console.log("SHIFT + SPACE");
@@ -302,6 +306,12 @@ class MainContainer extends Component {
     }
   }
 
+  handleSearch(searchString) {
+    this.setState({
+      searchString
+    });
+  }
+
   render() {
     const {
       intTreeData,
@@ -310,26 +320,30 @@ class MainContainer extends Component {
       activeType,
       activeIntNodeInfo,
       activeExtNodeInfo,
-      highlightUnmapped
+      highlightUnmapped,
+      searchString
     } = this.state;
     const internalName = "eQuest";
     const externalName = "Board";
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     let mappedNode = null;
-    if (activeIntNode !== null) {
-      mappedNode = activeIntNode.mapping
-        ? getNodeAtPath({
-            treeData: extTreeData,
-            path: activeIntNode.mapping,
-            getNodeKey: ({ node }) => node.id
-          }).node
-        : {};
+    if (activeIntNode !== null && activeIntNode.mapping) {
+      mappedNode = getNodeAtPath({
+        treeData: extTreeData,
+        path: activeIntNode.mapping,
+        getNodeKey: ({ node }) => node.id
+      }).node;
     }
 
     return (
       <div>
-        <NavBar />
+        <NavBarContainer>
+          <NavBar
+            searchString={searchString}
+            handleSearch={this.handleSearch}
+          />
+        </NavBarContainer>
         <Jumbotron>
           <Grid fluid>
             <HeaderContainer>
@@ -382,6 +396,7 @@ class MainContainer extends Component {
                 onChange={this.handleChange}
                 handleSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeExtNodeInfo}
+                searchString={searchString}
               />
             </Row>
 

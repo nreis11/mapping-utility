@@ -55,12 +55,12 @@ class MainContainer extends Component {
     this.state = {
       intTreeData: this.getTreeData("categories"),
       extTreeData: [
-        {
-          id: 100,
-          title: "Parent",
-          expanded: true,
-          children: [{ id: 101, title: "Child" }]
-        }
+        // {
+        //   id: 100,
+        //   title: "Parent",
+        //   expanded: true,
+        //   children: [{ id: 101, title: "Child" }]
+        // }
       ],
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
@@ -70,7 +70,9 @@ class MainContainer extends Component {
         parentsSelectable: false
       },
       highlightUnmapped: false,
-      searchString: ""
+      searchString: "",
+      searchFocusIndex: 0,
+      searchFoundCount: null
     };
 
     this.intTreeKey = "intTreeData";
@@ -87,6 +89,8 @@ class MainContainer extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleSearchFocusChange = this.handleSearchFocusChange.bind(this);
+    this.handleSearchFinish = this.handleSearchFinish.bind(this);
   }
 
   componentDidMount() {
@@ -312,6 +316,25 @@ class MainContainer extends Component {
     });
   }
 
+  handleSearchFocusChange(newIdx) {
+    this.setState({
+      searchFocusIndex: newIdx
+    });
+  }
+
+  handleSearchFinish(matches) {
+    if (matches.length > 0) {
+      const searchFocusIndex = this.state.searchFocusIndex;
+      const newActiveNodeInfo = matches[searchFocusIndex];
+      this.setState({
+        searchFoundCount: matches.length,
+        searchFocusIndex:
+          matches.length > 0 ? searchFocusIndex % matches.length : 0,
+        activeExtNodeInfo: newActiveNodeInfo
+      });
+    }
+  }
+
   render() {
     const {
       intTreeData,
@@ -321,7 +344,9 @@ class MainContainer extends Component {
       activeIntNodeInfo,
       activeExtNodeInfo,
       highlightUnmapped,
-      searchString
+      searchString,
+      searchFocusIndex,
+      searchFoundCount
     } = this.state;
     const internalName = "eQuest";
     const externalName = "Board";
@@ -342,6 +367,9 @@ class MainContainer extends Component {
           <NavBar
             searchString={searchString}
             handleSearch={this.handleSearch}
+            searchFocusIndex={searchFocusIndex}
+            searchFoundCount={searchFoundCount}
+            onSearchFocusChange={this.handleSearchFocusChange}
           />
         </NavBarContainer>
         <Jumbotron>
@@ -382,6 +410,7 @@ class MainContainer extends Component {
                 handleSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeIntNodeInfo}
                 highlightUnmapped={highlightUnmapped}
+                onSearchFinish={this.handleSearchFinish}
               />
               <ActionBar
                 intKey={this.intTreeKey}
@@ -397,6 +426,8 @@ class MainContainer extends Component {
                 handleSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeExtNodeInfo}
                 searchString={searchString}
+                searchFocusIndex={searchFocusIndex}
+                onSearchFinish={this.handleSearchFinish}
               />
             </Row>
 

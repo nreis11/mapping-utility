@@ -103,7 +103,9 @@ class TreeContainer extends React.Component {
       highlightUnmapped,
       editMode,
       onAddNodes,
-      searchString
+      searchString,
+      searchFocusIndex,
+      onSearchFinish
     } = this.props;
 
     const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
@@ -113,22 +115,6 @@ class TreeContainer extends React.Component {
     const customSearchMethod = ({ node, searchQuery }) =>
       searchQuery &&
       node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
-
-    // const selectPrevMatch = () =>
-    //   this.setState({
-    //     searchFocusIndex:
-    //       searchFocusIndex !== null
-    //         ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
-    //         : searchFoundCount - 1,
-    //   });
-
-    // const selectNextMatch = () =>
-    //   this.setState({
-    //     searchFocusIndex:
-    //       searchFocusIndex !== null
-    //         ? (searchFocusIndex + 1) % searchFoundCount
-    //         : 0,
-    //   });
 
     return (
       <Col
@@ -147,7 +133,12 @@ class TreeContainer extends React.Component {
             getNodeKey={({ node }) => node.id}
             searchMethod={customSearchMethod}
             searchQuery={searchString}
-            // searchFocusOffset={0}
+            searchFocusOffset={searchFocusIndex}
+            searchFinishCallback={matches =>
+              editMode || treeKey === "intTreeData"
+                ? null
+                : onSearchFinish(matches)
+            }
             generateNodeProps={rowInfo => {
               const { node, path } = rowInfo;
               let className = [];
@@ -193,7 +184,8 @@ TreeContainer.propTypes = {
   highlightUnmapped: bool,
   editMode: bool.isRequired,
   onAddNodes: func,
-  activeNodeInfo: shape({})
+  activeNodeInfo: shape({}),
+  onSearchFinish: func
 };
 
 TreeContainer.defaultProps = {
@@ -201,7 +193,8 @@ TreeContainer.defaultProps = {
   onAddNodes: null,
   highlightUnmapped: false,
   handleSelectNode: null,
-  activeNodeInfo: {}
+  activeNodeInfo: {},
+  onSearchFinish: null
 };
 
 export default TreeContainer;

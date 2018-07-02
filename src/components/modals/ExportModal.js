@@ -3,6 +3,7 @@ import { Modal, Button, Col } from "react-bootstrap";
 import { func } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import CopyIcon from "react-icons/lib/fa/copy";
+import DownloadIcon from "react-icons/lib/fa/download";
 
 import "./ExportModal.css";
 
@@ -12,7 +13,7 @@ class ExportModal extends React.Component {
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleCopy = this.handleCopy.bind(this);
+    this.handleDownload = this.handleDownload.bind(this);
 
     this.state = {
       show: false,
@@ -33,7 +34,13 @@ class ExportModal extends React.Component {
     });
   }
 
-  handleCopy() {}
+  handleDownload() {
+    let link = document.createElement("a");
+    let file = new Blob([this.state.output], { type: "application/xml" });
+    link.href = URL.createObjectURL(file);
+    link.download = "mapping.xml";
+    link.click();
+  }
 
   render() {
     return (
@@ -56,23 +63,30 @@ class ExportModal extends React.Component {
             <p className="pretty-print">{this.state.output}</p>
           </Modal.Body>
           <Modal.Footer>
+            <Button
+              title="Download"
+              onClick={this.handleDownload}
+              className="pull-left"
+            >
+              <DownloadIcon />
+            </Button>
             <CopyToClipboard
               text={this.state.output}
               className="pull-left"
               onCopy={() => this.setState({ copied: true })}
             >
-              <Button bsStyle="info">
+              <Button title="Copy">
                 <CopyIcon />
               </Button>
             </CopyToClipboard>
-            {this.state.copied ? (
+            {this.state.copied && (
               <span
                 className="pull-left"
                 style={{ paddingLeft: "5px", lineHeight: "34px" }}
               >
                 Copied.
               </span>
-            ) : null}
+            )}
 
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>

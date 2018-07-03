@@ -112,6 +112,7 @@ class TreeContainer extends React.Component {
     const colSize = editMode ? 12 : 5;
     const unMappedClassName = highlightUnmapped ? "un-mapped" : "";
 
+    // Case insensitive search of `node.title`
     const customSearchMethod = ({ node, searchQuery }) =>
       searchQuery &&
       node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;

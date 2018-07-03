@@ -37,7 +37,8 @@ const keyboard = {
   46: false, // del,
   70: false, // F
   71: false, // G
-  8: false // backspace
+  8: false, // backspace
+  27: false // esc
 };
 
 const getNodeKey = ({ node }) => node.id;
@@ -102,6 +103,8 @@ class MainContainer extends Component {
         treeIndex: 0
       }
     });
+    document.addEventListener("keydown", this.handleKeyDown);
+    document.addEventListener("keyup", this.handleKeyUp);
   }
 
   expandAll(expanded, key) {
@@ -193,6 +196,12 @@ class MainContainer extends Component {
     const { parentsSelectable } = options;
     const activeIntNode = activeIntNodeInfo.node;
 
+    // Ignore if search field in focus except for ESC
+    if (document.activeElement.id === "searchInput" && e.keyCode !== 27) {
+      console.log("IGNORED");
+      return;
+    }
+
     // Implement tab to handle tree focus
     const key = e.keyCode || null;
     const cmd = e.target.dataset.cmd || null;
@@ -213,11 +222,19 @@ class MainContainer extends Component {
     // Halt if both nodes aren't selected
     if (!activeIntNodeInfo || !activeExtNodeInfo) {
       alert("Please select a node from each tree.");
+      // Reset keyboard
+      Object.keys(keyboard).map(key => (keyboard[key] = false));
       return;
     }
 
-    if (!parentsSelectable && activeExtNodeInfo.node.children) {
+    if (
+      !parentsSelectable &&
+      activeExtNodeInfo &&
+      activeExtNodeInfo.node.children
+    ) {
       alert("Parents aren't seletable");
+      // Reset keyboard
+      Object.keys(keyboard).map(key => (keyboard[key] = false));
       return;
     }
 
@@ -227,8 +244,14 @@ class MainContainer extends Component {
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
     // Handle actions
-    if (keyboard[17] && keyboard[70]) {
+    if (keyboard[27]) {
+      console.log("ESC");
+      document.activeElement.blur();
+      return;
+    } else if (keyboard[17] && keyboard[70]) {
       console.log("CTRL + F");
+      // Autocomplete search field with active node title
+      this.handleSearch(activeIntNode.title);
       document.getElementById("searchInput").focus();
       return;
     } else if ((keyboard[16] && keyboard[32]) || cmd === "shift-space") {
@@ -285,6 +308,9 @@ class MainContainer extends Component {
       e.target.blur();
     }
 
+    // Reset keyboard
+    Object.keys(keyboard).map(key => (keyboard[key] = false));
+
     // Replace active node with new mapping
     const { path } = activeIntNodeInfo;
     const newTreeData = modifyNodeAtPath(intTreeData, path, newNode);
@@ -305,6 +331,7 @@ class MainContainer extends Component {
 
   handleKeyUp(e) {
     const key = e.keyCode;
+    console.log("KEY UP", key);
     if (key in keyboard) {
       keyboard[key] = false;
     }
@@ -323,16 +350,14 @@ class MainContainer extends Component {
   }
 
   handleSearchFinish(matches) {
-    if (matches.length > 0) {
-      const searchFocusIndex = this.state.searchFocusIndex;
-      const newActiveNodeInfo = matches[searchFocusIndex];
-      this.setState({
-        searchFoundCount: matches.length,
-        searchFocusIndex:
-          matches.length > 0 ? searchFocusIndex % matches.length : 0,
-        activeExtNodeInfo: newActiveNodeInfo
-      });
-    }
+    const searchFocusIndex = this.state.searchFocusIndex;
+    const newActiveNodeInfo = matches[searchFocusIndex] || null;
+    this.setState({
+      searchFoundCount: matches.length,
+      searchFocusIndex:
+        matches.length > 0 ? searchFocusIndex % matches.length : 0,
+      activeExtNodeInfo: newActiveNodeInfo
+    });
   }
 
   render() {
@@ -353,7 +378,7 @@ class MainContainer extends Component {
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     let mappedNode = null;
-    if (activeIntNode !== null && activeIntNode.mapping) {
+    if (activeIntNode && activeIntNode.mapping) {
       mappedNode = getNodeAtPath({
         treeData: extTreeData,
         path: activeIntNode.mapping,
@@ -362,7 +387,7 @@ class MainContainer extends Component {
     }
 
     return (
-      <div>
+      <div id="main-container">
         <NavBarContainer>
           <NavBar
             searchString={searchString}
@@ -398,11 +423,7 @@ class MainContainer extends Component {
               </HeaderSmallContainer>
             </HeaderContainer>
 
-            <Row
-              className="show-grid"
-              onKeyDown={this.handleKeyDown}
-              onKeyUp={this.handleKeyUp}
-            >
+            <Row className="show-grid">
               <TreeContainer
                 treeKey={this.intTreeKey}
                 treeData={intTreeData}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, FormControl, FormGroup, Button } from "react-bootstrap";
+import { Form, FormControl, FormGroup, Button } from "react-bootstrap";
 import { string } from "prop-types";
 
 class SearchBar extends React.Component {
@@ -28,16 +28,19 @@ class SearchBar extends React.Component {
     const selectNextMatch = () => {
       const idx =
         searchFocusIndex !== null
-          ? (searchFoundCount + searchFocusIndex + 1) % searchFoundCount
-          : searchFoundCount + 1;
+          ? (searchFocusIndex + 1) % searchFoundCount
+          : 0;
       this.props.onSearchFocusChange(idx);
     };
 
     return (
-      <Navbar.Form
-        style={{ display: "inline", paddingLeft: 0 }}
-        onSubmit={e => e.preventDefault()}
+      // Can't use Navbar.Form. It doesn't allow next match on Enter.
+      <Form
         inline
+        style={{ display: "inline-block", paddingLeft: 0 }}
+        onSubmit={e => {
+          e.preventDefault();
+        }}
       >
         <FormGroup controlId="searchInput">
           <FormControl
@@ -46,7 +49,7 @@ class SearchBar extends React.Component {
             value={searchString}
             onChange={this.handleChange}
           />
-        </FormGroup>{" "}
+        </FormGroup>
         <Button
           type="button"
           disabled={!searchFoundCount}
@@ -67,7 +70,7 @@ class SearchBar extends React.Component {
           &nbsp;/&nbsp;
           {searchFoundCount || 0}
         </span>
-      </Navbar.Form>
+      </Form>
     );
   }
 }

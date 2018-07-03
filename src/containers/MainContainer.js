@@ -87,8 +87,7 @@ class MainContainer extends Component {
     this.highlightUnmapped = this.highlightUnmapped.bind(this);
     this.handleAddNodes = this.handleAddNodes.bind(this);
     this.handleExport = this.handleExport.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchFocusChange = this.handleSearchFocusChange.bind(this);
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
@@ -103,8 +102,7 @@ class MainContainer extends Component {
         treeIndex: 0
       }
     });
-    document.addEventListener("keydown", this.handleKeyDown);
-    document.addEventListener("keyup", this.handleKeyUp);
+    document.addEventListener("keypress", this.handleKeyPress);
   }
 
   expandAll(expanded, key) {
@@ -185,7 +183,7 @@ class MainContainer extends Component {
     return exportMappingsToXML(intTreeData, activeType, options.outputParents);
   }
 
-  handleKeyDown(e) {
+  handleKeyPress(e) {
     const {
       intTreeData,
       extTreeData,
@@ -202,16 +200,14 @@ class MainContainer extends Component {
       return;
     }
 
+    console.log(e);
     // Implement tab to handle tree focus
     const key = e.keyCode || null;
     const cmd = e.target.dataset.cmd || null;
-    if (key in keyboard) {
-      keyboard[key] = true;
+    if (key in keyboard || cmd) {
       e.preventDefault();
     } else {
-      if (!cmd) {
-        return;
-      }
+      return;
     }
 
     // Halt on no ext data
@@ -244,55 +240,55 @@ class MainContainer extends Component {
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
     // Handle actions
-    if (keyboard[27]) {
+    if (key === 27) {
       console.log("ESC");
       document.activeElement.blur();
       return;
-    } else if (keyboard[17] && keyboard[70]) {
+    } else if (e.ctrlKey && key === 70) {
       console.log("CTRL + F");
       // Autocomplete search field with active node title
       this.handleSearch(activeIntNode.title);
       document.getElementById("searchInput").focus();
       return;
-    } else if ((keyboard[16] && keyboard[32]) || cmd === "shift-space") {
+    } else if ((e.shiftKey && key === 32) || cmd === "shift-space") {
       console.log("SHIFT + SPACE");
       console.log("Select node and its children. Preserve existing mappings.");
       newNode = mapNode([activeIntNode], activeExtNodeInfo.path, false);
       treeIndex += 1;
-    } else if ((keyboard[17] && keyboard[32]) || cmd === "ctrl-space") {
+    } else if ((e.ctrlKey && key === 32) || cmd === "ctrl-space") {
       console.log("CTRL + SPACE");
       console.log(
         "Select node and its children. Overwrite any existing mappings."
       );
       newNode = mapNode([activeIntNode], activeExtNodeInfo.path, true);
       treeIndex += 1;
-    } else if (keyboard[16] && keyboard[8]) {
+    } else if (e.shiftKey && key === 8) {
       console.log("SHIFT BACKSPACE");
       console.log(
         "Delete current node & everything under that node, then move up to the previous node."
       );
       newNode = mapNode([activeIntNode], null, true);
       treeIndex -= 1;
-    } else if (keyboard[32] || cmd === "space") {
+    } else if (key === 32 || cmd === "space") {
       console.log("SPACE");
       console.log("Select single node");
       activeIntNode.mapping = activeExtNodeInfo.path;
       newNode = activeIntNode;
       treeIndex += 1;
-    } else if (keyboard[46] || cmd === "delete") {
+    } else if (key === 46 || cmd === "delete") {
       console.log(
         "DELETE: Delete current node mapping and move down to the next node."
       );
       activeIntNode.mapping = null;
       newNode = activeIntNode;
       treeIndex += 1;
-    } else if ((keyboard[16] && keyboard[46]) || cmd === "shift-delete") {
+    } else if ((e.shiftKey && key === 46) || cmd === "shift-delete") {
       console.log(
         "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
       );
       newNode = mapNode([activeIntNode], null, true);
       treeIndex += 1;
-    } else if (keyboard[8]) {
+    } else if (key === 8) {
       console.log(
         "BACKSPACE Delete current node mapping and move up to the previous node."
       );
@@ -327,14 +323,6 @@ class MainContainer extends Component {
       { ...newactiveIntNodeInfo, treeIndex },
       this.intTreeKey
     );
-  }
-
-  handleKeyUp(e) {
-    const key = e.keyCode;
-    console.log("KEY UP", key);
-    if (key in keyboard) {
-      keyboard[key] = false;
-    }
   }
 
   handleSearch(searchString) {
@@ -438,7 +426,7 @@ class MainContainer extends Component {
                 extKey={this.extTreeKey}
                 onhighlightUnmapped={this.highlightUnmapped}
                 expandAll={this.expandAll}
-                onClick={this.handleKeyDown}
+                onClick={this.handleKeyPress}
               />
               <TreeContainer
                 treeKey={this.extTreeKey}

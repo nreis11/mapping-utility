@@ -22,7 +22,6 @@ class TreeContainer extends React.Component {
   constructor(props) {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
   }
 
@@ -32,8 +31,8 @@ class TreeContainer extends React.Component {
     }
 
     const key = e.keyCode;
+    console.log(key);
     if (key in keyboard) {
-      keyboard[key] = true;
       e.preventDefault();
     } else {
       return;
@@ -46,16 +45,16 @@ class TreeContainer extends React.Component {
     const { children } = activeNodeInfo.node;
     const nodeCount = getVisibleNodeCount({ treeData });
 
-    if (keyboard[38]) {
+    if (key === 38) {
       console.log("UP");
       treeIndex -= 1;
-    } else if (keyboard[40]) {
+    } else if (key === 40) {
       console.log("DOWN");
       treeIndex += 1;
-    } else if (keyboard[37]) {
+    } else if (key === 37) {
       console.log("LEFT");
       expanded ? (expanded = false) : (treeIndex -= 1);
-    } else if (keyboard[39]) {
+    } else if (key === 39) {
       console.log("RIGHT");
       expanded ? children && (treeIndex += 1) : (expanded = true);
     }
@@ -73,13 +72,6 @@ class TreeContainer extends React.Component {
       newactiveNodeInfo = getActiveNode(treeData, treeIndex);
     }
     handleSelectNode({ ...newactiveNodeInfo, treeIndex }, treeKey);
-  }
-
-  handleKeyUp(e) {
-    const key = e.keyCode;
-    if (key in keyboard) {
-      keyboard[key] = false;
-    }
   }
 
   handleRemoveNode(path) {
@@ -118,11 +110,7 @@ class TreeContainer extends React.Component {
       node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
 
     return (
-      <Col
-        md={colSize}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
-      >
+      <Col md={colSize} onKeyDown={this.handleKeyDown}>
         <Well className="well">
           <SortableTree
             treeData={treeData}

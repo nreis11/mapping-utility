@@ -149,3 +149,7 @@ function createNode(rootNode, node, outputParents = false) {
 // 		<boardvalue tier="1"><![CDATA[AFG ]]></boardvalue>
 // 	</map>
 // </mapping>
+
+export function isABootstrapModalOpen() {
+  return document.querySelectorAll(".modal.in").length > 0;
+}

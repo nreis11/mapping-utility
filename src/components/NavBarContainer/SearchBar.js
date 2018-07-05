@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, FormControl, FormGroup, Button } from "react-bootstrap";
-import { string } from "prop-types";
+import { string, func, number } from "prop-types";
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -76,7 +76,10 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-  searchString: string
+  searchString: string,
+  onSearchFocusChange: func.isRequired,
+  handleSearch: func.isRequired,
+  searchFocusIndex: number.isRequired
 };
 
 SearchBar.defaultProps = {

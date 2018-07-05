@@ -48,13 +48,13 @@ class HelpModal extends React.Component {
             </p>
 
             <p>
-              <strong>Shift-Space:</strong>
+              <strong>Shift+Space:</strong>
               <br />
               Map node and its children. Preserve existing mappings.
             </p>
 
             <p>
-              <strong>Ctrl-Space:</strong>
+              <strong>Ctrl+Space:</strong>
               <br />
               Map node and its children. Overwrite any existing mappings.
             </p>
@@ -66,10 +66,10 @@ class HelpModal extends React.Component {
             </p>
 
             <p>
-              <strong>Shift-Delete:</strong>
+              <strong>Shift+Delete:</strong>
               <br />
-              Delete current node & everything under that node, then move down
-              to the next node.
+              Delete current node &amp; everything under that node, then move
+              down to the next node.
             </p>
 
             <p>
@@ -79,10 +79,10 @@ class HelpModal extends React.Component {
             </p>
 
             <p>
-              <strong>Shift-Backspace:</strong>
+              <strong>Shift+Backspace:</strong>
               <br />
-              Delete current node & everything under that node, then move up to
-              the previous node.
+              Delete current node &amp; everything under that node, then move up
+              to the previous node.
             </p>
 
             {/* <p>
@@ -92,15 +92,21 @@ class HelpModal extends React.Component {
             </p> */}
 
             <p>
-              <strong>Ctrl-G:</strong>
+              <strong>Ctrl+G:</strong>
               <br />
               Search eQuest tree.
             </p>
 
             <p>
-              <strong>Ctrl-F:</strong>
+              <strong>Ctrl+F:</strong>
               <br />
               Search Board tree.
+            </p>
+
+            <p>
+              <strong>Esc (when search field is in focus):</strong>
+              <br />
+              Allow keyboard mapping (Space, Shift+Space, etc...) commands.
             </p>
           </Modal.Body>
           <Modal.Footer>

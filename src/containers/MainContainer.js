@@ -27,7 +27,8 @@ import {
   getActiveNode,
   mapNode,
   modifyNodeAtPath,
-  exportMappingsToXML
+  exportMappingsToXML,
+  isABootstrapModalOpen
 } from "../helpers";
 
 const keyboard = {
@@ -198,8 +199,11 @@ class MainContainer extends Component {
 
     console.log("HANDLING");
 
-    // Ignore if search field in focus except for ESC
-    if (document.activeElement.id === "searchInput" && e.keyCode !== 27) {
+    // Ignore if search field in focus except for ESC or if bootstrap modal is open
+    if (
+      (document.activeElement.id === "searchInput" && e.keyCode !== 27) ||
+      isABootstrapModalOpen()
+    ) {
       console.log("IGNORED");
       return;
     }
@@ -218,12 +222,6 @@ class MainContainer extends Component {
       return;
     }
 
-    // Halt if both nodes aren't selected
-    if (!activeIntNodeInfo || !activeExtNodeInfo) {
-      alert("Please select a node from each tree.");
-      return;
-    }
-
     if (
       !parentsSelectable &&
       activeExtNodeInfo &&
@@ -238,7 +236,7 @@ class MainContainer extends Component {
     let newNode;
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
-    // Handle actions
+    // Handle navigation
     if (key === 27) {
       console.log("ESC");
       document.activeElement.blur();
@@ -249,7 +247,16 @@ class MainContainer extends Component {
       this.handleSearch(activeIntNode.title);
       document.getElementById("searchInput").focus();
       return;
-    } else if ((e.shiftKey && key === 32) || cmd === "shift-space") {
+    }
+
+    // Halt if both nodes aren't selected
+    if (!activeIntNodeInfo || !activeExtNodeInfo) {
+      alert("Please select a node from each tree.");
+      return;
+    }
+
+    // Handle actions
+    if ((e.shiftKey && key === 32) || cmd === "shift-space") {
       console.log("SHIFT + SPACE");
       console.log("Select node and its children. Preserve existing mappings.");
       newNode = mapNode([activeIntNode], activeExtNodeInfo.path, false);
@@ -314,10 +321,16 @@ class MainContainer extends Component {
 
     // Set the new active node
     const newactiveIntNodeInfo = getActiveNode(intTreeData, treeIndex);
+
+    // Scroll active node into view
     const activeNodeElem = document.getElementById(
       newactiveIntNodeInfo.node.id
     );
-    activeNodeElem.scrollIntoView(false);
+
+    if (activeNodeElem) {
+      activeNodeElem.scrollIntoView(false);
+    }
+
     // Add treeIndex
     this.handleSelectNode(
       { ...newactiveIntNodeInfo, treeIndex },
@@ -370,7 +383,7 @@ class MainContainer extends Component {
       mappedNode = getNodeAtPath({
         treeData: extTreeData,
         path: activeIntNode.mapping,
-        getNodeKey: ({ node }) => node.id
+        getNodeKey
       }).node;
     }
 

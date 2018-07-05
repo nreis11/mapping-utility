@@ -149,10 +149,3 @@ function createNode(rootNode, node, outputParents = false) {
 // 		<boardvalue tier="1"><![CDATA[AFG ]]></boardvalue>
 // 	</map>
 // </mapping>
-
-export function alertIfNoActiveNodes(activeNodes) {
-  if (!activeNodes) {
-    alert("Please select a node from each tree.");
-  }
-  return;
-}

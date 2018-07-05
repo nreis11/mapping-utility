@@ -26,15 +26,8 @@ class TreeContainer extends React.Component {
   }
 
   handleKeyDown(e) {
-    if (this.props.editMode) {
-      return;
-    }
-
     const key = e.keyCode;
-    console.log(key);
-    if (key in keyboard) {
-      e.preventDefault();
-    } else {
+    if (this.props.editMode || !(key in keyboard)) {
       return;
     }
 

@@ -32,8 +32,6 @@ import {
 
 const keyboard = {
   32: false, // space,
-  16: false, // shift,
-  17: false, // ctrl
   46: false, // del,
   70: false, // F
   71: false, // G
@@ -87,7 +85,7 @@ class MainContainer extends Component {
     this.highlightUnmapped = this.highlightUnmapped.bind(this);
     this.handleAddNodes = this.handleAddNodes.bind(this);
     this.handleExport = this.handleExport.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchFocusChange = this.handleSearchFocusChange.bind(this);
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
@@ -102,7 +100,11 @@ class MainContainer extends Component {
         treeIndex: 0
       }
     });
-    document.addEventListener("keypress", this.handleKeyPress);
+    document.addEventListener("keydown", this.handleKeyDown);
+  }
+
+  componentDidUnMount() {
+    document.removeEventListener("keydown", this.handleKeyDown);
   }
 
   expandAll(expanded, key) {
@@ -183,7 +185,7 @@ class MainContainer extends Component {
     return exportMappingsToXML(intTreeData, activeType, options.outputParents);
   }
 
-  handleKeyPress(e) {
+  handleKeyDown(e) {
     const {
       intTreeData,
       extTreeData,
@@ -194,13 +196,14 @@ class MainContainer extends Component {
     const { parentsSelectable } = options;
     const activeIntNode = activeIntNodeInfo.node;
 
+    console.log("HANDLING");
+
     // Ignore if search field in focus except for ESC
     if (document.activeElement.id === "searchInput" && e.keyCode !== 27) {
       console.log("IGNORED");
       return;
     }
 
-    console.log(e);
     // Implement tab to handle tree focus
     const key = e.keyCode || null;
     const cmd = e.target.dataset.cmd || null;
@@ -218,8 +221,6 @@ class MainContainer extends Component {
     // Halt if both nodes aren't selected
     if (!activeIntNodeInfo || !activeExtNodeInfo) {
       alert("Please select a node from each tree.");
-      // Reset keyboard
-      Object.keys(keyboard).map(key => (keyboard[key] = false));
       return;
     }
 
@@ -229,8 +230,6 @@ class MainContainer extends Component {
       activeExtNodeInfo.node.children
     ) {
       alert("Parents aren't seletable");
-      // Reset keyboard
-      Object.keys(keyboard).map(key => (keyboard[key] = false));
       return;
     }
 
@@ -304,9 +303,6 @@ class MainContainer extends Component {
       e.target.blur();
     }
 
-    // Reset keyboard
-    Object.keys(keyboard).map(key => (keyboard[key] = false));
-
     // Replace active node with new mapping
     const { path } = activeIntNodeInfo;
     const newTreeData = modifyNodeAtPath(intTreeData, path, newNode);
@@ -318,6 +314,10 @@ class MainContainer extends Component {
 
     // Set the new active node
     const newactiveIntNodeInfo = getActiveNode(intTreeData, treeIndex);
+    const activeNodeElem = document.getElementById(
+      newactiveIntNodeInfo.node.id
+    );
+    activeNodeElem.scrollIntoView(false);
     // Add treeIndex
     this.handleSelectNode(
       { ...newactiveIntNodeInfo, treeIndex },
@@ -426,7 +426,7 @@ class MainContainer extends Component {
                 extKey={this.extTreeKey}
                 onhighlightUnmapped={this.highlightUnmapped}
                 expandAll={this.expandAll}
-                onClick={this.handleKeyPress}
+                onClick={this.handleKeyDown}
               />
               <TreeContainer
                 treeKey={this.extTreeKey}

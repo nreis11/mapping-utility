@@ -197,12 +197,12 @@ class MainContainer extends Component {
     const { parentsSelectable } = options;
     const activeIntNode = activeIntNodeInfo.node;
 
-    console.log("HANDLING");
-
-    // Ignore if search field in focus except for ESC or if bootstrap modal is open
+    // Ignore if search field in focus except for ESC, if bootstrap modal is open, or
+    // no ext tree data
     if (
       (document.activeElement.id === "searchInput" && e.keyCode !== 27) ||
-      isABootstrapModalOpen()
+      isABootstrapModalOpen() ||
+      extTreeData.length < 1
     ) {
       console.log("IGNORED");
       return;
@@ -214,11 +214,6 @@ class MainContainer extends Component {
     if (key in keyboard || cmd) {
       e.preventDefault();
     } else {
-      return;
-    }
-
-    // Halt on no ext data
-    if (extTreeData.length < 1) {
       return;
     }
 
@@ -236,7 +231,7 @@ class MainContainer extends Component {
     let newNode;
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
-    // Handle navigation
+    // Handle focus
     if (key === 27) {
       console.log("ESC");
       document.activeElement.blur();
@@ -417,7 +412,6 @@ class MainContainer extends Component {
                     treeData={extTreeData}
                     onChange={this.handleChange}
                     editMode={true}
-                    handleRemoveNode={this.handleRemoveNode}
                     onAddNodes={this.handleAddNodes}
                   />
                 </EditModal>
@@ -429,7 +423,7 @@ class MainContainer extends Component {
                 treeKey={this.intTreeKey}
                 treeData={intTreeData}
                 onChange={this.handleChange}
-                handleSelectNode={this.handleSelectNode}
+                onSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeIntNodeInfo}
                 highlightUnmapped={highlightUnmapped}
                 onSearchFinish={this.handleSearchFinish}
@@ -437,7 +431,7 @@ class MainContainer extends Component {
               <ActionBar
                 intKey={this.intTreeKey}
                 extKey={this.extTreeKey}
-                onhighlightUnmapped={this.highlightUnmapped}
+                onHighlightUnmapped={this.highlightUnmapped}
                 expandAll={this.expandAll}
                 onClick={this.handleKeyDown}
               />
@@ -445,7 +439,7 @@ class MainContainer extends Component {
                 treeKey={this.extTreeKey}
                 treeData={extTreeData}
                 onChange={this.handleChange}
-                handleSelectNode={this.handleSelectNode}
+                onSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeExtNodeInfo}
                 searchString={searchString}
                 searchFocusIndex={searchFocusIndex}

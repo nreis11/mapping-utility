@@ -31,7 +31,7 @@ class TreeContainer extends React.Component {
       return;
     }
 
-    const { treeData, activeNodeInfo, treeKey, handleSelectNode } = this.props;
+    const { treeData, activeNodeInfo, treeKey, onSelectNode } = this.props;
     let { treeIndex } = activeNodeInfo;
     const initialTreeIndex = treeIndex;
     let expanded = activeNodeInfo.node.expanded;
@@ -64,7 +64,7 @@ class TreeContainer extends React.Component {
     } else {
       newactiveNodeInfo = getActiveNode(treeData, treeIndex);
     }
-    handleSelectNode({ ...newactiveNodeInfo, treeIndex }, treeKey);
+    onSelectNode({ ...newactiveNodeInfo, treeIndex }, treeKey);
   }
 
   handleRemoveNode(path) {
@@ -84,7 +84,7 @@ class TreeContainer extends React.Component {
       activeNodeInfo,
       treeData,
       onChange,
-      handleSelectNode,
+      onSelectNode,
       highlightUnmapped,
       editMode,
       onAddNodes,
@@ -143,9 +143,7 @@ class TreeContainer extends React.Component {
                 : [];
 
               return {
-                onClick: editMode
-                  ? null
-                  : () => handleSelectNode(rowInfo, treeKey),
+                onClick: editMode ? null : () => onSelectNode(rowInfo, treeKey),
                 className: className.join(" "),
                 buttons: buttons,
                 id: node.id
@@ -162,7 +160,7 @@ TreeContainer.propTypes = {
   treeKey: string.isRequired,
   treeData: arrayOf(object).isRequired,
   onChange: func.isRequired,
-  handleSelectNode: func,
+  onSelectNode: func,
   highlightUnmapped: bool,
   editMode: bool.isRequired,
   onAddNodes: func,
@@ -174,7 +172,7 @@ TreeContainer.defaultProps = {
   editMode: false,
   onAddNodes: null,
   highlightUnmapped: false,
-  handleSelectNode: null,
+  onSelectNode: null,
   activeNodeInfo: {},
   onSearchFinish: null
 };

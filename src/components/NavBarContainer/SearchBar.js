@@ -37,7 +37,7 @@ class SearchBar extends React.Component {
       // Can't use Navbar.Form. It doesn't allow next match on Enter.
       <Form
         inline
-        style={{ display: "inline-block", paddingLeft: 0 }}
+        style={{ display: "inline-block" }}
         onSubmit={e => {
           e.preventDefault();
         }}

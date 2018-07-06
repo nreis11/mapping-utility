@@ -20,7 +20,7 @@ class ActionBar extends Component {
   }
 
   render() {
-    const { expandAll, intKey, extKey, onhighlightUnmapped } = this.props;
+    const { expandAll, intKey, extKey, onHighlightUnmapped } = this.props;
 
     const buttonGroupStyle = {
       margin: "0 auto"
@@ -61,7 +61,7 @@ class ActionBar extends Component {
           </Button>
         </ButtonGroup>
         <ButtonGroup>
-          <Button bsStyle="primary" onClick={onhighlightUnmapped} block>
+          <Button bsStyle="primary" onClick={onHighlightUnmapped} block>
             Highlight Unmapped
           </Button>
           <Button
@@ -108,7 +108,8 @@ ActionBar.propTypes = {
   expandAll: func.isRequired,
   onClick: func.isRequired,
   intKey: string.isRequired,
-  extKey: string.isRequired
+  extKey: string.isRequired,
+  onHighlightUnmapped: func.isRequired
 };
 
 export default ActionBar;

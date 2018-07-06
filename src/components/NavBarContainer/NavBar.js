@@ -8,14 +8,6 @@ import SearchBar from "./SearchBar";
 import HelpModal from "./HelpModal";
 
 const NavBar = props => {
-  const {
-    handleSearch,
-    searchString,
-    searchFoundCount,
-    searchFocusIndex,
-    onSearchFocusChange
-  } = props;
-
   return (
     <Navbar inverse fixedTop fluid>
       <Navbar.Header>
@@ -31,13 +23,7 @@ const NavBar = props => {
           </Button>
         </NavItem>
         <NavItem>
-          <SearchBar
-            searchString={searchString}
-            handleSearch={handleSearch}
-            searchFoundCount={searchFoundCount}
-            searchFocusIndex={searchFocusIndex}
-            onSearchFocusChange={onSearchFocusChange}
-          />
+          <SearchBar {...props} />
         </NavItem>
       </Nav>
       <Nav pullRight>

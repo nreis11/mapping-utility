@@ -1,5 +1,5 @@
 import React from "react";
-import { func, string, arrayOf, object, bool, shape } from "prop-types";
+import { func, string, arrayOf, object, bool, shape, number } from "prop-types";
 import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
@@ -165,7 +165,9 @@ TreeContainer.propTypes = {
   editMode: bool.isRequired,
   onAddNodes: func,
   activeNodeInfo: shape({}),
-  onSearchFinish: func
+  onSearchFinish: func,
+  searchString: string,
+  searchFocusIndex: number
 };
 
 TreeContainer.defaultProps = {
@@ -174,7 +176,9 @@ TreeContainer.defaultProps = {
   highlightUnmapped: false,
   onSelectNode: null,
   activeNodeInfo: {},
-  onSearchFinish: null
+  onSearchFinish: null,
+  searchString: "",
+  searchFocusIndex: 0
 };
 
 export default TreeContainer;

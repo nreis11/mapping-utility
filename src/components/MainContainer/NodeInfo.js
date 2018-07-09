@@ -35,9 +35,9 @@ const NodeInfo = props => {
   );
 };
 
-NodeInfo.default = {
+NodeInfo.defaultProps = {
   mdOffset: 0,
-  node: {}
+  node: null
 };
 
 NodeInfo.propTypes = {

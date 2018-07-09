@@ -31,15 +31,6 @@ import {
   isABootstrapModalOpen
 } from "../helpers";
 
-const keyboard = {
-  32: false, // space,
-  46: false, // del,
-  70: false, // F
-  71: false, // G
-  8: false, // backspace
-  27: false // esc
-};
-
 const getNodeKey = ({ node }) => node.id;
 
 class MainContainer extends Component {
@@ -208,10 +199,19 @@ class MainContainer extends Component {
       return;
     }
 
+    const keyboard = [
+      32, // space,
+      46, // del,
+      70, // F
+      71, // G
+      8, // backspace
+      27 // esc
+    ];
+
     // Implement tab to handle tree focus
     const key = e.keyCode || null;
     const cmd = e.target.dataset.cmd || null;
-    if (key in keyboard || cmd) {
+    if (keyboard.includes(key) || cmd) {
       e.preventDefault();
     } else {
       return;

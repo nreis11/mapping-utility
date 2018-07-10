@@ -7,6 +7,8 @@ import {
   getVisibleNodeCount
 } from "react-sortable-tree";
 
+import * as loadSaveHelpers from "../loadSaveHelpers";
+
 import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";
 import ActionBar from "../components/TreeContainer/ActionBar";
@@ -83,10 +85,11 @@ class MainContainer extends Component {
     this.handleSearchFocusChange = this.handleSearchFocusChange.bind(this);
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
     this.handleSearchOptionChange = this.handleSearchOptionChange.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleLoad = this.handleLoad.bind(this);
   }
 
   componentDidMount() {
-    console.log("MOUNTED");
     // Set first node as selected
     this.setState({
       activeIntNodeInfo: {
@@ -253,47 +256,34 @@ class MainContainer extends Component {
 
     // Handle actions
     if ((e.shiftKey && key === 32) || cmd === "shift-space") {
-      console.log("SHIFT + SPACE");
-      console.log("Select node and its children. Preserve existing mappings.");
+      // "Select node and its children. Preserve existing mappings"
       newNode = mapNode([activeIntNode], activeExtNodeInfo.path, false);
       treeIndex += 1;
     } else if ((e.ctrlKey && key === 32) || cmd === "ctrl-space") {
-      console.log("CTRL + SPACE");
-      console.log(
-        "Select node and its children. Overwrite any existing mappings."
-      );
+      // "Select node and its children. Overwrite any existing mappings."
       newNode = mapNode([activeIntNode], activeExtNodeInfo.path, true);
       treeIndex += 1;
     } else if (e.shiftKey && key === 8) {
-      console.log("SHIFT BACKSPACE");
-      console.log(
-        "Delete current node & everything under that node, then move up to the previous node."
-      );
+      // console.log("SHIFT BACKSPACE");
+      // "Delete current node & everything under that node, then move up to the previous node."
       newNode = mapNode([activeIntNode], null, true);
       treeIndex -= 1;
     } else if (key === 32 || cmd === "space") {
-      console.log("SPACE");
-      console.log("Select single node");
+      // "Map single node"
       activeIntNode.mapping = activeExtNodeInfo.path;
       newNode = activeIntNode;
       treeIndex += 1;
     } else if (key === 46 || cmd === "delete") {
-      console.log(
-        "DELETE: Delete current node mapping and move down to the next node."
-      );
+      // "DELETE: Delete current node mapping and move down to the next node."
       activeIntNode.mapping = null;
       newNode = activeIntNode;
       treeIndex += 1;
     } else if ((e.shiftKey && key === 46) || cmd === "shift-delete") {
-      console.log(
-        "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
-      );
+      // "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
       newNode = mapNode([activeIntNode], null, true);
       treeIndex += 1;
     } else if (key === 8) {
-      console.log(
-        "BACKSPACE Delete current node mapping and move up to the previous node."
-      );
+      // "BACKSPACE Delete current node mapping and move up to the previous node."
       activeIntNode.mapping = null;
       newNode = activeIntNode;
       treeIndex -= 1;
@@ -372,6 +362,33 @@ class MainContainer extends Component {
     }, 0);
   }
 
+  handleLoad() {
+    console.log("Loading");
+    // Prompt user for file
+    // Parse file
+    // Update state
+  }
+
+  handleSave() {
+    console.log("SAVED");
+    // Tested for value equality
+    let jsonString;
+    const intFlatData = loadSaveHelpers.getFlatData(this.state.intTreeData);
+    const extFlatData = loadSaveHelpers.getFlatData(this.state.extTreeData);
+    const { options, activeType } = this.state;
+    jsonString = JSON.stringify({
+      intFlatData,
+      extFlatData,
+      options,
+      activeType
+    });
+    let link = document.createElement("a");
+    let file = new Blob([jsonString], { type: "application/json" });
+    link.href = URL.createObjectURL(file);
+    link.download = "mapping.json";
+    link.click();
+  }
+
   render() {
     const {
       intTreeData,
@@ -386,6 +403,7 @@ class MainContainer extends Component {
       searchFoundCount,
       searchInternal
     } = this.state;
+
     const internalName = "eQuest";
     const externalName = "Board";
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
@@ -412,6 +430,8 @@ class MainContainer extends Component {
             onSearchFocusChange={this.handleSearchFocusChange}
             onSearchOptionChange={this.handleSearchOptionChange}
             searchInternal={searchInternal}
+            onSave={this.handleSave}
+            onLoad={this.handleLoad}
           />
         </NavBarContainer>
         <Jumbotron>

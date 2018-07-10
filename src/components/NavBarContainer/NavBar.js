@@ -8,6 +8,8 @@ import SearchBar from "./SearchBar";
 import HelpModal from "./HelpModal";
 
 const NavBar = props => {
+  const { onLoad, onSave, ...restProps } = props;
+
   return (
     <Navbar inverse fixedTop fluid>
       <Navbar.Header>
@@ -15,15 +17,15 @@ const NavBar = props => {
       </Navbar.Header>
       <Nav>
         <NavItem>
-          <Button>
+          <Button onClick={onLoad}>
             <FaOpen />
           </Button>
-          <Button>
+          <Button onClick={onSave}>
             <FaFloppyO />
           </Button>
         </NavItem>
         <NavItem>
-          <SearchBar {...props} />
+          <SearchBar {...restProps} />
         </NavItem>
       </Nav>
       <Nav pullRight>

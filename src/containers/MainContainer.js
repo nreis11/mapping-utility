@@ -448,7 +448,7 @@ class MainContainer extends Component {
                 activeNodeInfo={activeIntNodeInfo}
                 searchString={intSearchString}
                 searchFocusIndex={searchFocusIndex}
-                onSearchFinish={this.handleSearchFinish}
+                onSearchFinish={searchInternal && this.handleSearchFinish}
                 highlightUnmapped={highlightUnmapped}
               />
               <ActionBar
@@ -466,7 +466,7 @@ class MainContainer extends Component {
                 activeNodeInfo={activeExtNodeInfo}
                 searchString={extSearchString}
                 searchFocusIndex={searchFocusIndex}
-                onSearchFinish={this.handleSearchFinish}
+                onSearchFinish={!searchInternal && this.handleSearchFinish}
               />
             </Row>
 

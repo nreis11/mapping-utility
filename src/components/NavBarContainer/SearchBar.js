@@ -6,7 +6,7 @@ import {
   Button,
   Checkbox
 } from "react-bootstrap";
-import { string, func, number } from "prop-types";
+import { string, func, number, bool } from "prop-types";
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -57,7 +57,9 @@ class SearchBar extends React.Component {
         <FormGroup controlId="searchInput">
           <FormControl
             type="text"
-            placeholder="Search..."
+            placeholder={
+              searchInternal ? "Search eQuest..." : "Search Board..."
+            }
             value={searchString}
             onChange={this.handleChange}
           />
@@ -101,7 +103,8 @@ SearchBar.propTypes = {
   searchString: string,
   onSearchFocusChange: func.isRequired,
   handleSearch: func.isRequired,
-  searchFocusIndex: number.isRequired
+  searchFocusIndex: number.isRequired,
+  searchInternal: bool.isRequired
 };
 
 SearchBar.defaultProps = {

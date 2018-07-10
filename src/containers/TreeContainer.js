@@ -1,5 +1,14 @@
 import React from "react";
-import { func, string, arrayOf, object, bool, shape, number } from "prop-types";
+import {
+  func,
+  string,
+  arrayOf,
+  object,
+  bool,
+  shape,
+  number,
+  oneOfType
+} from "prop-types";
 import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
@@ -147,10 +156,13 @@ class TreeContainer extends React.Component {
               scaffoldBlockPxWidth={35}
               getNodeKey={({ node }) => node.id}
               searchMethod={customSearchMethod}
+              onlyExpandSearchedNodes={true}
               searchQuery={searchString}
               searchFocusOffset={searchFocusIndex}
               searchFinishCallback={matches => {
-                onSearchFinish(matches);
+                // Only run if the func is passed through
+                // to avoid search overrides
+                onSearchFinish && onSearchFinish(matches);
               }}
               generateNodeProps={rowInfo => {
                 const { node } = rowInfo;
@@ -183,7 +195,7 @@ TreeContainer.propTypes = {
   editMode: bool.isRequired,
   onAddNodes: func,
   activeNodeInfo: shape({}),
-  onSearchFinish: func,
+  onSearchFinish: oneOfType([func, bool]),
   searchString: string,
   searchFocusIndex: number
 };

@@ -8,7 +8,7 @@ const OptionsContainer = props => {
         <Panel.Heading style={{ padding: 2 }}>
           <Panel.Title componentClass="h3">Options</Panel.Title>
         </Panel.Heading>
-        <Panel.Body style={{ padding: "8px", height: "40px" }}>
+        <Panel.Body style={{ padding: 8, height: 40 }}>
           <div className="info">
             <span>
               <strong>{props.children}</strong>

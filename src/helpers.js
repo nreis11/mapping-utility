@@ -9,13 +9,6 @@ import xmlbuilder from "xmlbuilder";
 
 const getNodeKey = ({ node }) => node.id;
 
-const types = {
-  categories: "function",
-  industries: "industry",
-  states: "state",
-  countries: "country"
-};
-
 export function getTreeDataFromFlatData(flatData) {
   return getTreeFromFlatData({
     flatData: flatData.map(node => ({ ...node, expanded: false })),
@@ -34,7 +27,7 @@ export function getActiveNode(treeData, treeIndex) {
 }
 
 export function mapNode(treeData, mapping, overwrite = false) {
-  // Map node and its descendants
+  // Map node and its descendants. Returns treeData array. Take 0 index.
   return map({
     treeData,
     getNodeKey,
@@ -79,11 +72,13 @@ export function modifyNodeAtPath(treeData, path, newNode) {
 }
 
 export function exportMappingsToXML(treeData, type, outputParents) {
-  // NEED TO GRAB TYPE
+  const types = {
+    categories: "function",
+    industries: "industry",
+    states: "state",
+    countries: "country"
+  };
 
-  // Iterate through treedata, grab id and mapping
-  // If output parents, need to grab path of mapped mode
-  // Otherwise, grab last mapping index
   const mappingType = types[type];
   let rootNode = xmlbuilder
     .create("mapping", { encoding: "ISO-8859-1" })

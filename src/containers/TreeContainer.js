@@ -11,13 +11,6 @@ import "react-sortable-tree/style.css"; // This only needs to be imported once i
 
 import "./TreeContainer.css";
 
-const keyboard = {
-  37: false, // left,
-  38: false, // up,
-  39: false, // right,
-  40: false // down,
-};
-
 class TreeContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -26,8 +19,14 @@ class TreeContainer extends React.Component {
   }
 
   handleKeyDown(e) {
+    const keyboard = [
+      37, // left,
+      38, // up,
+      39, // right,
+      40 // down,
+    ];
     const key = e.keyCode;
-    if (this.props.editMode || !(key in keyboard)) {
+    if (!keyboard.includes(key)) {
       return;
     }
 
@@ -78,32 +77,11 @@ class TreeContainer extends React.Component {
     onChange(newTreeData, treeKey);
   }
 
-  render() {
-    const {
-      treeKey,
-      activeNodeInfo,
-      treeData,
-      onChange,
-      onSelectNode,
-      highlightUnmapped,
-      editMode,
-      onAddNodes,
-      searchString,
-      searchFocusIndex,
-      onSearchFinish
-    } = this.props;
-
-    const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
-    const colSize = editMode ? 12 : 5;
-    const unMappedClassName = highlightUnmapped ? "un-mapped" : "";
-
-    // Case insensitive search of `node.title`
-    const customSearchMethod = ({ node, searchQuery }) =>
-      searchQuery &&
-      node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
+  renderEditTree() {
+    const { treeKey, treeData, onChange, onAddNodes } = this.props;
 
     return (
-      <Col md={colSize} onKeyDown={this.handleKeyDown}>
+      <Col md={12}>
         <Well className="well">
           <SortableTree
             treeData={treeData}
@@ -113,38 +91,16 @@ class TreeContainer extends React.Component {
             rowHeight={45}
             scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
-            searchMethod={customSearchMethod}
-            searchQuery={searchString}
-            searchFocusOffset={searchFocusIndex}
-            searchFinishCallback={matches =>
-              editMode || treeKey === "intTreeData"
-                ? null
-                : onSearchFinish(matches)
-            }
             generateNodeProps={rowInfo => {
               const { node, path } = rowInfo;
-              let className = [];
-              if (!editMode) {
-                activeNode.id === node.id
-                  ? className.push("active-node")
-                  : className.push("");
-                node.mapping
-                  ? className.push("mapped")
-                  : className.push(unMappedClassName);
-              }
-
-              const buttons = editMode
-                ? [
-                    <AddModal onAddNodes={onAddNodes} nodeInfo={rowInfo} />,
-                    <button onClick={() => this.handleRemoveNode(path)}>
-                      <TrashIcon />
-                    </button>
-                  ]
-                : [];
+              const buttons = [
+                <AddModal onAddNodes={onAddNodes} nodeInfo={rowInfo} />,
+                <button onClick={() => this.handleRemoveNode(path)}>
+                  <TrashIcon />
+                </button>
+              ];
 
               return {
-                onClick: editMode ? null : () => onSelectNode(rowInfo, treeKey),
-                className: className.join(" "),
                 buttons: buttons,
                 id: node.id
               };
@@ -153,6 +109,68 @@ class TreeContainer extends React.Component {
         </Well>
       </Col>
     );
+  }
+
+  render() {
+    const {
+      treeKey,
+      activeNodeInfo,
+      treeData,
+      onChange,
+      editMode,
+      onSelectNode,
+      highlightUnmapped,
+      searchString,
+      searchFocusIndex,
+      onSearchFinish
+    } = this.props;
+
+    if (editMode) {
+      return this.renderEditTree();
+    } else {
+      const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
+
+      // Case insensitive search of `node.title`
+      const customSearchMethod = ({ node, searchQuery }) =>
+        searchQuery &&
+        node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
+
+      return (
+        <Col md={5} onKeyDown={this.handleKeyDown}>
+          <Well className="well">
+            <SortableTree
+              treeData={treeData}
+              onChange={treeData => onChange(treeData, treeKey)}
+              canDrag={false}
+              canDrop={() => false}
+              rowHeight={45}
+              scaffoldBlockPxWidth={35}
+              getNodeKey={({ node }) => node.id}
+              searchMethod={customSearchMethod}
+              searchQuery={searchString}
+              searchFocusOffset={searchFocusIndex}
+              searchFinishCallback={matches => {
+                onSearchFinish(matches);
+              }}
+              generateNodeProps={rowInfo => {
+                const { node } = rowInfo;
+                const className = [];
+                activeNode.id === node.id && className.push("active-node");
+                node.mapping
+                  ? className.push("mapped")
+                  : className.push(highlightUnmapped ? "un-mapped" : "");
+
+                return {
+                  onClick: () => onSelectNode(rowInfo, treeKey),
+                  className: className.join(" "),
+                  id: node.id
+                };
+              }}
+            />
+          </Well>
+        </Col>
+      );
+    }
   }
 }
 

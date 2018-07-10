@@ -63,7 +63,8 @@ class MainContainer extends Component {
       highlightUnmapped: false,
       searchString: "",
       searchFocusIndex: 0,
-      searchFoundCount: null
+      searchFoundCount: null,
+      searchInternal: false
     };
 
     this.intTreeKey = "intTreeData";
@@ -81,6 +82,7 @@ class MainContainer extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchFocusChange = this.handleSearchFocusChange.bind(this);
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
+    this.handleSearchOptionChange = this.handleSearchOptionChange.bind(this);
   }
 
   componentDidMount() {
@@ -186,7 +188,6 @@ class MainContainer extends Component {
       options
     } = this.state;
     const { parentsSelectable } = options;
-    const activeIntNode = activeIntNodeInfo.node;
 
     // Ignore if search field in focus except for ESC, if bootstrap modal is open, or
     // no ext tree data
@@ -195,7 +196,6 @@ class MainContainer extends Component {
       isABootstrapModalOpen() ||
       extTreeData.length < 1
     ) {
-      console.log("IGNORED");
       return;
     }
 
@@ -228,6 +228,7 @@ class MainContainer extends Component {
 
     // Get the current tree index
     let { treeIndex } = activeIntNodeInfo;
+    const activeIntNode = activeIntNodeInfo.node;
     let newNode;
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
@@ -347,13 +348,28 @@ class MainContainer extends Component {
 
   handleSearchFinish(matches) {
     const searchFocusIndex = this.state.searchFocusIndex;
+    console.log(searchFocusIndex);
     const newActiveNodeInfo = matches[searchFocusIndex] || null;
+    const activeNodeKey = this.state.searchInternal
+      ? "activeIntNodeInfo"
+      : "activeExtNodeInfo";
     this.setState({
       searchFoundCount: matches.length,
       searchFocusIndex:
         matches.length > 0 ? searchFocusIndex % matches.length : 0,
-      activeExtNodeInfo: newActiveNodeInfo
+      [activeNodeKey]: newActiveNodeInfo
     });
+  }
+
+  handleSearchOptionChange(event) {
+    const { name, checked } = event.target;
+
+    // Needed to setTimeout to reflect changes visually
+    window.setTimeout(() => {
+      this.setState({
+        [name]: checked
+      });
+    }, 0);
   }
 
   render() {
@@ -367,12 +383,15 @@ class MainContainer extends Component {
       highlightUnmapped,
       searchString,
       searchFocusIndex,
-      searchFoundCount
+      searchFoundCount,
+      searchInternal
     } = this.state;
     const internalName = "eQuest";
     const externalName = "Board";
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
+    const intSearchString = searchInternal ? searchString : "";
+    const extSearchString = searchInternal ? "" : searchString;
     let mappedNode = null;
     if (activeIntNode && activeIntNode.mapping) {
       mappedNode = getNodeAtPath({
@@ -391,6 +410,8 @@ class MainContainer extends Component {
             searchFocusIndex={searchFocusIndex}
             searchFoundCount={searchFoundCount}
             onSearchFocusChange={this.handleSearchFocusChange}
+            onSearchOptionChange={this.handleSearchOptionChange}
+            searchInternal={searchInternal}
           />
         </NavBarContainer>
         <Jumbotron>
@@ -425,8 +446,10 @@ class MainContainer extends Component {
                 onChange={this.handleChange}
                 onSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeIntNodeInfo}
-                highlightUnmapped={highlightUnmapped}
+                searchString={intSearchString}
+                searchFocusIndex={searchFocusIndex}
                 onSearchFinish={this.handleSearchFinish}
+                highlightUnmapped={highlightUnmapped}
               />
               <ActionBar
                 intKey={this.intTreeKey}
@@ -441,7 +464,7 @@ class MainContainer extends Component {
                 onChange={this.handleChange}
                 onSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeExtNodeInfo}
-                searchString={searchString}
+                searchString={extSearchString}
                 searchFocusIndex={searchFocusIndex}
                 onSearchFinish={this.handleSearchFinish}
               />

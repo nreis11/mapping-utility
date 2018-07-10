@@ -1,5 +1,11 @@
 import React from "react";
-import { Form, FormControl, FormGroup, Button } from "react-bootstrap";
+import {
+  Form,
+  FormControl,
+  FormGroup,
+  Button,
+  Checkbox
+} from "react-bootstrap";
 import { string, func, number } from "prop-types";
 
 class SearchBar extends React.Component {
@@ -15,7 +21,13 @@ class SearchBar extends React.Component {
   }
 
   render() {
-    const { searchString, searchFocusIndex, searchFoundCount } = this.props;
+    const {
+      searchString,
+      searchFocusIndex,
+      searchFoundCount,
+      onSearchOptionChange,
+      searchInternal
+    } = this.props;
 
     const selectPrevMatch = () => {
       const idx =
@@ -70,6 +82,16 @@ class SearchBar extends React.Component {
           &nbsp;/&nbsp;
           {searchFoundCount || 0}
         </span>
+        <FormGroup style={{ marginLeft: 10, color: "white" }}>
+          <Checkbox
+            name="searchInternal"
+            checked={searchInternal}
+            onChange={event => onSearchOptionChange(event)}
+            inline
+          >
+            Search eQuest
+          </Checkbox>
+        </FormGroup>
       </Form>
     );
   }

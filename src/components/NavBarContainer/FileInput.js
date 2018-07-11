@@ -1,4 +1,4 @@
-import React from "react-sortable-tree";
+import React from "react";
 
 class FileInput extends React.Component {
   constructor(props) {
@@ -6,6 +6,7 @@ class FileInput extends React.Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.isValidated = this.isValidated.bind(this);
     this.fileInput = React.createRef();
+    this.fileFormRef = React.createRef();
   }
   handleOnChange(event) {
     event.preventDefault();
@@ -15,6 +16,8 @@ class FileInput extends React.Component {
     if (this.isValidated(fileInput)) {
       this.props.handleFileInputChange(fileInput);
     }
+    // Reset form
+    this.fileFormRef.reset();
   }
 
   isValidated(file) {
@@ -27,13 +30,15 @@ class FileInput extends React.Component {
 
   render() {
     return (
-      <input
-        type="file"
-        id="file-input"
-        ref={this.fileInput}
-        onChange={this.handleOnChange}
-        style={{ display: "none" }}
-      />
+      <form ref={el => (this.fileFormRef = el)}>
+        <input
+          type="file"
+          id="file-input"
+          ref={this.fileInput}
+          onChange={this.handleOnChange}
+          style={{ display: "none" }}
+        />
+      </form>
     );
   }
 }

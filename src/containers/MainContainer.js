@@ -48,12 +48,12 @@ class MainContainer extends Component {
     this.state = {
       intTreeData: this.getTreeData("categories"),
       extTreeData: [
-        // {
-        //   id: 100,
-        //   title: "Parent",
-        //   expanded: true,
-        //   children: [{ id: 101, title: "Child" }]
-        // }
+        {
+          id: 100,
+          title: "Parent",
+          expanded: true,
+          children: [{ id: 999, title: "Child" }]
+        }
       ],
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
@@ -362,7 +362,7 @@ class MainContainer extends Component {
   }
 
   handleFileInputChange(fileInput) {
-    // Parse file
+    // Handle open file
     const fileReader = new FileReader();
     fileReader.readAsText(fileInput);
     fileReader.onload = e => {

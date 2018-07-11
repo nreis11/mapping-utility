@@ -1,5 +1,12 @@
 import React from "react";
-import { Navbar, NavItem, Button, Nav } from "react-bootstrap";
+import {
+  Navbar,
+  NavItem,
+  Button,
+  Nav,
+  Tooltip,
+  OverlayTrigger
+} from "react-bootstrap";
 import FaFloppyO from "react-icons/lib/fa/floppy-o";
 import FaOpen from "react-icons/lib/fa/folder-open-o";
 
@@ -17,6 +24,8 @@ const NavBar = props => {
     fileInput.click();
   };
 
+  const tooltip = text => <Tooltip>{text}</Tooltip>;
+
   return (
     <Navbar inverse fixedTop fluid>
       <Navbar.Header>
@@ -25,12 +34,16 @@ const NavBar = props => {
       <Nav>
         <FileInput handleFileInputChange={handleFileInputChange} />
         <NavItem>
-          <Button onClick={handleLoad}>
-            <FaOpen />
-          </Button>
-          <Button onClick={onSave}>
-            <FaFloppyO />
-          </Button>
+          <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
+            <Button onClick={handleLoad}>
+              <FaOpen />
+            </Button>
+          </OverlayTrigger>
+          <OverlayTrigger placement="bottom" overlay={tooltip("Save")}>
+            <Button onClick={onSave}>
+              <FaFloppyO />
+            </Button>
+          </OverlayTrigger>
         </NavItem>
         <NavItem>
           <SearchBar {...restProps} />

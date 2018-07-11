@@ -169,6 +169,7 @@ class MainContainer extends Component {
         extTreeData: state.extTreeData.concat(...newNodes)
       }));
     }
+    // Need to set active node here
   }
 
   handleChange(treeData, treeKey = this.intTreeKey) {
@@ -188,7 +189,8 @@ class MainContainer extends Component {
       extTreeData,
       activeIntNodeInfo,
       activeExtNodeInfo,
-      options
+      options,
+      searchInternal
     } = this.state;
     const { parentsSelectable } = options;
 
@@ -232,6 +234,7 @@ class MainContainer extends Component {
     // Get the current tree index
     let { treeIndex } = activeIntNodeInfo;
     const activeIntNode = activeIntNodeInfo.node;
+    const activeExtNode = activeExtNodeInfo.node;
     let newNode;
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
@@ -243,7 +246,10 @@ class MainContainer extends Component {
     } else if (e.ctrlKey && key === 70) {
       console.log("CTRL + F");
       // Autocomplete search field with active node title
-      this.handleSearch(activeIntNode.title);
+      const searchStr = searchInternal
+        ? activeExtNode.title
+        : activeIntNode.title;
+      this.handleSearch(searchStr);
       document.getElementById("searchInput").focus();
       return;
     }

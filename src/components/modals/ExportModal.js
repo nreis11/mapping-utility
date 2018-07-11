@@ -27,9 +27,9 @@ class ExportModal extends React.Component {
   }
 
   handleShow() {
-    this.setState({ show: true });
     const output = this.props.handleExport();
     this.setState({
+      show: true,
       output
     });
   }

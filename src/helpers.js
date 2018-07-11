@@ -148,3 +148,16 @@ function createNode(rootNode, node, outputParents = false) {
 export function isABootstrapModalOpen() {
   return document.querySelectorAll(".modal.in").length > 0;
 }
+
+// function treeCheck(intTreeData, extTreeData) {
+//   intTreeData.forEach((node, idx) => {
+//     let extNode = extTreeData[idx];
+//     for (let key in node) {
+//       if (node[key] !== extNode[key]) {
+//         console.log(key, " not equal");
+//         console.log("INT: ", node[key], "EXT: ", extNode[key]);
+//       }
+//     }
+//   });
+//   console.log("FINISHED");
+// }

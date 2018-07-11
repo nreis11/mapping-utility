@@ -7,7 +7,7 @@ import {
   getVisibleNodeCount
 } from "react-sortable-tree";
 
-import * as loadSaveHelpers from "../loadSaveHelpers";
+import { saveToJson } from "../fileHelpers";
 
 import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";
@@ -86,7 +86,7 @@ class MainContainer extends Component {
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
     this.handleSearchOptionChange = this.handleSearchOptionChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
-    this.handleLoad = this.handleLoad.bind(this);
+    this.handleFileInputChange = this.handleFileInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -338,7 +338,6 @@ class MainContainer extends Component {
 
   handleSearchFinish(matches) {
     const searchFocusIndex = this.state.searchFocusIndex;
-    console.log(searchFocusIndex);
     const newActiveNodeInfo = matches[searchFocusIndex] || null;
     const activeNodeKey = this.state.searchInternal
       ? "activeIntNodeInfo"
@@ -362,31 +361,26 @@ class MainContainer extends Component {
     }, 0);
   }
 
-  handleLoad() {
-    console.log("Loading");
-    // Prompt user for file
+  handleFileInputChange(fileInput) {
     // Parse file
-    // Update state
+    const fileReader = new FileReader();
+    fileReader.readAsText(fileInput);
+    fileReader.onload = e => {
+      // Convert string result to JSON after loading
+      const jsonObj = JSON.parse(e.target.result);
+      const { intFlatData, extFlatData, options, activeType } = jsonObj;
+      this.setState({
+        intTreeData: getTreeDataFromFlatData(intFlatData),
+        extTreeData: getTreeDataFromFlatData(extFlatData),
+        options,
+        activeType
+      });
+    };
   }
 
   handleSave() {
-    console.log("SAVED");
-    // Tested for value equality
-    let jsonString;
-    const intFlatData = loadSaveHelpers.getFlatData(this.state.intTreeData);
-    const extFlatData = loadSaveHelpers.getFlatData(this.state.extTreeData);
-    const { options, activeType } = this.state;
-    jsonString = JSON.stringify({
-      intFlatData,
-      extFlatData,
-      options,
-      activeType
-    });
-    let link = document.createElement("a");
-    let file = new Blob([jsonString], { type: "application/json" });
-    link.href = URL.createObjectURL(file);
-    link.download = "mapping.json";
-    link.click();
+    const { intTreeData, extTreeData, options, activeType } = this.state;
+    saveToJson({ intTreeData, extTreeData, options, activeType });
   }
 
   render() {
@@ -431,7 +425,7 @@ class MainContainer extends Component {
             onSearchOptionChange={this.handleSearchOptionChange}
             searchInternal={searchInternal}
             onSave={this.handleSave}
-            onLoad={this.handleLoad}
+            handleFileInputChange={this.handleFileInputChange}
           />
         </NavBarContainer>
         <Jumbotron>

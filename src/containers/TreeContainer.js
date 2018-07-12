@@ -137,7 +137,7 @@ class TreeContainer extends React.Component {
     if (editMode) {
       return this.renderEditTree();
     } else {
-      const activeNode = activeNodeInfo ? activeNodeInfo.node : {};
+      const activeNode = activeNodeInfo ? activeNodeInfo.node : null;
 
       // Case insensitive search of `node.title`
       const customSearchMethod = ({ node, searchQuery }) =>
@@ -167,7 +167,9 @@ class TreeContainer extends React.Component {
               generateNodeProps={rowInfo => {
                 const { node } = rowInfo;
                 const className = [];
-                activeNode.id === node.id && className.push("active-node");
+                activeNode &&
+                  activeNode.id === node.id &&
+                  className.push("active-node");
                 node.mapping
                   ? className.push("mapped")
                   : className.push(highlightUnmapped ? "un-mapped" : "");

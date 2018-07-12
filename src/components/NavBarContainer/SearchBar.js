@@ -4,9 +4,11 @@ import {
   FormControl,
   FormGroup,
   Button,
+  InputGroup,
   Checkbox
 } from "react-bootstrap";
 import { string, func, number, bool } from "prop-types";
+import FaSearch from "react-icons/lib/fa/search";
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -55,14 +57,19 @@ class SearchBar extends React.Component {
         }}
       >
         <FormGroup controlId="searchInput">
-          <FormControl
-            type="text"
-            placeholder={
-              searchInternal ? "Search eQuest..." : "Search Board..."
-            }
-            value={searchString}
-            onChange={this.handleChange}
-          />
+          <InputGroup>
+            <InputGroup.Addon>
+              <FaSearch />
+            </InputGroup.Addon>
+            <FormControl
+              type="text"
+              placeholder={
+                searchInternal ? "Search eQuest..." : "Search Board..."
+              }
+              value={searchString}
+              onChange={this.handleChange}
+            />
+          </InputGroup>
         </FormGroup>
         <Button
           type="button"

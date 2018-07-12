@@ -62,12 +62,12 @@ class AddNodesForm extends React.Component {
           delimiter={delimiter}
         />
         <Row>
-          <DelimiterForm onChange={this.handleChange} delimiter={delimiter} />
           <IdxForm
             onChange={this.handleChange}
             idx={valueIdx}
             name="valueIdx"
           />
+          <DelimiterForm onChange={this.handleChange} delimiter={delimiter} />
           <IdxForm
             onChange={this.handleChange}
             idx={labelIdx}

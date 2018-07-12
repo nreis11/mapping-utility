@@ -91,12 +91,11 @@ class MainContainer extends Component {
 
   componentDidMount() {
     // Set first node as selected
-    this.setState({
-      activeIntNodeInfo: {
-        ...getActiveNode(this.state.intTreeData, 0),
-        treeIndex: 0
-      }
-    });
+    const activeNode = {
+      ...getActiveNode(this.state.intTreeData, 0),
+      treeIndex: 0
+    };
+    this.handleSelectNode(activeNode, this.intTreeKey);
     document.addEventListener("keydown", this.handleKeyDown);
   }
 
@@ -165,11 +164,19 @@ class MainContainer extends Component {
         }));
       });
     } else {
-      this.setState(state => ({
-        extTreeData: state.extTreeData.concat(...newNodes)
-      }));
+      this.setState(
+        {
+          extTreeData: this.state.extTreeData.concat(...newNodes)
+        },
+        () => {
+          const activeNode = {
+            ...getActiveNode(this.state.extTreeData, 0),
+            treeIndex: 0
+          };
+          this.handleSelectNode(activeNode, this.extTreeKey);
+        }
+      );
     }
-    // Need to set active node here
   }
 
   handleChange(treeData, treeKey = this.intTreeKey) {
@@ -213,7 +220,7 @@ class MainContainer extends Component {
       27 // esc
     ];
 
-    // Implement tab to handle tree focus
+    // Can handle key or command from action bar click
     const key = e.keyCode || null;
     const cmd = e.target.dataset.cmd || null;
     if (keyboard.includes(key) || cmd) {

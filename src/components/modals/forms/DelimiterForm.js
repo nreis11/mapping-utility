@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
 import { string, func } from "prop-types";
 
 class DelimiterForm extends Component {
@@ -15,20 +15,22 @@ class DelimiterForm extends Component {
     const { delimiter, onChange } = this.props;
 
     return (
-      <FormGroup
-        controlId="formDelimiter"
-        validationState={this.getValidationState()}
-      >
-        <ControlLabel>Delimiter</ControlLabel>
-        <FormControl
-          type="text"
-          name="delimiter"
-          value={delimiter}
-          placeholder="What separates the value from the label?"
-          onChange={onChange}
-        />
-        <FormControl.Feedback />
-      </FormGroup>
+      <Col md={4}>
+        <FormGroup
+          controlId="formDelimiter"
+          validationState={this.getValidationState()}
+        >
+          <ControlLabel>Delimiter</ControlLabel>
+          <FormControl
+            type="text"
+            name="delimiter"
+            value={delimiter}
+            placeholder="What separates the value from the label?"
+            onChange={onChange}
+          />
+          <FormControl.Feedback />
+        </FormGroup>
+      </Col>
     );
   }
 }

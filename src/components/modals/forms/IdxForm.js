@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
 import { number, func } from "prop-types";
 
 class IdxForm extends Component {
@@ -19,22 +19,24 @@ class IdxForm extends Component {
     const { idx, onChange, name } = this.props;
 
     return (
-      <FormGroup
-        controlId={`form${name}`}
-        validationState={this.getValidationState()}
-      >
-        <ControlLabel>
-          {name === "valueIdx" ? "Value" : "Label"} Position
-        </ControlLabel>
-        <FormControl
-          type="text"
-          name={name}
-          value={idx}
-          placeholder="Enter 1 or 2"
-          onChange={onChange}
-        />
-        <FormControl.Feedback />
-      </FormGroup>
+      <Col md={4}>
+        <FormGroup
+          controlId={`form${name}`}
+          validationState={this.getValidationState()}
+        >
+          <ControlLabel>
+            {name === "valueIdx" ? "Value" : "Label"} Position
+          </ControlLabel>
+          <FormControl
+            type="text"
+            name={name}
+            value={idx}
+            placeholder="Enter 1 or 2"
+            onChange={onChange}
+          />
+          <FormControl.Feedback />
+        </FormGroup>
+      </Col>
     );
   }
 }

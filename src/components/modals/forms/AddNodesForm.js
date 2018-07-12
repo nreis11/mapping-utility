@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Row } from "react-bootstrap";
 import RawDataForm from "./RawDataForm";
 import DelimiterForm from "./DelimiterForm";
 import IdxForm from "./IdxForm";
@@ -61,9 +61,19 @@ class AddNodesForm extends React.Component {
           rawData={rawData}
           delimiter={delimiter}
         />
-        <DelimiterForm onChange={this.handleChange} delimiter={delimiter} />
-        <IdxForm onChange={this.handleChange} idx={valueIdx} name="valueIdx" />
-        <IdxForm onChange={this.handleChange} idx={labelIdx} name="labelIdx" />
+        <Row>
+          <DelimiterForm onChange={this.handleChange} delimiter={delimiter} />
+          <IdxForm
+            onChange={this.handleChange}
+            idx={valueIdx}
+            name="valueIdx"
+          />
+          <IdxForm
+            onChange={this.handleChange}
+            idx={labelIdx}
+            name="labelIdx"
+          />
+        </Row>
         <Button
           style={{ marginLeft: 5 }}
           bsStyle="info"

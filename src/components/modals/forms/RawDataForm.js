@@ -36,7 +36,7 @@ class RawDataForm extends Component {
           value={rawData}
           placeholder="Ex. Value|Label"
           onChange={onChange}
-          style={{ height: "40vh" }}
+          style={{ height: "55vh" }}
         />
         <FormControl.Feedback />
       </FormGroup>

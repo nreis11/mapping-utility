@@ -88,7 +88,7 @@ class SearchBar extends React.Component {
           <Checkbox
             name="searchInternal"
             checked={searchInternal}
-            onChange={event => onSearchOptionChange(event)}
+            onChange={onSearchOptionChange}
             inline
           >
             Search eQuest

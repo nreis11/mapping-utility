@@ -53,8 +53,6 @@ class AddNodesForm extends React.Component {
 
   render() {
     const { rawData, delimiter, valueIdx, labelIdx } = this.state;
-    const valueIdxKey = "valueIdx";
-    const labelIdxKey = "labelIdx";
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -64,16 +62,8 @@ class AddNodesForm extends React.Component {
           delimiter={delimiter}
         />
         <DelimiterForm onChange={this.handleChange} delimiter={delimiter} />
-        <IdxForm
-          onChange={this.handleChange}
-          idx={valueIdx}
-          name={valueIdxKey}
-        />
-        <IdxForm
-          onChange={this.handleChange}
-          idx={labelIdx}
-          name={labelIdxKey}
-        />
+        <IdxForm onChange={this.handleChange} idx={valueIdx} name="valueIdx" />
+        <IdxForm onChange={this.handleChange} idx={labelIdx} name="labelIdx" />
         <Button
           style={{ marginLeft: 5 }}
           bsStyle="info"

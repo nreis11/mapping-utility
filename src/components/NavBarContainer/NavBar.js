@@ -24,7 +24,7 @@ const NavBar = props => {
     fileInput.click();
   };
 
-  const tooltip = text => <Tooltip>{text}</Tooltip>;
+  const tooltip = text => <Tooltip id={`tooltip-${text}`}>{text}</Tooltip>;
 
   return (
     <Navbar inverse fixedTop fluid>

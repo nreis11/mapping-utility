@@ -358,8 +358,7 @@ class MainContainer extends Component {
 
   handleSearchOptionChange(event) {
     const { name, checked } = event.target;
-
-    // Needed to setTimeout to reflect changes visually
+    // Needed to setTimeout to reflect changes visually. Why...?
     window.setTimeout(() => {
       this.setState({
         [name]: checked

@@ -20,7 +20,7 @@ const Options = props => {
           style={inputStyle}
           type="checkbox"
           name="outputParents"
-          value={outputParents}
+          checked={outputParents}
           onChange={event => props.onOptionChange(event)}
         />
       </label>
@@ -30,7 +30,7 @@ const Options = props => {
           style={inputStyle}
           type="checkbox"
           name="parentsSelectable"
-          value={parentsSelectable}
+          checked={parentsSelectable}
           onChange={event => props.onOptionChange(event)}
         />
       </label>

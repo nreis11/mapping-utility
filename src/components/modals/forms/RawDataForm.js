@@ -20,7 +20,7 @@ class RawDataForm extends Component {
     return null;
   }
 
-  render(props) {
+  render() {
     const { rawData, onChange } = this.props;
 
     return (

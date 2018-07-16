@@ -26,7 +26,7 @@ import NavBar from "../components/NavBarContainer/NavBar";
 import { categories, industries, states, countries } from "../values/eqValues";
 import {
   getTreeDataFromFlatData,
-  getActiveNode,
+  getActiveNodeInfo,
   mapNode,
   modifyNodeAtPath,
   exportMappingsToXML,
@@ -92,7 +92,7 @@ class MainContainer extends Component {
   componentDidMount() {
     // Set first node as selected
     const activeNode = {
-      ...getActiveNode(this.state.intTreeData, 0),
+      ...getActiveNodeInfo(this.state.intTreeData, 0),
       treeIndex: 0
     };
     this.handleSelectNode(activeNode, this.intTreeKey);
@@ -103,11 +103,12 @@ class MainContainer extends Component {
     document.removeEventListener("keydown", this.handleKeyDown);
   }
 
-  expandAll(expanded, key) {
-    const treeData = this.state[key];
+  expandAll(expanded, isInternal) {
+    const treeKey = isInternal ? this.intTreeKey : this.extTreeKey;
+    const treeData = this.state[treeKey];
     this.setState({
-      [key]: toggleExpandedForAll({
-        treeData: treeData,
+      [treeKey]: toggleExpandedForAll({
+        treeData,
         expanded
       })
     });
@@ -120,9 +121,14 @@ class MainContainer extends Component {
 
   handleTypeSelect(name) {
     const newTreeData = this.getTreeData(name);
+    // Reset active node
+    const activeIntNodeInfo = {
+      ...getActiveNodeInfo(this.state.intTreeData, 0)
+    };
     this.setState({
       activeType: name,
-      intTreeData: newTreeData
+      intTreeData: newTreeData,
+      activeIntNodeInfo
     });
   }
 
@@ -168,11 +174,9 @@ class MainContainer extends Component {
         {
           extTreeData: this.state.extTreeData.concat(...newNodes)
         },
+        // Get first node
         () => {
-          const activeNode = {
-            ...getActiveNode(this.state.extTreeData, 0),
-            treeIndex: 0
-          };
+          const activeNode = getActiveNodeInfo(this.state.extTreeData, 0);
           this.handleSelectNode(activeNode, this.extTreeKey);
         }
       );
@@ -196,10 +200,9 @@ class MainContainer extends Component {
       extTreeData,
       activeIntNodeInfo,
       activeExtNodeInfo,
-      options,
+      options: { parentsSelectable },
       searchInternal
     } = this.state;
-    const { parentsSelectable } = options;
 
     // Ignore if search field in focus except for ESC, if bootstrap modal is open, or
     // no ext tree data
@@ -229,41 +232,43 @@ class MainContainer extends Component {
       return;
     }
 
+    // Get the current tree index
+    let treeIndex = activeIntNodeInfo ? activeIntNodeInfo.treeIndex : null;
+    const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
+    const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
+    let newNode;
+    const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
+
+    // Handle focus
+    if (key === 27) {
+      // console.log("ESC");
+      document.activeElement.blur();
+      return;
+    } else if (e.ctrlKey && key === 70) {
+      // console.log("CTRL + F");
+      // Autocomplete search field with active node title
+      const activeIntNodeTitle = activeIntNode ? activeIntNode.title : null;
+      const activeExtNodeTitle = activeExtNode ? activeExtNode.title : null;
+      const searchStr = searchInternal
+        ? activeExtNodeTitle
+        : activeIntNodeTitle;
+      this.handleSearch(searchStr);
+      document.getElementById("searchInput").focus();
+      return;
+    }
+
+    // Halt if either node isn't selected
+    if (!activeIntNodeInfo || !activeExtNodeInfo) {
+      alert("Please select a node from each tree.");
+      return;
+    }
+
     if (
       !parentsSelectable &&
       activeExtNodeInfo &&
       activeExtNodeInfo.node.children
     ) {
       alert("Parents aren't seletable");
-      return;
-    }
-
-    // Get the current tree index
-    let { treeIndex } = activeIntNodeInfo;
-    const activeIntNode = activeIntNodeInfo.node;
-    const activeExtNode = activeExtNodeInfo.node;
-    let newNode;
-    const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
-
-    // Handle focus
-    if (key === 27) {
-      console.log("ESC");
-      document.activeElement.blur();
-      return;
-    } else if (e.ctrlKey && key === 70) {
-      console.log("CTRL + F");
-      // Autocomplete search field with active node title
-      const searchStr = searchInternal
-        ? activeExtNode.title
-        : activeIntNode.title;
-      this.handleSearch(searchStr);
-      document.getElementById("searchInput").focus();
-      return;
-    }
-
-    // Halt if both nodes aren't selected
-    if (!activeIntNodeInfo || !activeExtNodeInfo) {
-      alert("Please select a node from each tree.");
       return;
     }
 
@@ -319,7 +324,7 @@ class MainContainer extends Component {
     treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
 
     // Set the new active node
-    const newactiveIntNodeInfo = getActiveNode(intTreeData, treeIndex);
+    const newactiveIntNodeInfo = getActiveNodeInfo(intTreeData, treeIndex);
 
     // Scroll active node into view
     const activeNodeElem = document.getElementById(
@@ -331,10 +336,7 @@ class MainContainer extends Component {
     }
 
     // Add treeIndex
-    this.handleSelectNode(
-      { ...newactiveIntNodeInfo, treeIndex },
-      this.intTreeKey
-    );
+    this.handleSelectNode(newactiveIntNodeInfo, this.intTreeKey);
   }
 
   handleSearch(searchString) {
@@ -478,8 +480,6 @@ class MainContainer extends Component {
                 highlightUnmapped={highlightUnmapped}
               />
               <ActionBar
-                intKey={this.intTreeKey}
-                extKey={this.extTreeKey}
                 onHighlightUnmapped={this.highlightUnmapped}
                 expandAll={this.expandAll}
                 onClick={this.handleKeyDown}

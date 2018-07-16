@@ -18,12 +18,15 @@ export function getTreeDataFromFlatData(flatData) {
   });
 }
 
-export function getActiveNode(treeData, treeIndex) {
-  return getVisibleNodeInfoAtIndex({
-    treeData,
-    index: treeIndex,
-    getNodeKey
-  });
+export function getActiveNodeInfo(treeData, treeIndex) {
+  return {
+    ...getVisibleNodeInfoAtIndex({
+      treeData,
+      index: treeIndex,
+      getNodeKey
+    }),
+    treeIndex
+  };
 }
 
 export function mapNode(treeData, mapping, overwrite = false) {

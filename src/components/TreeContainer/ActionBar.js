@@ -1,114 +1,58 @@
 import React, { Component } from "react";
-import { func, string } from "prop-types";
+import { func } from "prop-types";
 
 import { Col, Button, ButtonGroup } from "react-bootstrap";
+import { ExpandCollapseButtons } from "./ExpandCollapseButtons";
 import FaForward from "react-icons/lib/fa/forward";
 import FaBackward from "react-icons/lib/fa/backward";
 
 import "./ActionBar.css";
+import { ActionButton } from "./ActionButton";
 
-class ActionBar extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(e) {
-    // Sending to handleKeyDown on MainContainer to map commands
-    this.props.onClick(e);
-  }
-
-  render() {
-    const { expandAll, intKey, extKey, onHighlightUnmapped } = this.props;
-
-    const buttonGroupStyle = {
-      margin: "0 auto"
-    };
-
-    return (
-      <Col md={2} className="text-center action-container">
-        <ButtonGroup>
-          <Button
-            bsStyle="primary"
-            data-cmd={"space"}
-            onClick={this.handleClick}
-            block
-          >
-            <FaForward /> Map <FaForward />
-            <br />
-            (single)
-          </Button>
-          <Button
-            bsStyle="primary"
-            data-cmd={"shift-space"}
-            onClick={this.handleClick}
-            block
-          >
-            <FaForward /> Map Node <FaForward />
-            <br />
-            (preserve)
-          </Button>
-          <Button
-            bsStyle="primary"
-            data-cmd={"ctrl-space"}
-            onClick={this.handleClick}
-            block
-          >
-            <FaForward /> Map Node <FaForward />
-            <br />
-            (overwrite)
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup>
-          <Button bsStyle="primary" onClick={onHighlightUnmapped} block>
-            Highlight Unmapped
-          </Button>
-          <Button
-            bsStyle="primary"
-            data-cmd={"delete"}
-            onClick={this.handleClick}
-            block
-          >
-            <FaBackward /> Clear This Map
-          </Button>
-          <Button
-            bsStyle="primary"
-            data-cmd={"shift-delete"}
-            onClick={this.handleClick}
-            block
-          >
-            <FaBackward /> Clear Entire Node
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup style={buttonGroupStyle}>
-          <Button bsStyle="primary" onClick={() => expandAll(true, intKey)}>
-            <FaBackward />
-          </Button>
-          <Button disabled>Expand All</Button>
-          <Button bsStyle="primary" onClick={() => expandAll(true, extKey)}>
-            <FaForward />
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup style={buttonGroupStyle}>
-          <Button bsStyle="primary" onClick={() => expandAll(false, intKey)}>
-            <FaBackward />
-          </Button>
-          <Button disabled>Collapse All</Button>
-          <Button bsStyle="primary" onClick={() => expandAll(false, extKey)}>
-            <FaForward />
-          </Button>
-        </ButtonGroup>
-      </Col>
-    );
-  }
-}
+export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
+  return (
+    <Col md={2} className="text-center action-container">
+      <ButtonGroup>
+        <ActionButton dataCmd="space" onClick={onClick}>
+          <FaForward /> Map <FaForward />
+          <br />
+          (single)
+        </ActionButton>
+        <ActionButton dataCmd="shift-space" onClick={onClick}>
+          <FaForward /> Map Node <FaForward />
+          <br />
+          (preserve)
+        </ActionButton>
+        <ActionButton dataCmd="ctrl-space" onClick={onClick}>
+          <FaForward /> Map Node <FaForward />
+          <br />
+          (overwrite)
+        </ActionButton>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button bsStyle="primary" onClick={onHighlightUnmapped} block>
+          Highlight Unmapped
+        </Button>
+        <ActionButton dataCmd="delete" onClick={onClick}>
+          <FaBackward /> Clear This Map
+        </ActionButton>
+        <ActionButton dataCmd="shift-delete" onClick={onClick}>
+          <FaBackward /> Clear Entire Node
+        </ActionButton>
+      </ButtonGroup>
+      <ExpandCollapseButtons expandAll={expandAll} expand={true}>
+        Expand All
+      </ExpandCollapseButtons>
+      <ExpandCollapseButtons expandAll={expandAll} expand={false}>
+        Collapse All
+      </ExpandCollapseButtons>
+    </Col>
+  );
+};
 
 ActionBar.propTypes = {
   expandAll: func.isRequired,
   onClick: func.isRequired,
-  intKey: string.isRequired,
-  extKey: string.isRequired,
   onHighlightUnmapped: func.isRequired
 };
 

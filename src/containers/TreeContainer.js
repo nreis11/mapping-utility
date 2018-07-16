@@ -13,7 +13,7 @@ import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
 import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
-import { getActiveNode } from "../helpers";
+import { getActiveNodeInfo } from "../helpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
@@ -70,9 +70,9 @@ class TreeContainer extends React.Component {
       activeNodeInfo.node.expanded = expanded;
       newactiveNodeInfo = activeNodeInfo;
     } else {
-      newactiveNodeInfo = getActiveNode(treeData, treeIndex);
+      newactiveNodeInfo = getActiveNodeInfo(treeData, treeIndex);
     }
-    onSelectNode({ ...newactiveNodeInfo, treeIndex }, treeKey);
+    onSelectNode(newactiveNodeInfo, treeKey);
   }
 
   handleRemoveNode(path) {

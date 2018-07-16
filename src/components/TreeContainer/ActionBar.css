@@ -4,3 +4,7 @@
     flex-direction: column;
     justify-content: space-evenly;
 }
+
+.action-btn-grp {
+    margin: 0 auto;
+}

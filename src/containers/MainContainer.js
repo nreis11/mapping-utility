@@ -7,7 +7,19 @@ import {
   getVisibleNodeCount
 } from "react-sortable-tree";
 
-import { saveToJson } from "../fileHelpers";
+import {
+  getActiveNodeInfo,
+  mapNode,
+  modifyNodeAtPath,
+  exportMappingsToXML,
+  isABootstrapModalOpen
+} from "../mappingHelpers";
+
+import {
+  saveToJson,
+  getTreeData,
+  getTreeDataFromFlatData
+} from "../fileHelpers";
 
 import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";
@@ -23,37 +35,20 @@ import OptionsContainer from "./OptionsContainer";
 import NavBarContainer from "./NavBarContainer";
 import NavBar from "../components/NavBarContainer/NavBar";
 
-import { categories, industries, states, countries } from "../values/eqValues";
-import {
-  getTreeDataFromFlatData,
-  getActiveNodeInfo,
-  mapNode,
-  modifyNodeAtPath,
-  exportMappingsToXML,
-  isABootstrapModalOpen
-} from "../helpers";
-
 const getNodeKey = ({ node }) => node.id;
 
 class MainContainer extends Component {
-  static internalData = {
-    categories: categories,
-    industries: industries,
-    states: states,
-    countries: countries
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      intTreeData: this.getTreeData("categories"),
+      intTreeData: getTreeData("categories"),
       extTreeData: [
-        {
-          id: 100,
-          title: "Parent",
-          expanded: true,
-          children: [{ id: 999, title: "Child" }]
-        }
+        // {
+        //   id: 100,
+        //   title: "Parent",
+        //   expanded: true,
+        //   children: [{ id: 999, title: "Child" }]
+        // }
       ],
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
@@ -73,7 +68,6 @@ class MainContainer extends Component {
     this.extTreeKey = "extTreeData";
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.getTreeData = this.getTreeData.bind(this);
     this.expandAll = this.expandAll.bind(this);
     this.handleSelectNode = this.handleSelectNode.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -91,10 +85,7 @@ class MainContainer extends Component {
 
   componentDidMount() {
     // Set first node as selected
-    const activeNode = {
-      ...getActiveNodeInfo(this.state.intTreeData, 0),
-      treeIndex: 0
-    };
+    const activeNode = getActiveNodeInfo(this.state.intTreeData, 0);
     this.handleSelectNode(activeNode, this.intTreeKey);
     document.addEventListener("keydown", this.handleKeyDown);
   }
@@ -114,17 +105,10 @@ class MainContainer extends Component {
     });
   }
 
-  getTreeData(name) {
-    const flatData = MainContainer.internalData[name];
-    return getTreeDataFromFlatData(flatData);
-  }
-
   handleTypeSelect(name) {
-    const newTreeData = this.getTreeData(name);
+    const newTreeData = getTreeData(name);
     // Reset active node
-    const activeIntNodeInfo = {
-      ...getActiveNodeInfo(this.state.intTreeData, 0)
-    };
+    const activeIntNodeInfo = getActiveNodeInfo(this.state.intTreeData, 0);
     this.setState({
       activeType: name,
       intTreeData: newTreeData,
@@ -335,7 +319,6 @@ class MainContainer extends Component {
       activeNodeElem.scrollIntoView(false);
     }
 
-    // Add treeIndex
     this.handleSelectNode(newactiveIntNodeInfo, this.intTreeKey);
   }
 

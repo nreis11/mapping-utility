@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { func } from "prop-types";
 
 import { Col, Button, ButtonGroup } from "react-bootstrap";

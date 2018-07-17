@@ -1,4 +1,8 @@
-import { getFlatDataFromTree } from "react-sortable-tree";
+import {
+  getFlatDataFromTree,
+  getTreeFromFlatData
+} from "../../../../.cache/typescript/2.9/node_modules/@types/react-sortable-tree";
+import { categories, industries, states, countries } from "./values/eqValues";
 
 export const saveToJson = ({
   intTreeData,
@@ -15,11 +19,33 @@ export const saveToJson = ({
     options,
     activeType
   });
+  // Link doesn't work in Firefox. Investigate!
   let link = document.createElement("a");
   let file = new Blob([jsonString], { type: "application/json" });
   link.href = URL.createObjectURL(file);
   link.download = "mapping.json";
   link.click();
+};
+
+export const getTreeData = name => {
+  const internalData = {
+    categories: categories,
+    industries: industries,
+    states: states,
+    countries: countries
+  };
+
+  const flatData = internalData[name];
+  return getTreeDataFromFlatData(flatData);
+};
+
+export const getTreeDataFromFlatData = flatData => {
+  return getTreeFromFlatData({
+    flatData: flatData.map(node => ({ ...node, expanded: false })),
+    getKey: node => node.id, // resolve a node's key
+    getParentKey: node => node.parent, // resolve a node's parent's key
+    rootKey: null // The value of the parent key when there is no parent (i.e., at root level)
+  });
 };
 
 const getFlatData = treeData => {

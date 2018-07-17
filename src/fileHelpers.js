@@ -1,7 +1,4 @@
-import {
-  getFlatDataFromTree,
-  getTreeFromFlatData
-} from "../../../../.cache/typescript/2.9/node_modules/@types/react-sortable-tree";
+import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
 import { categories, industries, states, countries } from "./values/eqValues";
 
 export const saveToJson = ({

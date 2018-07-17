@@ -2,12 +2,13 @@ import React from "react";
 import { func } from "prop-types";
 
 import { Col, Button, ButtonGroup } from "react-bootstrap";
-import { ExpandCollapseButtons } from "./ExpandCollapseButtons";
 import FaForward from "react-icons/lib/fa/forward";
 import FaBackward from "react-icons/lib/fa/backward";
 
-import "./ActionBar.css";
-import { ActionButton } from "./ActionButton";
+import { ExpandCollapseButtons } from "../components/ActionBar/ExpandCollapseButtons";
+import { ActionButton } from "../components/ActionBar/ActionButton";
+
+import "./ActionBarContainer.css";
 
 export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
   return (

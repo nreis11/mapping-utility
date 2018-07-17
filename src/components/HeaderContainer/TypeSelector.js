@@ -1,18 +1,19 @@
 import React from "react";
 import { Col, Nav, NavItem } from "react-bootstrap";
-import { checkForMapping } from "../../helpers";
+import { checkForMapping } from "../../mappingHelpers";
 import ChangeTypeAlert from "../MainContainer/ChangeTypeAlert";
+
+const TYPES = {
+  categories: "Category",
+  industries: "Industry",
+  states: "State",
+  countries: "Country"
+};
 
 class TypeSelector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      types: {
-        categories: "Category",
-        industries: "Industry",
-        states: "State",
-        countries: "Country"
-      },
       showAlert: false,
       selectedKey: null
     };
@@ -46,7 +47,7 @@ class TypeSelector extends React.Component {
 
   render() {
     const { activeType } = this.props;
-    const { types, showAlert, selectedKey } = this.state;
+    const { showAlert, selectedKey } = this.state;
 
     return (
       <Col className="pull-right">
@@ -61,9 +62,9 @@ class TypeSelector extends React.Component {
           activeKey={activeType}
           onSelect={key => this.handleCheck(key)}
         >
-          {Object.keys(types).map(type => (
-            <NavItem key={type} eventKey={type} title={types[type]}>
-              {types[type]}
+          {Object.keys(TYPES).map(type => (
+            <NavItem key={type} eventKey={type} title={TYPES[type]}>
+              {TYPES[type]}
             </NavItem>
           ))}
         </Nav>

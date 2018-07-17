@@ -23,7 +23,7 @@ import {
 
 import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";
-import ActionBar from "../components/TreeContainer/ActionBar";
+import ActionBarContainer from "./ActionBarContainer";
 import NodeInfo from "../components/MainContainer/NodeInfo";
 import HeaderSmallContainer from "../components/HeaderContainer/HeaderSmallContainer";
 import ExportModal from "../components/modals/ExportModal";
@@ -167,7 +167,14 @@ class MainContainer extends Component {
     }
   }
 
-  handleChange(treeData, treeKey = this.intTreeKey) {
+  handleChange(treeData, treeKey) {
+    // Reset internal tree if clear all on ext tree
+    if (treeData.length < 1) {
+      this.setState({
+        intTreeData: getTreeData("categories")
+      });
+    }
+
     this.setState({
       [treeKey]: treeData
     });
@@ -462,7 +469,7 @@ class MainContainer extends Component {
                 onSearchFinish={searchInternal && this.handleSearchFinish}
                 highlightUnmapped={highlightUnmapped}
               />
-              <ActionBar
+              <ActionBarContainer
                 onHighlightUnmapped={this.highlightUnmapped}
                 expandAll={this.expandAll}
                 onClick={this.handleKeyDown}

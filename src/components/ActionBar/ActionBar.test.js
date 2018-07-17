@@ -1,16 +1,14 @@
 import React from "react";
 import { shallow } from "enzyme";
-import ActionBar from "./ActionBar";
+import ActionBarContainer from "./ActionBarContainer";
 
-describe("<ActionBar />", () => {
+describe("<ActionBarContainer />", () => {
   it("should render without crashing", () => {
     shallow(
-      <ActionBar
+      <ActionBarContainer
         expandAll={() => {
           return;
         }}
-        intKey="Internal"
-        extKey="External"
         onClick={() => {
           return;
         }}

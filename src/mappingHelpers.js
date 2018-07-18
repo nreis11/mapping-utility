@@ -94,10 +94,11 @@ function createNode(rootNode, node, outputParents = false) {
   }
 
   let mapping = node.mapping;
-  let childNode = rootNode.ele(node.id === "DEFAULT" ? "default" : "map");
+  let childNode = rootNode.ele(node.id === "eqDEFAULT" ? "default" : "map");
 
-  if (node.id !== "DEFAULT") {
-    childNode.att("equestvalue", node.id);
+  if (node.id !== "eqDEFAULT") {
+    // Each node has 'eq' prepended
+    childNode.att("equestvalue", node.id.slice(2));
   }
 
   if (outputParents) {
@@ -137,10 +138,6 @@ function createNode(rootNode, node, outputParents = false) {
 // 		<boardvalue tier="1"><![CDATA[AFG ]]></boardvalue>
 // 	</map>
 // </mapping>
-
-export function isABootstrapModalOpen() {
-  return document.querySelectorAll(".modal.in").length > 0;
-}
 
 // function treeCheck(intTreeData, extTreeData) {
 //   intTreeData.forEach((node, idx) => {

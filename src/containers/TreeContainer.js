@@ -13,7 +13,7 @@ import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
 import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
-import { getActiveNodeInfo } from "../helpers";
+import { getActiveNodeInfo } from "../mappingHelpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
@@ -47,16 +47,12 @@ class TreeContainer extends React.Component {
     const nodeCount = getVisibleNodeCount({ treeData });
 
     if (key === 38) {
-      console.log("UP");
       treeIndex -= 1;
     } else if (key === 40) {
-      console.log("DOWN");
       treeIndex += 1;
     } else if (key === 37) {
-      console.log("LEFT");
       expanded ? (expanded = false) : (treeIndex -= 1);
     } else if (key === 39) {
-      console.log("RIGHT");
       expanded ? children && (treeIndex += 1) : (expanded = true);
     }
 
@@ -101,7 +97,7 @@ class TreeContainer extends React.Component {
             scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
             generateNodeProps={rowInfo => {
-              const { node, path } = rowInfo;
+              const { path } = rowInfo;
               const buttons = [
                 <AddModal onAddNodes={onAddNodes} nodeInfo={rowInfo} />,
                 <button onClick={() => this.handleRemoveNode(path)}>
@@ -110,8 +106,7 @@ class TreeContainer extends React.Component {
               ];
 
               return {
-                buttons: buttons,
-                id: node.id
+                buttons: buttons
               };
             }}
           />

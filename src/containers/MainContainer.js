@@ -11,9 +11,10 @@ import {
   getActiveNodeInfo,
   mapNode,
   modifyNodeAtPath,
-  exportMappingsToXML,
-  isABootstrapModalOpen
+  exportMappingsToXML
 } from "../mappingHelpers";
+
+import { isABootstrapModalOpen } from "../helpers";
 
 import {
   saveToJson,
@@ -170,8 +171,9 @@ class MainContainer extends Component {
   handleChange(treeData, treeKey) {
     // Reset internal tree if clear all on ext tree
     if (treeData.length < 1) {
+      const activeType = this.state.activeType;
       this.setState({
-        intTreeData: getTreeData("categories")
+        intTreeData: getTreeData(activeType)
       });
     }
 

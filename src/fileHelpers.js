@@ -1,11 +1,13 @@
 import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
 import { categories, industries, states, countries } from "./values/eqValues";
+import FileSaver from "file-saver";
 
 export const saveToJson = ({
   intTreeData,
   extTreeData,
   options,
-  activeType
+  activeType,
+  boardName
 }) => {
   let jsonString;
   const intFlatData = getFlatData(intTreeData);
@@ -14,14 +16,13 @@ export const saveToJson = ({
     intFlatData,
     extFlatData,
     options,
-    activeType
+    activeType,
+    boardName
   });
-  // Link doesn't work in Firefox. Investigate!
-  let link = document.createElement("a");
+  // FileSaver solves cross-browser compatibility
   let file = new Blob([jsonString], { type: "application/json" });
-  link.href = URL.createObjectURL(file);
-  link.download = "mapping.json";
-  link.click();
+  let fileName = `${boardName}-${activeType}.json`;
+  FileSaver.saveAs(file, fileName);
 };
 
 export const getTreeData = name => {

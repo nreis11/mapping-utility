@@ -1,24 +1,22 @@
 import React from "react";
 import { Col } from "react-bootstrap";
 
-import { string, number } from "prop-types";
+import { number } from "prop-types";
 
 const HeaderSmallContainer = props => {
   return (
-    <Col md={5} mdOffset={props.mdOffset} className={props.className}>
+    <Col md={5} mdOffset={props.mdOffset}>
       {props.children}
     </Col>
   );
 };
 
 HeaderSmallContainer.propTypes = {
-  mdOffset: number,
-  className: string
+  mdOffset: number
 };
 
 HeaderSmallContainer.defaultProps = {
-  mdOffset: 0,
-  className: ""
+  mdOffset: 0
 };
 
 export default HeaderSmallContainer;

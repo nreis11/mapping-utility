@@ -51,6 +51,7 @@ class MainContainer extends Component {
         //   children: [{ id: 999, title: "Child" }]
         // }
       ],
+      boardName: "Board",
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
       activeType: "categories",
@@ -81,7 +82,8 @@ class MainContainer extends Component {
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
     this.handleSearchOptionChange = this.handleSearchOptionChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
-    this.handleFileInputChange = this.handleFileInputChange.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleBoardNameChange = this.handleBoardNameChange.bind(this);
   }
 
   componentDidMount() {
@@ -168,6 +170,13 @@ class MainContainer extends Component {
     }
   }
 
+  handleBoardNameChange(e) {
+    const name = e.target.value;
+    this.setState({
+      boardName: name
+    });
+  }
+
   handleChange(treeData, treeKey) {
     // Reset internal tree if clear all on ext tree
     if (treeData.length < 1) {
@@ -201,6 +210,7 @@ class MainContainer extends Component {
     // no ext tree data
     if (
       (document.activeElement.id === "searchInput" && e.keyCode !== 27) ||
+      document.activeElement.id === "formBoardName" ||
       isABootstrapModalOpen() ||
       extTreeData.length < 1
     ) {
@@ -367,26 +377,39 @@ class MainContainer extends Component {
     }, 0);
   }
 
-  handleFileInputChange(fileInput) {
+  handleOpen(fileInput) {
     // Handle open file
     const fileReader = new FileReader();
     fileReader.readAsText(fileInput);
     fileReader.onload = e => {
       // Convert string result to JSON after loading
       const jsonObj = JSON.parse(e.target.result);
-      const { intFlatData, extFlatData, options, activeType } = jsonObj;
+      const {
+        intFlatData,
+        extFlatData,
+        options,
+        activeType,
+        boardName
+      } = jsonObj;
       this.setState({
         intTreeData: getTreeDataFromFlatData(intFlatData),
         extTreeData: getTreeDataFromFlatData(extFlatData),
         options,
-        activeType
+        activeType,
+        boardName
       });
     };
   }
 
   handleSave() {
-    const { intTreeData, extTreeData, options, activeType } = this.state;
-    saveToJson({ intTreeData, extTreeData, options, activeType });
+    const {
+      intTreeData,
+      extTreeData,
+      options,
+      activeType,
+      boardName
+    } = this.state;
+    saveToJson({ intTreeData, extTreeData, options, activeType, boardName });
   }
 
   render() {
@@ -401,11 +424,12 @@ class MainContainer extends Component {
       searchString,
       searchFocusIndex,
       searchFoundCount,
-      searchInternal
+      searchInternal,
+      boardName
     } = this.state;
 
     const internalName = "eQuest";
-    const externalName = "Board";
+    // const externalName = "Board";
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     const intSearchString = searchInternal ? searchString : "";
@@ -431,14 +455,14 @@ class MainContainer extends Component {
             onSearchOptionChange={this.handleSearchOptionChange}
             searchInternal={searchInternal}
             onSave={this.handleSave}
-            handleFileInputChange={this.handleFileInputChange}
+            handleOpen={this.handleOpen}
           />
         </NavBarContainer>
         <Jumbotron>
           <Grid fluid>
             <HeaderContainer>
               <HeaderSmallContainer>
-                <Header name={internalName} />
+                <Header name={internalName} isInternal={true} />
                 <TypeSelector
                   onSelect={this.handleTypeSelect}
                   activeType={activeType}
@@ -446,7 +470,11 @@ class MainContainer extends Component {
                 />
               </HeaderSmallContainer>
               <HeaderSmallContainer mdOffset={2}>
-                <Header name={externalName} />
+                <Header
+                  name={boardName}
+                  isInternal={false}
+                  handleBoardNameChange={this.handleBoardNameChange}
+                />
                 <EditModal>
                   <TreeContainer
                     treeKey={this.extTreeKey}
@@ -490,11 +518,7 @@ class MainContainer extends Component {
 
             <Row className="show-grid">
               <NodeInfo heading={internalName} node={activeIntNode} />
-              <NodeInfo
-                heading={externalName}
-                node={activeExtNode}
-                mdOffset={2}
-              />
+              <NodeInfo heading={boardName} node={activeExtNode} mdOffset={2} />
             </Row>
             <Row className="show-grid">
               <NodeInfo heading={"Mapped to:"} node={mappedNode} />

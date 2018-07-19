@@ -16,7 +16,7 @@ import HelpModal from "./HelpModal";
 import FileInput from "./FileInput";
 
 const NavBar = props => {
-  const { handleFileInputChange, onSave, ...restProps } = props;
+  const { handleOpen, onSave, ...restProps } = props;
 
   const handleLoad = () => {
     // Prompt user for file. Simulate click. Keeping ugly default button hidden
@@ -32,7 +32,7 @@ const NavBar = props => {
         <Navbar.Brand>Mapping Utility</Navbar.Brand>
       </Navbar.Header>
       <Nav>
-        <FileInput handleFileInputChange={handleFileInputChange} />
+        <FileInput handleOpen={handleOpen} />
         <NavItem>
           <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
             <Button onClick={handleLoad}>

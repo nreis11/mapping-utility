@@ -14,7 +14,7 @@ class FileInput extends React.Component {
 
     // Validate file
     if (this.isValidated(fileInput)) {
-      this.props.handleFileInputChange(fileInput);
+      this.props.handleOpen(fileInput);
     }
     // Reset form
     this.fileFormRef.reset();

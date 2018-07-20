@@ -5,7 +5,12 @@ import { Col, Panel } from "react-bootstrap";
 
 const NodeInfo = ({ mdOffset, heading, node }) => {
   const nodeTitle = node ? node.title : null;
-  const nodeKey = node ? node.id : null;
+  let nodeKey = node ? node.id : null;
+
+  // Remove eq prefix on equest values
+  if (heading === "eQuest" && nodeKey) {
+    nodeKey = nodeKey.slice(2);
+  }
 
   return (
     <Col md={5} mdOffset={mdOffset}>

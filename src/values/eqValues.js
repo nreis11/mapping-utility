@@ -1,3 +1,5 @@
+// When replacing values, always prefix with eq for UID
+
 module.exports.categories = [
     { id: "eqDEFAULT", title: "(Default)", parent: null, mapping: null },
     {

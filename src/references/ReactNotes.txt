@@ -50,3 +50,11 @@ never decides what it's wearing.
 
 You can separate child props via index i.e. props.children[0]
 
+Features to add
+Authentication
+Auto save
+Excel import
+Gitlab
+Hosting
+Documentation
+

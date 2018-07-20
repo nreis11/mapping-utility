@@ -247,6 +247,12 @@ class MainContainer extends Component {
     if (key === 27) {
       // console.log("ESC");
       document.activeElement.blur();
+      // Refocus current tree to allow navigation
+      const activeNodeId = searchInternal ? activeExtNode.id : activeIntNode.id;
+      if (activeNodeId) {
+        const activeNodeinDOM = document.getElementById(activeNodeId);
+        activeNodeinDOM.parentElement.parentElement.parentElement.parentElement.focus();
+      }
       return;
     } else if (e.ctrlKey && key === 70) {
       // console.log("CTRL + F");
@@ -369,11 +375,16 @@ class MainContainer extends Component {
     const activeNodeKey = this.state.searchInternal
       ? "activeIntNodeInfo"
       : "activeExtNodeInfo";
+    // Only update active node if there is a match
+    if (newActiveNodeInfo) {
+      this.setState({
+        [activeNodeKey]: newActiveNodeInfo
+      });
+    }
     this.setState({
       searchFoundCount: matches.length,
       searchFocusIndex:
-        matches.length > 0 ? searchFocusIndex % matches.length : 0,
-      [activeNodeKey]: newActiveNodeInfo
+        matches.length > 0 ? searchFocusIndex % matches.length : 0
     });
   }
 

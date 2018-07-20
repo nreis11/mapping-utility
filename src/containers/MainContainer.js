@@ -139,6 +139,7 @@ class MainContainer extends Component {
     this.setState(prevState => ({
       highlightUnmapped: !prevState.highlightUnmapped
     }));
+    this.expandAll(true, true);
   }
 
   handleAddNodes(newNodes, nodeInfo) {
@@ -250,12 +251,21 @@ class MainContainer extends Component {
     } else if (e.ctrlKey && key === 70) {
       // console.log("CTRL + F");
       // Autocomplete search field with active node title
-      const activeIntNodeTitle = activeIntNode ? activeIntNode.title : null;
-      const activeExtNodeTitle = activeExtNode ? activeExtNode.title : null;
-      const searchStr = searchInternal
-        ? activeExtNodeTitle
-        : activeIntNodeTitle;
-      this.handleSearch(searchStr);
+      const activeIntNodeTitle = activeIntNode ? activeIntNode.title : "";
+      this.setState({
+        searchInternal: false
+      });
+      this.handleSearch(activeIntNodeTitle);
+      document.getElementById("searchInput").focus();
+      return;
+    } else if (e.ctrlKey && key === 71) {
+      // console.log("CTRL + G");
+      // Autocomplete search field with active node title
+      const activeExtNodeTitle = activeExtNode ? activeExtNode.title : "";
+      this.setState({
+        searchInternal: true
+      });
+      this.handleSearch(activeExtNodeTitle);
       document.getElementById("searchInput").focus();
       return;
     }
@@ -368,13 +378,17 @@ class MainContainer extends Component {
   }
 
   handleSearchOptionChange(event) {
-    const { name, checked } = event.target;
     // Needed to setTimeout to reflect changes visually. Why...?
+    const { name, checked } = event.target;
     window.setTimeout(() => {
       this.setState({
         [name]: checked
       });
     }, 0);
+    // Not reflecting visually
+    // this.setState(state => ({
+    //   searchInternal: !state.searchInternal
+    // }))
   }
 
   handleOpen(fileInput) {
@@ -429,7 +443,6 @@ class MainContainer extends Component {
     } = this.state;
 
     const internalName = "eQuest";
-    // const externalName = "Board";
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     const intSearchString = searchInternal ? searchString : "";

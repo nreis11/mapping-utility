@@ -9,6 +9,7 @@ import xmlbuilder from "xmlbuilder";
 const getNodeKey = ({ node }) => node.id;
 
 export function getActiveNodeInfo(treeData, treeIndex) {
+  // Utility doesn't return treeIndex. Manually added back in.
   return {
     ...getVisibleNodeInfoAtIndex({
       treeData,
@@ -35,7 +36,7 @@ export function mapNode(treeData, mapping, overwrite = false) {
   })[0];
 }
 
-export function checkForMapping(treeData) {
+export function isMapped(treeData) {
   // Can I early return if I find mapping?
   let foundMapping = false;
   const callback = ({ node }) => {

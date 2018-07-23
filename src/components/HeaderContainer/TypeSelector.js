@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Nav, NavItem } from "react-bootstrap";
-import { checkForMapping } from "../../mappingHelpers";
+import { isMapped } from "../../utilities/mappingHelpers";
 import ChangeTypeAlert from "../MainContainer/ChangeTypeAlert";
 
 const TYPES = {
@@ -29,8 +29,7 @@ class TypeSelector extends React.Component {
 
   handleCheck(key) {
     // Check for mapping. Alert user if mappings will be lost.
-    const isMapping = checkForMapping(this.props.treeData);
-    if (isMapping) {
+    if (isMapped(this.props.treeData)) {
       this.setState({
         showAlert: true,
         selectedKey: key

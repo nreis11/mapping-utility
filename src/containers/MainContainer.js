@@ -12,15 +12,15 @@ import {
   mapNode,
   modifyNodeAtPath,
   exportMappingsToXML
-} from "../mappingHelpers";
+} from "../utilities/mappingHelpers";
 
-import { isABootstrapModalOpen } from "../helpers";
+import { isABootstrapModalOpen } from "../utilities/helpers";
 
 import {
   saveToJson,
   getTreeData,
   getTreeDataFromFlatData
-} from "../fileHelpers";
+} from "../utilities/fileHelpers";
 
 import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";

@@ -65,7 +65,12 @@ export function modifyNodeAtPath(treeData, path, newNode) {
   });
 }
 
-export function exportMappingsToXML(treeData, type, outputParents) {
+export function exportMappingsToXML(
+  treeData,
+  type,
+  outputParents,
+  prettyfy = true
+) {
   const types = {
     categories: "function",
     industries: "industry",
@@ -86,7 +91,7 @@ export function exportMappingsToXML(treeData, type, outputParents) {
     ignoreCollapsed: false
   });
 
-  return rootNode.end({ pretty: true });
+  return rootNode.end({ pretty: prettyfy });
 }
 
 function createNode(rootNode, node, outputParents = false) {

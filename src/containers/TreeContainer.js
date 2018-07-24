@@ -87,7 +87,7 @@ class TreeContainer extends React.Component {
 
     return (
       <Col md={12}>
-        <Well className="well">
+        <Well>
           <SortableTree
             treeData={treeData}
             onChange={treeData => onChange(treeData, treeKey)}
@@ -141,7 +141,7 @@ class TreeContainer extends React.Component {
 
       return (
         <Col md={5} onKeyDown={this.handleKeyDown}>
-          <Well className="well">
+          <Well>
             <SortableTree
               treeData={treeData}
               onChange={treeData => onChange(treeData, treeKey)}

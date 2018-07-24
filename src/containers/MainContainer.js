@@ -146,6 +146,7 @@ class MainContainer extends Component {
     // If adding children
     if (nodeInfo) {
       const { path } = nodeInfo;
+      // Create a callback here
       newNodes.forEach(node => {
         this.setState(state => ({
           extTreeData: addNodeUnderParent({

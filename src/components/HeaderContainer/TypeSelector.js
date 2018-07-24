@@ -23,7 +23,8 @@ class TypeSelector extends React.Component {
 
   handleCancelAlert() {
     this.setState({
-      showAlert: false
+      showAlert: false,
+      selectedKey: null
     });
   }
 

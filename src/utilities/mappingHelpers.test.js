@@ -42,18 +42,18 @@ describe("mapNode", () => {
   it("should map the node and its descendants", () => {
     const result = mapNode(treeData, newMapping, true);
 
+    expect(result.mapping).toEqual(newMapping);
     expect(
-      result.mapping === newMapping &&
-        result.children.forEach(child => child.mapping === newMapping)
-    );
+      result.children.every(child => child.mapping === newMapping)
+    ).toBeTruthy();
   });
 
   it("should only map the nodes without mappings", () => {
     const result = mapNode(treeData, newMapping, false);
+    expect(result.mapping).toEqual(newMapping);
     expect(
-      result.mapping === newMapping &&
-        result.children.forEach(child => child.mapping === oldMapping)
-    );
+      result.children.filter(child => child.mapping === oldMapping).length
+    ).toEqual(2);
   });
 });
 
@@ -114,21 +114,19 @@ describe("exportMappingsToXML", () => {
   ];
   const type = "categories";
 
-  it("Returns a default node", () => {
-    const outputParents = false;
-    let result = exportMappingsToXML(treeData, type, outputParents);
-    result = result.replace(/(?:\r\n|\r|\n)/g, "");
+  it("Returns a default node with correct mapping", () => {
+    // function exportMappingsToXML( treeData = [], type = "str", outputParents = bool, prettyfy = bool)
+    let result = exportMappingsToXML(treeData, type, false, false);
     const xmlResult = xmlParser.parseFromString(result, "application/xml");
     const defaultNode = xmlResult.getElementsByTagName("default")[0];
-    console.log(defaultNode.childNodes[0].nodeName);
     expect(defaultNode.nodeName === "default");
-    // SHOULD I REMOVE THE NEWLINES BEFORE TRYING TO PARSE?
-    // expect(
-    //   defaultNode.childNodes[0].childNodes[0].nodeValue === "![CDATA[24000]]"
-    // );
+    expect(
+      xmlResult.getElementsByTagName("boardvalue")[0].nodeValue ===
+        "![CDATA[24000]]"
+    );
   });
 
-  it("Returns a default node with mappings", () => {});
+  it("Returns a default node with other mappings", () => {});
 
   it("Returns multiple tiers when output parents enabled", () => {});
 });

@@ -120,7 +120,7 @@ class MainContainer extends Component {
   }
 
   handleSelectNode(nodeInfo, treeKey) {
-    console.log("Node Info", nodeInfo);
+    // console.log("Node Info", nodeInfo);
     const activeKey =
       treeKey === this.intTreeKey ? "activeIntNodeInfo" : "activeExtNodeInfo";
     this.setState({
@@ -247,15 +247,15 @@ class MainContainer extends Component {
     // Handle focus
     if (key === 27) {
       // console.log("ESC");
-      document.activeElement.blur();
-      // Refocus current tree to allow navigation
-      const activeNodeId = searchInternal ? activeExtNode.id : activeIntNode.id;
-      if (activeNodeId) {
-        const activeNodeinDOM = document.getElementById(activeNodeId);
-        activeNodeinDOM.parentElement.parentElement.parentElement.parentElement.focus();
+      // Refocus tree to allow navigation and mapping
+      const scrollableTreeContainer = document.querySelectorAll(
+        ".ReactVirtualized__Grid"
+      )[searchInternal ? 1 : 0];
+      if (scrollableTreeContainer) {
+        scrollableTreeContainer.focus();
       }
       return;
-    } else if (e.ctrlKey && key === 70) {
+    } else if ((e.ctrlKey || e.metaKey) && key === 70) {
       // console.log("CTRL + F");
       // Autocomplete search field with active node title
       const activeIntNodeTitle = activeIntNode ? activeIntNode.title : "";
@@ -265,7 +265,7 @@ class MainContainer extends Component {
       this.handleSearch(activeIntNodeTitle);
       document.getElementById("searchInput").focus();
       return;
-    } else if (e.ctrlKey && key === 71) {
+    } else if ((e.ctrlKey || e.metaKey) && key === 71) {
       // console.log("CTRL + G");
       // Autocomplete search field with active node title
       const activeExtNodeTitle = activeExtNode ? activeExtNode.title : "";

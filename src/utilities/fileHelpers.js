@@ -7,21 +7,23 @@ export const saveToJson = ({
   extTreeData,
   options,
   activeType,
-  boardName
+  boardName,
+  testing = false
 }) => {
-  let jsonString;
-  const intFlatData = getFlatData(intTreeData);
-  const extFlatData = getFlatData(extTreeData);
-  jsonString = JSON.stringify({
-    intFlatData,
-    extFlatData,
+  // Saving as flat data instead of tree data. More info in getFlatDataFromTree helper.
+  const jsonString = JSON.stringify({
+    intFlatData: getFlatData(intTreeData),
+    extFlatData: getFlatData(extTreeData),
     options,
     activeType,
     boardName
   });
+  if (testing) {
+    return jsonString;
+  }
   // FileSaver solves cross-browser compatibility
-  let file = new Blob([jsonString], { type: "application/json" });
-  let fileName = `${boardName}-${activeType}.json`;
+  const file = new Blob([jsonString], { type: "application/json" });
+  const fileName = `${boardName}-${activeType}.json`;
   FileSaver.saveAs(file, fileName);
 };
 
@@ -46,7 +48,7 @@ export const getTreeDataFromFlatData = flatData => {
   });
 };
 
-const getFlatData = treeData => {
+export const getFlatData = treeData => {
   return getFlatDataFromTree({
     treeData: treeData,
     getNodeKey: ({ node }) => node.id,

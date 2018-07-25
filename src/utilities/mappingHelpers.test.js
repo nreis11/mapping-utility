@@ -124,6 +124,7 @@ describe("exportMappingsToXML", () => {
     }
   ];
   const type = "categories";
+  // function exportMappingsToXML( treeData = [], type = "str", outputParents = bool, prettyfy = bool)
   let result = exportMappingsToXML(treeData, type, false, false);
   // console.log(result);
   const xmlResult = xmlParser.parseFromString(result, "text/xml");
@@ -135,7 +136,6 @@ describe("exportMappingsToXML", () => {
   });
 
   it("Returns a default node with correct mapping", () => {
-    // function exportMappingsToXML( treeData = [], type = "str", outputParents = bool, prettyfy = bool)
     const defaultNode = xmlResult.getElementsByTagName("default")[0];
     expect(defaultNode.nodeName).toEqual("default");
     // I can't get the CDATA value! What's going on?

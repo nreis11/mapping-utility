@@ -404,7 +404,6 @@ class MainContainer extends Component {
   }
 
   handleOpen(fileInput) {
-    // Handle open file
     const fileReader = new FileReader();
     fileReader.readAsText(fileInput);
     fileReader.onload = e => {

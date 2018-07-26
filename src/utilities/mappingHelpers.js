@@ -88,7 +88,7 @@ export const exportMappingsToXML = (
   treeData,
   type,
   outputParents,
-  prettyfy = true
+  pretty = true
 ) => {
   const types = {
     categories: "function",
@@ -106,11 +106,11 @@ export const exportMappingsToXML = (
   walk({
     treeData: treeData,
     getNodeKey,
-    callback: callback,
+    callback,
     ignoreCollapsed: false
   });
 
-  return rootNode.end({ pretty: prettyfy });
+  return rootNode.end({ pretty: pretty });
 };
 
 const createNode = (rootNode, node, outputParents = false) => {

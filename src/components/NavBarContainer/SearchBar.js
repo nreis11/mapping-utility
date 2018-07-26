@@ -18,6 +18,7 @@ class SearchBar extends React.Component {
   }
 
   handleChange(e) {
+    e.preventDefault();
     const searchString = e.target.value;
     this.props.handleSearch(searchString);
   }

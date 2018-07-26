@@ -1,4 +1,6 @@
 1. Check Main Container - Line 401
+2. Search Bar - Space bar not working
+
 
 Features to add
 - When find prompt triggered (CTRL - F), autocomplete field with Internal Node Label

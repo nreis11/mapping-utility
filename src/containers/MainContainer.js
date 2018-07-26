@@ -211,14 +211,14 @@ class MainContainer extends Component {
       searchInternal
     } = this.state;
 
-    // Ignore if search field in focus except for ESC, if bootstrap modal is open, or
+    // Ignore if any input is in focus except for ESC, if bootstrap modal is open, or
     // no ext tree data
     if (
-      (document.activeElement.id === "searchInput" && e.keyCode !== 27) ||
-      document.activeElement.id === "formBoardName" ||
+      (document.activeElement.nodeName === "INPUT" && e.keyCode !== 27) ||
       isABootstrapModalOpen() ||
       extTreeData.length < 1
     ) {
+      console.log("IGNORED");
       return;
     }
 

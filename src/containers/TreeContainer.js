@@ -61,14 +61,14 @@ class TreeContainer extends React.Component {
     treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
 
     // Check if node changed. If it didn't, just update expanded prop
-    let newactiveNodeInfo;
+    let newActiveNodeInfo;
     if (initialTreeIndex === treeIndex) {
       activeNodeInfo.node.expanded = expanded;
-      newactiveNodeInfo = activeNodeInfo;
+      newActiveNodeInfo = activeNodeInfo;
     } else {
-      newactiveNodeInfo = getActiveNodeInfo(treeData, treeIndex);
+      newActiveNodeInfo = getActiveNodeInfo(treeData, treeIndex);
     }
-    onSelectNode(newactiveNodeInfo, treeKey);
+    onSelectNode(newActiveNodeInfo, treeKey);
   }
 
   handleRemoveNode(path) {

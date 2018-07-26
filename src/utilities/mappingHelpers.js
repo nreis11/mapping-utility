@@ -8,7 +8,7 @@ import xmlbuilder from "xmlbuilder";
 
 const getNodeKey = ({ node }) => node.id;
 
-export function getActiveNodeInfo(treeData, treeIndex) {
+export const getActiveNodeInfo = (treeData, treeIndex) => {
   // Utility doesn't return treeIndex. Manually added back in.
   return {
     ...getVisibleNodeInfoAtIndex({
@@ -18,9 +18,9 @@ export function getActiveNodeInfo(treeData, treeIndex) {
     }),
     treeIndex
   };
-}
+};
 
-export function mapNode(treeData, mapping, overwrite = false) {
+export const mapNode = (treeData, mapping, overwrite = false) => {
   // Map node and its descendants. Returns treeData array. Take 0 index.
   return map({
     treeData,
@@ -34,9 +34,28 @@ export function mapNode(treeData, mapping, overwrite = false) {
     },
     ignoreCollapsed: false
   })[0];
-}
+};
 
-export function isMapped(treeData) {
+export const sortTree = treeData => {
+  return treeData.sort(
+    (a, b) => (a.title === b.title ? 0 : a.title < b.title ? -1 : 1)
+  );
+  // IF CHILDREN NEED TO BE SORTED
+  // return map({
+  //   treeData,
+  //   getNodeKey,
+  //   callback: ({ node }) =>
+  //     !node.children
+  //       ? node
+  //       : {
+  //           ...node,
+  //           children: node.children.sort((a, b) => (a.title === b.title ? 0 : a.title < b.title ? -1 : 1))
+  //         },
+  //   ignoreCollapsed: false
+  // });
+};
+
+export const isMapped = treeData => {
   // Can I early return if I find mapping?
   let foundMapping = false;
   const callback = ({ node }) => {
@@ -53,9 +72,9 @@ export function isMapped(treeData) {
   });
 
   return foundMapping;
-}
+};
 
-export function modifyNodeAtPath(treeData, path, newNode) {
+export const modifyNodeAtPath = (treeData, path, newNode) => {
   return changeNodeAtPath({
     treeData,
     path,
@@ -63,14 +82,14 @@ export function modifyNodeAtPath(treeData, path, newNode) {
     getNodeKey,
     ignoreCollapsed: true
   });
-}
+};
 
-export function exportMappingsToXML(
+export const exportMappingsToXML = (
   treeData,
   type,
   outputParents,
   prettyfy = true
-) {
+) => {
   const types = {
     categories: "function",
     industries: "industry",
@@ -92,9 +111,9 @@ export function exportMappingsToXML(
   });
 
   return rootNode.end({ pretty: prettyfy });
-}
+};
 
-function createNode(rootNode, node, outputParents = false) {
+const createNode = (rootNode, node, outputParents = false) => {
   if (!node.mapping) {
     return;
   }
@@ -125,7 +144,7 @@ function createNode(rootNode, node, outputParents = false) {
   }
 
   return rootNode;
-}
+};
 
 // SAMPLE
 
@@ -144,16 +163,3 @@ function createNode(rootNode, node, outputParents = false) {
 // 		<boardvalue tier="1"><![CDATA[AFG ]]></boardvalue>
 // 	</map>
 // </mapping>
-
-// function treeCheck(intTreeData, extTreeData) {
-//   intTreeData.forEach((node, idx) => {
-//     let extNode = extTreeData[idx];
-//     for (let key in node) {
-//       if (node[key] !== extNode[key]) {
-//         console.log(key, " not equal");
-//         console.log("INT: ", node[key], "EXT: ", extNode[key]);
-//       }
-//     }
-//   });
-//   console.log("FINISHED");
-// }

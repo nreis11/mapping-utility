@@ -10,6 +10,7 @@ import {
 import {
   getActiveNodeInfo,
   mapNode,
+  sortTree,
   modifyNodeAtPath,
   exportMappingsToXML
 } from "../utilities/mappingHelpers";
@@ -143,11 +144,12 @@ class MainContainer extends Component {
   }
 
   handleAddNodes(newNodes, nodeInfo) {
+    const sortedTree = sortTree(newNodes);
     // If adding children
     if (nodeInfo) {
       const { path } = nodeInfo;
       // Create a callback here
-      newNodes.forEach(node => {
+      sortedTree.forEach(node => {
         this.setState(state => ({
           extTreeData: addNodeUnderParent({
             treeData: state.extTreeData,
@@ -161,9 +163,9 @@ class MainContainer extends Component {
     } else {
       this.setState(
         {
-          extTreeData: this.state.extTreeData.concat(...newNodes)
+          extTreeData: this.state.extTreeData.concat(sortedTree)
         },
-        // Get first node
+        // Callback. Get first node
         () => {
           const activeNode = getActiveNodeInfo(this.state.extTreeData, 0);
           this.handleSelectNode(activeNode, this.extTreeKey);
@@ -184,7 +186,8 @@ class MainContainer extends Component {
     if (treeData.length < 1) {
       const activeType = this.state.activeType;
       this.setState({
-        intTreeData: getTreeData(activeType)
+        intTreeData: getTreeData(activeType),
+        activeExtNodeInfo: null
       });
     }
 

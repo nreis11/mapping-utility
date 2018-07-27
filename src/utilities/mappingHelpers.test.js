@@ -1,18 +1,18 @@
 import {
-  getActiveNodeInfo,
-  mapNode,
-  isMapped,
-  exportMappingsToXML
+  _getActiveNodeInfo,
+  _mapNode,
+  _isMapped,
+  _exportMappingsToXML
 } from "./mappingHelpers";
 
-describe("getActiveNodeInfo", () => {
+describe("_getActiveNodeInfo", () => {
   const treeData = [
     { id: 1 },
     { id: 2, expanded: true, children: [{ id: 3 }] }
   ];
   it("should return the first node ", () => {
     const treeIndex = 0;
-    const result = getActiveNodeInfo(treeData, treeIndex);
+    const result = _getActiveNodeInfo(treeData, treeIndex);
 
     expect(result.node.id).toEqual(1);
     expect(result.path).toEqual([1]);
@@ -21,7 +21,7 @@ describe("getActiveNodeInfo", () => {
 
   it("should return the correct path if nested ", () => {
     const treeIndex = 2;
-    const result = getActiveNodeInfo(treeData, treeIndex);
+    const result = _getActiveNodeInfo(treeData, treeIndex);
 
     expect(result.node.id).toEqual(3);
     expect(result.path).toEqual([2, 3]);
@@ -29,7 +29,7 @@ describe("getActiveNodeInfo", () => {
   });
 });
 
-describe("mapNode", () => {
+describe("_mapNode", () => {
   let treeData;
   const oldMapping = "OLD";
   const newMapping = "NEW";
@@ -52,7 +52,7 @@ describe("mapNode", () => {
     ];
   });
   it("should map the node and its descendants", () => {
-    const result = mapNode(treeData, newMapping, true);
+    const result = _mapNode(treeData, newMapping, true);
 
     expect(result.mapping).toEqual(newMapping);
     expect(
@@ -61,7 +61,7 @@ describe("mapNode", () => {
   });
 
   it("should only map the nodes without mappings", () => {
-    const result = mapNode(treeData, newMapping, false);
+    const result = _mapNode(treeData, newMapping, false);
     expect(result.mapping).toEqual(newMapping);
     expect(
       result.children.filter(child => child.mapping === oldMapping).length
@@ -69,7 +69,7 @@ describe("mapNode", () => {
   });
 });
 
-describe("isMapped", () => {
+describe("_isMapped", () => {
   it("Returns false if no mapping found", () => {
     const treeData = [
       {
@@ -84,7 +84,7 @@ describe("isMapped", () => {
       }
     ];
 
-    expect(isMapped(treeData)).toEqual(false);
+    expect(_isMapped(treeData)).toEqual(false);
   });
 
   it("Returns true if a mapping is found", () => {
@@ -101,11 +101,11 @@ describe("isMapped", () => {
       }
     ];
 
-    expect(isMapped(treeData)).toEqual(true);
+    expect(_isMapped(treeData)).toEqual(true);
   });
 });
 
-describe("exportMappingsToXML", () => {
+describe("_exportMappingsToXML", () => {
   const xmlParser = new DOMParser();
   const treeData = [
     {
@@ -124,8 +124,8 @@ describe("exportMappingsToXML", () => {
     }
   ];
   const type = "categories";
-  // function exportMappingsToXML( treeData = [], type = "str", outputParents = bool, prettyfy = bool)
-  let result = exportMappingsToXML(treeData, type, false, false);
+  // function _exportMappingsToXML( treeData = [], type = "str", outputParents = bool, prettyfy = bool)
+  let result = _exportMappingsToXML(treeData, type, false, false);
   // console.log(result);
   const xmlResult = xmlParser.parseFromString(result, "text/xml");
 
@@ -157,7 +157,7 @@ describe("exportMappingsToXML", () => {
   });
 
   it("Returns multiple tiers when output parents enabled", () => {
-    result = exportMappingsToXML(treeData, type, true, false);
+    result = _exportMappingsToXML(treeData, type, true, false);
     const xmlResult = xmlParser.parseFromString(result, "text/xml");
     const defaultNode = xmlResult.getElementsByTagName("default")[0];
     expect(defaultNode.nodeName).toEqual("default");

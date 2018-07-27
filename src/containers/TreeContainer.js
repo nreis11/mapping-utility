@@ -13,7 +13,7 @@ import TrashIcon from "react-icons/lib/fa/trash";
 import { Col, Well } from "react-bootstrap";
 
 import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
-import { getActiveNodeInfo } from "../utilities/mappingHelpers";
+import { _getActiveNodeInfo } from "../utilities/mappingHelpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
 import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
@@ -66,7 +66,7 @@ class TreeContainer extends React.Component {
       activeNodeInfo.node.expanded = expanded;
       newActiveNodeInfo = activeNodeInfo;
     } else {
-      newActiveNodeInfo = getActiveNodeInfo(treeData, treeIndex);
+      newActiveNodeInfo = _getActiveNodeInfo(treeData, treeIndex);
     }
     onSelectNode(newActiveNodeInfo, treeKey);
   }

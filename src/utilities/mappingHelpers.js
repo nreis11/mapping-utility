@@ -2,13 +2,14 @@ import {
   walk,
   map,
   getVisibleNodeInfoAtIndex,
-  changeNodeAtPath
+  changeNodeAtPath,
+  addNodeUnderParent
 } from "react-sortable-tree";
 import xmlbuilder from "xmlbuilder";
 
 const getNodeKey = ({ node }) => node.id;
 
-export const getActiveNodeInfo = (treeData, treeIndex) => {
+export const _getActiveNodeInfo = (treeData, treeIndex) => {
   // Utility doesn't return treeIndex. Manually added back in.
   return {
     ...getVisibleNodeInfoAtIndex({
@@ -20,7 +21,17 @@ export const getActiveNodeInfo = (treeData, treeIndex) => {
   };
 };
 
-export const mapNode = (treeData, mapping, overwrite = false) => {
+export const _addNodeUnderParent = ({treeData, path, newNode}) => {
+  return addNodeUnderParent({
+    treeData,
+    parentKey: path[path.length - 1],
+    expandParent: true,
+    getNodeKey,
+    newNode
+  }).treeData
+}
+
+export const _mapNode = (treeData, mapping, overwrite = false) => {
   // Map node and its descendants. Returns treeData array. Take 0 index.
   return map({
     treeData,
@@ -36,7 +47,7 @@ export const mapNode = (treeData, mapping, overwrite = false) => {
   })[0];
 };
 
-export const sortTree = treeData => {
+export const _sortTree = treeData => {
   return treeData.sort(
     (a, b) => (a.title === b.title ? 0 : a.title < b.title ? -1 : 1)
   );
@@ -55,7 +66,7 @@ export const sortTree = treeData => {
   // });
 };
 
-export const isMapped = treeData => {
+export const _isMapped = treeData => {
   // Can I early return if I find mapping?
   let foundMapping = false;
   const callback = ({ node }) => {
@@ -74,7 +85,7 @@ export const isMapped = treeData => {
   return foundMapping;
 };
 
-export const modifyNodeAtPath = (treeData, path, newNode) => {
+export const _changeNodeAtPath = (treeData, path, newNode) => {
   return changeNodeAtPath({
     treeData,
     path,
@@ -84,7 +95,7 @@ export const modifyNodeAtPath = (treeData, path, newNode) => {
   });
 };
 
-export const exportMappingsToXML = (
+export const _exportMappingsToXML = (
   treeData,
   type,
   outputParents,
@@ -101,7 +112,7 @@ export const exportMappingsToXML = (
   let rootNode = xmlbuilder
     .create("mapping", { encoding: "ISO-8859-1" })
     .att("type", mappingType);
-  const callback = ({ node }) => createNode(rootNode, node, outputParents);
+  const callback = ({ node }) => _createNode(rootNode, node, outputParents);
 
   walk({
     treeData: treeData,
@@ -113,7 +124,7 @@ export const exportMappingsToXML = (
   return rootNode.end({ pretty: pretty });
 };
 
-const createNode = (rootNode, node, outputParents = false) => {
+const _createNode = (rootNode, node, outputParents = false) => {
   if (!node.mapping) {
     return;
   }

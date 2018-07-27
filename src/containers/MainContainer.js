@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import { Grid, Jumbotron, Row } from "react-bootstrap";
 import {
   toggleExpandedForAll,
-  addNodeUnderParent,
   getNodeAtPath,
   getVisibleNodeCount
 } from "react-sortable-tree";
 
 import {
-  getActiveNodeInfo,
-  mapNode,
-  sortTree,
-  modifyNodeAtPath,
-  exportMappingsToXML
+  _getActiveNodeInfo,
+  _mapNode,
+  _sortTree,
+  _changeNodeAtPath,
+  _exportMappingsToXML,
+  _addNodeUnderParent
 } from "../utilities/mappingHelpers";
 
 import { isABootstrapModalOpen } from "../utilities/helpers";
@@ -87,7 +87,7 @@ class MainContainer extends Component {
 
   componentDidMount() {
     // Set first node as selected
-    const activeNode = getActiveNodeInfo(this.state.intTreeData, 0);
+    const activeNode = _getActiveNodeInfo(this.state.intTreeData, 0);
     this.handleSelectNode(activeNode, this.intTreeKey);
     document.addEventListener("keydown", this.handleKeyDown);
   }
@@ -110,11 +110,10 @@ class MainContainer extends Component {
   handleTypeSelect(name) {
     const newTreeData = getTreeData(name);
     // Reset active node
-    const activeIntNodeInfo = getActiveNodeInfo(this.state.intTreeData, 0);
     this.setState({
       activeType: name,
       intTreeData: newTreeData,
-      activeIntNodeInfo
+      activeIntNodeInfo: _getActiveNodeInfo(newTreeData, 0)
     });
   }
 
@@ -142,20 +141,14 @@ class MainContainer extends Component {
   }
 
   handleAddNodes(newNodes, nodeInfo) {
-    const sortedTree = sortTree(newNodes);
+    const sortedTree = _sortTree(newNodes);
     // If adding children
     if (nodeInfo) {
       const { path } = nodeInfo;
       // Create a callback here
       sortedTree.forEach(node => {
         this.setState(state => ({
-          extTreeData: addNodeUnderParent({
-            treeData: state.extTreeData,
-            parentKey: path[path.length - 1],
-            expandParent: true,
-            getNodeKey,
-            newNode: node
-          }).treeData
+          extTreeData: _addNodeUnderParent({treeData: state.extTreeData, path, newNode: node})
         }));
       });
     } else {
@@ -165,7 +158,7 @@ class MainContainer extends Component {
         },
         // Callback. Get first node
         () => {
-          const activeNode = getActiveNodeInfo(this.state.extTreeData, 0);
+          const activeNode = _getActiveNodeInfo(this.state.extTreeData, 0);
           this.handleSelectNode(activeNode, this.extTreeKey);
         }
       );
@@ -189,7 +182,7 @@ class MainContainer extends Component {
 
   handleExport() {
     const { intTreeData, activeType, options } = this.state;
-    return exportMappingsToXML(intTreeData, activeType, options.outputParents);
+    return _exportMappingsToXML(intTreeData, activeType, options.outputParents);
   }
 
   handleKeyDown(e) {
@@ -288,16 +281,16 @@ class MainContainer extends Component {
     // Handle actions
     if ((e.shiftKey && key === 32) || cmd === "shift-space") {
       // "Select node and its children. Preserve existing mappings"
-      newNode = mapNode([activeIntNode], activeExtNodeInfo.path, false);
+      newNode = _mapNode([activeIntNode], activeExtNodeInfo.path, false);
       treeIndex += 1;
     } else if ((e.ctrlKey && key === 32) || cmd === "ctrl-space") {
       // "Select node and its children. Overwrite any existing mappings."
-      newNode = mapNode([activeIntNode], activeExtNodeInfo.path, true);
+      newNode = _mapNode([activeIntNode], activeExtNodeInfo.path, true);
       treeIndex += 1;
     } else if (e.shiftKey && key === 8) {
       // console.log("SHIFT BACKSPACE");
       // "Delete current node & everything under that node, then move up to the previous node."
-      newNode = mapNode([activeIntNode], null, true);
+      newNode = _mapNode([activeIntNode], null, true);
       treeIndex -= 1;
     } else if (key === 32 || cmd === "space") {
       // "Map single node"
@@ -311,7 +304,7 @@ class MainContainer extends Component {
       treeIndex += 1;
     } else if ((e.shiftKey && key === 46) || cmd === "shift-delete") {
       // "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
-      newNode = mapNode([activeIntNode], null, true);
+      newNode = _mapNode([activeIntNode], null, true);
       treeIndex += 1;
     } else if (key === 8) {
       // "BACKSPACE Delete current node mapping and move up to the previous node."
@@ -329,7 +322,7 @@ class MainContainer extends Component {
 
     // Replace active node with new mapping
     const { path } = activeIntNodeInfo;
-    const newTreeData = modifyNodeAtPath(intTreeData, path, newNode);
+    const newTreeData = _changeNodeAtPath(intTreeData, path, newNode);
     this.handleChange(newTreeData, this.intTreeKey);
 
     // Check bounds
@@ -337,18 +330,18 @@ class MainContainer extends Component {
     treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
 
     // Set the new active node
-    const newactiveIntNodeInfo = getActiveNodeInfo(intTreeData, treeIndex);
+    const newActiveIntNodeInfo = _getActiveNodeInfo(intTreeData, treeIndex);
 
     // Scroll active node into view
     const activeNodeElem = document.getElementById(
-      newactiveIntNodeInfo.node.id
+      newActiveIntNodeInfo.node.id
     );
 
     if (activeNodeElem) {
       activeNodeElem.scrollIntoView(false);
     }
 
-    this.handleSelectNode(newactiveIntNodeInfo, this.intTreeKey);
+    this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);
   }
 
   handleInputChange(name, value) {

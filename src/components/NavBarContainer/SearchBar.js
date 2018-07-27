@@ -18,9 +18,9 @@ class SearchBar extends React.Component {
   }
 
   handleChange(e) {
-    e.preventDefault();
-    const searchString = e.target.value;
-    this.props.handleSearch(searchString);
+    console.log("FIRED", e);
+    const {name, value} = e.target;
+    this.props.handleSearch(name, value);
   }
 
   render() {
@@ -32,20 +32,22 @@ class SearchBar extends React.Component {
       searchInternal
     } = this.props;
 
-    const selectPrevMatch = () => {
+    const selectPrevMatch = (e) => {
+      const {name} = e.target;
       const idx =
         searchFocusIndex !== null
           ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
           : searchFoundCount - 1;
-      this.props.onSearchFocusChange(idx);
+      this.props.onSearchFocusChange(name, idx);
     };
 
-    const selectNextMatch = () => {
+    const selectNextMatch = (e) => {
+      const {name} = e.target;
       const idx =
         searchFocusIndex !== null
           ? (searchFocusIndex + 1) % searchFoundCount
           : 0;
-      this.props.onSearchFocusChange(idx);
+      this.props.onSearchFocusChange(name, idx);
     };
 
     return (
@@ -68,12 +70,14 @@ class SearchBar extends React.Component {
                 searchInternal ? "Search eQuest..." : "Search Board..."
               }
               value={searchString}
+              name={"searchString"}
               onChange={this.handleChange}
             />
           </InputGroup>
         </FormGroup>
         <Button
           type="button"
+          name="searchFocusIndex"
           disabled={!searchFoundCount}
           onClick={selectPrevMatch}
         >
@@ -81,6 +85,7 @@ class SearchBar extends React.Component {
         </Button>
         <Button
           type="submit"
+          name="searchFocusIndex"
           disabled={!searchFoundCount}
           onClick={selectNextMatch}
         >
@@ -108,15 +113,11 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-  searchString: string,
+  searchString: string.isRequired,
   onSearchFocusChange: func.isRequired,
   handleSearch: func.isRequired,
   searchFocusIndex: number.isRequired,
   searchInternal: bool.isRequired
-};
-
-SearchBar.defaultProps = {
-  searchString: ""
 };
 
 export default SearchBar;

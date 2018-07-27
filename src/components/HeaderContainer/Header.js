@@ -1,5 +1,5 @@
 import React from "react";
-import { string } from "prop-types";
+import { string, bool, func } from "prop-types";
 import BoardNameForm from "./BoardNameForm";
 
 const style = {
@@ -23,7 +23,14 @@ const Header = ({ name, isInternal, handleBoardNameChange }) => {
 };
 
 Header.propTypes = {
-  name: string.isRequired
+  name: string.isRequired,
+  isInternal: bool,
+  handleBoardNameChange: func
 };
+
+Header.defaultProps = {
+  isInternal: false,
+  handleBoardNameChange: null
+}
 
 export default Header;

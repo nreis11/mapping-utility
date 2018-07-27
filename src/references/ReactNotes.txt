@@ -58,3 +58,6 @@ Gitlab
 Hosting
 Documentation
 
+// Index.HTML
+
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="theme-color" content="#000000"><link rel="manifest" href="/mapping//manifest.json"><link rel="shortcut icon" href="/mapping/favicon.ico"><title>Mapping Utility</title><link href="/mapping/static/css/main.6783a700.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script type="text/javascript" src="/mapping/static/js/main.81892f9d.js"></script></body></html>

@@ -11,6 +11,11 @@ class BoardNameForm extends React.Component {
     this.handleEdit = this.handleEdit.bind(this);
   }
 
+  handleChange(e) {
+    const {name, value} = e.target;
+    this.props.handleBoardNameChange(name, value);
+  }
+
   handleEdit(e) {
     e.preventDefault();
     this.setState(prevState => ({
@@ -20,7 +25,7 @@ class BoardNameForm extends React.Component {
 
   render() {
     const { disabled } = this.state;
-    const { name, handleBoardNameChange } = this.props;
+    const { name } = this.props;
 
     return (
       <Form className="pull-left" onSubmit={this.handleEdit} inline>
@@ -28,10 +33,11 @@ class BoardNameForm extends React.Component {
           <FormControl
             type="text"
             placeholder="Board Name"
+            name="boardName"
             disabled={disabled}
             value={name}
             style={{ fontSize: "1em" }}
-            onChange={e => handleBoardNameChange(e)}
+            onChange={e => this.handleChange(e)}
           />
         </FormGroup>
         <Button onClick={this.handleEdit}>{disabled ? "Edit" : "Save"}</Button>

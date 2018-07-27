@@ -78,13 +78,11 @@ class MainContainer extends Component {
     this.handleAddNodes = this.handleAddNodes.bind(this);
     this.handleExport = this.handleExport.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
-    this.handleSearchFocusChange = this.handleSearchFocusChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
     this.handleSearchOptionChange = this.handleSearchOptionChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
-    this.handleBoardNameChange = this.handleBoardNameChange.bind(this);
   }
 
   componentDidMount() {
@@ -174,13 +172,6 @@ class MainContainer extends Component {
     }
   }
 
-  handleBoardNameChange(e) {
-    const name = e.target.value;
-    this.setState({
-      boardName: name
-    });
-  }
-
   handleChange(treeData, treeKey) {
     // Reset internal tree if clear all on ext tree
     if (treeData.length < 1) {
@@ -218,7 +209,6 @@ class MainContainer extends Component {
       isABootstrapModalOpen() ||
       extTreeData.length < 1
     ) {
-      console.log("IGNORED");
       return;
     }
 
@@ -265,7 +255,7 @@ class MainContainer extends Component {
       this.setState({
         searchInternal: false
       });
-      this.handleSearch(activeIntNodeTitle);
+      this.handleInputChange("searchString", activeIntNodeTitle);
       document.getElementById("searchInput").focus();
       return;
     } else if ((e.ctrlKey || e.metaKey) && key === 71) {
@@ -275,7 +265,7 @@ class MainContainer extends Component {
       this.setState({
         searchInternal: true
       });
-      this.handleSearch(activeExtNodeTitle);
+      this.handleInputChange("searchString", activeExtNodeTitle);
       document.getElementById("searchInput").focus();
       return;
     }
@@ -361,15 +351,9 @@ class MainContainer extends Component {
     this.handleSelectNode(newactiveIntNodeInfo, this.intTreeKey);
   }
 
-  handleSearch(searchString) {
+  handleInputChange(name, value) {
     this.setState({
-      searchString
-    });
-  }
-
-  handleSearchFocusChange(newIdx) {
-    this.setState({
-      searchFocusIndex: newIdx
+      [name]: value
     });
   }
 
@@ -475,10 +459,10 @@ class MainContainer extends Component {
         <NavBarContainer>
           <NavBar
             searchString={searchString}
-            handleSearch={this.handleSearch}
+            handleSearch={this.handleInputChange}
             searchFocusIndex={searchFocusIndex}
             searchFoundCount={searchFoundCount}
-            onSearchFocusChange={this.handleSearchFocusChange}
+            onSearchFocusChange={this.handleInputChange}
             onSearchOptionChange={this.handleSearchOptionChange}
             searchInternal={searchInternal}
             onSave={this.handleSave}
@@ -499,8 +483,7 @@ class MainContainer extends Component {
               <HeaderSmallContainer mdOffset={2}>
                 <Header
                   name={boardName}
-                  isInternal={false}
-                  handleBoardNameChange={this.handleBoardNameChange}
+                  handleBoardNameChange={this.handleInputChange}
                 />
                 <EditModal>
                   <TreeContainer

@@ -148,7 +148,11 @@ class MainContainer extends Component {
       // Create a callback here
       sortedTree.forEach(node => {
         this.setState(state => ({
-          extTreeData: _addNodeUnderParent({treeData: state.extTreeData, path, newNode: node})
+          extTreeData: _addNodeUnderParent({
+            treeData: state.extTreeData,
+            path,
+            newNode: node
+          })
         }));
       });
     } else {
@@ -202,6 +206,7 @@ class MainContainer extends Component {
       isABootstrapModalOpen() ||
       extTreeData.length < 1
     ) {
+      console.log("IGNORED");
       return;
     }
 
@@ -371,12 +376,11 @@ class MainContainer extends Component {
 
   handleSearchOptionChange(event) {
     // Needed to setTimeout to reflect changes visually. Why...?
+    console.log("FIRED");
     const { name, checked } = event.target;
-    window.setTimeout(() => {
-      this.setState({
-        [name]: checked
-      });
-    }, 0);
+    this.setState({
+      [name]: checked
+    });
     // Not reflecting visually
     // this.setState(state => ({
     //   searchInternal: !state.searchInternal

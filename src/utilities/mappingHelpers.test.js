@@ -125,41 +125,39 @@ describe("_exportMappingsToXML", () => {
   ];
   const type = "categories";
   // function _exportMappingsToXML( treeData = [], type = "str", outputParents = bool, prettyfy = bool)
-  let result = _exportMappingsToXML(treeData, type, false, false);
-  // console.log(result);
-  const xmlResult = xmlParser.parseFromString(result, "text/xml");
+  let result = _exportMappingsToXML(treeData, type, false, true);
+  const xmlObj = xmlParser.parseFromString(result, "text/xml");
 
   it("Sets the root node with correct mapping type", () => {
-    const rootNode = xmlResult.getElementsByTagName("mapping")[0];
+    const rootNode = xmlObj.getElementsByTagName("mapping")[0];
     expect(rootNode.nodeName).toEqual("mapping");
     expect(rootNode.getAttribute("type")).toEqual("function");
   });
 
   it("Returns a default node with correct mapping", () => {
-    const defaultNode = xmlResult.getElementsByTagName("default")[0];
+    const defaultNode = xmlObj.getElementsByTagName("default")[0];
     expect(defaultNode.nodeName).toEqual("default");
-    // I can't get the CDATA value! What's going on?
-    // expect(xmlResult.getElementsByTagName("boardvalue")[0].textContent).toEqual(
-    //   "24000"
-    // );
+    expect(xmlObj.getElementsByTagName("boardvalue")[0].textContent).toEqual(
+      "24000"
+    );
   });
 
   it("Returns the proper map for the first non-default mapping", () => {
-    const firstMappingNode = xmlResult.getElementsByTagName("map")[0];
+    const firstMappingNode = xmlObj.getElementsByTagName("map")[0];
     expect(firstMappingNode.nodeName).toEqual("map");
     expect(firstMappingNode.getAttribute("equestvalue")).toEqual("17000000");
     expect(
-      xmlResult.getElementsByTagName("boardvalue")[1].getAttribute("tier")
+      xmlObj.getElementsByTagName("boardvalue")[1].getAttribute("tier")
     ).toEqual("1");
-    // expect(xmlResult.getElementsByTagName("boardvalue")[1].textContent).toEqual(
-    //   "1000"
-    // );
+    expect(xmlObj.getElementsByTagName("boardvalue")[1].textContent).toEqual(
+      "1000"
+    );
   });
 
   it("Returns multiple tiers when output parents enabled", () => {
-    result = _exportMappingsToXML(treeData, type, true, false);
-    const xmlResult = xmlParser.parseFromString(result, "text/xml");
-    const defaultNode = xmlResult.getElementsByTagName("default")[0];
+    result = _exportMappingsToXML(treeData, type, true, true);
+    const xmlObj = xmlParser.parseFromString(result, "text/xml");
+    const defaultNode = xmlObj.getElementsByTagName("default")[0];
     expect(defaultNode.nodeName).toEqual("default");
     defaultNode.childNodes.forEach((boardValueNode, i) =>
       expect(boardValueNode.getAttribute("tier")).toEqual(String(i + 1))

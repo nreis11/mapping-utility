@@ -21,15 +21,15 @@ export const _getActiveNodeInfo = (treeData, treeIndex) => {
   };
 };
 
-export const _addNodeUnderParent = ({treeData, path, newNode}) => {
+export const _addNodeUnderParent = ({ treeData, path, newNode }) => {
   return addNodeUnderParent({
     treeData,
     parentKey: path[path.length - 1],
     expandParent: true,
     getNodeKey,
     newNode
-  }).treeData
-}
+  }).treeData;
+};
 
 export const _mapNode = (treeData, mapping, overwrite = false) => {
   // Map node and its descendants. Returns treeData array. Take 0 index.
@@ -99,7 +99,7 @@ export const _exportMappingsToXML = (
   treeData,
   type,
   outputParents,
-  pretty = true
+  testing = false
 ) => {
   const types = {
     categories: "function",
@@ -112,7 +112,8 @@ export const _exportMappingsToXML = (
   let rootNode = xmlbuilder
     .create("mapping", { encoding: "ISO-8859-1" })
     .att("type", mappingType);
-  const callback = ({ node }) => _createNode(rootNode, node, outputParents);
+  const callback = ({ node }) =>
+    _createNode(rootNode, node, outputParents, testing);
 
   walk({
     treeData: treeData,
@@ -121,16 +122,17 @@ export const _exportMappingsToXML = (
     ignoreCollapsed: false
   });
 
-  return rootNode.end({ pretty: pretty });
+  return rootNode.end({ pretty: testing ? false : true });
 };
 
-const _createNode = (rootNode, node, outputParents = false) => {
+const _createNode = (rootNode, node, outputParents = false, testing) => {
+  // If testing, use plain text node. Otherwise, use CDATA
   if (!node.mapping) {
     return;
   }
 
   let mapping = node.mapping;
-  let childNode = rootNode.ele(node.id === "eqDEFAULT" ? "default" : "map");
+  const childNode = rootNode.ele(node.id === "eqDEFAULT" ? "default" : "map");
 
   if (node.id !== "eqDEFAULT") {
     // Each node has 'eq' prepended
@@ -140,18 +142,14 @@ const _createNode = (rootNode, node, outputParents = false) => {
   if (outputParents) {
     mapping.forEach((mapping, idx) => {
       const tier = idx + 1;
-      childNode
-        .ele("boardvalue")
-        .att("tier", tier)
-        .dat(mapping);
+      const boardValueNode = childNode.ele("boardvalue").att("tier", tier);
+      testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
     });
   } else {
     // Grab last value
     mapping = mapping[mapping.length - 1];
-    childNode
-      .ele("boardvalue")
-      .att("tier", 1)
-      .dat(mapping);
+    const boardValueNode = childNode.ele("boardvalue").att("tier", 1);
+    testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
   }
 
   return rootNode;

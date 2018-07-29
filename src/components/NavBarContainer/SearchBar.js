@@ -19,7 +19,7 @@ class SearchBar extends React.Component {
 
   handleChange(e) {
     console.log("FIRED", e);
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     this.props.handleSearch(name, value);
   }
 
@@ -32,8 +32,8 @@ class SearchBar extends React.Component {
       searchInternal
     } = this.props;
 
-    const selectPrevMatch = (e) => {
-      const {name} = e.target;
+    const selectPrevMatch = e => {
+      const { name } = e.target;
       const idx =
         searchFocusIndex !== null
           ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
@@ -41,8 +41,8 @@ class SearchBar extends React.Component {
       this.props.onSearchFocusChange(name, idx);
     };
 
-    const selectNextMatch = (e) => {
-      const {name} = e.target;
+    const selectNextMatch = e => {
+      const { name } = e.target;
       const idx =
         searchFocusIndex !== null
           ? (searchFocusIndex + 1) % searchFoundCount

@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 
-// import NavBar from "./components/NavBar";
 import MainContainer from "./containers/MainContainer";
+import { Login, PrivateRoute } from "./containers/Login";
+
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     return (
-      <div>
-        <MainContainer />
-      </div>
+      <Router>
+        <div>
+          <PrivateRoute exact path="/" component={MainContainer} />
+          <Route path="/login" component={Login} />
+        </div>
+      </Router>
     );
   }
 }

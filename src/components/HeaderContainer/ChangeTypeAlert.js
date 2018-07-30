@@ -20,7 +20,7 @@ const ChangeTypeAlert = props => {
         <Modal.Footer>
           <Button onClick={() => handleCancel()}>Cancel</Button>
           <Button onClick={() => handleConfirm()} bsStyle="danger">
-            Change Type
+            Confirm
           </Button>
         </Modal.Footer>
       </Modal.Dialog>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Nav, NavItem } from "react-bootstrap";
 import { _isMapped } from "../../utilities/mappingHelpers";
-import ChangeTypeAlert from "../MainContainer/ChangeTypeAlert";
+import ChangeTypeAlert from "./ChangeTypeAlert";
 
 const TYPES = {
   categories: "Category",

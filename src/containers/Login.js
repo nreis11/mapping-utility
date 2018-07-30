@@ -79,7 +79,7 @@ export class Login extends React.Component {
 
   setSession() {
     // Set the time that the access token will expire at
-    let expiresAt = JSON.stringify(3600 + new Date().getTime());
+    let expiresAt = 3600000 + new Date().getTime();
     localStorage.setItem("expires_at", expiresAt);
   }
 

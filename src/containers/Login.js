@@ -10,30 +10,25 @@ import {
   Alert,
   InputGroup
 } from "react-bootstrap";
+import { auth } from "../firebase";
 
 import "./Login.css";
 import Logo from "../equest-logo-black.png";
-import User from "react-icons/lib/fa/user";
 import Password from "react-icons/lib/fa/lock";
 
 const isAuthenticated = () => {
   let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-  return new Date().getTime() < expiresAt;
-};
-
-const checkAuth = {
-  isAuthenticated: isAuthenticated() || false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    cb();
+  if (typeof Storage !== "undefined" && expiresAt) {
+    return new Date().getTime() < expiresAt;
   }
+  return false;
 };
 
 export const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      checkAuth.isAuthenticated ? (
+      isAuthenticated() ? (
         <Component {...props} />
       ) : (
         <Redirect
@@ -52,7 +47,7 @@ export class Login extends React.Component {
     super(props);
     this.state = {
       redirectToReferrer: false,
-      showAlert: false
+      error: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setSession = this.setSession.bind(this);
@@ -60,32 +55,34 @@ export class Login extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const userNameValue = document.getElementById("formUsername").value;
+    const emailValue = document.getElementById("formEmail").value;
     const passWordValue = document.getElementById("formPassword").value;
-    // Yes it's in plain text. No, I'm not worried. Nothing sensitive here.
-    if (userNameValue === "test" && passWordValue === "test") {
-      this.setSession();
-      checkAuth.authenticate(() => {
+    auth
+      .signInWithEmailAndPassword(emailValue, passWordValue)
+      .then(() => {
+        this.setSession();
         this.setState({
           redirectToReferrer: true
         });
+      })
+      .catch(error => {
+        this.setState({
+          error: error.message
+        });
       });
-    } else {
-      this.setState({
-        showAlert: true
-      });
-    }
   }
 
   setSession() {
     // Set the time that the access token will expire at
     let expiresAt = 3600000 + new Date().getTime();
-    localStorage.setItem("expires_at", expiresAt);
+    if (typeof Storage !== "undefined") {
+      localStorage.setItem("expires_at", expiresAt);
+    }
   }
 
   render() {
     const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToReferrer, showAlert } = this.state;
+    const { redirectToReferrer, error } = this.state;
 
     if (redirectToReferrer) {
       return <Redirect to={from} />;
@@ -100,16 +97,16 @@ export class Login extends React.Component {
               <strong>For internal use only.</strong>
             </span>
             <hr />
-            {showAlert && (
+            {error && (
               <Alert bsStyle="danger" style={{ fontSize: 12 }}>
-                Invalid username/password.
+                {error}
               </Alert>
             )}
             <Form id="loginForm" onSubmit={this.handleSubmit}>
-              <FormGroup controlId="formUsername">
+              <FormGroup controlId="formEmail">
                 <InputGroup>
-                  <InputGroup.Addon>{<User />}</InputGroup.Addon>
-                  <FormControl type="text" placeholder="Username" />
+                  <InputGroup.Addon>@</InputGroup.Addon>
+                  <FormControl type="text" placeholder="Email" />
                 </InputGroup>
               </FormGroup>
 

@@ -10,18 +10,21 @@ import {
   Alert,
   InputGroup
 } from "react-bootstrap";
-import { auth } from "../firebase";
+import { firebase } from "../firebase";
 
 import "./Login.css";
 import Logo from "../equest-logo-black.png";
 import Password from "react-icons/lib/fa/lock";
+import User from "react-icons/lib/fa/user";
 
 const isAuthenticated = () => {
-  let expiresAt = JSON.parse(localStorage.getItem("expires_at"));
-  if (typeof Storage !== "undefined" && expiresAt) {
-    return new Date().getTime() < expiresAt;
-  }
-  return false;
+  const auth = firebase.auth.onAuthStateChanged(user => {
+    if (user) {
+      return true;
+    }
+    return false;
+  });
+  return auth;
 };
 
 export const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -50,17 +53,17 @@ export class Login extends React.Component {
       error: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.setSession = this.setSession.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const emailValue = document.getElementById("formEmail").value;
+    // Firebase uses email + password account structure
+    const userNameValue =
+      document.getElementById("formUserName").value + "@equest.com";
     const passWordValue = document.getElementById("formPassword").value;
-    auth
-      .signInWithEmailAndPassword(emailValue, passWordValue)
+    firebase.auth
+      .signInWithEmailAndPassword(userNameValue, passWordValue)
       .then(() => {
-        this.setSession();
         this.setState({
           redirectToReferrer: true
         });
@@ -70,14 +73,6 @@ export class Login extends React.Component {
           error: error.message
         });
       });
-  }
-
-  setSession() {
-    // Set the time that the access token will expire at
-    let expiresAt = 3600000 + new Date().getTime();
-    if (typeof Storage !== "undefined") {
-      localStorage.setItem("expires_at", expiresAt);
-    }
   }
 
   render() {
@@ -103,9 +98,9 @@ export class Login extends React.Component {
               </Alert>
             )}
             <Form id="loginForm" onSubmit={this.handleSubmit}>
-              <FormGroup controlId="formEmail">
+              <FormGroup controlId="formUserName">
                 <InputGroup>
-                  <InputGroup.Addon>@</InputGroup.Addon>
+                  <InputGroup.Addon>{<User />}</InputGroup.Addon>
                   <FormControl type="text" placeholder="Email" />
                 </InputGroup>
               </FormGroup>

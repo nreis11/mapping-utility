@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 import MainContainer from "./containers/MainContainer";
-import { Login, PrivateRoute } from "./containers/Login";
-
+import { Login } from "./containers/Login";
+import AuthorizedRoute from "./containers/AuthorizedRoute";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends Component {
@@ -10,7 +10,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <PrivateRoute exact path="/" component={MainContainer} />
+          <AuthorizedRoute exact path="/" component={MainContainer} />
           <Route path="/login" component={Login} />
         </div>
       </Router>

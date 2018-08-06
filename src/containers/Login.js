@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import {
   Col,
   Form,
@@ -16,34 +16,6 @@ import "./Login.css";
 import Logo from "../equest-logo-black.png";
 import Password from "react-icons/lib/fa/lock";
 import User from "react-icons/lib/fa/user";
-
-const isAuthenticated = () => {
-  const auth = firebase.auth.onAuthStateChanged(user => {
-    if (user) {
-      return true;
-    }
-    return false;
-  });
-  return auth;
-};
-
-export const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      isAuthenticated() ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
-  />
-);
 
 export class Login extends React.Component {
   constructor(props) {
@@ -79,7 +51,7 @@ export class Login extends React.Component {
     const { from } = this.props.location.state || { from: { pathname: "/" } };
     const { redirectToReferrer, error } = this.state;
 
-    if (redirectToReferrer) {
+    if (redirectToReferrer === true) {
       return <Redirect to={from} />;
     }
 

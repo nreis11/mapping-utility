@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button, Col } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 
 import QuestionMark from "react-icons/lib/fa/question";
 
@@ -25,7 +25,7 @@ class HelpModal extends React.Component {
 
   render() {
     return (
-      <Col>
+      <React.Fragment>
         <Button onClick={this.handleShow}>
           <QuestionMark />
         </Button>
@@ -85,12 +85,6 @@ class HelpModal extends React.Component {
               to the previous node.
             </p>
 
-            {/* <p>
-              <strong>M:</strong>
-              <br />
-              Quick search of the selected eQuest code.
-            </p> */}
-
             <p>
               <strong>Ctrl+G:</strong>
               <br />
@@ -113,7 +107,7 @@ class HelpModal extends React.Component {
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>
-      </Col>
+      </React.Fragment>
     );
   }
 }

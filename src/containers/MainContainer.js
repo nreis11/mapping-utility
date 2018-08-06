@@ -16,6 +16,7 @@ import {
 } from "../utilities/mappingHelpers";
 
 import { isABootstrapModalOpen } from "../utilities/helpers";
+import { withRouter } from "react-router-dom";
 
 import {
   saveToJson,
@@ -544,4 +545,4 @@ class MainContainer extends Component {
   }
 }
 
-export default MainContainer;
+export default withRouter(MainContainer);

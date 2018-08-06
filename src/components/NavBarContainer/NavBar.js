@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap";
 import FaFloppyO from "react-icons/lib/fa/floppy-o";
 import FaOpen from "react-icons/lib/fa/folder-open-o";
-
+import LogOutButton from "./LogOutButton";
 import "./NavBar.css";
 import SearchBar from "./SearchBar";
 import HelpModal from "./HelpModal";
@@ -52,6 +52,7 @@ const NavBar = props => {
       <Nav pullRight>
         <NavItem>
           <HelpModal />
+          <LogOutButton />
         </NavItem>
       </Nav>
     </Navbar>

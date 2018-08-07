@@ -6,9 +6,12 @@ import { withRouter } from "react-router-dom";
 const LogOutButton = props => (
   <Button
     onClick={() =>
-      firebase.auth.signOut().then(() => {
-        props.history.push("/login");
-      })
+      firebase.auth
+        .signOut()
+        .then(() => {
+          props.history.push("/login");
+        })
+        .catch(e => console.log(e))
     }
   >
     Log Out

@@ -44,15 +44,14 @@ class ExportModal extends React.Component {
 
   render() {
     return (
-      <Col>
+      <React.Fragment>
         <Button
-          className="pull-right"
           onClick={this.handleShow}
           bsStyle="success"
           bsSize="small"
-          style={{ lineHeight: "13px" }}
+          style={{ lineHeight: "12px" }}
         >
-          Export
+          <strong>Export</strong>
         </Button>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
@@ -93,7 +92,7 @@ class ExportModal extends React.Component {
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>
-      </Col>
+      </React.Fragment>
     );
   }
 }

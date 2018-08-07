@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 import MainContainer from "./containers/MainContainer";
-import { Login } from "./containers/Login";
-import AuthorizedRoute from "./containers/AuthorizedRoute";
+import { Login } from "./components/Login/Login";
+import AuthorizedRoute from "./components/Login/AuthorizedRoute";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "./App.css";

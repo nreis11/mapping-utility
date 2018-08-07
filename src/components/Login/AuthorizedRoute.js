@@ -1,5 +1,5 @@
 import React from "react";
-import { firebase } from "../firebase";
+import { firebase } from "../../firebase";
 import { Route, Redirect } from "react-router-dom";
 
 class AuthorizedRoute extends React.Component {

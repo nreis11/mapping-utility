@@ -529,13 +529,15 @@ class MainContainer extends Component {
             </Row>
             <Row className="show-grid">
               <NodeInfo heading={"Mapped to:"} node={mappedNode} />
-              <OptionsContainer>
-                <Options
-                  options={options}
-                  onOptionChange={this.handleOptionChange}
-                />
-                <ExportModal handleExport={this.handleExport} />
-              </OptionsContainer>
+              <OptionsContainer
+                left={
+                  <Options
+                    options={options}
+                    onOptionChange={this.handleOptionChange}
+                  />
+                }
+                right={<ExportModal handleExport={this.handleExport} />}
+              />
             </Row>
           </Grid>
         </Jumbotron>

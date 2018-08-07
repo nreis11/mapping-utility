@@ -18,13 +18,13 @@ const NodeInfo = ({ mdOffset, heading, node }) => {
         <Panel.Heading style={{ padding: "2px" }}>
           <Panel.Title componentClass="h3">{heading}</Panel.Title>
         </Panel.Heading>
-        <Panel.Body style={{ padding: "8px", height: "30px" }}>
-          <div className="info pull-left">
+        <Panel.Body style={{ padding: 8, height: 32 }}>
+          <div className="pull-left">
             <span>
               <strong>{nodeTitle}</strong>
             </span>
           </div>
-          <div className="info pull-right">
+          <div className="pull-right">
             <span>
               <strong>{nodeKey}</strong>
             </span>

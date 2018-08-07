@@ -10,10 +10,10 @@ import {
   Alert,
   InputGroup
 } from "react-bootstrap";
-import { firebase } from "../firebase";
+import { firebase } from "../../firebase";
 
 import "./Login.css";
-import Logo from "../equest-logo-black.png";
+import Logo from "../../equest-logo-black.png";
 import { FaLock } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
-import PlusSign from "react-icons/lib/fa/plus";
+import { FaPlus } from "react-icons/fa";
 
 import AddModal from "./AddModal";
 
@@ -41,7 +41,7 @@ class EditModal extends React.Component {
           onClick={this.handleShow}
           className={"pull-right"}
         >
-          <PlusSign /> Add/Edit
+          <FaPlus className="react-icons" /> Add/Edit
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
           <Modal.Header closeButton>

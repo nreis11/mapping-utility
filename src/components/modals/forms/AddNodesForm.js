@@ -9,10 +9,8 @@ class AddNodesForm extends React.Component {
   constructor(props) {
     super(props);
 
-    // TEMP RAWDATA
     this.state = {
-      rawData:
-        "24000|Advertising, Communication & PR\n1000|Agriculture, Fishing & Forestry\n27001|Armed Forces\n30001|Art, Culture, Entertainment & Sport\n23003|Auditing/Accounting\n10001|Automotive Sector\n19000|Banking, Financial Services & Insurance\n14000|Building & Construction\n7000|Chemical & Petrochemical Industry\n31001|Conservation & Environment\n23001|Consulting\n17000|Distribution, Transport & Logistics\n28000|Education & Training\n13000|Electricity, Gas & Water Supply\n11000|Fast Moving Consumer Goods/ Durables\n3000|Food & Beverages\n16000|Hotels, Restaurants & Catering\n25000|HR Services, Recruitment & Selection\n21000|IT & Internet\n23002|Legal\n30002|Leisure & Tourism\n12000|Manufacturing\n6002|Media, Audiovisual & Publishing\n29000|Medical, Health & Social Care\n2000|Mining & Quarrying\n31002|Other\n26000|Other Business Activities & Services\n8000|Pharmaceutical Sector\n6001|Printing  Industry\n27002|Public Administration\n27003|Public Services\n20000|Real Estate\n22000|Research & Development\n10002|Space and Aerospace\n9000|Steel Industry\n18000|Telecommunication Services\n4000|Textiles, Clothing & Leather\n15000|Wholesale, Retail Trade",
+      rawData: "",
       delimiter: "|",
       valueIdx: 1,
       labelIdx: 2

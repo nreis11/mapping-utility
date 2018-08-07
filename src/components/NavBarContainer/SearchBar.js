@@ -8,7 +8,7 @@ import {
   Checkbox
 } from "react-bootstrap";
 import { string, func, number, bool } from "prop-types";
-import FaSearch from "react-icons/lib/fa/search";
+import { FaSearch } from "react-icons/fa";
 
 class SearchBar extends React.Component {
   constructor(props) {

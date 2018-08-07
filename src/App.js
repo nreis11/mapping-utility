@@ -5,6 +5,8 @@ import { Login } from "./containers/Login";
 import AuthorizedRoute from "./containers/AuthorizedRoute";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
+import "./App.css";
+
 class App extends Component {
   render() {
     return (

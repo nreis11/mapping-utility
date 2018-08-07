@@ -1,7 +1,12 @@
+.navbar {
+  padding: 0px 15px;
+}
+
 .navbar-nav > li > a {
   padding: 10px 5px;
 }
 
-.navbar-right > li > a {
-  padding: 10px 15px;
+.navbar-brand {
+  padding: 15px 5px 15px 0px;
 }
+

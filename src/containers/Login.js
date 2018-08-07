@@ -14,8 +14,8 @@ import { firebase } from "../firebase";
 
 import "./Login.css";
 import Logo from "../equest-logo-black.png";
-import Password from "react-icons/lib/fa/lock";
-import User from "react-icons/lib/fa/user";
+import { FaLock } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 
 export class Login extends React.Component {
   constructor(props) {
@@ -72,14 +72,14 @@ export class Login extends React.Component {
             <Form id="loginForm" onSubmit={this.handleSubmit}>
               <FormGroup controlId="formUserName">
                 <InputGroup>
-                  <InputGroup.Addon>{<User />}</InputGroup.Addon>
-                  <FormControl type="text" placeholder="Email" />
+                  <InputGroup.Addon>{<FaUser />}</InputGroup.Addon>
+                  <FormControl type="text" placeholder="Username" />
                 </InputGroup>
               </FormGroup>
 
               <FormGroup controlId="formPassword">
                 <InputGroup>
-                  <InputGroup.Addon>{<Password />}</InputGroup.Addon>
+                  <InputGroup.Addon>{<FaLock />}</InputGroup.Addon>
                   <FormControl type="password" placeholder="Password" />
                 </InputGroup>
               </FormGroup>

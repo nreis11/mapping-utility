@@ -2,8 +2,8 @@ import React from "react";
 import { Modal, Button, Col } from "react-bootstrap";
 import { func } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import CopyIcon from "react-icons/lib/fa/copy";
-import DownloadIcon from "react-icons/lib/fa/download";
+import { FaCopy } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa";
 
 import "./ExportModal.css";
 
@@ -69,7 +69,7 @@ class ExportModal extends React.Component {
               className="pull-left"
             >
               <span>
-                <DownloadIcon /> Download
+                <FaDownload className="react-icons" /> Download
               </span>
             </Button>
             <CopyToClipboard
@@ -78,7 +78,7 @@ class ExportModal extends React.Component {
               onCopy={() => this.setState({ copied: true })}
             >
               <Button title="Copy">
-                <CopyIcon /> Copy
+                <FaCopy className="react-icons" /> Copy
               </Button>
             </CopyToClipboard>
             {this.state.copied && (

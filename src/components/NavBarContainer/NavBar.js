@@ -7,8 +7,8 @@ import {
   Tooltip,
   OverlayTrigger
 } from "react-bootstrap";
-import FaFloppyO from "react-icons/lib/fa/floppy-o";
-import FaOpen from "react-icons/lib/fa/folder-open-o";
+import { FaSave } from "react-icons/fa";
+import { FaFolderOpen } from "react-icons/fa";
 import LogOutButton from "./LogOutButton";
 import "./NavBar.css";
 import SearchBar from "./SearchBar";
@@ -36,12 +36,12 @@ const NavBar = props => {
         <NavItem>
           <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
             <Button onClick={handleLoad}>
-              <FaOpen />
+              <FaFolderOpen size="1.25em" className="react-icons" />
             </Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={tooltip("Save")}>
             <Button onClick={onSave}>
-              <FaFloppyO />
+              <FaSave size="1.25em" className="react-icons" />
             </Button>
           </OverlayTrigger>
         </NavItem>
@@ -52,6 +52,8 @@ const NavBar = props => {
       <Nav pullRight>
         <NavItem>
           <HelpModal />
+        </NavItem>
+        <NavItem>
           <LogOutButton />
         </NavItem>
       </Nav>

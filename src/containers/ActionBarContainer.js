@@ -2,8 +2,8 @@ import React from "react";
 import { func } from "prop-types";
 
 import { Col, Button, ButtonGroup } from "react-bootstrap";
-import FaForward from "react-icons/lib/fa/forward";
-import FaBackward from "react-icons/lib/fa/backward";
+import { FaForward } from "react-icons/fa";
+import { FaBackward } from "react-icons/fa";
 
 import { ExpandCollapseButtons } from "../components/ActionBar/ExpandCollapseButtons";
 import { ActionButton } from "../components/ActionBar/ActionButton";
@@ -15,17 +15,20 @@ export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
     <Col md={2} className="text-center action-container">
       <ButtonGroup>
         <ActionButton dataCmd="space" onClick={onClick}>
-          <FaForward /> Map <FaForward />
+          <FaForward className="react-icons" /> Map{" "}
+          <FaForward className="react-icons" />
           <br />
           (single)
         </ActionButton>
         <ActionButton dataCmd="shift-space" onClick={onClick}>
-          <FaForward /> Map Node <FaForward />
+          <FaForward className="react-icons" /> Map Node{" "}
+          <FaForward className="react-icons" />
           <br />
           (preserve)
         </ActionButton>
         <ActionButton dataCmd="ctrl-space" onClick={onClick}>
-          <FaForward /> Map Node <FaForward />
+          <FaForward className="react-icons" /> Map Node{" "}
+          <FaForward className="react-icons" />
           <br />
           (overwrite)
         </ActionButton>
@@ -35,10 +38,10 @@ export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
           Highlight Unmapped
         </Button>
         <ActionButton dataCmd="delete" onClick={onClick}>
-          <FaBackward /> Clear This Map
+          <FaBackward className="react-icons" /> Clear This Map
         </ActionButton>
         <ActionButton dataCmd="shift-delete" onClick={onClick}>
-          <FaBackward /> Clear Entire Node
+          <FaBackward className="react-icons" /> Clear Entire Node
         </ActionButton>
       </ButtonGroup>
       <ExpandCollapseButtons expandAll={expandAll} expand={true}>

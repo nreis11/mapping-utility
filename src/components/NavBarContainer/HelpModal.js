@@ -1,7 +1,7 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Col, Modal, Button } from "react-bootstrap";
 
-import QuestionMark from "react-icons/lib/fa/question";
+import { FaQuestion } from "react-icons/fa";
 
 class HelpModal extends React.Component {
   constructor(props, context) {
@@ -25,10 +25,8 @@ class HelpModal extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Button onClick={this.handleShow}>
-          <QuestionMark />
-        </Button>
+      <Col style={{ paddingTop: 3, paddingBottom: 0 }}>
+        <FaQuestion size="2em" onClick={this.handleShow} />
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
@@ -107,7 +105,7 @@ class HelpModal extends React.Component {
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>
-      </React.Fragment>
+      </Col>
     );
   }
 }

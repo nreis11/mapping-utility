@@ -9,7 +9,7 @@ import {
   number,
   oneOfType
 } from "prop-types";
-import TrashIcon from "react-icons/lib/fa/trash";
+import { FaTrash } from "react-icons/fa";
 import { Col, Well } from "react-bootstrap";
 
 import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
@@ -101,7 +101,7 @@ class TreeContainer extends React.Component {
               const buttons = [
                 <AddModal onAddNodes={onAddNodes} nodeInfo={rowInfo} />,
                 <button onClick={() => this.handleRemoveNode(path)}>
-                  <TrashIcon />
+                  <FaTrash className="react-icons" />
                 </button>
               ];
 

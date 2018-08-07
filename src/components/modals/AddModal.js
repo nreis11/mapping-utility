@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
-import PlusSign from "react-icons/lib/fa/plus";
+import { FaPlus } from "react-icons/fa";
 import { func, shape } from "prop-types";
 import AddNodesForm from "./forms/AddNodesForm";
 
@@ -28,7 +28,7 @@ class AddModal extends React.Component {
     // Render mini button on node or edit modal button
     return nodeInfo ? (
       <button onClick={this.handleShow}>
-        <PlusSign />
+        <FaPlus className="react-icons" />
       </button>
     ) : (
       <Button
@@ -37,7 +37,7 @@ class AddModal extends React.Component {
         bsSize="small"
         onClick={this.handleShow}
       >
-        <PlusSign /> Add Nodes
+        <FaPlus className="react-icons" /> Add Nodes
       </Button>
     );
   }

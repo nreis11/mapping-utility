@@ -1,8 +1,14 @@
 import React from "react";
+import yaml from "js-yaml";
+
 import { Modal, Col, Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
+import { FaUpload } from "react-icons/fa";
 
 import AddModal from "./AddModal";
+import FileInput from "../misc/FileInput";
+import { traverse } from "../../utilities/yamlHelper";
+import { getTreeDataFromFlatData } from "../../utilities/fileHelpers";
 
 class EditModal extends React.Component {
   constructor(props, context) {
@@ -11,6 +17,8 @@ class EditModal extends React.Component {
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleClearAll = this.handleClearAll.bind(this);
+    this.handleFileOnClick = this.handleFileOnClick.bind(this);
+    this.handleYamlImport = this.handleYamlImport.bind(this);
 
     this.state = {
       show: false
@@ -23,6 +31,25 @@ class EditModal extends React.Component {
 
   handleShow() {
     this.setState({ show: true });
+  }
+
+  handleFileOnClick() {
+    // Prompt user for file. Simulate click. Keeping ugly default button hidden
+    let fileInput = document.getElementById("file-input-YAML");
+    fileInput.click();
+  }
+
+  handleYamlImport(yamlFile) {
+    // How do you do all this work in the yaml helper?
+    const { treeKey, onChange } = this.props.children.props;
+    const fileReader = new FileReader();
+    fileReader.onload = e => {
+      const jsonObj = yaml.safeLoad(e.target.result);
+      const nodes = traverse(jsonObj);
+      const extTreeData = getTreeDataFromFlatData(nodes);
+      onChange(extTreeData, treeKey);
+    };
+    fileReader.readAsText(yamlFile);
   }
 
   handleClearAll() {
@@ -51,7 +78,18 @@ class EditModal extends React.Component {
             {this.props.children}
           </Modal.Body>
           <Modal.Footer>
+            <FileInput handleOpen={this.handleYamlImport} type="YAML" />
             <AddModal onAddNodes={onAddNodes} />
+            <Button
+              className="pull-left"
+              style={{ marginLeft: 5 }}
+              bsStyle="success"
+              bsSize="small"
+              onClick={this.handleFileOnClick}
+            >
+              <FaUpload className="react-icons" /> Import YAML
+            </Button>
+
             <Button
               className="pull-left"
               style={{ marginLeft: 5 }}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Jumbotron, Row } from "react-bootstrap";
+import { Grid, Jumbotron, Row, Col } from "react-bootstrap";
 import {
   toggleExpandedForAll,
   getNodeAtPath,
@@ -45,12 +45,12 @@ class MainContainer extends Component {
     this.state = {
       intTreeData: getTreeData("categories"),
       extTreeData: [
-        // {
-        //   id: 100,
-        //   title: "Parent",
-        //   expanded: true,
-        //   children: [{ id: 999, title: "Child" }]
-        // }
+        {
+          id: 100,
+          title: "Parent",
+          expanded: true,
+          children: [{ id: 999, title: "Child" }]
+        }
       ],
       boardName: "Board",
       activeIntNodeInfo: null,
@@ -452,7 +452,7 @@ class MainContainer extends Component {
     }
 
     return (
-      <div id="main-container">
+      <Col id="main-container">
         <NavBarContainer>
           <NavBar
             searchString={searchString}
@@ -541,7 +541,7 @@ class MainContainer extends Component {
             </Row>
           </Grid>
         </Jumbotron>
-      </div>
+      </Col>
     );
   }
 }

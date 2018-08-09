@@ -13,14 +13,14 @@ import LogOutButton from "./LogOutButton";
 import "./NavBar.css";
 import SearchBar from "./SearchBar";
 import HelpModal from "./HelpModal";
-import FileInput from "./FileInput";
+import FileInput from "../misc/FileInput";
 
 const NavBar = props => {
   const { handleOpen, onSave, ...restProps } = props;
 
   const handleLoad = () => {
     // Prompt user for file. Simulate click. Keeping ugly default button hidden
-    let fileInput = document.getElementById("file-input");
+    let fileInput = document.getElementById("file-input-JSON");
     fileInput.click();
   };
 
@@ -32,7 +32,7 @@ const NavBar = props => {
         <Navbar.Brand>Mapping Utility</Navbar.Brand>
       </Navbar.Header>
       <Nav>
-        <FileInput handleOpen={handleOpen} />
+        <FileInput handleOpen={handleOpen} type="JSON" />
         <NavItem>
           <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
             <Button onClick={handleLoad}>

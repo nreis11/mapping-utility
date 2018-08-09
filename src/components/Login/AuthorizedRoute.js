@@ -9,7 +9,6 @@ class AuthorizedRoute extends React.Component {
       pending: true,
       loggedIn: undefined
     };
-    this.observer = React.createRef();
   }
 
   componentWillMount() {

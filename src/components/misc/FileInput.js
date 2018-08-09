@@ -12,7 +12,6 @@ class FileInput extends React.Component {
     event.preventDefault();
     const fileInput = this.fileInput.current.files[0];
 
-    // Validate file
     if (this.isValidated(fileInput)) {
       this.props.handleOpen(fileInput);
     }
@@ -21,19 +20,27 @@ class FileInput extends React.Component {
   }
 
   isValidated(file) {
-    if (file.type !== "application/json") {
-      alert("File must be in JSON format.");
+    const { type } = this.props;
+    const typeAlert = type => alert(`File must be in ${type} format.`);
+
+    if (type === "JSON" && file.type !== "application/json") {
+      typeAlert(type);
+      return false;
+    } else if (type === "YAML" && file.type !== "application/x-yaml") {
+      typeAlert(type);
       return false;
     }
     return true;
   }
 
   render() {
+    const { type } = this.props;
+
     return (
       <form ref={el => (this.fileFormRef = el)}>
         <input
           type="file"
-          id="file-input"
+          id={`file-input-${type}`}
           ref={this.fileInput}
           onChange={this.handleOnChange}
           style={{ display: "none" }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button, Col } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import { func } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy } from "react-icons/fa";

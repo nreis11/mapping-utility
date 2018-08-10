@@ -205,17 +205,12 @@ class MainContainer extends Component {
       extTreeData,
       activeIntNodeInfo,
       activeExtNodeInfo,
-      options: { parentsSelectable },
-      searchInternal
+      options: { parentsSelectable }
     } = this.state;
 
     // Ignore if any input is in focus except for ESC, if bootstrap modal is open, or
     // no ext tree data
-    if (
-      (document.activeElement.nodeName === "INPUT" && e.keyCode !== 27) ||
-      isABootstrapModalOpen() ||
-      extTreeData.length < 1
-    ) {
+    if (isABootstrapModalOpen() || !extTreeData.length) {
       console.log("IGNORED");
       return;
     }
@@ -225,8 +220,7 @@ class MainContainer extends Component {
       46, // del,
       70, // F
       71, // G
-      8, // backspace
-      27 // esc
+      8 // backspace
     ];
 
     // Can handle key or command from action bar click
@@ -245,18 +239,7 @@ class MainContainer extends Component {
     let newNode;
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
 
-    // Handle focus
-    if (key === 27) {
-      // console.log("ESC");
-      // Refocus tree to allow navigation and mapping
-      const scrollableTreeContainer = document.querySelectorAll(
-        ".ReactVirtualized__Grid"
-      )[searchInternal ? 1 : 0];
-      if (scrollableTreeContainer) {
-        scrollableTreeContainer.focus();
-      }
-      return;
-    } else if ((e.ctrlKey || e.metaKey) && key === 70) {
+    if ((e.ctrlKey || e.metaKey) && key === 70) {
       // console.log("CTRL + F");
       // Autocomplete search field with active node title
       const activeIntNodeTitle = activeIntNode ? activeIntNode.title : "";

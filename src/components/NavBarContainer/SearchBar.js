@@ -15,12 +15,34 @@ class SearchBar extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   handleChange(e) {
-    console.log("FIRED", e);
+    console.log("FIRED", e.target);
     const { name, value } = e.target;
     this.props.handleSearch(name, value);
+  }
+
+  // TODO: Need to figure out how to also handle ESC key down
+  handleKeyDown(e) {
+    // Needed because handleChange does not fire with ESC
+    const { keyCode } = e;
+    if (keyCode === 27) {
+      // "ESC"
+      // Refocus tree to allow navigation and mapping
+      e.preventDefault();
+      const scrollableTreeContainer = document.querySelectorAll(
+        ".ReactVirtualized__Grid"
+      )[this.props.searchInternal ? 1 : 0];
+      if (scrollableTreeContainer) {
+        scrollableTreeContainer.focus();
+      }
+    } else {
+      e.persist();
+      this.handleChange(e);
+    }
+    return;
   }
 
   render() {

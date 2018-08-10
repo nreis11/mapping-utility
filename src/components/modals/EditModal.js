@@ -1,7 +1,7 @@
 import React from "react";
 import yaml from "js-yaml";
 
-import { Modal, Col, Button } from "react-bootstrap";
+import { Modal, Col, Button, Alert } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import { FaUpload } from "react-icons/fa";
 
@@ -21,7 +21,8 @@ class EditModal extends React.Component {
     this.handleYamlImport = this.handleYamlImport.bind(this);
 
     this.state = {
-      show: false
+      show: false,
+      error: false
     };
   }
 
@@ -44,10 +45,24 @@ class EditModal extends React.Component {
     const { treeKey, onChange } = this.props.children.props;
     const fileReader = new FileReader();
     fileReader.onload = e => {
-      const jsonObj = yaml.safeLoad(e.target.result);
-      const nodes = traverse(jsonObj);
-      const extTreeData = getTreeDataFromFlatData(nodes);
-      onChange(extTreeData, treeKey);
+      let nodes = [];
+      try {
+        const jsonObj = yaml.safeLoad(e.target.result);
+        nodes = traverse(jsonObj);
+      } catch (e) {
+        const error = "Import failed: " + e.message;
+        this.setState({
+          error
+        });
+      } finally {
+        if (nodes.length) {
+          this.setState({
+            error: null
+          });
+          const extTreeData = getTreeDataFromFlatData(nodes);
+          onChange(extTreeData, treeKey);
+        }
+      }
     };
     fileReader.readAsText(yamlFile);
   }
@@ -99,6 +114,22 @@ class EditModal extends React.Component {
             >
               Clear All
             </Button>
+            {this.state.error && (
+              <Alert
+                className="pull-left"
+                bsStyle="danger"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft: 5,
+                  fontSize: 12,
+                  height: 30
+                }}
+              >
+                {this.state.error}
+              </Alert>
+            )}
+
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>

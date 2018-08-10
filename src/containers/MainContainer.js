@@ -46,10 +46,10 @@ class MainContainer extends Component {
       intTreeData: getTreeData("categories"),
       extTreeData: [
         {
-          id: 100,
+          id: "100",
           title: "Parent",
           expanded: true,
-          children: [{ id: 999, title: "Child" }]
+          children: [{ id: "999", title: "Child" }]
         }
       ],
       boardName: "Board",
@@ -70,7 +70,7 @@ class MainContainer extends Component {
     this.intTreeKey = "intTreeData";
     this.extTreeKey = "extTreeData";
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleTreeChange = this.handleTreeChange.bind(this);
     this.expandAll = this.expandAll.bind(this);
     this.handleSelectNode = this.handleSelectNode.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -83,6 +83,7 @@ class MainContainer extends Component {
     this.handleSearchOptionChange = this.handleSearchOptionChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
+    this.resetTrees = this.resetTrees.bind(this);
   }
 
   componentDidMount() {
@@ -169,19 +170,25 @@ class MainContainer extends Component {
     }
   }
 
-  handleChange(treeData, treeKey) {
-    // Reset internal tree if clear all on ext tree
-    if (treeData.length < 1) {
-      const activeType = this.state.activeType;
-      this.setState({
-        intTreeData: getTreeData(activeType),
-        activeExtNodeInfo: null
-      });
+  handleTreeChange(treeData, treeKey) {
+    // Reset all trees if clear all on ext tree
+    if (!treeData.length) {
+      this.resetTrees();
     }
 
     this.setState({
       [treeKey]: treeData
     });
+  }
+
+  resetTrees() {
+    const { activeType } = this.state;
+    this.setState({
+      intTreeData: getTreeData(activeType),
+      activeExtNodeInfo: null
+    });
+    const activeNode = _getActiveNodeInfo(this.state.intTreeData, 0);
+    this.handleSelectNode(activeNode, this.intTreeKey);
   }
 
   handleExport() {
@@ -328,7 +335,7 @@ class MainContainer extends Component {
     // Replace active node with new mapping
     const { path } = activeIntNodeInfo;
     const newTreeData = _changeNodeAtPath(intTreeData, path, newNode);
-    this.handleChange(newTreeData, this.intTreeKey);
+    this.handleTreeChange(newTreeData, this.intTreeKey);
 
     // Check bounds
     treeIndex = treeIndex < 0 ? 0 : treeIndex;
@@ -486,7 +493,7 @@ class MainContainer extends Component {
                   <TreeContainer
                     treeKey={this.extTreeKey}
                     treeData={extTreeData}
-                    onChange={this.handleChange}
+                    onChange={this.handleTreeChange}
                     editMode={true}
                     onAddNodes={this.handleAddNodes}
                   />
@@ -498,7 +505,7 @@ class MainContainer extends Component {
               <TreeContainer
                 treeKey={this.intTreeKey}
                 treeData={intTreeData}
-                onChange={this.handleChange}
+                onChange={this.handleTreeChange}
                 onSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeIntNodeInfo}
                 searchString={intSearchString}
@@ -514,7 +521,7 @@ class MainContainer extends Component {
               <TreeContainer
                 treeKey={this.extTreeKey}
                 treeData={extTreeData}
-                onChange={this.handleChange}
+                onChange={this.handleTreeChange}
                 onSelectNode={this.handleSelectNode}
                 activeNodeInfo={activeExtNodeInfo}
                 searchString={extSearchString}

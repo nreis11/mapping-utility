@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
-import { func, shape } from "prop-types";
+import { func, shape, arrayOf, string } from "prop-types";
 import AddNodesForm from "./forms/AddNodesForm";
 
 class AddModal extends React.Component {
@@ -73,7 +73,10 @@ export default AddModal;
 
 AddModal.propTypes = {
   onAddNodes: func.isRequired,
-  nodeInfo: shape({})
+  nodeInfo: shape({
+    node: shape({ id: string.isRequired, title: string.isRequired }),
+    path: arrayOf(string).isRequired
+  })
 };
 
 AddModal.defaultProps = {

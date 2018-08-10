@@ -44,7 +44,7 @@ NodeInfo.defaultProps = {
 NodeInfo.propTypes = {
   mdOffset: number,
   heading: string.isRequired,
-  node: shape({})
+  node: shape({ id: string.isRequired, title: string.isRequired })
 };
 
 export default NodeInfo;

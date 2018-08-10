@@ -83,6 +83,7 @@ class TreeContainer extends React.Component {
   }
 
   renderEditTree() {
+    // Only rendered in the edit modal
     const { treeKey, treeData, onChange, onAddNodes } = this.props;
 
     return (
@@ -191,7 +192,10 @@ TreeContainer.propTypes = {
   highlightUnmapped: bool,
   editMode: bool.isRequired,
   onAddNodes: func,
-  activeNodeInfo: shape({}),
+  activeNodeInfo: shape({
+    node: shape({ id: string.isRequired, title: string.isRequired }),
+    path: arrayOf(string).isRequired
+  }),
   onSearchFinish: oneOfType([func, bool]),
   searchString: string,
   searchFocusIndex: number
@@ -202,7 +206,7 @@ TreeContainer.defaultProps = {
   onAddNodes: null,
   highlightUnmapped: false,
   onSelectNode: null,
-  activeNodeInfo: {},
+  activeNodeInfo: null,
   onSearchFinish: null,
   searchString: "",
   searchFocusIndex: 0

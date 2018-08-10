@@ -172,23 +172,26 @@ class MainContainer extends Component {
 
   handleTreeChange(treeData, treeKey) {
     // Reset all trees if clear all on ext tree
-    if (!treeData.length) {
+    if (treeKey === this.extTreeKey && !treeData.length) {
       this.resetTrees();
+    } else {
+      this.setState({
+        [treeKey]: treeData
+      });
     }
-
-    this.setState({
-      [treeKey]: treeData
-    });
   }
 
   resetTrees() {
-    const { activeType } = this.state;
+    // Clear ext tree, reset int tree with default node selected
+    const newTreeData = getTreeData(this.state.activeType);
+    const activeNodeInfo = _getActiveNodeInfo(newTreeData, 0);
+
     this.setState({
-      intTreeData: getTreeData(activeType),
-      activeExtNodeInfo: null
+      extTreeData: [],
+      intTreeData: newTreeData,
+      activeExtNodeInfo: null,
+      activeIntNodeInfo: activeNodeInfo
     });
-    const activeNode = _getActiveNodeInfo(this.state.intTreeData, 0);
-    this.handleSelectNode(activeNode, this.intTreeKey);
   }
 
   handleExport() {
@@ -443,6 +446,8 @@ class MainContainer extends Component {
       searchInternal,
       boardName
     } = this.state;
+
+    console.log("RENDERED");
 
     const internalName = "eQuest";
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;

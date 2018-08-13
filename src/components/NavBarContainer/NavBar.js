@@ -16,7 +16,7 @@ import HelpModal from "./HelpModal";
 import FileInput from "../misc/FileInput";
 
 const NavBar = props => {
-  const { handleOpen, onSave, ...restProps } = props;
+  const { handleOpen, handleSave, ...restProps } = props;
 
   const handleLoad = () => {
     // Prompt user for file. Simulate click. Keeping ugly default button hidden
@@ -40,7 +40,7 @@ const NavBar = props => {
             </Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={tooltip("Save")}>
-            <Button onClick={onSave}>
+            <Button onClick={handleSave}>
               <FaSave size="1.25em" className="react-icons" />
             </Button>
           </OverlayTrigger>

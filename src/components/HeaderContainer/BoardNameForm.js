@@ -9,11 +9,11 @@ class BoardNameForm extends React.Component {
       disabled: true
     };
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(e) {
-    const {name, value} = e.target;
-    this.props.handleBoardNameChange(name, value);
+    this.props.handleInputChange(e);
   }
 
   handleEdit(e) {
@@ -37,7 +37,7 @@ class BoardNameForm extends React.Component {
             disabled={disabled}
             value={name}
             style={{ fontSize: "1em" }}
-            onChange={e => this.handleChange(e)}
+            onChange={this.handleChange}
           />
         </FormGroup>
         <Button onClick={this.handleEdit}>{disabled ? "Edit" : "Save"}</Button>

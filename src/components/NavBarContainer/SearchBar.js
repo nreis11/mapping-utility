@@ -7,7 +7,7 @@ import {
   InputGroup,
   Checkbox
 } from "react-bootstrap";
-import { string, func, number, bool } from "prop-types";
+import { shape, string, func, number, bool } from "prop-types";
 import { FaSearch } from "react-icons/fa";
 
 class SearchBar extends React.Component {
@@ -20,11 +20,9 @@ class SearchBar extends React.Component {
 
   handleChange(e) {
     console.log("FIRED", e.target);
-    const { name, value } = e.target;
-    this.props.handleSearch(name, value);
+    this.props.searchValues.handleInputChange(e);
   }
 
-  // TODO: Need to figure out how to also handle ESC key down
   handleKeyDown(e) {
     // Needed because handleChange does not fire with ESC
     const { keyCode } = e;
@@ -38,9 +36,6 @@ class SearchBar extends React.Component {
       if (scrollableTreeContainer) {
         scrollableTreeContainer.focus();
       }
-    } else {
-      e.persist();
-      this.handleChange(e);
     }
     return;
   }
@@ -50,26 +45,25 @@ class SearchBar extends React.Component {
       searchString,
       searchFocusIndex,
       searchFoundCount,
-      onSearchOptionChange,
       searchInternal
-    } = this.props;
+    } = this.props.searchValues;
 
     const selectPrevMatch = e => {
-      const { name } = e.target;
       const idx =
         searchFocusIndex !== null
           ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
           : searchFoundCount - 1;
-      this.props.onSearchFocusChange(name, idx);
+      e.target.value = idx;
+      this.props.searchValues.handleInputChange(e);
     };
 
     const selectNextMatch = e => {
-      const { name } = e.target;
       const idx =
         searchFocusIndex !== null
           ? (searchFocusIndex + 1) % searchFoundCount
           : 0;
-      this.props.onSearchFocusChange(name, idx);
+      e.target.value = idx;
+      this.props.searchValues.handleInputChange(e);
     };
 
     return (
@@ -94,6 +88,7 @@ class SearchBar extends React.Component {
               value={searchString}
               name={"searchString"}
               onChange={this.handleChange}
+              onKeyDown={this.handleKeyDown}
             />
           </InputGroup>
         </FormGroup>
@@ -123,7 +118,7 @@ class SearchBar extends React.Component {
           <Checkbox
             name="searchInternal"
             checked={searchInternal}
-            onChange={onSearchOptionChange}
+            onChange={this.handleChange}
             inline
           >
             Search eQuest
@@ -135,11 +130,12 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-  searchString: string.isRequired,
-  onSearchFocusChange: func.isRequired,
-  handleSearch: func.isRequired,
-  searchFocusIndex: number.isRequired,
-  searchInternal: bool.isRequired
+  searchValues: shape({
+    searchString: string.isRequired,
+    handleInputChange: func.isRequired,
+    searchFocusIndex: number.isRequired,
+    searchInternal: bool.isRequired
+  })
 };
 
 export default SearchBar;

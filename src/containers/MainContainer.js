@@ -80,7 +80,6 @@ class MainContainer extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
-    this.handleSearchOptionChange = this.handleSearchOptionChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.resetTrees = this.resetTrees.bind(this);
@@ -158,9 +157,9 @@ class MainContainer extends Component {
       });
     } else {
       this.setState(
-        {
-          extTreeData: this.state.extTreeData.concat(sortedTree)
-        },
+        state => ({
+          extTreeData: state.extTreeData.concat(sortedTree)
+        }),
         // Callback. Get first node
         () => {
           const activeNode = _getActiveNodeInfo(this.state.extTreeData, 0);
@@ -200,6 +199,7 @@ class MainContainer extends Component {
   }
 
   handleKeyDown(e) {
+    console.log("FIRED MAIN KEY DOWN");
     const {
       intTreeData,
       extTreeData,
@@ -210,7 +210,11 @@ class MainContainer extends Component {
 
     // Ignore if any input is in focus except for ESC, if bootstrap modal is open, or
     // no ext tree data
-    if (isABootstrapModalOpen() || !extTreeData.length) {
+    if (
+      document.activeElement.nodeName === "INPUT" ||
+      isABootstrapModalOpen() ||
+      !extTreeData.length
+    ) {
       console.log("IGNORED");
       return;
     }
@@ -236,17 +240,17 @@ class MainContainer extends Component {
     let treeIndex = activeIntNodeInfo ? activeIntNodeInfo.treeIndex : null;
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
-    let newNode;
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
+    let newNode;
 
     if ((e.ctrlKey || e.metaKey) && key === 70) {
       // console.log("CTRL + F");
       // Autocomplete search field with active node title
       const activeIntNodeTitle = activeIntNode ? activeIntNode.title : "";
       this.setState({
-        searchInternal: false
+        searchInternal: false,
+        searchString: activeIntNodeTitle
       });
-      this.handleInputChange("searchString", activeIntNodeTitle);
       document.getElementById("searchInput").focus();
       return;
     } else if ((e.ctrlKey || e.metaKey) && key === 71) {
@@ -254,9 +258,9 @@ class MainContainer extends Component {
       // Autocomplete search field with active node title
       const activeExtNodeTitle = activeExtNode ? activeExtNode.title : "";
       this.setState({
-        searchInternal: true
+        searchInternal: true,
+        searchString: activeExtNodeTitle
       });
-      this.handleInputChange("searchString", activeExtNodeTitle);
       document.getElementById("searchInput").focus();
       return;
     }
@@ -342,7 +346,15 @@ class MainContainer extends Component {
     this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);
   }
 
-  handleInputChange(name, value) {
+  handleInputChange(event) {
+    // Handle multiple input changes e.g. searchInput, searchFocus, boardName
+    const { target } = event;
+    const { name } = target;
+    let value = target.type === "checkbox" ? target.checked : target.value;
+
+    // This needs to be converted to int
+    value = name === "searchFocusIndex" ? (value = parseInt(value, 10)) : value;
+
     this.setState({
       [name]: value
     });
@@ -365,19 +377,6 @@ class MainContainer extends Component {
       searchFocusIndex:
         matches.length > 0 ? searchFocusIndex % matches.length : 0
     });
-  }
-
-  handleSearchOptionChange(event) {
-    // Needed to setTimeout to reflect changes visually. Why...?
-    console.log("FIRED");
-    const { name, checked } = event.target;
-    this.setState({
-      [name]: checked
-    });
-    // Not reflecting visually
-    // this.setState(state => ({
-    //   searchInternal: !state.searchInternal
-    // }))
   }
 
   handleOpen(fileInput) {
@@ -437,6 +436,13 @@ class MainContainer extends Component {
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     const intSearchString = searchInternal ? searchString : "";
     const extSearchString = searchInternal ? "" : searchString;
+    const searchValues = {
+      searchString,
+      searchFocusIndex,
+      searchFoundCount,
+      handleInputChange: this.handleInputChange,
+      searchInternal
+    };
     let mappedNode = null;
     if (activeIntNode && activeIntNode.mapping) {
       mappedNode = getNodeAtPath({
@@ -450,14 +456,8 @@ class MainContainer extends Component {
       <Col id="main-container">
         <NavBarContainer>
           <NavBar
-            searchString={searchString}
-            handleSearch={this.handleInputChange}
-            searchFocusIndex={searchFocusIndex}
-            searchFoundCount={searchFoundCount}
-            onSearchFocusChange={this.handleInputChange}
-            onSearchOptionChange={this.handleSearchOptionChange}
-            searchInternal={searchInternal}
-            onSave={this.handleSave}
+            searchValues={searchValues}
+            handleSave={this.handleSave}
             handleOpen={this.handleOpen}
           />
         </NavBarContainer>
@@ -475,7 +475,7 @@ class MainContainer extends Component {
               <HeaderSmallContainer mdOffset={2}>
                 <Header
                   name={boardName}
-                  handleBoardNameChange={this.handleInputChange}
+                  handleInputChange={this.handleInputChange}
                 />
                 <EditModal>
                   <TreeContainer

@@ -6,16 +6,15 @@ const style = {
   fontSize: "1.5em"
 };
 
-const Header = ({ name, isInternal, handleBoardNameChange }) => {
+const Header = ({ name, isInternal, handleInputChange }) => {
   return (
     <div>
       <h2 style={style}>
+        {/* LEFT HEADER */}
         {isInternal && <span className="pull-left">{name}</span>}
+        {/* RIGHT HEADER */}
         {!isInternal && (
-          <BoardNameForm
-            name={name}
-            handleBoardNameChange={handleBoardNameChange}
-          />
+          <BoardNameForm name={name} handleInputChange={handleInputChange} />
         )}
       </h2>
     </div>
@@ -25,12 +24,12 @@ const Header = ({ name, isInternal, handleBoardNameChange }) => {
 Header.propTypes = {
   name: string.isRequired,
   isInternal: bool,
-  handleBoardNameChange: func
+  handleInputChange: func
 };
 
 Header.defaultProps = {
   isInternal: false,
-  handleBoardNameChange: null
-}
+  handleInputChange: null
+};
 
 export default Header;

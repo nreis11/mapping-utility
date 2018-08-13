@@ -6,36 +6,64 @@ class BoardNameForm extends React.Component {
     super(props);
 
     this.state = {
-      disabled: true
+      disabled: true,
+      boardName: "Board"
     };
     this.handleEdit = this.handleEdit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleDisabled = this.toggleDisabled.bind(this);
   }
 
   handleChange(e) {
-    this.props.handleInputChange(e);
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   }
 
-  handleEdit(e) {
+  handleSubmit(e) {
     e.preventDefault();
+    let { boardName } = this.state;
+
+    if (!boardName) {
+      return;
+    }
+
+    const eventObj = {
+      target: { name: "boardName", type: "text", value: boardName }
+    };
+
+    this.toggleDisabled();
+    this.props.handleInputChange(eventObj);
+  }
+
+  toggleDisabled() {
     this.setState(prevState => ({
       disabled: !prevState.disabled
     }));
   }
 
-  render() {
+  handleEdit(e) {
     const { disabled } = this.state;
-    const { name } = this.props;
+    if (!disabled) {
+      this.handleSubmit(e);
+    } else {
+      this.toggleDisabled();
+    }
+  }
+
+  render() {
+    const { disabled, boardName } = this.state;
 
     return (
-      <Form className="pull-left" onSubmit={this.handleEdit} inline>
+      <Form className="pull-left" onSubmit={this.handleSubmit} inline>
         <FormGroup controlId="formBoardName">
           <FormControl
             type="text"
             placeholder="Board Name"
             name="boardName"
             disabled={disabled}
-            value={name}
+            value={boardName}
             style={{ fontSize: "1em" }}
             onChange={this.handleChange}
           />

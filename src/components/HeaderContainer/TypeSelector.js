@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Nav, NavItem } from "react-bootstrap";
+import { Col, ButtonToolbar, DropdownButton, MenuItem } from "react-bootstrap";
 import { _isMapped } from "../../utilities/mappingHelpers";
 import ChangeTypeAlert from "./ChangeTypeAlert";
 
@@ -57,17 +57,25 @@ class TypeSelector extends React.Component {
             handleConfirm={() => this.handleSelect(selectedKey)}
           />
         )}
-        <Nav
-          bsStyle="pills"
-          activeKey={activeType}
-          onSelect={key => this.handleCheck(key)}
-        >
-          {Object.keys(TYPES).map(type => (
-            <NavItem key={type} eventKey={type} title={TYPES[type]}>
-              {TYPES[type]}
-            </NavItem>
-          ))}
-        </Nav>
+        <ButtonToolbar>
+          <DropdownButton
+            title="Type"
+            bsStyle="info"
+            bsSize="small"
+            id={`dropdown-basic-type`}
+          >
+            {Object.keys(TYPES).map(type => (
+              <MenuItem
+                key={type}
+                eventKey={type}
+                onSelect={type => this.handleCheck(type)}
+                active={activeType === type ? true : false}
+              >
+                {TYPES[type]}
+              </MenuItem>
+            ))}
+          </DropdownButton>
+        </ButtonToolbar>
       </Col>
     );
   }

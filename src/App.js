@@ -10,7 +10,7 @@ import "./App.css";
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename="/mapping">
         <Switch>
           <AuthorizedRoute exact path="/" component={MainContainer} />
           <Route exact path="/login" component={Login} />

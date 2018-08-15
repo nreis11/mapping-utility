@@ -22,13 +22,26 @@ class FileInput extends React.Component {
   isValidated(file) {
     const { type } = this.props;
     const typeAlert = type => alert(`File must be in ${type} format.`);
+    const fileName = file.name.toLowerCase();
 
-    if (type === "JSON" && file.type !== "application/json") {
-      typeAlert(type);
-      return false;
-    } else if (type === "YAML" && file.type !== "application/x-yaml") {
-      typeAlert(type);
-      return false;
+    switch (type) {
+      case "JSON":
+        if (fileName.indexOf(".json") === -1) {
+          typeAlert(type);
+          return false;
+        }
+        break;
+      case "YAML":
+        if (
+          fileName.indexOf(".yaml") === -1 &&
+          fileName.indexOf(".yml") === -1
+        ) {
+          typeAlert(type);
+          return false;
+        }
+        break;
+      default:
+        break;
     }
     return true;
   }

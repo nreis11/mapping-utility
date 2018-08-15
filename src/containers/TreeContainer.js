@@ -16,7 +16,7 @@ import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
 import { _getActiveNodeInfo } from "../utilities/mappingHelpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
-import "react-sortable-tree/style.css"; // This only needs to be imported once in your app
+import "react-sortable-tree/style.css";
 
 import "./TreeContainer.css";
 

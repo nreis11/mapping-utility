@@ -16,7 +16,7 @@ export const traverse = (
 
     const curr = key;
     let node = {
-      id: key,
+      id: key.toString(),
       title: value.label,
       parent: rootNodes.includes(key) ? null : parent
     };

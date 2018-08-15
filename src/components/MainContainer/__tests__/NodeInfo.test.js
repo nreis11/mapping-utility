@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import NodeInfo from "./NodeInfo";
+import NodeInfo from "../NodeInfo";
 
 describe("<NodeInfo />", () => {
   it("should render without crashing", () => {
@@ -8,7 +8,7 @@ describe("<NodeInfo />", () => {
   });
 
   it("should render with a node prop", () => {
-    shallow(<NodeInfo heading="Test" node={{ id: 1, title: "Title" }} />);
+    shallow(<NodeInfo heading="Test" node={{ id: "1", title: "Title" }} />);
   });
 
   it("should render without a node prop", () => {

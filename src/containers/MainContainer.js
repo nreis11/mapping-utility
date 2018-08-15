@@ -45,12 +45,12 @@ class MainContainer extends Component {
     this.state = {
       intTreeData: getTreeData("categories"),
       extTreeData: [
-        {
-          id: "100",
-          title: "Parent",
-          expanded: true,
-          children: [{ id: "999", title: "Child" }]
-        }
+        // {
+        //   id: "100",
+        //   title: "Parent",
+        //   expanded: true,
+        //   children: [{ id: "999", title: "Child" }]
+        // }
       ],
       boardName: "Board",
       activeIntNodeInfo: null,

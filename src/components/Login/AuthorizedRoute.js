@@ -37,7 +37,7 @@ class AuthorizedRoute extends React.Component {
           ) : (
             <Redirect
               to={{
-                pathname: "/login",
+                pathname: "/mapping/login",
                 state: { from: renderProps.location }
               }}
             />

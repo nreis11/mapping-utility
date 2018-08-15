@@ -14,10 +14,9 @@ import { firebase } from "../../firebase";
 
 import "./Login.css";
 import Logo from "../../equest-logo-black.png";
-import { FaLock } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaLock } from "react-icons/fa";
 
-export class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -100,3 +99,5 @@ export class Login extends React.Component {
     );
   }
 }
+
+export default Login;

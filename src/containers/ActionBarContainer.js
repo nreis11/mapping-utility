@@ -35,7 +35,7 @@ export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
       </ButtonGroup>
       <ButtonGroup>
         <Button bsStyle="primary" onClick={onHighlightUnmapped} block>
-          Highlight Unmapped
+          <FaBackward className="react-icons" /> Highlight Unmapped
         </Button>
         <ActionButton dataCmd="delete" onClick={onClick}>
           <FaBackward className="react-icons" /> Clear This Map

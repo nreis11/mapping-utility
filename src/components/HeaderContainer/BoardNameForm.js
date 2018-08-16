@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, FormGroup, FormControl, Button } from "react-bootstrap";
+import { string, func } from "prop-types";
 
 class BoardNameForm extends React.Component {
   constructor(props) {
@@ -13,6 +14,14 @@ class BoardNameForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleDisabled = this.toggleDisabled.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.name !== this.state.boardName) {
+      this.setState({
+        boardName: nextProps.name
+      });
+    }
   }
 
   handleChange(e) {
@@ -73,5 +82,10 @@ class BoardNameForm extends React.Component {
     );
   }
 }
+
+BoardNameForm.propTypes = {
+  handleInputChange: func.isRequired,
+  name: string.isRequired
+};
 
 export default BoardNameForm;

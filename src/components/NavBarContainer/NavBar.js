@@ -20,7 +20,7 @@ const NavBar = props => {
 
   const handleLoad = () => {
     // Prompt user for file. Simulate click. Keeping ugly default button hidden
-    let fileInput = document.getElementById("file-input-JSON");
+    let fileInput = document.getElementById("file-input-json");
     fileInput.click();
   };
 
@@ -32,7 +32,7 @@ const NavBar = props => {
         <Navbar.Brand>Mapping Utility</Navbar.Brand>
       </Navbar.Header>
       <Nav>
-        <FileInput handleOpen={handleOpen} type="JSON" />
+        <FileInput handleOpen={handleOpen} type="json" />
         <NavItem>
           <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
             <Button onClick={handleLoad}>

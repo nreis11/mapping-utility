@@ -190,7 +190,7 @@ TreeContainer.propTypes = {
   onChange: func.isRequired,
   onSelectNode: func,
   highlightUnmapped: bool,
-  editMode: bool.isRequired,
+  editMode: bool,
   onAddNodes: func,
   activeNodeInfo: shape({
     node: shape({ id: string.isRequired, title: string.isRequired }),

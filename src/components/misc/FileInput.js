@@ -1,4 +1,5 @@
 import React from "react";
+import { string, func } from "prop-types";
 
 class FileInput extends React.Component {
   constructor(props) {
@@ -25,13 +26,13 @@ class FileInput extends React.Component {
     const fileName = file.name.toLowerCase();
 
     switch (type) {
-      case "JSON":
+      case "json":
         if (fileName.indexOf(".json") === -1) {
           typeAlert(type);
           return false;
         }
         break;
-      case "YAML":
+      case "yaml":
         if (
           fileName.indexOf(".yaml") === -1 &&
           fileName.indexOf(".yml") === -1
@@ -62,5 +63,10 @@ class FileInput extends React.Component {
     );
   }
 }
+
+FileInput.propTypes = {
+  type: string.isRequired,
+  handleOpen: func.isRequired
+};
 
 export default FileInput;

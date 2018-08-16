@@ -22,7 +22,7 @@ class EditModal extends React.Component {
 
     this.state = {
       show: false,
-      error: false
+      error: null
     };
   }
 
@@ -36,7 +36,7 @@ class EditModal extends React.Component {
 
   handleFileOnClick() {
     // Prompt user for file. Simulate click. Keeping ugly default button hidden
-    let fileInput = document.getElementById("file-input-YAML");
+    let fileInput = document.getElementById("file-input-yaml");
     fileInput.click();
   }
 
@@ -93,7 +93,7 @@ class EditModal extends React.Component {
             {this.props.children}
           </Modal.Body>
           <Modal.Footer>
-            <FileInput handleOpen={this.handleYamlImport} type="YAML" />
+            <FileInput handleOpen={this.handleYamlImport} type="yaml" />
             <AddModal onAddNodes={onAddNodes} />
             <Button
               className="pull-left"

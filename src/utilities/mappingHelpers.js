@@ -51,23 +51,9 @@ export const _sortTree = treeData => {
   return treeData.sort(
     (a, b) => (a.title === b.title ? 0 : a.title < b.title ? -1 : 1)
   );
-  // IF CHILDREN NEED TO BE SORTED
-  // return map({
-  //   treeData,
-  //   getNodeKey,
-  //   callback: ({ node }) =>
-  //     !node.children
-  //       ? node
-  //       : {
-  //           ...node,
-  //           children: node.children.sort((a, b) => (a.title === b.title ? 0 : a.title < b.title ? -1 : 1))
-  //         },
-  //   ignoreCollapsed: false
-  // });
 };
 
 export const _isMapped = treeData => {
-  // Can I early return if I find mapping?
   let foundMapping = false;
   const callback = ({ node }) => {
     if (node.mapping) {

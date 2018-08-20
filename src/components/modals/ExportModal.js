@@ -1,9 +1,10 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { func } from "prop-types";
+import { func, string } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa";
+import FileSaver from "file-saver";
 
 import "./ExportModal.css";
 
@@ -35,11 +36,10 @@ class ExportModal extends React.Component {
   }
 
   handleDownload() {
-    let link = document.createElement("a");
+    const { boardName, activeType } = this.props;
     let file = new Blob([this.state.output], { type: "application/xml" });
-    link.href = URL.createObjectURL(file);
-    link.download = "mapping.xml";
-    link.click();
+    const fileName = `${boardName}-${activeType}.xml`;
+    FileSaver.saveAs(file, fileName);
   }
 
   render() {
@@ -83,7 +83,7 @@ class ExportModal extends React.Component {
             {this.state.copied && (
               <span
                 className="pull-left"
-                style={{ paddingLeft: "5px", lineHeight: "34px" }}
+                style={{ paddingLeft: 5, lineHeight: "34px" }}
               >
                 Copied.
               </span>
@@ -98,7 +98,9 @@ class ExportModal extends React.Component {
 }
 
 ExportModal.propTypes = {
-  handleExport: func.isRequired
+  handleExport: func.isRequired,
+  boardName: string.isRequired,
+  activeType: string.isRequired
 };
 
 export default ExportModal;

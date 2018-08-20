@@ -38,7 +38,7 @@ export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
           <FaBackward className="react-icons" /> Highlight Unmapped
         </Button>
         <ActionButton dataCmd="delete" onClick={onClick}>
-          <FaBackward className="react-icons" /> Clear This Map
+          <FaBackward className="react-icons" /> Clear This Mapping
         </ActionButton>
         <ActionButton dataCmd="shift-delete" onClick={onClick}>
           <FaBackward className="react-icons" /> Clear Entire Node

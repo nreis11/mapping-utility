@@ -1,5 +1,5 @@
 import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
-import { categories, industries, states, countries } from "../values/eqValues";
+import * as eqValues from "../values/eqValues";
 import FileSaver from "file-saver";
 
 export const saveToJson = ({
@@ -27,15 +27,8 @@ export const saveToJson = ({
   FileSaver.saveAs(file, fileName);
 };
 
-export const getTreeData = name => {
-  const internalData = {
-    categories: categories,
-    industries: industries,
-    states: states,
-    countries: countries
-  };
-
-  const flatData = internalData[name];
+export const getTreeData = type => {
+  const flatData = eqValues[type];
   return getTreeDataFromFlatData(flatData);
 };
 

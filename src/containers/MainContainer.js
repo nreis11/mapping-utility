@@ -107,18 +107,18 @@ class MainContainer extends Component {
     });
   }
 
-  handleTypeSelect(name) {
-    const newTreeData = getTreeData(name);
+  handleTypeSelect(type) {
+    const newTreeData = getTreeData(type);
     // Reset active node
     this.setState({
-      activeType: name,
+      activeType: type,
       intTreeData: newTreeData,
       activeIntNodeInfo: _getActiveNodeInfo(newTreeData, 0)
     });
   }
 
   handleSelectNode(nodeInfo, treeKey) {
-    // console.log("Node Info", nodeInfo);
+    console.log("Node Info", nodeInfo);
     const activeKey =
       treeKey === this.intTreeKey ? "activeIntNodeInfo" : "activeExtNodeInfo";
     this.setState({
@@ -127,6 +127,7 @@ class MainContainer extends Component {
   }
 
   handleOptionChange(event) {
+    event.target.blur();
     const optionKey = event.target.name;
     const options = { ...this.state.options };
     options[optionKey] = event.target.checked;
@@ -531,7 +532,13 @@ class MainContainer extends Component {
                     onOptionChange={this.handleOptionChange}
                   />
                 }
-                right={<ExportModal handleExport={this.handleExport} />}
+                right={
+                  <ExportModal
+                    handleExport={this.handleExport}
+                    boardName={boardName}
+                    activeType={activeType}
+                  />
+                }
               />
             </Row>
           </Grid>

@@ -83,13 +83,45 @@ class MainContainer extends Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.resetTrees = this.resetTrees.bind(this);
+    this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
   }
 
   componentDidMount() {
+    // Check if save state in local storage
+    const localStorageRef = JSON.parse(
+      localStorage.getItem("mappingUtilityState")
+    );
+    if (localStorageRef) {
+      this.setState({
+        ...localStorageRef
+      });
+    }
+
     // Set first node as selected
     const activeNode = _getActiveNodeInfo(this.state.intTreeData, 0);
     this.handleSelectNode(activeNode, this.intTreeKey);
     document.addEventListener("keydown", this.handleKeyDown);
+  }
+
+  saveToLocalStorage() {
+    // Set only after a mapping occurs
+    const {
+      intTreeData,
+      extTreeData,
+      options,
+      activeType,
+      boardName
+    } = this.state;
+    localStorage.setItem(
+      "mappingUtilityState",
+      JSON.stringify({
+        intTreeData,
+        extTreeData,
+        options,
+        activeType,
+        boardName
+      })
+    );
   }
 
   componentDidUnMount() {
@@ -344,6 +376,7 @@ class MainContainer extends Component {
       activeNodeElem.scrollIntoView(false);
     }
 
+    this.saveToLocalStorage();
     this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);
   }
 
@@ -354,7 +387,7 @@ class MainContainer extends Component {
     let value = target.type === "checkbox" ? target.checked : target.value;
 
     // This needs to be converted to int
-    value = name === "searchFocusIndex" ? (value = parseInt(value, 10)) : value;
+    value = name === "searchFocusIndex" ? parseInt(value, 10) : value;
 
     this.setState({
       [name]: value

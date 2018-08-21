@@ -27,6 +27,12 @@ class TreeContainer extends React.Component {
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
   }
 
+  componentWillUnmount() {
+    const { treeKey } = this.props;
+    const tree = document.getElementById(`tree-${treeKey}`);
+    tree.removeEventListener("keydown", this.handleKeyDown);
+  }
+
   handleKeyDown(e) {
     const keyboard = [
       37, // left,
@@ -141,7 +147,7 @@ class TreeContainer extends React.Component {
         node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
 
       return (
-        <Col md={5} onKeyDown={this.handleKeyDown}>
+        <Col md={5} id={`tree-${treeKey}`} onKeyDown={this.handleKeyDown}>
           <Well>
             <SortableTree
               treeData={treeData}

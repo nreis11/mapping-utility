@@ -19,8 +19,8 @@ class SearchBar extends React.Component {
   }
 
   handleChange(e) {
-    console.log("FIRED", e.target);
-    this.props.searchValues.handleInputChange(e);
+    const { handleInputChange } = this.props.searchValues;
+    handleInputChange(e);
   }
 
   handleKeyDown(e) {

@@ -44,14 +44,7 @@ class MainContainer extends Component {
     super(props);
     this.state = {
       intTreeData: getTreeData("categories"),
-      extTreeData: [
-        // {
-        //   id: "100",
-        //   title: "Parent",
-        //   expanded: true,
-        //   children: [{ id: "999", title: "Child" }]
-        // }
-      ],
+      extTreeData: [],
       boardName: "Board",
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
@@ -139,7 +132,7 @@ class MainContainer extends Component {
     }
   }
 
-  componentDidUnMount() {
+  componentWillUnmount() {
     document.removeEventListener("keydown", this.handleKeyDown);
   }
 
@@ -247,7 +240,7 @@ class MainContainer extends Component {
   }
 
   handleKeyDown(e) {
-    console.log("FIRED MAIN KEY DOWN");
+    // console.log("FIRED MAIN KEY DOWN");
     const {
       intTreeData,
       extTreeData,
@@ -263,7 +256,7 @@ class MainContainer extends Component {
       isABootstrapModalOpen() ||
       !extTreeData.length
     ) {
-      console.log("IGNORED");
+      // console.log("IGNORED");
       return;
     }
 
@@ -396,8 +389,10 @@ class MainContainer extends Component {
 
   handleInputChange(event) {
     // Handle multiple input changes e.g. searchInput, searchFocus, boardName
-    const { target } = event;
-    const { name } = target;
+    const {
+      target,
+      target: { name }
+    } = event;
     let value = target.type === "checkbox" ? target.checked : target.value;
 
     // This needs to be converted to int

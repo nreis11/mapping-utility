@@ -23,8 +23,7 @@ export const traverse = (
     nodes.push(node);
 
     if (Object.keys(value).length > 1) {
-      parent = curr;
-      traverse(value, parent, nodes, rootNodes);
+      traverse(value, curr, nodes, rootNodes);
     }
   });
   return nodes;

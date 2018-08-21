@@ -103,6 +103,10 @@ class MainContainer extends Component {
     document.addEventListener("keydown", this.handleKeyDown);
   }
 
+  componentDidUpdate() {
+    this.saveToLocalStorage();
+  }
+
   saveToLocalStorage() {
     // Set only after a mapping occurs
     const {
@@ -376,7 +380,6 @@ class MainContainer extends Component {
       activeNodeElem.scrollIntoView(false);
     }
 
-    this.saveToLocalStorage();
     this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);
   }
 

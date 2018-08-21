@@ -59,7 +59,7 @@ class TypeSelector extends React.Component {
         )}
         <ButtonToolbar>
           <DropdownButton
-            title="Type"
+            title={TYPES[activeType]}
             bsStyle="info"
             bsSize="small"
             id={`dropdown-basic-type`}

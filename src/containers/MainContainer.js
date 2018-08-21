@@ -19,7 +19,7 @@ import { isABootstrapModalOpen } from "../utilities/helpers";
 
 import {
   saveToJson,
-  getTreeData,
+  getInitialTreeData,
   getTreeDataFromFlatData
 } from "../utilities/fileHelpers";
 
@@ -43,7 +43,7 @@ class MainContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      intTreeData: getTreeData("categories"),
+      intTreeData: getInitialTreeData("categories"),
       extTreeData: [],
       boardName: "Board",
       activeIntNodeInfo: null,
@@ -148,7 +148,7 @@ class MainContainer extends Component {
   }
 
   handleTypeSelect(type) {
-    const newTreeData = getTreeData(type);
+    const newTreeData = getInitialTreeData(type);
     // Reset active node
     this.setState({
       activeType: type,
@@ -223,7 +223,7 @@ class MainContainer extends Component {
 
   resetTrees() {
     // Clear ext tree, reset int tree with default node selected
-    const newTreeData = getTreeData(this.state.activeType);
+    const newTreeData = getInitialTreeData(this.state.activeType);
     const activeNodeInfo = _getActiveNodeInfo(newTreeData, 0);
 
     this.setState({

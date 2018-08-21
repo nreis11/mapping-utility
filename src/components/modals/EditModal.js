@@ -1,5 +1,4 @@
 import React from "react";
-import yaml from "js-yaml";
 
 import { Modal, Col, Button, Alert } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
@@ -7,8 +6,7 @@ import { FaUpload } from "react-icons/fa";
 
 import AddModal from "./AddModal";
 import FileInput from "../misc/FileInput";
-import { traverse } from "../../utilities/yamlHelper";
-import { getTreeDataFromFlatData } from "../../utilities/fileHelpers";
+import { importYaml } from "../../utilities/fileHelpers";
 
 class EditModal extends React.Component {
   constructor(props, context) {
@@ -19,6 +17,7 @@ class EditModal extends React.Component {
     this.handleClearAll = this.handleClearAll.bind(this);
     this.handleFileOnClick = this.handleFileOnClick.bind(this);
     this.handleYamlImport = this.handleYamlImport.bind(this);
+    this.handleError = this.handleError.bind(this);
 
     this.state = {
       show: false,
@@ -42,28 +41,13 @@ class EditModal extends React.Component {
 
   handleYamlImport(yamlFile) {
     const { treeKey, onChange } = this.props.children.props;
-    const fileReader = new FileReader();
-    fileReader.onload = e => {
-      let nodes = [];
-      try {
-        const jsonObj = yaml.safeLoad(e.target.result);
-        nodes = traverse(jsonObj);
-      } catch (e) {
-        const error = "Import failed: " + e.message;
-        this.setState({
-          error
-        });
-      } finally {
-        if (nodes.length) {
-          this.setState({
-            error: null
-          });
-          const extTreeData = getTreeDataFromFlatData(nodes);
-          onChange(extTreeData, treeKey);
-        }
-      }
-    };
-    fileReader.readAsText(yamlFile);
+    importYaml({ yamlFile, treeKey, onChange, handleError: this.handleError });
+  }
+
+  handleError(error) {
+    this.setState({
+      error: error
+    });
   }
 
   handleClearAll() {

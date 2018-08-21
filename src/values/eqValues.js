@@ -1,6 +1,6 @@
 // When replacing values, always prefix with eq for UID
 
-module.exports.categories = [
+export const categories = [
     { id: "eqDEFAULT", title: "(Default)", parent: null, mapping: null },
     {
         id: "eq17000000",
@@ -7005,7 +7005,7 @@ module.exports.categories = [
     }
 ];
 
-module.exports.industries = [
+export const industries = [
     { id: "eqDEFAULT", title: "(Default)", parent: null, mapping: null },
     {
         id: "eq1",
@@ -7105,7 +7105,7 @@ module.exports.industries = [
     { id: "eq54", title: "Utilities", parent: null, mapping: null }
 ];
 
-module.exports.states = [
+export const states = [
     { id: "eqDEFAULT", title: "(Default)", parent: null, mapping: null },
     { id: "eqAF", title: "Afghanistan", parent: null, mapping: null },
     { id: "eqAF-BDS", title: "Badakhshan", parent: "eqAF", mapping: null },
@@ -14868,7 +14868,7 @@ module.exports.states = [
     { id: "eqZW-MI", title: "Midlands", parent: "eqZW", mapping: null }
 ];
 
-module.exports.countries = [
+export const countries = [
     { id: "eqDEFAULT", title: "(Default)", parent: null, mapping: null },
     { id: "eqAF", title: "Afghanistan   [AF]", parent: null, mapping: null },
     { id: "eqAL", title: "Albania   [AL]", parent: null, mapping: null },

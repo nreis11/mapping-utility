@@ -87,11 +87,19 @@ class MainContainer extends Component {
   }
 
   componentDidMount() {
-    // Check if save state in local storage
+    // Check if local storage is accessible
+    let localStorage;
+    try {
+      localStorage = window.localStorage;
+    } catch (e) {
+      console.log(e);
+    }
+
     const localStorageRef = JSON.parse(
       localStorage.getItem("mappingUtilityState")
     );
-    if (localStorageRef) {
+    // Check if save state in local storage
+    if (localStorage && localStorageRef) {
       this.setState({
         ...localStorageRef
       });
@@ -108,7 +116,7 @@ class MainContainer extends Component {
   }
 
   saveToLocalStorage() {
-    // Set only after a mapping occurs
+    // Saving as treeData, not flatData to avoid multiple conversions.
     const {
       intTreeData,
       extTreeData,
@@ -116,16 +124,19 @@ class MainContainer extends Component {
       activeType,
       boardName
     } = this.state;
-    localStorage.setItem(
-      "mappingUtilityState",
-      JSON.stringify({
-        intTreeData,
-        extTreeData,
-        options,
-        activeType,
-        boardName
-      })
-    );
+    const jsonStr = JSON.stringify({
+      intTreeData,
+      extTreeData,
+      options,
+      activeType,
+      boardName
+    });
+    try {
+      // Long lists can hit localStorage max.
+      localStorage.setItem("mappingUtilityState", jsonStr);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   componentDidUnMount() {

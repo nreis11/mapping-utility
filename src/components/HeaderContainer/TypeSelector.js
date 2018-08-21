@@ -63,6 +63,7 @@ class TypeSelector extends React.Component {
             bsStyle="info"
             bsSize="small"
             id={`dropdown-basic-type`}
+            style={{ width: 82 }}
           >
             {Object.keys(TYPES).map(type => (
               <MenuItem

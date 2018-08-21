@@ -41,7 +41,6 @@ class EditModal extends React.Component {
   }
 
   handleYamlImport(yamlFile) {
-    // How do you do all this work in the yaml helper?
     const { treeKey, onChange } = this.props.children.props;
     const fileReader = new FileReader();
     fileReader.onload = e => {

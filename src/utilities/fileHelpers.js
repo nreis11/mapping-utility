@@ -78,13 +78,7 @@ export const importYaml = ({ yamlFile, treeKey, onChange, handleError }) => {
 };
 
 // Recursive func used to create flat data from JSON
-export const traverse = (
-  jsonObj,
-  parent = null,
-  nodes = [],
-  rootNodes = null
-) => {
-  rootNodes = rootNodes || Object.keys(jsonObj);
+export const traverse = (jsonObj, parent = null, nodes = []) => {
   Object.entries(jsonObj).forEach(([key, value]) => {
     if (key === "label") {
       return;
@@ -94,15 +88,14 @@ export const traverse = (
       throw new Error(`No label found for key ${key}. Cannot continue.`);
     }
 
-    const curr = key;
     let node = {
       id: key.toString(),
       title: value.label,
-      parent: rootNodes.includes(key) ? null : parent
+      parent: parent
     };
     nodes.push(node);
 
-    traverse(value, curr, nodes, rootNodes);
+    traverse(value, key, nodes);
   });
   return nodes;
 };

@@ -7,15 +7,15 @@ import {
 
 describe("_getActiveNodeInfo", () => {
   const treeData = [
-    { id: 1 },
-    { id: 2, expanded: true, children: [{ id: 3 }] }
+    { id: "1" },
+    { id: "2", expanded: true, children: [{ id: "3" }] }
   ];
   it("should return the first node ", () => {
     const treeIndex = 0;
     const result = _getActiveNodeInfo(treeData, treeIndex);
 
-    expect(result.node.id).toEqual(1);
-    expect(result.path).toEqual([1]);
+    expect(result.node.id).toEqual("1");
+    expect(result.path).toEqual(["1"]);
     expect(result.treeIndex).toEqual(0);
   });
 
@@ -23,8 +23,8 @@ describe("_getActiveNodeInfo", () => {
     const treeIndex = 2;
     const result = _getActiveNodeInfo(treeData, treeIndex);
 
-    expect(result.node.id).toEqual(3);
-    expect(result.path).toEqual([2, 3]);
+    expect(result.node.id).toEqual("3");
+    expect(result.path).toEqual(["2", "3"]);
     expect(result.treeIndex).toEqual(2);
   });
 });
@@ -36,15 +36,15 @@ describe("_mapNode", () => {
   beforeEach(() => {
     treeData = [
       {
-        id: 0,
+        id: "1",
         mapping: null,
         children: [
           {
-            id: 1,
+            id: "2",
             mapping: oldMapping
           },
           {
-            id: 2,
+            id: "3",
             mapping: oldMapping
           }
         ]
@@ -73,11 +73,11 @@ describe("_isMapped", () => {
   it("Returns false if no mapping found", () => {
     const treeData = [
       {
-        id: 0,
+        id: "1",
         mapping: null,
         children: [
           {
-            id: 1,
+            id: "2",
             mapping: null
           }
         ]
@@ -90,11 +90,11 @@ describe("_isMapped", () => {
   it("Returns true if a mapping is found", () => {
     const treeData = [
       {
-        id: 0,
+        id: "1",
         mapping: null,
         children: [
           {
-            id: 1,
+            id: "2",
             mapping: "mapped"
           }
         ]
@@ -110,7 +110,7 @@ describe("_exportMappingsToXML", () => {
   const treeData = [
     {
       id: "eqDEFAULT",
-      mapping: ["3000", "24000"]
+      mapping: ["3000", "3000-24000"]
     },
     {
       id: "eq17000000",
@@ -118,7 +118,7 @@ describe("_exportMappingsToXML", () => {
       children: [
         {
           id: "eq17100000",
-          mapping: ["27001"]
+          mapping: ["1000-27001"]
         }
       ]
     }

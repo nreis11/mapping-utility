@@ -11,7 +11,7 @@ export const saveToJson = ({
   boardName,
   testing = false
 }) => {
-  // Saving as flat data instead of tree data. More info in getFlatDataFromTree helper.
+  // Saving as flat data to reduce file size. More info in getFlatDataFromTree helper.
   const jsonString = JSON.stringify({
     intFlatData: getFlatData(intTreeData),
     extFlatData: getFlatData(extTreeData),

@@ -11,7 +11,7 @@ class AuthorizedRoute extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.observer = firebase.auth.onAuthStateChanged(user => {
       this.setState({
         pending: false,

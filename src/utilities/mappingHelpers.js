@@ -96,7 +96,7 @@ export const _exportMappingsToXML = (
 
   const mappingType = types[type];
   let rootNode = xmlbuilder
-    .create("mapping", { encoding: "ISO-8859-1" })
+    .create("mapping", { encoding: "UTF-8" })
     .att("type", mappingType);
   const callback = ({ node }) =>
     _createNode(rootNode, node, outputParents, testing);

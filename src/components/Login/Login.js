@@ -1,20 +1,11 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import {
-  Col,
-  Form,
-  FormGroup,
-  FormControl,
-  Button,
-  Panel,
-  Alert,
-  InputGroup
-} from "react-bootstrap";
+import { Col, Panel, Alert } from "react-bootstrap";
 import { firebase } from "../../firebase";
 
 import "./Login.css";
 import Logo from "../../equest-logo-black.png";
-import { FaUser, FaLock } from "react-icons/fa";
+import LoginForm from "./LoginForm";
 
 class Login extends React.Component {
   constructor(props) {
@@ -70,31 +61,7 @@ class Login extends React.Component {
                 {error}
               </Alert>
             )}
-            <Form id="loginForm" onSubmit={this.handleSubmit}>
-              <FormGroup controlId="formUserName">
-                <InputGroup>
-                  <InputGroup.Addon>{<FaUser />}</InputGroup.Addon>
-                  <FormControl type="text" placeholder="Username" />
-                </InputGroup>
-              </FormGroup>
-
-              <FormGroup controlId="formPassword">
-                <InputGroup>
-                  <InputGroup.Addon>{<FaLock />}</InputGroup.Addon>
-                  <FormControl type="password" placeholder="Password" />
-                </InputGroup>
-              </FormGroup>
-
-              <FormGroup>
-                <Button
-                  bsStyle="primary"
-                  type="submit"
-                  style={{ marginTop: 15 }}
-                >
-                  Sign in
-                </Button>
-              </FormGroup>
-            </Form>
+            <LoginForm onSubmit={this.handleSubmit} />
           </Panel>
         </Col>
       </Col>

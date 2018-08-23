@@ -33,15 +33,21 @@ class AddNodesForm extends React.Component {
       handleClose();
       return;
     }
+
+    // Check for validation errors
+    const formError = document.querySelector(".has-error");
+    if (formError) {
+      return;
+    }
+
     // Create array of nodes to concat
     const idIdx = valueIdx < labelIdx ? 0 : 1;
     const titleIdx = valueIdx < labelIdx ? 1 : 0;
     const nodesArr = rawData.split("\n").map(line => {
       let lineArr = line.split(delimiter);
       return {
-        id: lineArr[idIdx],
+        id: nodeInfo ? `${nodeInfo.node.id}-${lineArr[idIdx]}` : lineArr[idIdx],
         title: lineArr[titleIdx],
-        expanded: false,
         parent: null
       };
     });

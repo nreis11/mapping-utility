@@ -117,23 +117,27 @@ const _createNode = (rootNode, node, outputParents = false, testing) => {
     return;
   }
 
+  // Mapping is path array with node ids
   let mapping = node.mapping;
   const childNode = rootNode.ele(node.id === "eqDEFAULT" ? "default" : "map");
 
   if (node.id !== "eqDEFAULT") {
-    // Each node has 'eq' prepended
+    // Each equest node has 'eq' prefix
     childNode.att("equestvalue", node.id.slice(2));
   }
 
   if (outputParents) {
     mapping.forEach((mapping, idx) => {
+      const nodeArr = mapping.split("-");
+      mapping = nodeArr[nodeArr.length - 1];
       const tier = idx + 1;
       const boardValueNode = childNode.ele("boardvalue").att("tier", tier);
       testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
     });
   } else {
     // Grab last value
-    mapping = mapping[mapping.length - 1];
+    let lastNodeArr = mapping[mapping.length - 1].split("-");
+    mapping = lastNodeArr[lastNodeArr.length - 1];
     const boardValueNode = childNode.ele("boardvalue").att("tier", 1);
     testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
   }

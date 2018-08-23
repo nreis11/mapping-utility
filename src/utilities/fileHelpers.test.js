@@ -100,8 +100,8 @@ describe("traverse", () => {
   });
 
   it("Creates the correct child node with corresponding parent", () => {
-    const arabicChild = result.find(node => node.id === "999");
+    const arabicChild = result.find(node => node.id === "500-83-999");
     expect(arabicChild.title).toEqual("Arabic-Child");
-    expect(arabicChild.parent).toEqual("83");
+    expect(arabicChild.parent).toEqual("500-83");
   });
 });

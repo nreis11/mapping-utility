@@ -12,6 +12,12 @@ const NodeInfo = ({ mdOffset, heading, node }) => {
     nodeKey = nodeKey.slice(2);
   }
 
+  // Remove parent prefix
+  if (heading !== "eQuest" && nodeKey) {
+    const keyArr = nodeKey.split("-");
+    nodeKey = keyArr[keyArr.length - 1];
+  }
+
   return (
     <Col md={5} mdOffset={mdOffset}>
       <Panel bsStyle="info" style={{ marginBottom: 10, marginTop: 0 }}>

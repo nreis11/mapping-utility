@@ -56,6 +56,7 @@ export const getFlatData = treeData => {
 };
 
 // Uses fileReader and JS YAML to load and convert to JSON
+// YAML -> JSON -> flatData -> treeData
 export const importYaml = ({ yamlFile, treeKey, onChange, handleError }) => {
   const fileReader = new FileReader();
   fileReader.onload = e => {
@@ -88,14 +89,17 @@ export const traverse = (jsonObj, parent = null, nodes = []) => {
       throw new Error(`No label found for key ${key}. Cannot continue.`);
     }
 
+    // Using parent to create UID. Avoids duplicate keys.
+    let curr = parent ? `${parent}-${key}` : key;
+
     let node = {
-      id: key.toString(),
+      id: curr,
       title: value.label,
       parent: parent
     };
     nodes.push(node);
 
-    traverse(value, key, nodes);
+    traverse(value, curr, nodes);
   });
   return nodes;
 };

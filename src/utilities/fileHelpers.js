@@ -1,4 +1,5 @@
 import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
+import { _sortTree } from "./mappingHelpers";
 import * as eqValues from "../values/eqValues";
 import FileSaver from "file-saver";
 import yaml from "js-yaml";
@@ -70,6 +71,7 @@ export const importYaml = ({ yamlFile, treeKey, onChange, handleError }) => {
     } finally {
       if (nodes.length) {
         handleError(null);
+        nodes = _sortTree(nodes);
         const extTreeData = getTreeDataFromFlatData(nodes);
         onChange(extTreeData, treeKey);
       }

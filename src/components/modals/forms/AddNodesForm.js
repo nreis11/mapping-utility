@@ -29,6 +29,12 @@ class AddNodesForm extends React.Component {
     e.preventDefault();
     const { delimiter, valueIdx, labelIdx, rawData } = this.state;
     const { nodeInfo, handleClose, onAddNodes } = this.props;
+    let parentId;
+
+    if (nodeInfo) {
+      parentId = nodeInfo.node.id;
+    }
+
     if (!rawData) {
       handleClose();
       return;
@@ -40,19 +46,19 @@ class AddNodesForm extends React.Component {
       return;
     }
 
-    // Create array of nodes to concat
+    // Create array of flat data
     const idIdx = valueIdx < labelIdx ? 0 : 1;
     const titleIdx = valueIdx < labelIdx ? 1 : 0;
-    const nodesArr = rawData.split("\n").map(line => {
+    const flatData = rawData.split("\n").map(line => {
       let lineArr = line.split(delimiter);
       return {
-        id: nodeInfo ? `${nodeInfo.node.id}-${lineArr[idIdx]}` : lineArr[idIdx],
+        id: parentId ? `${parentId}-${lineArr[idIdx]}` : lineArr[idIdx],
         title: lineArr[titleIdx],
-        parent: null
+        parent: parentId ? parentId : null
       };
     });
 
-    onAddNodes(nodesArr, nodeInfo);
+    onAddNodes(flatData);
     handleClose();
   }
 

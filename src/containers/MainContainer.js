@@ -11,8 +11,7 @@ import {
   _mapNode,
   _sortTree,
   _changeNodeAtPath,
-  _exportMappingsToXML,
-  _addNodeUnderParent
+  _exportMappingsToXML
 } from "../utilities/mappingHelpers";
 
 import { isABootstrapModalOpen } from "../utilities/helpers";
@@ -20,7 +19,8 @@ import { isABootstrapModalOpen } from "../utilities/helpers";
 import {
   saveToJson,
   getInitialTreeData,
-  getTreeDataFromFlatData
+  getTreeDataFromFlatData,
+  getFlatData
 } from "../utilities/fileHelpers";
 
 import HeaderContainer from "../containers/HeaderContainer";
@@ -181,33 +181,21 @@ class MainContainer extends Component {
     this.expandAll(true, true);
   }
 
-  handleAddNodes(newNodes, nodeInfo) {
-    const sortedTree = _sortTree(newNodes);
-    // If adding children
-    if (nodeInfo) {
-      const { path } = nodeInfo;
-      // Create a callback here
-      sortedTree.forEach(node => {
-        this.setState(state => ({
-          extTreeData: _addNodeUnderParent({
-            treeData: state.extTreeData,
-            path,
-            newNode: node
-          })
-        }));
-      });
-    } else {
-      this.setState(
-        state => ({
-          extTreeData: state.extTreeData.concat(sortedTree)
-        }),
-        // Callback. Get first node
-        () => {
-          const activeNode = _getActiveNodeInfo(this.state.extTreeData, 0);
-          this.handleSelectNode(activeNode, this.extTreeKey);
-        }
-      );
-    }
+  handleAddNodes(newNodes) {
+    const sortedNodes = _sortTree(newNodes);
+    const extFlatData = getFlatData(this.state.extTreeData);
+    const newFlatData = extFlatData.concat(sortedNodes);
+
+    this.setState(
+      {
+        extTreeData: getTreeDataFromFlatData(newFlatData)
+      },
+      // Callback. Get first node
+      () => {
+        const activeNode = _getActiveNodeInfo(this.state.extTreeData, 0);
+        this.handleSelectNode(activeNode, this.extTreeKey);
+      }
+    );
   }
 
   handleTreeChange(treeData, treeKey) {
@@ -446,6 +434,7 @@ class MainContainer extends Component {
   }
 
   handleSave() {
+    // Save state to JSON
     const {
       intTreeData,
       extTreeData,

@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Col, Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
-import { func, shape, arrayOf, string } from "prop-types";
+import { func, shape, arrayOf, string, bool } from "prop-types";
 import AddNodesForm from "./forms/AddNodesForm";
 
 class AddModal extends React.Component {
@@ -12,43 +12,34 @@ class AddModal extends React.Component {
     this.handleClose = this.handleClose.bind(this);
 
     this.state = {
-      show: false
+      show: props.show || false
     };
   }
 
   handleClose() {
     this.setState({ show: false });
+    this.props.onHide();
   }
 
   handleShow() {
     this.setState({ show: true });
   }
 
-  renderButton(nodeInfo) {
-    // Render mini button on node or edit modal button
-    return nodeInfo ? (
-      <button onClick={this.handleShow}>
-        <FaPlus className="react-icons" />
-      </button>
-    ) : (
-      <Button
-        className="pull-left"
-        bsStyle="info"
-        bsSize="small"
-        onClick={this.handleShow}
-      >
-        <FaPlus className="react-icons" /> Add Nodes
-      </Button>
-    );
-  }
-
   render() {
     const { onAddNodes, nodeInfo } = this.props;
-    const addButton = this.renderButton(nodeInfo);
 
     return (
       <Col>
-        {addButton}
+        {!nodeInfo && (
+          <Button
+            className="pull-left"
+            bsStyle="info"
+            bsSize="small"
+            onClick={this.handleShow}
+          >
+            <FaPlus className="react-icons" /> Add Nodes
+          </Button>
+        )}
         <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
           <Modal.Header closeButton>
             <Modal.Title>Add Nodes</Modal.Title>
@@ -76,9 +67,13 @@ AddModal.propTypes = {
   nodeInfo: shape({
     node: shape({ id: string.isRequired, title: string.isRequired }),
     path: arrayOf(string).isRequired
-  })
+  }),
+  onHide: func,
+  show: bool
 };
 
 AddModal.defaultProps = {
-  nodeInfo: null
+  nodeInfo: null,
+  show: false,
+  onHide: () => {}
 };

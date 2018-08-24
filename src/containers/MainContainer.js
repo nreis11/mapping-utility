@@ -192,6 +192,7 @@ class MainContainer extends Component {
       },
       // Callback. Get first node
       () => {
+        this.expandAll(true, false);
         const activeNode = _getActiveNodeInfo(this.state.extTreeData, 0);
         this.handleSelectNode(activeNode, this.extTreeKey);
       }

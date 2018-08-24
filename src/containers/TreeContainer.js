@@ -16,6 +16,8 @@ import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
 import { _getActiveNodeInfo } from "../utilities/mappingHelpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
+import { FaPlus } from "react-icons/fa";
+
 import "react-sortable-tree/style.css";
 
 import "./TreeContainer.css";
@@ -23,8 +25,15 @@ import "./TreeContainer.css";
 class TreeContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showAddModal: false,
+      extNodeInfo: null
+    };
+
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
+    this.handleShowAddModal = this.handleShowAddModal.bind(this);
+    this.handleHideAddModal = this.handleHideAddModal.bind(this);
   }
 
   componentWillUnmount() {
@@ -88,12 +97,34 @@ class TreeContainer extends React.Component {
     onChange(newTreeData, treeKey);
   }
 
+  handleShowAddModal(nodeInfo) {
+    this.setState({
+      showAddModal: true,
+      extNodeInfo: nodeInfo
+    });
+  }
+
+  handleHideAddModal() {
+    this.setState({
+      showAddModal: false,
+      extNodeInfo: null
+    });
+  }
+
   renderEditTree() {
     // Only rendered in the edit modal
     const { treeKey, treeData, onChange, onAddNodes } = this.props;
 
     return (
       <Col md={12}>
+        {this.state.showAddModal && (
+          <AddModal
+            onAddNodes={onAddNodes}
+            show={true}
+            onHide={this.handleHideAddModal}
+            nodeInfo={this.state.extNodeInfo}
+          />
+        )}
         <Well>
           <SortableTree
             treeData={treeData}
@@ -103,10 +134,13 @@ class TreeContainer extends React.Component {
             rowHeight={45}
             scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
-            generateNodeProps={rowInfo => {
-              const { path } = rowInfo;
+            generateNodeProps={nodeInfo => {
+              const { path } = nodeInfo;
               const buttons = [
-                <AddModal onAddNodes={onAddNodes} nodeInfo={rowInfo} />,
+                <button onClick={() => this.handleShowAddModal(nodeInfo)}>
+                  <FaPlus className="react-icons" />
+                </button>,
+
                 <button onClick={() => this.handleRemoveNode(path)}>
                   <FaTrash className="react-icons" />
                 </button>

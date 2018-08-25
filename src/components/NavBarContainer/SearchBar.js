@@ -25,8 +25,7 @@ class SearchBar extends React.Component {
 
   handleKeyDown(e) {
     // Needed because handleChange does not fire with ESC
-    const { keyCode } = e;
-    if (keyCode === 27) {
+    if (e.keyCode === 27) {
       // "ESC"
       // Refocus tree to allow navigation and mapping
       e.preventDefault();

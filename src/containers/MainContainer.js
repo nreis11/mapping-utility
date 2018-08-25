@@ -365,12 +365,21 @@ class MainContainer extends Component {
     const newActiveIntNodeInfo = _getActiveNodeInfo(intTreeData, treeIndex);
 
     // Scroll active node into view
+    const outerGrid = document.querySelectorAll(".ReactVirtualized__Grid")[0];
     const activeNodeElem = document.getElementById(
       newActiveIntNodeInfo.node.id
     );
 
     if (activeNodeElem) {
-      activeNodeElem.scrollIntoView(false);
+      const greatGrandParent = activeNodeElem.parentElement.parentElement;
+      if (
+        outerGrid.offsetHeight +
+          outerGrid.scrollTop -
+          greatGrandParent.offsetTop <
+        greatGrandParent.offsetHeight
+      ) {
+        outerGrid.scrollTop += greatGrandParent.offsetHeight;
+      }
     }
 
     this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);

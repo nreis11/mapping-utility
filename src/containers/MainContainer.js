@@ -182,9 +182,8 @@ class MainContainer extends Component {
   }
 
   handleAddNodes(newNodes) {
-    const sortedNodes = _sortTree(newNodes);
     const extFlatData = getFlatData(this.state.extTreeData);
-    const newFlatData = extFlatData.concat(sortedNodes);
+    const newFlatData = _sortTree(extFlatData.concat(newNodes));
 
     this.setState(
       {
@@ -371,14 +370,12 @@ class MainContainer extends Component {
     );
 
     if (activeNodeElem) {
-      const greatGrandParent = activeNodeElem.parentElement.parentElement;
+      const grandParent = activeNodeElem.parentElement.parentElement;
       if (
-        outerGrid.offsetHeight +
-          outerGrid.scrollTop -
-          greatGrandParent.offsetTop <
-        greatGrandParent.offsetHeight
+        outerGrid.offsetHeight + outerGrid.scrollTop - grandParent.offsetTop <
+        grandParent.offsetHeight
       ) {
-        outerGrid.scrollTop += greatGrandParent.offsetHeight;
+        outerGrid.scrollTop += grandParent.offsetHeight;
       }
     }
 

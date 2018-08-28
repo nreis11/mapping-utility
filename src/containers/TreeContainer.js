@@ -125,33 +125,32 @@ class TreeContainer extends React.Component {
             nodeInfo={this.state.extNodeInfo}
           />
         )}
-        <Well>
-          <SortableTree
-            treeData={treeData}
-            onChange={treeData => onChange(treeData, treeKey)}
-            canDrag={false}
-            canDrop={() => false}
-            rowHeight={45}
-            scaffoldBlockPxWidth={35}
-            getNodeKey={({ node }) => node.id}
-            generateNodeProps={nodeInfo => {
-              const { path } = nodeInfo;
-              const buttons = [
-                <button onClick={() => this.handleShowAddModal(nodeInfo)}>
-                  <FaPlus className="react-icons" />
-                </button>,
+        <SortableTree
+          treeData={treeData}
+          onChange={treeData => onChange(treeData, treeKey)}
+          className="well"
+          canDrag={false}
+          canDrop={() => false}
+          rowHeight={45}
+          scaffoldBlockPxWidth={35}
+          getNodeKey={({ node }) => node.id}
+          generateNodeProps={nodeInfo => {
+            const { path } = nodeInfo;
+            const buttons = [
+              <button onClick={() => this.handleShowAddModal(nodeInfo)}>
+                <FaPlus className="react-icons" />
+              </button>,
 
-                <button onClick={() => this.handleRemoveNode(path)}>
-                  <FaTrash className="react-icons" />
-                </button>
-              ];
+              <button onClick={() => this.handleRemoveNode(path)}>
+                <FaTrash className="react-icons" />
+              </button>
+            ];
 
-              return {
-                buttons: buttons
-              };
-            }}
-          />
-        </Well>
+            return {
+              buttons: buttons
+            };
+          }}
+        />
       </Col>
     );
   }
@@ -182,42 +181,41 @@ class TreeContainer extends React.Component {
 
       return (
         <Col md={5} id={`tree-${treeKey}`} onKeyDown={this.handleKeyDown}>
-          <Well>
-            <SortableTree
-              treeData={treeData}
-              onChange={treeData => onChange(treeData, treeKey)}
-              canDrag={false}
-              canDrop={() => false}
-              rowHeight={45}
-              scaffoldBlockPxWidth={35}
-              getNodeKey={({ node }) => node.id}
-              searchMethod={customSearchMethod}
-              onlyExpandSearchedNodes={true}
-              searchQuery={searchString}
-              searchFocusOffset={searchFocusIndex}
-              searchFinishCallback={matches => {
-                // Only run if the func is passed through
-                // to avoid search overrides
-                onSearchFinish && onSearchFinish(matches);
-              }}
-              generateNodeProps={rowInfo => {
-                const { node } = rowInfo;
-                const className = [];
-                activeNode &&
-                  activeNode.id === node.id &&
-                  className.push("active-node");
-                node.mapping
-                  ? className.push("mapped")
-                  : className.push(highlightUnmapped ? "un-mapped" : "");
+          <SortableTree
+            treeData={treeData}
+            className="well"
+            onChange={treeData => onChange(treeData, treeKey)}
+            canDrag={false}
+            canDrop={() => false}
+            rowHeight={45}
+            scaffoldBlockPxWidth={35}
+            getNodeKey={({ node }) => node.id}
+            searchMethod={customSearchMethod}
+            onlyExpandSearchedNodes={true}
+            searchQuery={searchString}
+            searchFocusOffset={searchFocusIndex}
+            searchFinishCallback={matches => {
+              // Only run if the func is passed through
+              // to avoid search overrides
+              onSearchFinish && onSearchFinish(matches);
+            }}
+            generateNodeProps={rowInfo => {
+              const { node } = rowInfo;
+              const className = [];
+              activeNode &&
+                activeNode.id === node.id &&
+                className.push("active-node");
+              node.mapping
+                ? className.push("mapped")
+                : className.push(highlightUnmapped ? "un-mapped" : "");
 
-                return {
-                  onClick: () => onSelectNode(rowInfo, treeKey),
-                  className: className.join(" "),
-                  id: node.id
-                };
-              }}
-            />
-          </Well>
+              return {
+                onClick: () => onSelectNode(rowInfo, treeKey),
+                className: className.join(" "),
+                id: node.id
+              };
+            }}
+          />
         </Col>
       );
     }

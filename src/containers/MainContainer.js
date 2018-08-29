@@ -527,7 +527,6 @@ class MainContainer extends Component {
                 </EditModal>
               </HeaderSmallContainer>
             </HeaderContainer>
-
             <Row className="show-grid">
               <TreeContainer
                 treeKey={this.intTreeKey}
@@ -556,34 +555,28 @@ class MainContainer extends Component {
                 onSearchFinish={!searchInternal && this.handleSearchFinish}
               />
             </Row>
-            <div style={{ height: "10vh" }}>
-              <Row className="show-grid">
-                <NodeInfo heading={internalName} node={activeIntNode} />
-                <NodeInfo
-                  heading={boardName}
-                  node={activeExtNode}
-                  mdOffset={2}
-                />
-              </Row>
-              <Row className="show-grid">
-                <NodeInfo heading={"Mapped to:"} node={mappedNode} />
-                <OptionsContainer
-                  left={
-                    <Options
-                      options={options}
-                      onOptionChange={this.handleOptionChange}
-                    />
-                  }
-                  right={
-                    <ExportModal
-                      handleExport={this.handleExport}
-                      boardName={boardName}
-                      activeType={activeType}
-                    />
-                  }
-                />
-              </Row>
-            </div>
+            <Row className="show-grid">
+              <NodeInfo heading={internalName} node={activeIntNode} />
+              <NodeInfo heading={boardName} node={activeExtNode} mdOffset={2} />
+            </Row>
+            <Row className="show-grid">
+              <NodeInfo heading={"Mapped to:"} node={mappedNode} />
+              <OptionsContainer
+                left={
+                  <Options
+                    options={options}
+                    onOptionChange={this.handleOptionChange}
+                  />
+                }
+                right={
+                  <ExportModal
+                    handleExport={this.handleExport}
+                    boardName={boardName}
+                    activeType={activeType}
+                  />
+                }
+              />
+            </Row>
           </Grid>
         </Jumbotron>
       </Col>

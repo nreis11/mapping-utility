@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Modal, Button } from "react-bootstrap";
-
-import { FaQuestion } from "react-icons/fa";
+import guide from "../../assets/user_guide.pdf";
+import { FaQuestion, FaDownload } from "react-icons/fa";
 
 class HelpModal extends React.Component {
   constructor(props, context) {
@@ -9,6 +9,7 @@ class HelpModal extends React.Component {
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleDownload = this.handleDownload.bind(this);
 
     this.state = {
       show: false
@@ -21,6 +22,16 @@ class HelpModal extends React.Component {
 
   handleShow() {
     this.setState({ show: true });
+  }
+
+  handleDownload() {
+    let element = document.createElement("a");
+    element.setAttribute("href", guide);
+    element.setAttribute("target", "_blank");
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 
   render() {
@@ -102,6 +113,16 @@ class HelpModal extends React.Component {
             </p>
           </Modal.Body>
           <Modal.Footer>
+            <Button
+              title="Download"
+              onClick={this.handleDownload}
+              className="pull-left"
+            >
+              <span>
+                <FaDownload className="react-icons" /> User Guide
+              </span>
+            </Button>
+
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>

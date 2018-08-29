@@ -4,7 +4,7 @@ import { Col, Panel, Alert } from "react-bootstrap";
 import { firebase } from "../../firebase";
 
 import "./Login.css";
-import Logo from "../../equest-logo-black.png";
+import Logo from "../../assets/equest-logo-black.png";
 import LoginForm from "./LoginForm";
 
 class Login extends React.Component {

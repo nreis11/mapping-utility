@@ -10,7 +10,7 @@ import {
   oneOfType
 } from "prop-types";
 import { FaTrash } from "react-icons/fa";
-import { Col, Well } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
 import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
 import { _getActiveNodeInfo } from "../utilities/mappingHelpers";

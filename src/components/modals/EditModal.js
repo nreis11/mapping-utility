@@ -72,7 +72,7 @@ class EditModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>Add/Edit</Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ height: "70vh" }}>
+          <Modal.Body style={{ height: "65vh" }}>
             {this.props.children}
           </Modal.Body>
           <Modal.Footer>

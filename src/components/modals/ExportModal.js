@@ -49,7 +49,7 @@ class ExportModal extends React.Component {
           onClick={this.handleShow}
           bsStyle="success"
           bsSize="small"
-          style={{ lineHeight: "12px" }}
+          style={{ lineHeight: "12px", marginTop: -6 }}
         >
           <strong>Export</strong>
         </Button>

@@ -116,7 +116,7 @@ class TreeContainer extends React.Component {
     const { treeKey, treeData, onChange, onAddNodes } = this.props;
 
     return (
-      <Col md={12}>
+      <Col md={12} style={{ height: "98%" }}>
         {this.state.showAddModal && (
           <AddModal
             onAddNodes={onAddNodes}
@@ -180,7 +180,12 @@ class TreeContainer extends React.Component {
         node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
 
       return (
-        <Col md={5} id={`tree-${treeKey}`} onKeyDown={this.handleKeyDown}>
+        <Col
+          md={5}
+          id={`tree-${treeKey}`}
+          style={{ height: "inherit" }}
+          onKeyDown={this.handleKeyDown}
+        >
           <SortableTree
             treeData={treeData}
             className="well"

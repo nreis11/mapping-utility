@@ -1,33 +1,32 @@
 import React from "react";
 import { func } from "prop-types";
+import "./Options.css";
 
 const Options = props => {
   const { outputParents, parentsSelectable } = props.options;
 
-  const inputStyle = {
-    marginLeft: "10px"
-  };
+  // const inputStyle = {
+  //   marginLeft: "10px"
+  // };
 
-  const labelStyle = {
-    marginRight: "10px"
-  };
+  // const labelStyle = {
+  //   marginRight: "10px"
+  // };
 
   return (
     <form>
-      <label style={labelStyle}>
+      <label className="options-label">
         Output Parents
         <input
-          style={inputStyle}
           type="checkbox"
           name="outputParents"
           checked={outputParents}
           onChange={event => props.onOptionChange(event)}
         />
       </label>
-      <label style={labelStyle}>
+      <label className="options-label">
         Parents Selectable
         <input
-          style={inputStyle}
           type="checkbox"
           name="parentsSelectable"
           checked={parentsSelectable}

@@ -16,8 +16,6 @@
 
 .well {
   border: solid;
-  min-height: 65vh;
-  max-height: 75vh;
-  margin-bottom: 15px;
+  height: inherit;
 }
 

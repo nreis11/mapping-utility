@@ -1,0 +1,10 @@
+.tree-row {
+    height: 65vh;
+    margin-bottom: 10px;
+}
+
+@media only screen and (min-height: 850px) {
+    .tree-row {
+        height: 70vh;
+    }
+}

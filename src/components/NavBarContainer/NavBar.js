@@ -27,7 +27,7 @@ const NavBar = props => {
   const tooltip = text => <Tooltip id={`tooltip-${text}`}>{text}</Tooltip>;
 
   return (
-    <Navbar inverse fixedTop fluid>
+    <Navbar inverse fluid>
       <Navbar.Header>
         <Navbar.Brand>Mapping Utility</Navbar.Brand>
       </Navbar.Header>

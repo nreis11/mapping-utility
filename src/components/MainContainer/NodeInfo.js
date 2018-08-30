@@ -1,6 +1,6 @@
 import React from "react";
 import { string, number, shape } from "prop-types";
-
+import "./NodeInfo.css";
 import { Col, Panel } from "react-bootstrap";
 
 const NodeInfo = ({ mdOffset, heading, node }) => {
@@ -20,11 +20,11 @@ const NodeInfo = ({ mdOffset, heading, node }) => {
 
   return (
     <Col md={5} mdOffset={mdOffset}>
-      <Panel bsStyle="info" style={{ marginBottom: 10, marginTop: 0 }}>
-        <Panel.Heading style={{ padding: "2px" }}>
+      <Panel bsStyle="info">
+        <Panel.Heading>
           <Panel.Title componentClass="h3">{heading}</Panel.Title>
         </Panel.Heading>
-        <Panel.Body style={{ padding: 8, height: 32 }}>
+        <Panel.Body>
           <div className="pull-left">
             <span>
               <strong>{nodeTitle}</strong>

@@ -1,38 +1,55 @@
 import React from "react";
 import { func } from "prop-types";
+import { Popover, OverlayTrigger } from "react-bootstrap";
 import "./Options.css";
 
 const Options = props => {
   const { outputParents, parentsSelectable } = props.options;
 
-  // const inputStyle = {
-  //   marginLeft: "10px"
-  // };
+  const outputPopover = (
+    <Popover id="popover-trigger-hover-focus" title="Output Parents">
+      Export all tiers.
+    </Popover>
+  );
 
-  // const labelStyle = {
-  //   marginRight: "10px"
-  // };
+  const selectablePopover = (
+    <Popover id="popover-trigger-hover-focus" title="Parents Selectable">
+      All values can be mapped.
+    </Popover>
+  );
 
   return (
     <form>
-      <label className="options-label">
-        Output Parents
-        <input
-          type="checkbox"
-          name="outputParents"
-          checked={outputParents}
-          onChange={event => props.onOptionChange(event)}
-        />
-      </label>
-      <label className="options-label">
-        Parents Selectable
-        <input
-          type="checkbox"
-          name="parentsSelectable"
-          checked={parentsSelectable}
-          onChange={event => props.onOptionChange(event)}
-        />
-      </label>
+      <OverlayTrigger
+        trigger={["hover"]}
+        placement="top"
+        overlay={outputPopover}
+      >
+        <label className="options-label">
+          Output Parents
+          <input
+            type="checkbox"
+            name="outputParents"
+            checked={outputParents}
+            onChange={event => props.onOptionChange(event)}
+          />
+        </label>
+      </OverlayTrigger>
+      <OverlayTrigger
+        trigger={["hover"]}
+        placement="top"
+        overlay={selectablePopover}
+      >
+        <label className="options-label">
+          Parents Selectable
+          <input
+            type="checkbox"
+            name="parentsSelectable"
+            checked={parentsSelectable}
+            onChange={event => props.onOptionChange(event)}
+          />
+        </label>
+      </OverlayTrigger>
     </form>
   );
 };

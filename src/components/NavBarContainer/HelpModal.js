@@ -95,15 +95,15 @@ class HelpModal extends React.Component {
             </p>
 
             <p>
-              <strong>Ctrl+G:</strong>
-              <br />
-              Search eQuest tree.
-            </p>
-
-            <p>
               <strong>Ctrl+F:</strong>
               <br />
               Search Board tree.
+            </p>
+
+            <p>
+              <strong>Ctrl+G:</strong>
+              <br />
+              Search eQuest tree.
             </p>
 
             <p>

@@ -10,10 +10,14 @@ import { ActionButton } from "../components/ActionBar/ActionButton";
 
 import "./ActionBarContainer.css";
 
-export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
+export const ActionBarContainer = ({
+  expandAll,
+  onHighlightUnmapped,
+  onClick
+}) => {
   return (
     <Col md={2} className="text-center action-container">
-      <ButtonGroup>
+      <div>
         <ActionButton dataCmd="space" onClick={onClick}>
           <FaForward className="react-icons" /> Map{" "}
           <FaForward className="react-icons" />
@@ -32,8 +36,8 @@ export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
           <br />
           (overwrite)
         </ActionButton>
-      </ButtonGroup>
-      <ButtonGroup>
+      </div>
+      <div>
         <Button bsStyle="primary" onClick={onHighlightUnmapped} block>
           <FaBackward className="react-icons" /> Highlight Unmapped
         </Button>
@@ -43,21 +47,23 @@ export const ActionBar = ({ expandAll, onHighlightUnmapped, onClick }) => {
         <ActionButton dataCmd="shift-delete" onClick={onClick}>
           <FaBackward className="react-icons" /> Clear Entire Node
         </ActionButton>
+      </div>
+      <ButtonGroup className="expand-btn-grp">
+        <ExpandCollapseButtons expandAll={expandAll} expand={true}>
+          Expand All
+        </ExpandCollapseButtons>
+        <ExpandCollapseButtons expandAll={expandAll} expand={false}>
+          Collapse All
+        </ExpandCollapseButtons>
       </ButtonGroup>
-      <ExpandCollapseButtons expandAll={expandAll} expand={true}>
-        Expand All
-      </ExpandCollapseButtons>
-      <ExpandCollapseButtons expandAll={expandAll} expand={false}>
-        Collapse All
-      </ExpandCollapseButtons>
     </Col>
   );
 };
 
-ActionBar.propTypes = {
+ActionBarContainer.propTypes = {
   expandAll: func.isRequired,
   onClick: func.isRequired,
   onHighlightUnmapped: func.isRequired
 };
 
-export default ActionBar;
+export default ActionBarContainer;

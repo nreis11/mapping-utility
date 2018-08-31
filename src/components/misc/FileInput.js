@@ -4,12 +4,12 @@ import { string, func } from "prop-types";
 class FileInput extends React.Component {
   constructor(props) {
     super(props);
-    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.isValidated = this.isValidated.bind(this);
     this.fileInput = React.createRef();
     this.fileFormRef = React.createRef();
   }
-  handleOnChange(event) {
+  handleChange(event) {
     event.preventDefault();
     const fileInput = this.fileInput.current.files[0];
 
@@ -48,6 +48,7 @@ class FileInput extends React.Component {
   }
 
   render() {
+    // Hidden form
     const { type } = this.props;
 
     return (
@@ -56,7 +57,7 @@ class FileInput extends React.Component {
           type="file"
           id={`file-input-${type}`}
           ref={this.fileInput}
-          onChange={this.handleOnChange}
+          onChange={this.handleChange}
           style={{ display: "none" }}
         />
       </form>

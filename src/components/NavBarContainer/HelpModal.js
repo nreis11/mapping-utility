@@ -2,6 +2,7 @@ import React from "react";
 import { Col, Modal, Button } from "react-bootstrap";
 import guide from "../../assets/user_guide.pdf";
 import { FaQuestion, FaDownload } from "react-icons/fa";
+import "./HelpModal.css";
 
 class HelpModal extends React.Component {
   constructor(props, context) {
@@ -36,8 +37,14 @@ class HelpModal extends React.Component {
 
   render() {
     return (
-      <Col style={{ paddingTop: 3, paddingBottom: 0 }}>
-        <FaQuestion size="2em" onClick={this.handleShow} />
+      <Col>
+        <div
+          id="help-link"
+          style={{ width: 60, height: 34, color: "white", textAlign: "center" }}
+          onClick={this.handleShow}
+        >
+          Help <FaQuestion className="react-icons" />
+        </div>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>

@@ -19,7 +19,7 @@ class SearchBar extends React.Component {
   }
 
   handleChange(e) {
-    console.log("HIT");
+    e.stopPropagation();
     const { handleInputChange } = this.props.searchValues;
     handleInputChange(e);
   }
@@ -116,14 +116,13 @@ class SearchBar extends React.Component {
           {searchFoundCount || 0}
         </span>
         <FormGroup style={{ marginLeft: 10, color: "white" }}>
-          <Checkbox
-            name="searchInternal"
-            checked={searchInternal}
-            onChange={this.handleChange}
-            inline
-          >
-            Search eQuest
-          </Checkbox>
+          {/* Needed to create div to reflect change visually. State was updating, but
+        visually no change occured */}
+          <div onClick={this.handleChange}>
+            <Checkbox name="searchInternal" checked={searchInternal} inline>
+              Search eQuest
+            </Checkbox>
+          </div>
         </FormGroup>
       </Form>
     );

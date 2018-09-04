@@ -19,12 +19,14 @@ class SearchBar extends React.Component {
   }
 
   handleChange(e) {
+    console.log("HIT");
     const { handleInputChange } = this.props.searchValues;
     handleInputChange(e);
   }
 
   handleKeyDown(e) {
     // Needed because handleChange does not fire with ESC
+    e.stopPropagation();
     if (e.keyCode === 27) {
       // "ESC"
       // Refocus tree to allow navigation and mapping

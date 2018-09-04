@@ -4,21 +4,15 @@ import * as eqValues from "../values/eqValues";
 import FileSaver from "file-saver";
 import yaml from "js-yaml";
 
-export const saveToJson = ({
-  intTreeData,
-  extTreeData,
-  options,
-  activeType,
-  boardName,
-  testing = false
-}) => {
+export const saveToJson = (state, testing = false) => {
   // Saving as flat data to reduce file size. More info in getFlatDataFromTree helper.
+  const { intTreeData, extTreeData, boardName, activeType, ...rest } = state;
   const jsonString = JSON.stringify({
     intFlatData: getFlatData(intTreeData),
     extFlatData: getFlatData(extTreeData),
-    options,
+    boardName,
     activeType,
-    boardName
+    ...rest
   });
   if (testing) {
     return jsonString;

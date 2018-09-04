@@ -98,9 +98,6 @@ class MainContainer extends Component {
       });
     }
 
-    // Set first node as selected
-    const activeNode = _getActiveNodeInfo(this.state.intTreeData, 0);
-    this.handleSelectNode(activeNode, this.intTreeKey);
     document.addEventListener("keydown", this.handleKeyDown);
   }
 
@@ -110,19 +107,8 @@ class MainContainer extends Component {
 
   saveToLocalStorage() {
     // Saving as treeData, not flatData to avoid multiple conversions.
-    const {
-      intTreeData,
-      extTreeData,
-      options,
-      activeType,
-      boardName
-    } = this.state;
     const jsonStr = JSON.stringify({
-      intTreeData,
-      extTreeData,
-      options,
-      activeType,
-      boardName
+      ...this.state
     });
     try {
       // Long lists can hit localStorage max.
@@ -419,37 +405,24 @@ class MainContainer extends Component {
 
   handleOpen(fileInput) {
     const fileReader = new FileReader();
-    fileReader.readAsText(fileInput);
     fileReader.onload = e => {
       // Convert string result to JSON after loading
       const jsonObj = JSON.parse(e.target.result);
-      const {
-        intFlatData,
-        extFlatData,
-        options,
-        activeType,
-        boardName
-      } = jsonObj;
+      const { intFlatData, extFlatData, ...rest } = jsonObj;
+      const intTreeData = getTreeDataFromFlatData(intFlatData);
+      const extTreeData = getTreeDataFromFlatData(extFlatData);
       this.setState({
-        intTreeData: getTreeDataFromFlatData(intFlatData),
-        extTreeData: getTreeDataFromFlatData(extFlatData),
-        options,
-        activeType,
-        boardName
+        intTreeData,
+        extTreeData,
+        ...rest
       });
     };
+    fileReader.readAsText(fileInput);
   }
 
   handleSave() {
     // Save state to JSON
-    const {
-      intTreeData,
-      extTreeData,
-      options,
-      activeType,
-      boardName
-    } = this.state;
-    saveToJson({ intTreeData, extTreeData, options, activeType, boardName });
+    saveToJson(this.state);
   }
 
   render() {

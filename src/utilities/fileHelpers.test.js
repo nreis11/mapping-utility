@@ -34,15 +34,15 @@ describe("saveToJson", () => {
   const options = { outputParents: false, parentsSelectable: true };
   const activeType = "industries";
   const boardName = "testBoard";
-  const fileObj = {
+  const stateObj = {
     intTreeData,
     extTreeData,
     options,
     activeType,
-    boardName,
-    testing: true
+    boardName
   };
-  const jsonString = saveToJson(fileObj);
+
+  const jsonString = saveToJson(stateObj, true);
   // Check output
   const jsonObj = JSON.parse(jsonString);
 

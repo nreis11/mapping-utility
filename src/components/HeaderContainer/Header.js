@@ -2,14 +2,10 @@ import React from "react";
 import { string, bool, func } from "prop-types";
 import BoardNameForm from "./BoardNameForm";
 
-const style = {
-  fontSize: "1.5em"
-};
-
 const Header = ({ name, isInternal, handleInputChange }) => {
   return (
     <div>
-      <h2 style={style}>
+      <h2 style={{ fontSize: "1.5em" }}>
         {/* LEFT HEADER */}
         {isInternal && <span className="pull-left">{name}</span>}
         {/* RIGHT HEADER */}

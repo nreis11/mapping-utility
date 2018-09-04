@@ -38,11 +38,7 @@ class HelpModal extends React.Component {
   render() {
     return (
       <Col>
-        <div
-          id="help-link"
-          style={{ width: 60, height: 34, color: "white", textAlign: "center" }}
-          onClick={this.handleShow}
-        >
+        <div id="help-link" onClick={this.handleShow}>
           Help <FaQuestion className="react-icons" />
         </div>
 

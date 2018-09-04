@@ -7,13 +7,12 @@ import {
   Tooltip,
   OverlayTrigger
 } from "react-bootstrap";
-import { FaSave } from "react-icons/fa";
-import { FaFolderOpen } from "react-icons/fa";
+import { FaFolderOpen, FaSave } from "react-icons/fa";
 import LogOutButton from "./LogOutButton";
-import "./NavBar.css";
 import SearchBar from "./SearchBar";
 import HelpModal from "./HelpModal";
 import FileInput from "../misc/FileInput";
+import "./NavBar.css";
 
 const NavBar = props => {
   const { handleOpen, handleSave, ...restProps } = props;

@@ -73,7 +73,7 @@ class BoardNameForm extends React.Component {
             name="boardName"
             disabled={disabled}
             value={boardName}
-            style={{ fontSize: "1em" }}
+            style={{ fontSize: "inherit" }}
             onChange={this.handleChange}
           />
         </FormGroup>

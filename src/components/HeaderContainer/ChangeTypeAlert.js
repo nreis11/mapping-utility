@@ -13,8 +13,8 @@ const ChangeTypeAlert = props => {
         </Modal.Header>
 
         <Modal.Body>
-          Mappings detected. Are you sure you want to change type and lose your
-          changes?
+          Mappings detected. Are you sure you want to change type? Any unsaved
+          changes will be lost.
         </Modal.Body>
 
         <Modal.Footer>

@@ -217,8 +217,18 @@ class MainContainer extends Component {
   }
 
   handleExport() {
-    const { intTreeData, activeType, options } = this.state;
-    return _exportMappingsToXML(intTreeData, activeType, options.outputParents);
+    const {
+      intTreeData,
+      extTreeData,
+      activeType,
+      options: { outputParents }
+    } = this.state;
+    return _exportMappingsToXML({
+      intTreeData,
+      extTreeData,
+      activeType,
+      outputParents
+    });
   }
 
   handleKeyDown(e) {

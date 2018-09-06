@@ -107,7 +107,7 @@ describe("_isMapped", () => {
 
 describe("_exportMappingsToXML", () => {
   const xmlParser = new DOMParser();
-  const treeData = [
+  const intTreeData = [
     {
       id: "eqDEFAULT",
       mapping: ["3000", "3000-24000"]
@@ -118,14 +118,33 @@ describe("_exportMappingsToXML", () => {
       children: [
         {
           id: "eq17100000",
-          mapping: ["1000-27001"]
+          mapping: ["1000", "1000-27001"]
         }
       ]
     }
   ];
-  const type = "categories";
-  // function _exportMappingsToXML( treeData = [], type = "str", outputParents = bool, prettyfy = bool)
-  let result = _exportMappingsToXML(treeData, type, false, true);
+
+  const extTreeData = [
+    {
+      id: "3000",
+      title: "US",
+      children: [{ id: "3000-24000", title: "Texas" }]
+    },
+    {
+      id: "1000",
+      title: "Africa",
+      children: [{ id: "1000-27001", title: "Egypt" }]
+    }
+  ];
+
+  const activeType = "categories";
+  let result = _exportMappingsToXML({
+    intTreeData,
+    extTreeData,
+    activeType,
+    outputParents: false,
+    testing: true
+  });
   const xmlObj = xmlParser.parseFromString(result, "text/xml");
 
   it("Sets the root node with correct mapping type", () => {
@@ -155,7 +174,13 @@ describe("_exportMappingsToXML", () => {
   });
 
   it("Returns multiple tiers when output parents enabled", () => {
-    result = _exportMappingsToXML(treeData, type, true, true);
+    result = _exportMappingsToXML({
+      intTreeData,
+      extTreeData,
+      activeType,
+      outputParents: true,
+      testing: true
+    });
     const xmlObj = xmlParser.parseFromString(result, "text/xml");
     const defaultNode = xmlObj.getElementsByTagName("default")[0];
     expect(defaultNode.nodeName).toEqual("default");

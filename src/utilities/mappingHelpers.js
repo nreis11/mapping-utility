@@ -3,7 +3,8 @@ import {
   map,
   getVisibleNodeInfoAtIndex,
   changeNodeAtPath,
-  addNodeUnderParent
+  addNodeUnderParent,
+  getNodeAtPath
 } from "react-sortable-tree";
 import xmlbuilder from "xmlbuilder";
 
@@ -148,12 +149,13 @@ export const _changeNodeAtPath = (treeData, path, newNode) => {
   });
 };
 
-export const _exportMappingsToXML = (
-  treeData,
-  type,
+export const _exportMappingsToXML = ({
+  intTreeData,
+  extTreeData,
+  activeType,
   outputParents,
   testing = false
-) => {
+}) => {
   const types = {
     categories: "function",
     industries: "industry",
@@ -161,15 +163,27 @@ export const _exportMappingsToXML = (
     countries: "country"
   };
 
-  const mappingType = types[type];
+  const mappingType = types[activeType];
   let rootNode = xmlbuilder
     .create("mapping", { encoding: "UTF-8" })
     .att("type", mappingType);
-  const callback = ({ node }) =>
-    _createNode(rootNode, node, outputParents, testing);
+
+  const callback = ({ node }) => {
+    if (!node.mapping) {
+      return;
+    }
+
+    return _createNode({
+      rootNode,
+      node,
+      extTreeData,
+      outputParents,
+      testing
+    });
+  };
 
   walk({
-    treeData: treeData,
+    treeData: intTreeData,
     getNodeKey,
     callback,
     ignoreCollapsed: false
@@ -178,12 +192,21 @@ export const _exportMappingsToXML = (
   return rootNode.end({ pretty: testing ? false : true });
 };
 
-const _createNode = (rootNode, node, outputParents = false, testing) => {
-  // If testing, use plain text node. Otherwise, use CDATA
-  if (!node.mapping) {
-    return;
-  }
+const _createNode = ({
+  rootNode,
+  node,
+  extTreeData,
+  outputParents = false,
+  testing = false
+}) => {
+  const getNodeTitle = path =>
+    getNodeAtPath({
+      treeData: extTreeData,
+      path,
+      getNodeKey
+    }).node.title;
 
+  // If testing, use plain text node. Otherwise, use CDATA
   // Mapping is path array with node ids
   let mapping = node.mapping;
   const childNode = rootNode.ele(node.id === "eqDEFAULT" ? "default" : "map");
@@ -194,18 +217,27 @@ const _createNode = (rootNode, node, outputParents = false, testing) => {
   }
 
   if (outputParents) {
-    mapping.forEach((mapping, idx) => {
-      const nodeArr = mapping.split("-");
-      mapping = nodeArr[nodeArr.length - 1];
-      const tier = idx + 1;
-      const boardValueNode = childNode.ele("boardvalue").att("tier", tier);
-      testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
+    // Multi-tier
+    mapping.forEach((tierMapping, idx) => {
+      // Get path up to node
+      const path = mapping.slice(0, idx + 1);
+      const extNodeTitle = getNodeTitle(path);
+      // Actual value is last id
+      const idArr = tierMapping.split("-");
+      tierMapping = idArr[idArr.length - 1];
+      const boardValueNode = childNode.ele("boardvalue").att("tier", idx + 1);
+      boardValueNode.att("label", extNodeTitle);
+      testing
+        ? boardValueNode.txt(tierMapping)
+        : boardValueNode.dat(tierMapping);
     });
   } else {
-    // Grab last value
-    let lastNodeArr = mapping[mapping.length - 1].split("-");
-    mapping = lastNodeArr[lastNodeArr.length - 1];
+    // Grab last value. Only single tier
+    const extNodeTitle = getNodeTitle(mapping);
+    let lastIdArr = mapping[mapping.length - 1].split("-");
+    mapping = lastIdArr[lastIdArr.length - 1];
     const boardValueNode = childNode.ele("boardvalue").att("tier", 1);
+    boardValueNode.att("label", extNodeTitle);
     testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
   }
 

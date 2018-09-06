@@ -13,7 +13,8 @@ import {
   _changeNodeAtPath,
   _exportMappingsToXML,
   _handleDeleteAction,
-  _handleMapAction
+  _handleMapAction,
+  _handleSearchAction
 } from "../utilities/mappingHelpers";
 
 import {
@@ -265,27 +266,6 @@ class MainContainer extends Component {
       71 // G,
     ];
 
-    const handleSearchAction = () => {
-      let searchInternal, searchString;
-      if ((e.ctrlKey || e.metaKey) && key === 70) {
-        // console.log("CTRL + F");
-        // Autocomplete search field with active node title
-        searchString = activeIntNode ? activeIntNode.title : "";
-        searchInternal = false;
-      } else if ((e.ctrlKey || e.metaKey) && key === 71) {
-        // console.log("CTRL + G");
-        searchString = activeExtNode ? activeExtNode.title : "";
-        searchInternal = true;
-      } else {
-        return;
-      }
-      this.setState({
-        searchInternal,
-        searchString
-      });
-      document.getElementById("searchInput").focus();
-    };
-
     // Can handle key or command from action bar click
     const key = e.keyCode || e.target.dataset.cmd || null;
     if (mapKeys.includes(key)) {
@@ -307,7 +287,6 @@ class MainContainer extends Component {
       const path = activeExtNodeInfo.path;
       const nodeInfo = _handleMapAction({
         e,
-        key,
         activeIntNode,
         path,
         treeIndex
@@ -319,15 +298,23 @@ class MainContainer extends Component {
       e.preventDefault();
       const nodeInfo = _handleDeleteAction({
         e,
-        key,
         activeIntNode,
         treeIndex
       });
       newNode = nodeInfo.newNode;
       treeIndex = nodeInfo.treeIndex;
-    } else if (searchKeys.includes(key)) {
+    } else if ((e.ctrlKey || e.metaKey) && searchKeys.includes(key)) {
       e.preventDefault();
-      handleSearchAction();
+      const searchValues = _handleSearchAction({
+        e,
+        activeIntNode,
+        activeExtNode
+      });
+      this.setState({
+        searchInternal: searchValues.searchInternal,
+        searchString: searchValues.searchString
+      });
+      document.getElementById("searchInput").focus();
       return;
     } else {
       return;

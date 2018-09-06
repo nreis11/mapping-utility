@@ -9,14 +9,9 @@ import xmlbuilder from "xmlbuilder";
 
 const getNodeKey = ({ node }) => node.id;
 
-export const _handleMapAction = ({
-  e,
-  key,
-  activeIntNode,
-  path,
-  treeIndex
-}) => {
+export const _handleMapAction = ({ e, activeIntNode, path, treeIndex }) => {
   let newNode;
+  let key = e.keyCode || e.target.dataset.cmd;
   if ((e.shiftKey && key === 32) || key === "shift-space") {
     // "Select node and its children. Preserve existing mappings"
     newNode = _mapNode([activeIntNode], path, false);
@@ -34,8 +29,9 @@ export const _handleMapAction = ({
   return { newNode, treeIndex };
 };
 
-export const _handleDeleteAction = ({ e, key, activeIntNode, treeIndex }) => {
+export const _handleDeleteAction = ({ e, activeIntNode, treeIndex }) => {
   let newNode;
+  let key = e.keyCode || e.target.dataset.cmd;
   if (e.shiftKey && e.keyCode === 8) {
     // "SHIFT BACKSPACE";
     // "Delete current node & everything under that node, then move up to the previous node."
@@ -59,6 +55,25 @@ export const _handleDeleteAction = ({ e, key, activeIntNode, treeIndex }) => {
     return false;
   }
   return { newNode, treeIndex };
+};
+
+export const _handleSearchAction = ({ e, activeIntNode, activeExtNode }) => {
+  let searchInternal, searchString;
+  const key = e.keyCode;
+  const modifier = e.ctrlKey || e.metaKey;
+  if (modifier && key === 70) {
+    // console.log("CTRL + F");
+    // Autocomplete search field with active node title
+    searchString = activeIntNode ? activeIntNode.title : "";
+    searchInternal = false;
+  } else if (modifier && key === 71) {
+    // console.log("CTRL + G");
+    searchString = activeExtNode ? activeExtNode.title : "";
+    searchInternal = true;
+  } else {
+    return false;
+  }
+  return { searchString, searchInternal };
 };
 
 export const _getActiveNodeInfo = (treeData, treeIndex) => {

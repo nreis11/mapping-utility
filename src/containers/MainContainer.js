@@ -9,13 +9,20 @@ import {
 
 import {
   _getActiveNodeInfo,
-  _mapNode,
   _sortTree,
   _changeNodeAtPath,
-  _exportMappingsToXML
+  _exportMappingsToXML,
+  _handleDeleteAction,
+  _handleMapAction
 } from "../utilities/mappingHelpers";
 
-import { isABootstrapModalOpen } from "../utilities/helpers";
+import {
+  isABootstrapModalOpen,
+  bothNodesAreSelected,
+  scrollIfNeeded,
+  getInBoundsTreeIndex,
+  parentsAreNotSelectable
+} from "../utilities/helpers";
 
 import {
   saveToJson,
@@ -223,117 +230,111 @@ class MainContainer extends Component {
       options: { parentsSelectable }
     } = this.state;
 
-    // Ignore if any input is in focus except for ESC, if bootstrap modal is open, or
+    // Ignore if any input is in focus, if bootstrap modal is open, or
     // no ext tree data
     if (
       document.activeElement.nodeName === "INPUT" ||
       isABootstrapModalOpen() ||
       !extTreeData.length
     ) {
-      // console.log("IGNORED");
       return;
     }
 
-    const keyboard = [
-      32, // space,
-      46, // del,
-      70, // F
-      71, // G
-      8 // backspace
-    ];
-
-    // Can handle key or command from action bar click
-    const key = e.keyCode || null;
-    const cmd = e.target.dataset.cmd || null;
-    if (keyboard.includes(key) || cmd) {
-      e.preventDefault();
-    } else {
-      return;
-    }
-
-    // Get the current tree index
     let treeIndex = activeIntNodeInfo ? activeIntNodeInfo.treeIndex : null;
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
     let newNode;
 
-    if ((e.ctrlKey || e.metaKey) && key === 70) {
-      // console.log("CTRL + F");
-      // Autocomplete search field with active node title
-      const activeIntNodeTitle = activeIntNode ? activeIntNode.title : "";
+    const mapKeys = [
+      32, // space,
+      "shift-space",
+      "ctrl-space",
+      "space"
+    ];
+
+    const deleteKeys = [
+      46, // del,
+      8, // backspace
+      "delete",
+      "shift-delete"
+    ];
+
+    const searchKeys = [
+      70, // F
+      71 // G,
+    ];
+
+    const handleSearchAction = () => {
+      let searchInternal, searchString;
+      if ((e.ctrlKey || e.metaKey) && key === 70) {
+        // console.log("CTRL + F");
+        // Autocomplete search field with active node title
+        searchString = activeIntNode ? activeIntNode.title : "";
+        searchInternal = false;
+      } else if ((e.ctrlKey || e.metaKey) && key === 71) {
+        // console.log("CTRL + G");
+        searchString = activeExtNode ? activeExtNode.title : "";
+        searchInternal = true;
+      } else {
+        return;
+      }
       this.setState({
-        searchInternal: false,
-        searchString: activeIntNodeTitle
+        searchInternal,
+        searchString
       });
       document.getElementById("searchInput").focus();
-      return;
-    } else if ((e.ctrlKey || e.metaKey) && key === 71) {
-      // console.log("CTRL + G");
-      // Autocomplete search field with active node title
-      const activeExtNodeTitle = activeExtNode ? activeExtNode.title : "";
-      this.setState({
-        searchInternal: true,
-        searchString: activeExtNodeTitle
+    };
+
+    // Can handle key or command from action bar click
+    const key = e.keyCode || e.target.dataset.cmd || null;
+    if (mapKeys.includes(key)) {
+      // handle mapping actions
+      e.preventDefault();
+      const bothNodesAlert = "Please select a node from each tree.";
+      const parentsAlert = "Parents are not selectable.";
+
+      if (!bothNodesAreSelected(activeIntNodeInfo, activeExtNodeInfo)) {
+        alert(bothNodesAlert);
+        return;
+      }
+
+      if (parentsAreNotSelectable(parentsSelectable, activeExtNode)) {
+        alert(parentsAlert);
+        return;
+      }
+
+      const path = activeExtNodeInfo.path;
+      const nodeInfo = _handleMapAction({
+        e,
+        key,
+        activeIntNode,
+        path,
+        treeIndex
       });
-      document.getElementById("searchInput").focus();
+      newNode = nodeInfo.newNode;
+      treeIndex = nodeInfo.treeIndex;
+    } else if (deleteKeys.includes(key)) {
+      // handle delete actions
+      e.preventDefault();
+      const nodeInfo = _handleDeleteAction({
+        e,
+        key,
+        activeIntNode,
+        treeIndex
+      });
+      newNode = nodeInfo.newNode;
+      treeIndex = nodeInfo.treeIndex;
+    } else if (searchKeys.includes(key)) {
+      e.preventDefault();
+      handleSearchAction();
       return;
-    }
-
-    // Halt if either node isn't selected
-    if (!activeIntNodeInfo || !activeExtNodeInfo) {
-      alert("Please select a node from each tree.");
-      return;
-    }
-
-    if (
-      !parentsSelectable &&
-      activeExtNodeInfo &&
-      activeExtNodeInfo.node.children
-    ) {
-      alert("Parents aren't seletable");
-      return;
-    }
-
-    // Handle actions
-    if ((e.shiftKey && key === 32) || cmd === "shift-space") {
-      // "Select node and its children. Preserve existing mappings"
-      newNode = _mapNode([activeIntNode], activeExtNodeInfo.path, false);
-      treeIndex += 1;
-    } else if ((e.ctrlKey && key === 32) || cmd === "ctrl-space") {
-      // "Select node and its children. Overwrite any existing mappings."
-      newNode = _mapNode([activeIntNode], activeExtNodeInfo.path, true);
-      treeIndex += 1;
-    } else if (e.shiftKey && key === 8) {
-      // console.log("SHIFT BACKSPACE");
-      // "Delete current node & everything under that node, then move up to the previous node."
-      newNode = _mapNode([activeIntNode], null, true);
-      treeIndex -= 1;
-    } else if (key === 32 || cmd === "space") {
-      // "Map single node"
-      activeIntNode.mapping = activeExtNodeInfo.path;
-      newNode = activeIntNode;
-      treeIndex += 1;
-    } else if (key === 46 || cmd === "delete") {
-      // "DELETE: Delete current node mapping and move down to the next node."
-      activeIntNode.mapping = null;
-      newNode = activeIntNode;
-      treeIndex += 1;
-    } else if ((e.shiftKey && key === 46) || cmd === "shift-delete") {
-      // "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
-      newNode = _mapNode([activeIntNode], null, true);
-      treeIndex += 1;
-    } else if (key === 8) {
-      // "BACKSPACE Delete current node mapping and move up to the previous node."
-      activeIntNode.mapping = null;
-      newNode = activeIntNode;
-      treeIndex -= 1;
     } else {
       return;
     }
 
     // Unfocus buttons once clicked
-    if (cmd) {
+    if (e.target.dataset.cmd) {
       e.target.blur();
     }
 
@@ -343,27 +344,13 @@ class MainContainer extends Component {
     this.handleTreeChange(newTreeData, this.intTreeKey);
 
     // Check bounds
-    treeIndex = treeIndex < 0 ? 0 : treeIndex;
-    treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
+    treeIndex = getInBoundsTreeIndex(treeIndex, nodeCount);
 
     // Set the new active node
     const newActiveIntNodeInfo = _getActiveNodeInfo(intTreeData, treeIndex);
 
-    // Scroll active node into view
-    const outerGrid = document.querySelectorAll(".ReactVirtualized__Grid")[0];
-    const activeNodeElem = document.getElementById(
-      newActiveIntNodeInfo.node.id
-    );
-
-    if (activeNodeElem) {
-      const grandParent = activeNodeElem.parentElement.parentElement;
-      if (
-        outerGrid.offsetHeight + outerGrid.scrollTop - grandParent.offsetTop <
-        grandParent.offsetHeight
-      ) {
-        outerGrid.scrollTop += grandParent.offsetHeight;
-      }
-    }
+    // Scroll active node into view if needed
+    scrollIfNeeded(newActiveIntNodeInfo.node.id);
 
     this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);
   }

@@ -9,6 +9,58 @@ import xmlbuilder from "xmlbuilder";
 
 const getNodeKey = ({ node }) => node.id;
 
+export const _handleMapAction = ({
+  e,
+  key,
+  activeIntNode,
+  path,
+  treeIndex
+}) => {
+  let newNode;
+  if ((e.shiftKey && key === 32) || key === "shift-space") {
+    // "Select node and its children. Preserve existing mappings"
+    newNode = _mapNode([activeIntNode], path, false);
+    treeIndex += 1;
+  } else if ((e.ctrlKey && key === 32) || key === "ctrl-space") {
+    // "Select node and its children. Overwrite any existing mappings."
+    newNode = _mapNode([activeIntNode], path, true);
+    treeIndex += 1;
+  } else if (key === 32 || key === "space") {
+    // "Map single node"
+    activeIntNode.mapping = path;
+    newNode = activeIntNode;
+    treeIndex += 1;
+  }
+  return { newNode, treeIndex };
+};
+
+export const _handleDeleteAction = ({ e, key, activeIntNode, treeIndex }) => {
+  let newNode;
+  if (e.shiftKey && e.keyCode === 8) {
+    // "SHIFT BACKSPACE";
+    // "Delete current node & everything under that node, then move up to the previous node."
+    newNode = _mapNode([activeIntNode], null, true);
+    treeIndex -= 1;
+  } else if (e.keyCode === 46 || key === "delete") {
+    // "DELETE: Delete current node mapping and move down to the next node."
+    activeIntNode.mapping = null;
+    newNode = activeIntNode;
+    treeIndex += 1;
+  } else if ((e.shiftKey && e.keyCode === 46) || key === "shift-delete") {
+    // "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
+    newNode = _mapNode([activeIntNode], null, true);
+    treeIndex += 1;
+  } else if (e.keyCode === 8) {
+    // "BACKSPACE Delete current node mapping and move up to the previous node."
+    activeIntNode.mapping = null;
+    newNode = activeIntNode;
+    treeIndex -= 1;
+  } else {
+    return false;
+  }
+  return { newNode, treeIndex };
+};
+
 export const _getActiveNodeInfo = (treeData, treeIndex) => {
   // Utility doesn't return treeIndex. Manually added back in.
   return {

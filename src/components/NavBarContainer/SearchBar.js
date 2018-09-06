@@ -26,6 +26,7 @@ class SearchBar extends React.Component {
 
   handleKeyDown(e) {
     // Needed because handleChange does not fire with ESC
+    const { searchInternal } = this.props.searchValues;
     e.stopPropagation();
     if (e.keyCode === 27) {
       // "ESC"
@@ -33,7 +34,7 @@ class SearchBar extends React.Component {
       e.preventDefault();
       const scrollableTreeContainer = document.querySelectorAll(
         ".ReactVirtualized__Grid"
-      )[this.props.searchInternal ? 1 : 0];
+      )[searchInternal ? 1 : 0];
       if (scrollableTreeContainer) {
         scrollableTreeContainer.focus();
       }

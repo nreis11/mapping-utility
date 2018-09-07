@@ -225,8 +225,10 @@ const _createNode = ({
       // Actual value is last id
       const idArr = tierMapping.split("-");
       tierMapping = idArr[idArr.length - 1];
-      const boardValueNode = childNode.ele("boardvalue").att("tier", idx + 1);
-      boardValueNode.att("label", extNodeTitle);
+      const boardValueNode = childNode
+        .ele("boardvalue")
+        .att("tier", idx + 1)
+        .att("label", extNodeTitle);
       testing
         ? boardValueNode.txt(tierMapping)
         : boardValueNode.dat(tierMapping);
@@ -236,8 +238,10 @@ const _createNode = ({
     const extNodeTitle = getNodeTitle(mapping);
     let lastIdArr = mapping[mapping.length - 1].split("-");
     mapping = lastIdArr[lastIdArr.length - 1];
-    const boardValueNode = childNode.ele("boardvalue").att("tier", 1);
-    boardValueNode.att("label", extNodeTitle);
+    const boardValueNode = childNode
+      .ele("boardvalue")
+      .att("tier", 1)
+      .att("label", extNodeTitle);
     testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
   }
 

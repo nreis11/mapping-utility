@@ -138,14 +138,19 @@ describe("_exportMappingsToXML", () => {
   ];
 
   const activeType = "categories";
-  let result = _exportMappingsToXML({
-    intTreeData,
-    extTreeData,
-    activeType,
-    outputParents: false,
-    testing: true
+  let xmlObj, defaultNode;
+
+  beforeAll(() => {
+    let result = _exportMappingsToXML({
+      intTreeData,
+      extTreeData,
+      activeType,
+      outputParents: false,
+      testing: true
+    });
+    xmlObj = xmlParser.parseFromString(result, "text/xml");
+    defaultNode = xmlObj.getElementsByTagName("default")[0];
   });
-  const xmlObj = xmlParser.parseFromString(result, "text/xml");
 
   it("Sets the root node with correct mapping type", () => {
     const rootNode = xmlObj.getElementsByTagName("mapping")[0];
@@ -154,11 +159,15 @@ describe("_exportMappingsToXML", () => {
   });
 
   it("Returns a default node with correct mapping", () => {
-    const defaultNode = xmlObj.getElementsByTagName("default")[0];
     expect(defaultNode.nodeName).toEqual("default");
-    expect(xmlObj.getElementsByTagName("boardvalue")[0].textContent).toEqual(
-      "24000"
-    );
+    const firstChild = defaultNode.firstChild;
+    expect(firstChild.textContent).toEqual("24000");
+  });
+
+  it("Returns a default node with correct label", () => {
+    const firstChild = defaultNode.firstChild;
+    expect(firstChild.nodeName).toEqual("boardvalue");
+    expect(firstChild.getAttribute("label")).toEqual("Texas");
   });
 
   it("Returns the proper map for the first non-default mapping", () => {
@@ -173,8 +182,9 @@ describe("_exportMappingsToXML", () => {
     );
   });
 
-  it("Returns multiple tiers when output parents enabled", () => {
-    result = _exportMappingsToXML({
+  describe("_exportMappingsToXML with outputParents", () => {
+    // Output parents
+    const result = _exportMappingsToXML({
       intTreeData,
       extTreeData,
       activeType,
@@ -183,9 +193,28 @@ describe("_exportMappingsToXML", () => {
     });
     const xmlObj = xmlParser.parseFromString(result, "text/xml");
     const defaultNode = xmlObj.getElementsByTagName("default")[0];
-    expect(defaultNode.nodeName).toEqual("default");
-    defaultNode.childNodes.forEach((boardValueNode, i) =>
-      expect(boardValueNode.getAttribute("tier")).toEqual(String(i + 1))
-    );
+
+    it("Returns correct mappings when output parents enabled", () => {
+      expect(defaultNode.nodeName).toEqual("default");
+      const tieredMappings = ["3000", "24000"];
+      defaultNode.childNodes.forEach((boardValueNode, i) => {
+        expect(boardValueNode.textContent).toEqual(tieredMappings[i]);
+      });
+    });
+
+    it("Returns correct tiers when output parents enabled", () => {
+      expect(defaultNode.nodeName).toEqual("default");
+      defaultNode.childNodes.forEach((boardValueNode, i) => {
+        expect(boardValueNode.getAttribute("tier")).toEqual(String(i + 1));
+      });
+    });
+
+    it("Returns correct labels when output parents enabled", () => {
+      const labels = ["US", "Texas"];
+      expect(defaultNode.nodeName).toEqual("default");
+      defaultNode.childNodes.forEach((boardValueNode, i) => {
+        expect(boardValueNode.getAttribute("label")).toEqual(labels[i]);
+      });
+    });
   });
 });

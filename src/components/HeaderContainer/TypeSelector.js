@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, ButtonToolbar, DropdownButton, MenuItem } from "react-bootstrap";
-import { _isMapped } from "../../utilities/mappingHelpers";
-import ChangeTypeAlert from "./ChangeTypeAlert";
+// import { _isMapped } from "../../utilities/mappingHelpers";
+// import ChangeTypeAlert from "./ChangeTypeAlert";
 
 const TYPES = {
   categories: "Category",
@@ -13,50 +13,46 @@ const TYPES = {
 class TypeSelector extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      showAlert: false,
-      selectedKey: null
-    };
     this.handleSelect = this.handleSelect.bind(this);
-    this.handleCancelAlert = this.handleCancelAlert.bind(this);
+    // this.handleCancelAlert = this.handleCancelAlert.bind(this);
   }
 
-  handleCancelAlert() {
-    this.setState({
-      showAlert: false,
-      selectedKey: null
-    });
-  }
+  // handleCancelAlert() {
+  //   this.setState({
+  //     showAlert: false,
+  //     selectedKey: null
+  //   });
+  // }
 
-  handleCheck(key) {
-    // Check for mapping. Alert user if mappings will be lost.
-    if (_isMapped(this.props.treeData)) {
-      this.setState({
-        showAlert: true,
-        selectedKey: key
-      });
-      return;
-    }
-    this.handleSelect(key);
-  }
+  // handleCheck(key) {
+  //   // Check for mapping. Alert user if mappings will be lost.
+  //   if (_isMapped(this.props.treeData)) {
+  //     this.setState({
+  //       showAlert: true,
+  //       selectedKey: key
+  //     });
+  //     return;
+  //   }
+  //   this.handleSelect(key);
+  // }
 
   handleSelect(key) {
-    this.handleCancelAlert();
+    // this.handleCancelAlert();
     this.props.onSelect(key);
   }
 
   render() {
     const { activeType } = this.props;
-    const { showAlert, selectedKey } = this.state;
+    // const { showAlert, selectedKey } = this.state;
 
     return (
       <Col className="pull-right">
-        {showAlert && (
+        {/* {showAlert && (
           <ChangeTypeAlert
             handleCancel={this.handleCancelAlert}
             handleConfirm={() => this.handleSelect(selectedKey)}
           />
-        )}
+        )} */}
         <ButtonToolbar>
           <DropdownButton
             title={TYPES[activeType]}
@@ -69,7 +65,7 @@ class TypeSelector extends React.Component {
               <MenuItem
                 key={type}
                 eventKey={type}
-                onSelect={type => this.handleCheck(type)}
+                onSelect={type => this.handleSelect(type)}
                 active={activeType === type ? true : false}
               >
                 {TYPES[type]}

@@ -51,8 +51,8 @@ class MainContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      intTreeData: getInitialTreeData("categories"),
-      extTreeData: [],
+      intTreeData: getInitialTreeData(),
+      extTreeData: {},
       boardName: "Board",
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
@@ -110,7 +110,7 @@ class MainContainer extends Component {
   }
 
   componentDidUpdate() {
-    this.saveToLocalStorage();
+    // this.saveToLocalStorage();
   }
 
   saveToLocalStorage() {
@@ -132,22 +132,24 @@ class MainContainer extends Component {
 
   expandAll(expanded, isInternal) {
     const treeKey = isInternal ? this.intTreeKey : this.extTreeKey;
+    const { activeType } = this.state;
     const treeData = this.state[treeKey];
+    const toggledActiveTreeData = toggleExpandedForAll({
+      treeData: treeData[activeType],
+      expanded
+    });
+    const newTreeData = { ...treeData, [activeType]: toggledActiveTreeData };
     this.setState({
-      [treeKey]: toggleExpandedForAll({
-        treeData,
-        expanded
-      })
+      [treeKey]: newTreeData
     });
   }
 
   handleTypeSelect(type) {
-    const newTreeData = getInitialTreeData(type);
+    const newActiveTreeData = this.state.intTreeData[type];
     // Reset active node
     this.setState({
       activeType: type,
-      intTreeData: newTreeData,
-      activeIntNodeInfo: _getActiveNodeInfo(newTreeData, 0)
+      activeIntNodeInfo: _getActiveNodeInfo(newActiveTreeData, 0)
     });
   }
 
@@ -176,40 +178,52 @@ class MainContainer extends Component {
   }
 
   handleAddNodes(newNodes) {
-    const extFlatData = getFlatData(this.state.extTreeData);
-    const newFlatData = _sortTree(extFlatData.concat(newNodes));
-
+    let newFlatData;
+    const { activeType, extTreeData } = this.state;
+    // Check if values already exist
+    if (extTreeData[activeType]) {
+      const extFlatData = getFlatData(extTreeData[activeType]);
+      newFlatData = _sortTree(extFlatData.concat(newNodes));
+    } else {
+      newFlatData = _sortTree(newNodes);
+    }
+    extTreeData[activeType] = getTreeDataFromFlatData(newFlatData);
     this.setState(
       {
-        extTreeData: getTreeDataFromFlatData(newFlatData)
+        extTreeData
       },
       // Callback. Get first node
       () => {
         this.expandAll(true, false);
-        const activeNode = _getActiveNodeInfo(this.state.extTreeData, 0);
+        const activeNode = _getActiveNodeInfo(extTreeData[activeType], 0);
         this.handleSelectNode(activeNode, this.extTreeKey);
       }
     );
   }
 
   handleTreeChange(treeData, treeKey) {
+    const currTreeData = this.state[treeKey];
+    const { activeType } = this.state;
+    const newTreeData = { ...currTreeData, [activeType]: treeData };
     // Reset all trees if clear all on ext tree
     if (treeKey === this.extTreeKey && !treeData.length) {
       this.resetTrees();
     } else {
       this.setState({
-        [treeKey]: treeData
+        [treeKey]: newTreeData
       });
     }
   }
 
   resetTrees() {
     // Clear ext tree, reset int tree with default node selected
-    const newTreeData = getInitialTreeData(this.state.activeType);
-    const activeNodeInfo = _getActiveNodeInfo(newTreeData, 0);
+
+    const { activeType } = this.state;
+    const newTreeData = getInitialTreeData();
+    const activeNodeInfo = _getActiveNodeInfo(newTreeData[activeType], 0);
 
     this.setState({
-      extTreeData: [],
+      extTreeData: {},
       intTreeData: newTreeData,
       activeExtNodeInfo: null,
       activeIntNodeInfo: activeNodeInfo
@@ -236,6 +250,7 @@ class MainContainer extends Component {
     const {
       intTreeData,
       extTreeData,
+      activeType,
       activeIntNodeInfo,
       activeExtNodeInfo,
       options: { parentsSelectable }
@@ -246,15 +261,16 @@ class MainContainer extends Component {
     if (
       document.activeElement.nodeName === "INPUT" ||
       isABootstrapModalOpen() ||
-      !extTreeData.length
+      !extTreeData[activeType].length
     ) {
       return;
     }
 
+    const activeIntTreeData = intTreeData[activeType];
     let treeIndex = activeIntNodeInfo ? activeIntNodeInfo.treeIndex : null;
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
-    const nodeCount = getVisibleNodeCount({ treeData: intTreeData });
+    const nodeCount = getVisibleNodeCount({ treeData: activeIntTreeData });
     let newNode;
 
     const mapKeys = [
@@ -337,14 +353,17 @@ class MainContainer extends Component {
 
     // Replace active node with new mapping
     const { path } = activeIntNodeInfo;
-    const newTreeData = _changeNodeAtPath(intTreeData, path, newNode);
+    const newTreeData = _changeNodeAtPath(activeIntTreeData, path, newNode);
     this.handleTreeChange(newTreeData, this.intTreeKey);
 
     // Check bounds
     treeIndex = getInBoundsTreeIndex(treeIndex, nodeCount);
 
     // Set the new active node
-    const newActiveIntNodeInfo = _getActiveNodeInfo(intTreeData, treeIndex);
+    const newActiveIntNodeInfo = _getActiveNodeInfo(
+      activeIntTreeData,
+      treeIndex
+    );
 
     // Scroll active node into view if needed
     scrollIfNeeded(newActiveIntNodeInfo.node.id);
@@ -391,14 +410,9 @@ class MainContainer extends Component {
     const fileReader = new FileReader();
     fileReader.onload = e => {
       // Convert string result to JSON after loading
-      const jsonObj = JSON.parse(e.target.result);
-      const { intFlatData, extFlatData, ...rest } = jsonObj;
-      const intTreeData = getTreeDataFromFlatData(intFlatData);
-      const extTreeData = getTreeDataFromFlatData(extFlatData);
+      const savedState = JSON.parse(e.target.result);
       this.setState({
-        intTreeData,
-        extTreeData,
-        ...rest
+        ...savedState
       });
     };
     fileReader.readAsText(fileInput);
@@ -428,6 +442,8 @@ class MainContainer extends Component {
     console.log("RENDERED");
 
     const internalName = "eQuest";
+    const activeIntTreeData = intTreeData[activeType];
+    const activeExtTreeData = extTreeData[activeType] || [];
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     const intSearchString = searchInternal ? searchString : "";
@@ -442,7 +458,7 @@ class MainContainer extends Component {
     let mappedNode = null;
     if (activeIntNode && activeIntNode.mapping) {
       mappedNode = getNodeAtPath({
-        treeData: extTreeData,
+        treeData: activeExtTreeData,
         path: activeIntNode.mapping,
         getNodeKey
       }).node;
@@ -473,7 +489,7 @@ class MainContainer extends Component {
               <EditModal>
                 <TreeContainer
                   treeKey={this.extTreeKey}
-                  treeData={extTreeData}
+                  treeData={activeExtTreeData}
                   onChange={this.handleTreeChange}
                   editMode={true}
                   onAddNodes={this.handleAddNodes}
@@ -484,7 +500,7 @@ class MainContainer extends Component {
           <Row className="show-grid tree-row">
             <TreeContainer
               treeKey={this.intTreeKey}
-              treeData={intTreeData}
+              treeData={activeIntTreeData}
               onChange={this.handleTreeChange}
               onSelectNode={this.handleSelectNode}
               activeNodeInfo={activeIntNodeInfo}
@@ -500,7 +516,7 @@ class MainContainer extends Component {
             />
             <TreeContainer
               treeKey={this.extTreeKey}
-              treeData={extTreeData}
+              treeData={activeExtTreeData}
               onChange={this.handleTreeChange}
               onSelectNode={this.handleSelectNode}
               activeNodeInfo={activeExtNodeInfo}

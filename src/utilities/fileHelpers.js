@@ -6,26 +6,24 @@ import yaml from "js-yaml";
 
 export const saveToJson = (state, testing = false) => {
   // Saving as flat data to reduce file size. More info in getFlatDataFromTree helper.
-  const { intTreeData, extTreeData, boardName, activeType, ...rest } = state;
   const jsonString = JSON.stringify({
-    intFlatData: getFlatData(intTreeData),
-    extFlatData: getFlatData(extTreeData),
-    boardName,
-    activeType,
-    ...rest
+    ...state
   });
   if (testing) {
     return jsonString;
   }
   // FileSaver solves cross-browser compatibility
   const file = new Blob([jsonString], { type: "application/json" });
-  const fileName = `${boardName}-${activeType}.json`;
+  const fileName = `${state.boardName}.json`;
   FileSaver.saveAs(file, fileName);
 };
 
-export const getInitialTreeData = type => {
-  const flatData = eqValues[type];
-  return getTreeDataFromFlatData(flatData);
+export const getInitialTreeData = () => {
+  const treeData = {};
+  Object.keys(eqValues).forEach(type => {
+    treeData[type] = getTreeDataFromFlatData(eqValues[type]);
+  });
+  return treeData;
 };
 
 export const getTreeDataFromFlatData = flatData => {

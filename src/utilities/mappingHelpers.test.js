@@ -222,7 +222,7 @@ describe("_exportMappingsToXML", () => {
     const xmlObj = xmlParser.parseFromString(result, "text/xml");
     const defaultNode = xmlObj.getElementsByTagName("default")[0];
 
-    it("Returns correct default mappings when output parents enabled", () => {
+    it("Returns correct default node mappings when output parents enabled", () => {
       expect(defaultNode.nodeName).toEqual("default");
       const tieredMappings = ["200", "201"];
       defaultNode.childNodes.forEach((boardValueNode, i) => {
@@ -230,14 +230,14 @@ describe("_exportMappingsToXML", () => {
       });
     });
 
-    it("Returns correct tiers when output parents enabled", () => {
+    it("Returns correct default node tiers when output parents enabled", () => {
       expect(defaultNode.nodeName).toEqual("default");
       defaultNode.childNodes.forEach((boardValueNode, i) => {
         expect(boardValueNode.getAttribute("tier")).toEqual(String(i + 1));
       });
     });
 
-    it("Returns correct labels when output parents enabled", () => {
+    it("Returns correct default node labels when output parents enabled", () => {
       const labels = ["Managers", "Operation Manager"];
       expect(defaultNode.nodeName).toEqual("default");
       defaultNode.childNodes.forEach((boardValueNode, i) => {

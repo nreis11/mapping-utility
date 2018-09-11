@@ -88,14 +88,6 @@ class MainContainer extends Component {
   }
 
   componentDidMount() {
-    // Create extTreeData keys based on intTreeData
-    const { intTreeData } = this.state;
-    const extTreeData = {};
-    Object.keys(intTreeData).forEach(type => (extTreeData[type] = []));
-    this.setState({
-      extTreeData
-    });
-
     // Check if local storage is accessible
     let localStorage;
     try {
@@ -122,7 +114,6 @@ class MainContainer extends Component {
   }
 
   saveToLocalStorage() {
-    // Saving as treeData, not flatData to avoid multiple conversions.
     const jsonStr = JSON.stringify({
       ...this.state
     });
@@ -398,13 +389,9 @@ class MainContainer extends Component {
     const activeNodeKey = this.state.searchInternal
       ? "activeIntNodeInfo"
       : "activeExtNodeInfo";
-    // Only update active node if there is a match
-    if (newActiveNodeInfo) {
-      this.setState({
-        [activeNodeKey]: newActiveNodeInfo
-      });
-    }
+    const currActiveNodeInfo = this.state[activeNodeKey];
     this.setState({
+      [activeNodeKey]: newActiveNodeInfo || currActiveNodeInfo,
       searchFoundCount: matches.length,
       searchFocusIndex:
         matches.length > 0 ? searchFocusIndex % matches.length : 0
@@ -483,7 +470,6 @@ class MainContainer extends Component {
               <TypeSelector
                 onSelect={this.handleTypeSelect}
                 activeType={activeType}
-                treeData={intTreeData}
               />
             </HeaderSmallContainer>
             <HeaderSmallContainer mdOffset={2}>
@@ -547,7 +533,6 @@ class MainContainer extends Component {
                 <ExportModal
                   handleExport={this.handleExport}
                   boardName={boardName}
-                  activeType={activeType}
                 />
               }
             />

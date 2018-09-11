@@ -63,8 +63,8 @@ export const importYaml = ({ yamlFile, treeKey, onChange, handleError }) => {
     } finally {
       if (nodes.length) {
         handleError(null);
-        nodes = _sortTree(nodes);
-        const extTreeData = getTreeDataFromFlatData(nodes);
+        const sortedNodes = _sortTree(nodes);
+        const extTreeData = getTreeDataFromFlatData(sortedNodes);
         onChange(extTreeData, treeKey);
       }
     }
@@ -83,7 +83,7 @@ export const traverse = (jsonObj, parent = null, nodes = []) => {
       throw new Error(`No label found for key ${key}. Cannot continue.`);
     }
 
-    // Using parent to create UID. Avoids duplicate keys.
+    // Using parent to create UID with delimiter. Avoids duplicate keys.
     let curr = parent ? `${parent}-${key}` : key;
 
     let node = {

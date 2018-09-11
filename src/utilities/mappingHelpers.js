@@ -152,7 +152,6 @@ export const _changeNodeAtPath = (treeData, path, newNode) => {
 export const _exportMappingsToXML = ({
   intTreeData,
   extTreeData,
-  activeType,
   outputParents,
   testing = false
 }) => {
@@ -163,37 +162,37 @@ export const _exportMappingsToXML = ({
     countries: "country"
   };
 
-  const mappingType = types[activeType];
-  let rootNode = xmlbuilder
-    .create("mapping", { encoding: "UTF-8" })
-    .att("type", mappingType);
+  let rootNode = xmlbuilder.create("maps", { encoding: "UTF-8" });
 
-  const callback = ({ node }) => {
-    if (!node.mapping) {
-      return;
-    }
+  Object.keys(intTreeData).forEach(type => {
+    const mappingNode = rootNode.ele("mapping").att("type", types[type]);
 
-    return _createNode({
-      rootNode,
-      node,
-      extTreeData,
-      outputParents,
-      testing
+    const callback = ({ node }) => {
+      if (!node.mapping) {
+        return;
+      }
+
+      return _createNode({
+        mappingNode,
+        node,
+        extTreeData: extTreeData[type],
+        outputParents,
+        testing
+      });
+    };
+
+    walk({
+      treeData: intTreeData[type],
+      getNodeKey,
+      callback,
+      ignoreCollapsed: false
     });
-  };
-
-  walk({
-    treeData: intTreeData,
-    getNodeKey,
-    callback,
-    ignoreCollapsed: false
   });
-
   return rootNode.end({ pretty: testing ? false : true });
 };
 
 const _createNode = ({
-  rootNode,
+  mappingNode,
   node,
   extTreeData,
   outputParents = false,
@@ -209,7 +208,9 @@ const _createNode = ({
   // If testing, use plain text node. Otherwise, use CDATA
   // Mapping is path array with node ids
   let mapping = node.mapping;
-  const childNode = rootNode.ele(node.id === "eqDEFAULT" ? "default" : "map");
+  const childNode = mappingNode.ele(
+    node.id === "eqDEFAULT" ? "default" : "map"
+  );
 
   if (node.id !== "eqDEFAULT") {
     // Each equest node has 'eq' prefix
@@ -245,12 +246,13 @@ const _createNode = ({
     testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
   }
 
-  return rootNode;
+  return mappingNode;
 };
 
 // SAMPLE
 
 // <?xml version="1.0" encoding="ISO-8859-1" ?>
+// <maps>
 // <mapping type="country">
 // 	<default>
 // 		<boardvalue tier="1"><![CDATA[USA]]></boardvalue>
@@ -265,3 +267,4 @@ const _createNode = ({
 // 		<boardvalue tier="1"><![CDATA[AFG ]]></boardvalue>
 // 	</map>
 // </mapping>
+// </maps>

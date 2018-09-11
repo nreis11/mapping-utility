@@ -88,6 +88,14 @@ class MainContainer extends Component {
   }
 
   componentDidMount() {
+    // Create extTreeData keys based on intTreeData
+    const { intTreeData } = this.state;
+    const extTreeData = {};
+    Object.keys(intTreeData).forEach(type => (extTreeData[type] = []));
+    this.setState({
+      extTreeData
+    });
+
     // Check if local storage is accessible
     let localStorage;
     try {
@@ -110,7 +118,7 @@ class MainContainer extends Component {
   }
 
   componentDidUpdate() {
-    // this.saveToLocalStorage();
+    this.saveToLocalStorage();
   }
 
   saveToLocalStorage() {
@@ -234,19 +242,16 @@ class MainContainer extends Component {
     const {
       intTreeData,
       extTreeData,
-      activeType,
       options: { outputParents }
     } = this.state;
     return _exportMappingsToXML({
       intTreeData,
       extTreeData,
-      activeType,
       outputParents
     });
   }
 
   handleKeyDown(e) {
-    // console.log("FIRED MAIN KEY DOWN");
     const {
       intTreeData,
       extTreeData,
@@ -343,6 +348,7 @@ class MainContainer extends Component {
       document.getElementById("searchInput").focus();
       return;
     } else {
+      // Ignore other input
       return;
     }
 
@@ -367,7 +373,6 @@ class MainContainer extends Component {
 
     // Scroll active node into view if needed
     scrollIfNeeded(newActiveIntNodeInfo.node.id);
-
     this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);
   }
 

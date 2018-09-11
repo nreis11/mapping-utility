@@ -266,7 +266,7 @@ class MainContainer extends Component {
     if (
       document.activeElement.nodeName === "INPUT" ||
       isABootstrapModalOpen() ||
-      !extTreeData[activeType].length
+      !extTreeData[activeType]
     ) {
       return;
     }

@@ -1,44 +1,60 @@
-import { saveToJson, getFlatData, traverse } from "./fileHelpers";
+import { saveToJson, traverse } from "./fileHelpers";
 
 describe("saveToJson", () => {
-  const intTreeData = [
-    {
-      id: "eqDEFAULT",
-      mapping: ["3000", "24000"]
-    },
-    {
-      id: "eq17000000",
-      mapping: ["1000"],
-      children: [
-        {
-          id: "eq17100000",
-          mapping: ["27001"]
-        }
-      ]
-    }
-  ];
+  const intTreeData = {
+    categories: [
+      {
+        id: "eqDEFAULT",
+        mapping: ["200", "200-201"]
+      },
+      {
+        id: "eq17000000",
+        mapping: ["100"],
+        children: [
+          {
+            id: "eq17100000",
+            mapping: ["100", "100-101"]
+          }
+        ]
+      }
+    ],
+    industries: [
+      { id: "eqDEFAULT", mapping: ["1000"] },
+      { id: "eq1", mapping: ["24000"] }
+    ],
+    states: [{ id: "eqDEFAULT" }],
+    countries: [{ id: "eqDEFAULT" }]
+  };
 
-  const extTreeData = [
-    {
-      id: "3000",
-      children: [{ id: "24000", title: "Child" }]
-    },
-    {
-      id: "1000"
-    },
-    {
-      id: "27001"
-    }
-  ];
+  const extTreeData = {
+    categories: [
+      {
+        id: "200",
+        title: "Managers",
+        children: [{ id: "200-201", title: "Operation Manager" }]
+      },
+      {
+        id: "100",
+        title: "Community and Social Services",
+        children: [{ id: "100-101", title: "Religious Workers" }]
+      }
+    ],
+    industries: [
+      { id: "24000", title: "Advertising, Communication & PR", parent: null },
+      { id: "1000", title: "Agriculture, Fishing & Forestry", parent: null }
+    ],
+    states: [],
+    countries: []
+  };
 
   const options = { outputParents: false, parentsSelectable: true };
-  const activeType = "industries";
   const boardName = "testBoard";
+  const activeType = "categories";
   const stateObj = {
     intTreeData,
     extTreeData,
-    options,
     activeType,
+    options,
     boardName
   };
 
@@ -47,15 +63,13 @@ describe("saveToJson", () => {
   const jsonObj = JSON.parse(jsonString);
 
   it("Saves the correct intFlatData", () => {
-    const result = jsonObj.intFlatData;
-    const expected = getFlatData(intTreeData);
-    expect(result).toEqual(expected);
+    const result = jsonObj.intTreeData;
+    expect(result).toEqual(intTreeData);
   });
 
   it("Saves the correct extFlatData", () => {
-    const result = jsonObj.extFlatData;
-    const expected = getFlatData(extTreeData);
-    expect(result).toEqual(expected);
+    const result = jsonObj.extTreeData;
+    expect(result).toEqual(extTreeData);
   });
 
   it("Saves the correct options", () => {

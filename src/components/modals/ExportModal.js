@@ -36,9 +36,9 @@ class ExportModal extends React.Component {
   }
 
   handleDownload() {
-    const { boardName, activeType } = this.props;
+    const { boardName } = this.props;
     let file = new Blob([this.state.output], { type: "application/xml" });
-    const fileName = `${boardName}-${activeType}.xml`;
+    const fileName = `${boardName}.xml`;
     FileSaver.saveAs(file, fileName);
   }
 
@@ -99,8 +99,7 @@ class ExportModal extends React.Component {
 
 ExportModal.propTypes = {
   handleExport: func.isRequired,
-  boardName: string.isRequired,
-  activeType: string.isRequired
+  boardName: string.isRequired
 };
 
 export default ExportModal;

@@ -107,79 +107,108 @@ describe("_isMapped", () => {
 
 describe("_exportMappingsToXML", () => {
   const xmlParser = new DOMParser();
-  const intTreeData = [
-    {
-      id: "eqDEFAULT",
-      mapping: ["3000", "3000-24000"]
-    },
-    {
-      id: "eq17000000",
-      mapping: ["1000"],
-      children: [
-        {
-          id: "eq17100000",
-          mapping: ["1000", "1000-27001"]
-        }
-      ]
-    }
-  ];
+  const intTreeData = {
+    categories: [
+      {
+        id: "eqDEFAULT",
+        mapping: ["200", "200-201"]
+      },
+      {
+        id: "eq17000000",
+        mapping: ["100"],
+        children: [
+          {
+            id: "eq17100000",
+            mapping: ["100", "100-101"]
+          }
+        ]
+      }
+    ],
+    industries: [
+      { id: "eqDEFAULT", mapping: ["1000"] },
+      { id: "eq1", mapping: ["24000"] }
+    ],
+    states: [{ id: "eqDEFAULT" }],
+    countries: [{ id: "eqDEFAULT" }]
+  };
 
-  const extTreeData = [
-    {
-      id: "3000",
-      title: "US",
-      children: [{ id: "3000-24000", title: "Texas" }]
-    },
-    {
-      id: "1000",
-      title: "Africa",
-      children: [{ id: "1000-27001", title: "Egypt" }]
-    }
-  ];
+  const extTreeData = {
+    categories: [
+      {
+        id: "200",
+        title: "Managers",
+        children: [{ id: "200-201", title: "Operation Manager" }]
+      },
+      {
+        id: "100",
+        title: "Community and Social Services",
+        children: [{ id: "100-101", title: "Religious Workers" }]
+      }
+    ],
+    industries: [
+      { id: "24000", title: "Advertising, Communication & PR", parent: null },
+      { id: "1000", title: "Agriculture, Fishing & Forestry", parent: null }
+    ],
+    states: [],
+    countries: []
+  };
 
-  const activeType = "categories";
-  let xmlObj, defaultNode;
+  const types = {
+    categories: "function",
+    industries: "industry",
+    states: "state",
+    countries: "country"
+  };
 
-  beforeAll(() => {
-    let result = _exportMappingsToXML({
-      intTreeData,
-      extTreeData,
-      activeType,
-      outputParents: false,
-      testing: true
-    });
-    xmlObj = xmlParser.parseFromString(result, "text/xml");
-    defaultNode = xmlObj.getElementsByTagName("default")[0];
+  let xmlObj, defaultNode, functionMappingNode;
+
+  let result = _exportMappingsToXML({
+    intTreeData,
+    extTreeData,
+    outputParents: false,
+    testing: true
+  });
+  xmlObj = xmlParser.parseFromString(result, "text/xml");
+  functionMappingNode = xmlObj.getElementsByTagName("mapping")[0];
+  defaultNode = xmlObj.getElementsByTagName("default")[0];
+
+  it("Sets the root node", () => {
+    const rootNode = xmlObj.getElementsByTagName("maps")[0];
+    expect(rootNode.nodeName).toEqual("maps");
   });
 
-  it("Sets the root node with correct mapping type", () => {
-    const rootNode = xmlObj.getElementsByTagName("mapping")[0];
-    expect(rootNode.nodeName).toEqual("mapping");
-    expect(rootNode.getAttribute("type")).toEqual("function");
+  it("Sets the mapping node with correct mapping type", () => {
+    Object.keys(intTreeData).forEach((type, i) => {
+      const node = xmlObj.getElementsByTagName("mapping")[i];
+      expect(node.nodeName).toEqual("mapping");
+      expect(node.getAttribute("type")).toEqual(types[type]);
+    });
   });
 
   it("Returns a default node with correct mapping", () => {
     expect(defaultNode.nodeName).toEqual("default");
     const firstChild = defaultNode.firstChild;
-    expect(firstChild.textContent).toEqual("24000");
+    expect(firstChild.textContent).toEqual("201");
   });
 
   it("Returns a default node with correct label", () => {
     const firstChild = defaultNode.firstChild;
     expect(firstChild.nodeName).toEqual("boardvalue");
-    expect(firstChild.getAttribute("label")).toEqual("Texas");
+    expect(firstChild.getAttribute("label")).toEqual("Operation Manager");
   });
 
   it("Returns the proper map for the first non-default mapping", () => {
-    const firstMappingNode = xmlObj.getElementsByTagName("map")[0];
-    expect(firstMappingNode.nodeName).toEqual("map");
-    expect(firstMappingNode.getAttribute("equestvalue")).toEqual("17000000");
-    expect(
-      xmlObj.getElementsByTagName("boardvalue")[1].getAttribute("tier")
-    ).toEqual("1");
-    expect(xmlObj.getElementsByTagName("boardvalue")[1].textContent).toEqual(
-      "1000"
+    const firstMapChild = functionMappingNode.getElementsByTagName("map")[0];
+    const firstBoardValueChild = firstMapChild.getElementsByTagName(
+      "boardvalue"
+    )[0];
+    expect(firstMapChild.nodeName).toEqual("map");
+    expect(firstMapChild.getAttribute("equestvalue")).toEqual("17000000");
+    expect(firstBoardValueChild.getAttribute("tier")).toEqual("1");
+    expect(firstBoardValueChild.getAttribute("label")).toEqual(
+      "Community and Social Services"
     );
+    expect(firstBoardValueChild.textContent).toEqual("100");
   });
 
   describe("_exportMappingsToXML with outputParents", () => {
@@ -187,16 +216,15 @@ describe("_exportMappingsToXML", () => {
     const result = _exportMappingsToXML({
       intTreeData,
       extTreeData,
-      activeType,
       outputParents: true,
       testing: true
     });
     const xmlObj = xmlParser.parseFromString(result, "text/xml");
     const defaultNode = xmlObj.getElementsByTagName("default")[0];
 
-    it("Returns correct mappings when output parents enabled", () => {
+    it("Returns correct default mappings when output parents enabled", () => {
       expect(defaultNode.nodeName).toEqual("default");
-      const tieredMappings = ["3000", "24000"];
+      const tieredMappings = ["200", "201"];
       defaultNode.childNodes.forEach((boardValueNode, i) => {
         expect(boardValueNode.textContent).toEqual(tieredMappings[i]);
       });
@@ -210,7 +238,7 @@ describe("_exportMappingsToXML", () => {
     });
 
     it("Returns correct labels when output parents enabled", () => {
-      const labels = ["US", "Texas"];
+      const labels = ["Managers", "Operation Manager"];
       expect(defaultNode.nodeName).toEqual("default");
       defaultNode.childNodes.forEach((boardValueNode, i) => {
         expect(boardValueNode.getAttribute("label")).toEqual(labels[i]);

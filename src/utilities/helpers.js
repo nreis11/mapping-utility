@@ -29,7 +29,6 @@ export const scrollIfNeeded = nodeId => {
 };
 
 export const getInBoundsTreeIndex = (treeIndex, nodeCount) => {
-  console.log(treeIndex);
   treeIndex = treeIndex < 0 ? 0 : treeIndex;
   treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
   return treeIndex;

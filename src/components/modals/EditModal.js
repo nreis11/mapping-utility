@@ -7,6 +7,7 @@ import { FaUpload } from "react-icons/fa";
 import AddModal from "./AddModal";
 import FileInput from "../misc/FileInput";
 import { importYaml } from "../../utilities/fileHelpers";
+import { func } from "prop-types";
 
 class EditModal extends React.Component {
   constructor(props, context) {
@@ -14,7 +15,6 @@ class EditModal extends React.Component {
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleClearAll = this.handleClearAll.bind(this);
     this.handleFileOnClick = this.handleFileOnClick.bind(this);
     this.handleYamlImport = this.handleYamlImport.bind(this);
     this.handleError = this.handleError.bind(this);
@@ -26,7 +26,7 @@ class EditModal extends React.Component {
   }
 
   handleClose() {
-    this.setState({ show: false });
+    this.setState({ show: false, error: null });
   }
 
   handleShow() {
@@ -50,12 +50,8 @@ class EditModal extends React.Component {
     });
   }
 
-  handleClearAll() {
-    const { treeKey, onChange } = this.props.children.props;
-    onChange([], treeKey);
-  }
-
   render() {
+    const { onClear } = this.props;
     const { onAddNodes } = this.props.children.props;
 
     return (
@@ -93,7 +89,17 @@ class EditModal extends React.Component {
               style={{ marginLeft: 5 }}
               bsStyle="danger"
               bsSize="small"
-              onClick={this.handleClearAll}
+              onClick={() => onClear(false)}
+            >
+              Clear Data
+            </Button>
+
+            <Button
+              className="pull-left"
+              style={{ marginLeft: 5 }}
+              bsStyle="danger"
+              bsSize="small"
+              onClick={() => onClear()}
             >
               Clear All
             </Button>
@@ -120,4 +126,9 @@ class EditModal extends React.Component {
     );
   }
 }
+
+EditModal.propTypes = {
+  onClear: func.isRequired
+};
+
 export default EditModal;

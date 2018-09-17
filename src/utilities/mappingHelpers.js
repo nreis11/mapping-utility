@@ -61,18 +61,15 @@ export const _handleDeleteAction = ({ e, activeIntNode, treeIndex }) => {
 export const _handleSearchAction = ({ e, activeIntNode, activeExtNode }) => {
   let searchInternal, searchString;
   const key = e.keyCode;
-  const modifier = e.ctrlKey || e.metaKey;
-  if (modifier && key === 70) {
+  if (key === 70) {
     // console.log("CTRL + F");
     // Autocomplete search field with active node title
     searchString = activeIntNode ? activeIntNode.title : "";
     searchInternal = false;
-  } else if (modifier && key === 71) {
+  } else if (key === 71) {
     // console.log("CTRL + G");
     searchString = activeExtNode ? activeExtNode.title : "";
     searchInternal = true;
-  } else {
-    return false;
   }
   return { searchString, searchInternal };
 };

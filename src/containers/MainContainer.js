@@ -84,7 +84,7 @@ class MainContainer extends Component {
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
-    this.resetTrees = this.resetTrees.bind(this);
+    this.clearTrees = this.clearTrees.bind(this);
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
   }
 
@@ -187,15 +187,18 @@ class MainContainer extends Component {
     } else {
       newFlatData = _sortTree(newNodes);
     }
-    extTreeData[activeType] = getTreeDataFromFlatData(newFlatData);
+    const newTreeData = {
+      ...extTreeData,
+      [activeType]: getTreeDataFromFlatData(newFlatData)
+    };
     this.setState(
       {
-        extTreeData
+        extTreeData: newTreeData
       },
       // Callback. Get first node
       () => {
         this.expandAll(true, false);
-        const activeNode = _getActiveNodeInfo(extTreeData[activeType], 0);
+        const activeNode = _getActiveNodeInfo(newTreeData[activeType], 0);
         this.handleSelectNode(activeNode, this.extTreeKey);
       }
     );
@@ -205,29 +208,35 @@ class MainContainer extends Component {
     const currTreeData = this.state[treeKey];
     const { activeType } = this.state;
     const newTreeData = { ...currTreeData, [activeType]: treeData };
-    // Reset all trees if clear all on ext tree
-    if (treeKey === this.extTreeKey && !treeData.length) {
-      this.resetTrees();
-    } else {
-      this.setState({
-        [treeKey]: newTreeData
-      });
-    }
+    this.setState({
+      [treeKey]: newTreeData
+    });
   }
 
-  resetTrees() {
-    // Clear ext tree, reset int tree with default node selected
-
+  clearTrees(all = true) {
     const { activeType } = this.state;
-    const newTreeData = getInitialTreeData();
+    const newTreeData = getInitialTreeData(all ? false : activeType);
     const activeNodeInfo = _getActiveNodeInfo(newTreeData[activeType], 0);
 
-    this.setState({
-      extTreeData: {},
-      intTreeData: newTreeData,
-      activeExtNodeInfo: null,
-      activeIntNodeInfo: activeNodeInfo
-    });
+    if (all) {
+      this.setState({
+        extTreeData: {},
+        intTreeData: newTreeData,
+        activeIntNodeInfo: activeNodeInfo,
+        activeExtNodeInfo: null
+      });
+    } else {
+      // Clear int and ext data for active type
+      this.setState(prevState => ({
+        extTreeData: { ...prevState.extTreeData, [activeType]: [] },
+        intTreeData: {
+          ...prevState.intTreeData,
+          [activeType]: newTreeData[activeType]
+        },
+        activeIntNodeInfo: activeNodeInfo,
+        activeExtNodeInfo: null
+      }));
+    }
   }
 
   handleExport() {
@@ -385,6 +394,7 @@ class MainContainer extends Component {
   }
 
   handleSearchFinish(matches) {
+    // TODO!: Figure out why a int node collapses when enter is pressed in search
     const searchFocusIndex = this.state.searchFocusIndex;
     const newActiveNodeInfo = matches[searchFocusIndex] || null;
     const activeNodeKey = this.state.searchInternal
@@ -445,7 +455,6 @@ class MainContainer extends Component {
       searchString,
       searchFocusIndex,
       searchFoundCount,
-      handleInputChange: this.handleInputChange,
       searchInternal
     };
     let mappedNode = null;
@@ -463,6 +472,7 @@ class MainContainer extends Component {
           searchValues={searchValues}
           handleSave={this.handleSave}
           handleOpen={this.handleOpen}
+          handleInputChange={this.handleInputChange}
         />
         <Grid fluid>
           <HeaderContainer>
@@ -482,7 +492,7 @@ class MainContainer extends Component {
                   handleInputChange={this.handleInputChange}
                 />
               </Header>
-              <EditModal>
+              <EditModal onClear={this.clearTrees}>
                 <TreeContainer
                   treeKey={this.extTreeKey}
                   treeData={activeExtTreeData}

@@ -20,8 +20,7 @@ class SearchBar extends React.Component {
 
   handleChange(e) {
     e.stopPropagation();
-    const { handleInputChange } = this.props.searchValues;
-    handleInputChange(e);
+    this.props.handleInputChange(e);
   }
 
   handleKeyDown(e) {
@@ -56,7 +55,7 @@ class SearchBar extends React.Component {
           ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
           : searchFoundCount - 1;
       e.target.value = idx;
-      this.props.searchValues.handleInputChange(e);
+      this.props.handleInputChange(e);
     };
 
     const selectNextMatch = e => {
@@ -65,7 +64,7 @@ class SearchBar extends React.Component {
           ? (searchFocusIndex + 1) % searchFoundCount
           : 0;
       e.target.value = idx;
-      this.props.searchValues.handleInputChange(e);
+      this.props.handleInputChange(e);
     };
 
     return (
@@ -131,10 +130,11 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
+  handleInputChange: func.isRequired,
   searchValues: shape({
     searchString: string.isRequired,
-    handleInputChange: func.isRequired,
     searchFocusIndex: number.isRequired,
+    searchFoundCount: number.isRequired,
     searchInternal: bool.isRequired
   })
 };

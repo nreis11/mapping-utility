@@ -64,11 +64,11 @@ const NavBar = props => {
 NavBar.propTypes = {
   handleOpen: func.isRequired,
   handleSave: func.isRequired,
+  handleInputChange: func.isRequired,
   searchValues: shape({
     searchString: string.isRequired,
     searchFocusIndex: number.isRequired,
     searchFoundCount: number.isRequired,
-    handleInputChange: func.isRequired,
     searchInternal: bool.isRequired
   })
 };

@@ -18,11 +18,15 @@ export const saveToJson = (state, testing = false) => {
   FileSaver.saveAs(file, fileName);
 };
 
-export const getInitialTreeData = () => {
-  const treeData = {};
-  Object.keys(eqValues).forEach(type => {
+export const getInitialTreeData = (type = false) => {
+  let treeData = {};
+  if (type) {
     treeData[type] = getTreeDataFromFlatData(eqValues[type]);
-  });
+  } else {
+    Object.keys(eqValues).forEach(type => {
+      treeData[type] = getTreeDataFromFlatData(eqValues[type]);
+    });
+  }
   return treeData;
 };
 

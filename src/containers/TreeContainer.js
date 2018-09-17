@@ -250,7 +250,7 @@ TreeContainer.defaultProps = {
   highlightUnmapped: false,
   onSelectNode: null,
   activeNodeInfo: null,
-  onSearchFinish: null,
+  onSearchFinish: false,
   searchString: "",
   searchFocusIndex: 0
 };

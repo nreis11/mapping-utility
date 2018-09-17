@@ -44,6 +44,7 @@ import Options from "../components/HeaderContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import OptionsContainer from "./OptionsContainer";
 import NavBar from "../components/NavBarContainer/NavBar";
+import BoardNameForm from "../components/HeaderContainer/BoardNameForm";
 
 const getNodeKey = ({ node }) => node.id;
 
@@ -64,7 +65,7 @@ class MainContainer extends Component {
       highlightUnmapped: false,
       searchString: "",
       searchFocusIndex: 0,
-      searchFoundCount: null,
+      searchFoundCount: 0,
       searchInternal: false
     };
 
@@ -466,17 +467,21 @@ class MainContainer extends Component {
         <Grid fluid>
           <HeaderContainer>
             <HeaderSmallContainer>
-              <Header name={internalName} isInternal={true} />
+              <Header>
+                <span className="pull-left">{internalName}</span>
+              </Header>
               <TypeSelector
                 onSelect={this.handleTypeSelect}
                 activeType={activeType}
               />
             </HeaderSmallContainer>
             <HeaderSmallContainer mdOffset={2}>
-              <Header
-                name={boardName}
-                handleInputChange={this.handleInputChange}
-              />
+              <Header>
+                <BoardNameForm
+                  name={boardName}
+                  handleInputChange={this.handleInputChange}
+                />
+              </Header>
               <EditModal>
                 <TreeContainer
                   treeKey={this.extTreeKey}

@@ -12,6 +12,7 @@ import LogOutButton from "./LogOutButton";
 import SearchBar from "./SearchBar";
 import HelpModal from "./HelpModal";
 import FileInput from "../misc/FileInput";
+import { func, string, number, bool, shape } from "prop-types";
 import "./NavBar.css";
 
 const NavBar = props => {
@@ -58,6 +59,18 @@ const NavBar = props => {
       </Nav>
     </Navbar>
   );
+};
+
+NavBar.propTypes = {
+  handleOpen: func.isRequired,
+  handleSave: func.isRequired,
+  searchValues: shape({
+    searchString: string.isRequired,
+    searchFocusIndex: number.isRequired,
+    searchFoundCount: number.isRequired,
+    handleInputChange: func.isRequired,
+    searchInternal: bool.isRequired
+  })
 };
 
 export default NavBar;

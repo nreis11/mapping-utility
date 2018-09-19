@@ -204,10 +204,10 @@ class MainContainer extends Component {
     );
   }
 
-  handleTreeChange(treeData, treeKey) {
+  handleTreeChange(activeTreeData, treeKey) {
     const currTreeData = this.state[treeKey];
     const { activeType } = this.state;
-    const newTreeData = { ...currTreeData, [activeType]: treeData };
+    const newTreeData = { ...currTreeData, [activeType]: activeTreeData };
     this.setState({
       [treeKey]: newTreeData
     });
@@ -215,13 +215,13 @@ class MainContainer extends Component {
 
   clearTrees(all = true) {
     const { activeType } = this.state;
-    const newTreeData = getInitialTreeData(all ? false : activeType);
-    const activeNodeInfo = _getActiveNodeInfo(newTreeData[activeType], 0);
+    const initialTreeData = getInitialTreeData(all ? false : activeType);
+    const activeNodeInfo = _getActiveNodeInfo(initialTreeData[activeType], 0);
 
     if (all) {
       this.setState({
         extTreeData: {},
-        intTreeData: newTreeData,
+        intTreeData: initialTreeData,
         activeIntNodeInfo: activeNodeInfo,
         activeExtNodeInfo: null
       });
@@ -231,7 +231,7 @@ class MainContainer extends Component {
         extTreeData: { ...prevState.extTreeData, [activeType]: [] },
         intTreeData: {
           ...prevState.intTreeData,
-          [activeType]: newTreeData[activeType]
+          [activeType]: initialTreeData[activeType]
         },
         activeIntNodeInfo: activeNodeInfo,
         activeExtNodeInfo: null
@@ -394,7 +394,6 @@ class MainContainer extends Component {
   }
 
   handleSearchFinish(matches) {
-    // TODO!: Figure out why a int node collapses when enter is pressed in search
     const searchFocusIndex = this.state.searchFocusIndex;
     const newActiveNodeInfo = matches[searchFocusIndex] || null;
     const activeNodeKey = this.state.searchInternal

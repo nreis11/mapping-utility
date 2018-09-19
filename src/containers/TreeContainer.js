@@ -196,7 +196,7 @@ class TreeContainer extends React.Component {
             scaffoldBlockPxWidth={35}
             getNodeKey={({ node }) => node.id}
             searchMethod={customSearchMethod}
-            onlyExpandSearchedNodes={true}
+            // onlyExpandSearchedNodes={true}
             searchQuery={searchString}
             searchFocusOffset={searchFocusIndex}
             searchFinishCallback={matches => {

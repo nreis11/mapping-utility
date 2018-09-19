@@ -2,8 +2,7 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { func, string } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { FaCopy } from "react-icons/fa";
-import { FaDownload } from "react-icons/fa";
+import { FaCopy, FaDownload } from "react-icons/fa";
 import FileSaver from "file-saver";
 
 import "./ExportModal.css";

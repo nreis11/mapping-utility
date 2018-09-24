@@ -11985,7 +11985,7 @@ export const states = [
     { id: "eqGB-DNC", title: "Doncaster", parent: "eqGB-ENG" },
     { id: "eqGB-DOR", title: "Dorset", parent: "eqGB-ENG" },
     { id: "eqGB-DUD", title: "Dudley", parent: "eqGB-ENG" },
-    { id: "eqGB-DUR", title: "Durharn", parent: "eqGB-ENG" },
+    { id: "eqGB-DUR", title: "Durham", parent: "eqGB-ENG" },
     { id: "eqGB-EAL", title: "Ealing", parent: "eqGB-ENG" },
     {
         id: "eqGB-ERY",
@@ -12189,7 +12189,7 @@ export const states = [
         parent: "eqGB-ENG"
     },
     { id: "eqGB-RCH", title: "Rochdale", parent: "eqGB-ENG" },
-    { id: "eqGB-ROT", title: "Rotherharn", parent: "eqGB-ENG" },
+    { id: "eqGB-ROT", title: "Rotherham", parent: "eqGB-ENG" },
     { id: "eqGB-RUT", title: "Rutland", parent: "eqGB-ENG" },
     { id: "eqGB-SHN", title: "St. Helens", parent: "eqGB-ENG" },
     {
@@ -12197,7 +12197,7 @@ export const states = [
         title: "Salford (City of)",
         parent: "eqGB-ENG"
     },
-    { id: "eqGB-SAW", title: "Sandweil", parent: "eqGB-ENG" },
+    { id: "eqGB-SAW", title: "Sandwell", parent: "eqGB-ENG" },
     { id: "eqGB-SFT", title: "Sefton", parent: "eqGB-ENG" },
     {
         id: "eqGB-SHF",

@@ -9,16 +9,14 @@ import {
   number,
   oneOfType
 } from "prop-types";
-import { FaTrash } from "react-icons/fa";
 import { Col } from "react-bootstrap";
 
 import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
 import { _getActiveNodeInfo } from "../utilities/mappingHelpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaTrash } from "react-icons/fa";
 
-import "react-sortable-tree/style.css";
 
 import "./TreeContainer.css";
 

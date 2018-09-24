@@ -6,6 +6,7 @@ import AuthorizedRoute from "./components/Login/AuthorizedRoute";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "./App.css";
+import "react-sortable-tree/style.css";
 
 class App extends Component {
   render() {

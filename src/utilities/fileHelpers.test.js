@@ -62,12 +62,12 @@ describe("saveToJson", () => {
   // Check output
   const jsonObj = JSON.parse(jsonString);
 
-  it("Saves the correct intFlatData", () => {
+  it("Saves the correct intTreeData", () => {
     const result = jsonObj.intTreeData;
     expect(result).toEqual(intTreeData);
   });
 
-  it("Saves the correct extFlatData", () => {
+  it("Saves the correct extTreeData", () => {
     const result = jsonObj.extTreeData;
     expect(result).toEqual(extTreeData);
   });

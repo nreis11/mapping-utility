@@ -12,7 +12,7 @@ class AddModal extends React.Component {
     this.handleClose = this.handleClose.bind(this);
 
     this.state = {
-      show: props.show || false
+      show: false
     };
   }
 
@@ -30,6 +30,7 @@ class AddModal extends React.Component {
 
     return (
       <Col>
+        {/* Main Add Button */}
         {!nodeInfo && (
           <Button
             className="pull-left"
@@ -40,7 +41,7 @@ class AddModal extends React.Component {
             <FaPlus className="react-icons" /> Add Nodes
           </Button>
         )}
-        <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
+        <Modal show={this.props.show || this.state.show} onHide={this.handleClose} bsSize="large">
           <Modal.Header closeButton>
             <Modal.Title>Add Nodes</Modal.Title>
           </Modal.Header>

@@ -31,7 +31,7 @@ class IdxForm extends Component {
             type="text"
             name={name}
             value={idx}
-            placeholder="Enter 1 or 2"
+            placeholder="1 or 2"
             onChange={onChange}
           />
           <FormControl.Feedback />

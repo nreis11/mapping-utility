@@ -1,8 +1,7 @@
 import React from "react";
 
 import { Modal, Col, Button, Alert } from "react-bootstrap";
-import { FaPlus } from "react-icons/fa";
-import { FaUpload } from "react-icons/fa";
+import { FaPlus, FaUpload } from "react-icons/fa";
 
 import AddModal from "./AddModal";
 import FileInput from "../misc/FileInput";

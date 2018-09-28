@@ -12,6 +12,7 @@ import {
 import { Col } from "react-bootstrap";
 
 import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
+import { getInBoundsTreeIndex } from "../utilities/helpers";
 import { _getActiveNodeInfo } from "../utilities/mappingHelpers";
 import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
@@ -70,8 +71,7 @@ class TreeContainer extends React.Component {
     }
 
     // Check bounds
-    treeIndex = treeIndex < 0 ? 0 : treeIndex;
-    treeIndex = treeIndex >= nodeCount ? nodeCount - 1 : treeIndex;
+    treeIndex = getInBoundsTreeIndex(treeIndex, nodeCount);
 
     // Check if node changed. If it didn't, just update expanded prop
     let newActiveNodeInfo;

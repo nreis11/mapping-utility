@@ -2,8 +2,7 @@ import React from "react";
 import { func } from "prop-types";
 
 import { Col, Button, ButtonGroup } from "react-bootstrap";
-import { FaForward } from "react-icons/fa";
-import { FaBackward } from "react-icons/fa";
+import { FaBackward, FaForward } from "react-icons/fa";
 
 import { ExpandCollapseButtons } from "../components/ActionBar/ExpandCollapseButtons";
 import { ActionButton } from "../components/ActionBar/ActionButton";

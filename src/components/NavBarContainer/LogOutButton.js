@@ -7,9 +7,7 @@ const LogOutButton = () => {
   const logOut = () => {
     firebase.auth.signOut().catch(e => console.log(e));
     let localStorage = window.localStorage;
-    if (localStorage) {
-      localStorage.clear();
-    }
+    localStorage && localStorage.clear();
   };
 
   return (

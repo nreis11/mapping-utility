@@ -3,7 +3,7 @@ import { Form, Button, Row } from "react-bootstrap";
 import RawDataForm from "./RawDataForm";
 import DelimiterForm from "./DelimiterForm";
 import IdxForm from "./IdxForm";
-import { func, shape } from "prop-types";
+import { func, shape, string } from "prop-types";
 
 class AddNodesForm extends React.Component {
   constructor(props) {
@@ -101,7 +101,7 @@ class AddNodesForm extends React.Component {
 AddNodesForm.propTypes = {
   onAddNodes: func.isRequired,
   handleClose: func.isRequired,
-  nodeInfo: shape({})
+  nodeInfo: shape({node: shape({id: string.isRequired, title: string.isRequired})})
 };
 
 AddNodesForm.defaultProps = {

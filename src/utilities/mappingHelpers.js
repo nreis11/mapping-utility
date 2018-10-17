@@ -9,6 +9,7 @@ import {
 import xmlbuilder from "xmlbuilder";
 
 const getNodeKey = ({ node }) => node.id;
+export const delimiter = "~~";
 
 export const _handleMapAction = ({ e, activeIntNode, path, treeIndex }) => {
   let newNode;
@@ -221,7 +222,7 @@ const _createNode = ({
       const path = mapping.slice(0, idx + 1);
       const extNodeTitle = getNodeTitle(path);
       // Actual value is last id
-      const idArr = tierMapping.split("-");
+      const idArr = tierMapping.split(delimiter);
       tierMapping = idArr[idArr.length - 1];
       const boardValueNode = childNode
         .ele("boardvalue")
@@ -234,7 +235,7 @@ const _createNode = ({
   } else {
     // Grab last value. Only single tier
     const extNodeTitle = getNodeTitle(mapping);
-    let lastIdArr = mapping[mapping.length - 1].split("-");
+    let lastIdArr = mapping[mapping.length - 1].split(delimiter);
     mapping = lastIdArr[lastIdArr.length - 1];
     const boardValueNode = childNode
       .ele("boardvalue")

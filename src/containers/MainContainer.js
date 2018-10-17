@@ -154,7 +154,7 @@ class MainContainer extends Component {
   }
 
   handleSelectNode(nodeInfo, treeKey) {
-    console.log("Node Info", nodeInfo);
+    // console.log("Node Info", nodeInfo);
     const activeKey =
       treeKey === this.intTreeKey ? "activeIntNodeInfo" : "activeExtNodeInfo";
     this.setState({
@@ -213,7 +213,7 @@ class MainContainer extends Component {
     });
   }
 
-  clearTrees(all = true) {
+  clearTrees(all) {
     const { activeType } = this.state;
     const initialTreeData = getInitialTreeData(all ? false : activeType);
     const activeNodeInfo = _getActiveNodeInfo(initialTreeData[activeType], 0);
@@ -441,7 +441,7 @@ class MainContainer extends Component {
       boardName
     } = this.state;
 
-    console.log("RENDERED");
+    // console.log("RENDERED");
 
     const internalName = "eQuest";
     const activeIntTreeData = intTreeData[activeType];

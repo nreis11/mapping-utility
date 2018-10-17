@@ -98,7 +98,7 @@ class EditModal extends React.Component {
               style={{ marginLeft: 5 }}
               bsStyle="danger"
               bsSize="small"
-              onClick={() => onClear()}
+              onClick={() => onClear(true)}
             >
               Clear All
             </Button>

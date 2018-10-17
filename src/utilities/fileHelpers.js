@@ -1,11 +1,10 @@
 import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
-import { _sortTree } from "./mappingHelpers";
+import { _sortTree, delimiter } from "./mappingHelpers";
 import * as eqValues from "../values/eqValues";
 import FileSaver from "file-saver";
 import yaml from "js-yaml";
 
 export const saveToJson = (state, testing = false) => {
-  // Saving as flat data to reduce file size. More info in getFlatDataFromTree helper.
   const jsonString = JSON.stringify({
     ...state
   });
@@ -88,7 +87,7 @@ export const traverse = (jsonObj, parent = null, nodes = []) => {
     }
 
     // Using parent to create UID with delimiter. Avoids duplicate keys.
-    let curr = parent ? `${parent}-${key}` : key;
+    let curr = parent ? `${parent}${delimiter}${key}` : key;
 
     let node = {
       id: curr,

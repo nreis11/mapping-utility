@@ -2,6 +2,8 @@ import React from "react";
 import { string, number, shape } from "prop-types";
 import "./NodeInfo.css";
 import { Col, Panel } from "react-bootstrap";
+import { delimiter } from "../../utilities/mappingHelpers";
+
 
 const NodeInfo = ({ mdOffset, heading, node }) => {
   const nodeTitle = node ? node.title : null;
@@ -14,7 +16,7 @@ const NodeInfo = ({ mdOffset, heading, node }) => {
 
   // Remove parent prefix
   if (heading !== "eQuest" && nodeKey) {
-    const keyArr = nodeKey.split("-");
+    const keyArr = nodeKey.split(delimiter);
     nodeKey = keyArr[keyArr.length - 1];
   }
 

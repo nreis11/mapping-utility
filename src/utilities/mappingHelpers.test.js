@@ -111,7 +111,7 @@ describe("_exportMappingsToXML", () => {
     categories: [
       {
         id: "eqDEFAULT",
-        mapping: ["200", "200-201"]
+        mapping: ["200", "200~~201"]
       },
       {
         id: "eq17000000",
@@ -119,7 +119,7 @@ describe("_exportMappingsToXML", () => {
         children: [
           {
             id: "eq17100000",
-            mapping: ["100", "100-101"]
+            mapping: ["100", "100~~101"]
           }
         ]
       }
@@ -137,12 +137,12 @@ describe("_exportMappingsToXML", () => {
       {
         id: "200",
         title: "Managers",
-        children: [{ id: "200-201", title: "Operation Manager" }]
+        children: [{ id: "200~~201", title: "Operation Manager" }]
       },
       {
         id: "100",
         title: "Community and Social Services",
-        children: [{ id: "100-101", title: "Religious Workers" }]
+        children: [{ id: "100~~101", title: "Religious Workers" }]
       }
     ],
     industries: [

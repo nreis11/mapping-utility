@@ -5,7 +5,7 @@ describe("saveToJson", () => {
     categories: [
       {
         id: "eqDEFAULT",
-        mapping: ["200", "200-201"]
+        mapping: ["200", "200~~201"]
       },
       {
         id: "eq17000000",
@@ -13,7 +13,7 @@ describe("saveToJson", () => {
         children: [
           {
             id: "eq17100000",
-            mapping: ["100", "100-101"]
+            mapping: ["100", "100~~101"]
           }
         ]
       }
@@ -31,12 +31,12 @@ describe("saveToJson", () => {
       {
         id: "200",
         title: "Managers",
-        children: [{ id: "200-201", title: "Operation Manager" }]
+        children: [{ id: "200~~201", title: "Operation Manager" }]
       },
       {
         id: "100",
         title: "Community and Social Services",
-        children: [{ id: "100-101", title: "Religious Workers" }]
+        children: [{ id: "100~~101", title: "Religious Workers" }]
       }
     ],
     industries: [
@@ -62,28 +62,11 @@ describe("saveToJson", () => {
   // Check output
   const jsonObj = JSON.parse(jsonString);
 
-  it("Saves the correct intTreeData", () => {
-    const result = jsonObj.intTreeData;
-    expect(result).toEqual(intTreeData);
-  });
-
-  it("Saves the correct extTreeData", () => {
-    const result = jsonObj.extTreeData;
-    expect(result).toEqual(extTreeData);
-  });
-
-  it("Saves the correct options", () => {
-    const result = jsonObj.options;
-    expect(result).toEqual(options);
-  });
-
-  it("Saves the correct activeType", () => {
-    const result = jsonObj.activeType;
-    expect(result).toEqual(activeType);
-  });
-
-  it("Saves the correct boardName", () => {
-    expect(jsonObj.boardName).toEqual(boardName);
+  it("Saves the correct keys and values", () => {
+    Object.keys(stateObj).forEach(key => {
+      const value = jsonObj[key];
+      expect(value).toEqual(stateObj[key]);
+    })
   });
 });
 

@@ -119,7 +119,7 @@ class SearchBar extends React.Component {
           {/* Needed to create div to reflect change visually. State was updating, but
         visually no change occured */}
           <div onClick={this.handleChange}>
-            <Checkbox name="searchInternal" checked={searchInternal} inline>
+            <Checkbox name="searchInternal" checked={searchInternal} onChange={() => {}} inline>
               Search eQuest
             </Checkbox>
           </div>

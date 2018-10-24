@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { string, func } from "prop-types";
 
-class RawDataForm extends Component {
+class RawDataForm extends React.PureComponent {
   getValidationState() {
     // Check that every line has a delimiter
     const { delimiter, rawData } = this.props;

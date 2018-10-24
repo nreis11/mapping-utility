@@ -10,7 +10,7 @@ import {
 import { shape, string, func, number, bool } from "prop-types";
 import { FaSearch } from "react-icons/fa";
 
-class SearchBar extends React.Component {
+class SearchBar extends React.PureComponent {
   constructor(props) {
     super(props);
 

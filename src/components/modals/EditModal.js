@@ -8,7 +8,7 @@ import FileInput from "../misc/FileInput";
 import { importYaml } from "../../utilities/fileHelpers";
 import { func } from "prop-types";
 
-class EditModal extends React.Component {
+class EditModal extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
 

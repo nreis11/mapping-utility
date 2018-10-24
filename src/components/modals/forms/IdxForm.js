@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
 import { number, func } from "prop-types";
 
-class IdxForm extends Component {
+class IdxForm extends React.PureComponent {
   getValidationState() {
     const { idx } = this.props;
 

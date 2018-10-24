@@ -6,7 +6,7 @@ import IdxForm from "./IdxForm";
 import { func, shape, string } from "prop-types";
 import { delimiter as idDelimiter } from "../../../utilities/mappingHelpers";
 
-class AddNodesForm extends React.Component {
+class AddNodesForm extends React.PureComponent {
   constructor(props) {
     super(props);
 

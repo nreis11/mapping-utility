@@ -1,9 +1,8 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { FaForward } from "react-icons/fa";
-import { FaBackward } from "react-icons/fa";
+import { FaBackward, FaForward } from "react-icons/fa";
 
-export const ExpandCollapseButtons = ({ expandAll, expand, children }) => (
+export const ExpandCollapseButtons = React.memo(({ expandAll, expand, children }) => (
   <div>
     <Button bsStyle="primary" onClick={() => expandAll(expand, true)}>
       <FaBackward className="react-icons" />
@@ -15,4 +14,4 @@ export const ExpandCollapseButtons = ({ expandAll, expand, children }) => (
       <FaForward className="react-icons" />
     </Button>
   </div>
-);
+));

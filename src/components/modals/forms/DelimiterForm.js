@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
 import { string, func } from "prop-types";
 
-class DelimiterForm extends Component {
+class DelimiterForm extends React.PureComponent {
   getValidationState() {
     const { delimiter } = this.props;
     const length = delimiter.length;

@@ -21,7 +21,7 @@ import { FaPlus, FaTrash } from "react-icons/fa";
 
 import "./TreeContainer.css";
 
-class TreeContainer extends React.Component {
+class TreeContainer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

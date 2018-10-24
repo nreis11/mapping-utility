@@ -4,7 +4,7 @@ import guide from "../../assets/user_guide.pdf";
 import { FaQuestion, FaDownload } from "react-icons/fa";
 import "./HelpModal.css";
 
-class HelpModal extends React.Component {
+class HelpModal extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
 

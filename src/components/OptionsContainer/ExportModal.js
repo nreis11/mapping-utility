@@ -3,11 +3,12 @@ import { Modal, Button } from "react-bootstrap";
 import { func, string } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy, FaDownload } from "react-icons/fa";
+import CopyConfirmation from "./CopyConfirmation";
 import FileSaver from "file-saver";
 
 import "./ExportModal.css";
 
-class ExportModal extends React.Component {
+class ExportModal extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
 
@@ -80,12 +81,7 @@ class ExportModal extends React.Component {
               </Button>
             </CopyToClipboard>
             {this.state.copied && (
-              <span
-                className="pull-left"
-                style={{ paddingLeft: 5, lineHeight: "34px" }}
-              >
-                Copied.
-              </span>
+              <CopyConfirmation/>
             )}
 
             <Button onClick={this.handleClose}>Close</Button>

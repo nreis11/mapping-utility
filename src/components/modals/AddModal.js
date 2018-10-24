@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa";
 import { func, shape, arrayOf, string, bool } from "prop-types";
 import AddNodesForm from "./forms/AddNodesForm";
 
-class AddModal extends React.Component {
+class AddModal extends React.PureComponent {
   constructor(props) {
     super(props);
 

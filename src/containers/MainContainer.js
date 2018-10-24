@@ -32,15 +32,14 @@ import {
   getFlatData
 } from "../utilities/fileHelpers";
 
-import HeaderContainer from "../containers/HeaderContainer";
 import TreeContainer from "./TreeContainer";
 import ActionBarContainer from "./ActionBarContainer";
 import NodeInfo from "../components/MainContainer/NodeInfo";
-import HeaderSmallContainer from "../components/HeaderContainer/HeaderSmallContainer";
-import ExportModal from "../components/modals/ExportModal";
+import HeaderContainer from "../containers/HeaderContainer";
+import ExportModal from "../components/OptionsContainer/ExportModal";
 import Header from "../components/HeaderContainer/Header";
 import EditModal from "../components/modals/EditModal";
-import Options from "../components/HeaderContainer/Options";
+import Options from "../components/OptionsContainer/Options";
 import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import OptionsContainer from "./OptionsContainer";
 import NavBar from "../components/NavBarContainer/NavBar";
@@ -474,8 +473,8 @@ class MainContainer extends Component {
           handleInputChange={this.handleInputChange}
         />
         <Grid fluid>
-          <HeaderContainer>
-            <HeaderSmallContainer>
+          <Row className="show-grid">
+            <HeaderContainer>
               <Header>
                 <span className="pull-left">{internalName}</span>
               </Header>
@@ -483,8 +482,8 @@ class MainContainer extends Component {
                 onSelect={this.handleTypeSelect}
                 activeType={activeType}
               />
-            </HeaderSmallContainer>
-            <HeaderSmallContainer mdOffset={2}>
+            </HeaderContainer>
+            <HeaderContainer mdOffset={2}>
               <Header>
                 <BoardNameForm
                   name={boardName}
@@ -500,8 +499,8 @@ class MainContainer extends Component {
                   onAddNodes={this.handleAddNodes}
                 />
               </EditModal>
-            </HeaderSmallContainer>
-          </HeaderContainer>
+            </HeaderContainer>
+          </Row>
           <Row className="show-grid tree-row">
             <TreeContainer
               treeKey={this.intTreeKey}

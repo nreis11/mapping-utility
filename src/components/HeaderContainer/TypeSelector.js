@@ -9,7 +9,7 @@ const TYPES = {
   countries: "Country"
 };
 
-const TypeSelector = ({ activeType, onSelect }) => {
+const TypeSelector = React.memo(({ activeType, onSelect }) => {
   return (
     <Col className="pull-right">
       <ButtonToolbar>
@@ -34,7 +34,7 @@ const TypeSelector = ({ activeType, onSelect }) => {
       </ButtonToolbar>
     </Col>
   );
-};
+});
 
 TypeSelector.propTypes = {
   onSelect: func.isRequired,

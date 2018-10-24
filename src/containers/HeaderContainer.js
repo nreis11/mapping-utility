@@ -1,8 +1,22 @@
 import React from "react";
-import { Row } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
-const HeaderContainer = props => (
-  <Row className="show-grid">{props.children}</Row>
-);
+import { number } from "prop-types";
+
+const HeaderContainer = React.memo(props => {
+  return (
+    <Col md={5} mdOffset={props.mdOffset}>
+      {props.children}
+    </Col>
+  );
+});
+
+HeaderContainer.propTypes = {
+  mdOffset: number
+};
+
+HeaderContainer.defaultProps = {
+  mdOffset: 0
+};
 
 export default HeaderContainer;

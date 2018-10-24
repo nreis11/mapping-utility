@@ -2,7 +2,7 @@ import React from "react";
 import { Form, FormGroup, FormControl, Button } from "react-bootstrap";
 import { string, func } from "prop-types";
 
-class BoardNameForm extends React.Component {
+class BoardNameForm extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -32,7 +32,7 @@ class BoardNameForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let { boardName } = this.state;
+    const { boardName } = this.state;
 
     if (!boardName) {
       return;

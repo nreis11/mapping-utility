@@ -1,7 +1,7 @@
 import React from "react";
 import { string, func } from "prop-types";
 
-class FileInput extends React.Component {
+class FileInput extends React.PureComponent {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);

@@ -5,7 +5,7 @@ import { Col, Panel } from "react-bootstrap";
 import { delimiter } from "../../utilities/mappingHelpers";
 
 
-const NodeInfo = React.memo(({ mdOffset, heading, node }) => {
+const NodeInfo = ({ mdOffset, heading, node }) => {
   const nodeTitle = node ? node.title : null;
   let nodeKey = node ? node.id : null;
 
@@ -42,7 +42,7 @@ const NodeInfo = React.memo(({ mdOffset, heading, node }) => {
       </Panel>
     </Col>
   );
-});
+};
 
 NodeInfo.defaultProps = {
   mdOffset: 0,
@@ -55,4 +55,4 @@ NodeInfo.propTypes = {
   node: shape({ id: string.isRequired, title: string.isRequired })
 };
 
-export default NodeInfo;
+export default React.memo(NodeInfo);

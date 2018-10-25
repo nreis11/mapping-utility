@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Panel } from "react-bootstrap";
 
-const OptionsContainer = React.memo(props => {
+const OptionsContainer = props => {
   return (
     <Col md={5} mdOffset={2}>
       <Panel bsStyle="info">
@@ -19,4 +19,4 @@ const OptionsContainer = React.memo(props => {
   );
 });
 
-export default OptionsContainer;
+export default React.memo(OptionsContainer);

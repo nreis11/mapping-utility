@@ -15,7 +15,7 @@ import FileInput from "../misc/FileInput";
 import { func, string, number, bool, shape } from "prop-types";
 import "./NavBar.css";
 
-const NavBar = React.memo(props => {
+const NavBar = props => {
   const { handleOpen, handleSave, ...restProps } = props;
 
   const handleLoad = () => {
@@ -59,7 +59,7 @@ const NavBar = React.memo(props => {
       </Nav>
     </Navbar>
   );
-});
+};
 
 NavBar.propTypes = {
   handleOpen: func.isRequired,
@@ -73,4 +73,4 @@ NavBar.propTypes = {
   })
 };
 
-export default NavBar;
+export default React.memo(NavBar);

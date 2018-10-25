@@ -3,7 +3,7 @@ import { func } from "prop-types";
 import { Popover, OverlayTrigger } from "react-bootstrap";
 import "./Options.css";
 
-const Options = React.memo(props => {
+const Options = props => {
   const { outputParents, parentsSelectable } = props.options;
 
   const outputPopover = (
@@ -52,10 +52,10 @@ const Options = React.memo(props => {
       </OverlayTrigger>
     </form>
   );
-});
+};
 
 Options.propTypes = {
   onOptionChange: func.isRequired
 };
 
-export default Options;
+export default React.memo(Options);

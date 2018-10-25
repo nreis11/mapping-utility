@@ -9,7 +9,7 @@ import { ActionButton } from "../components/ActionBar/ActionButton";
 
 import "./ActionBarContainer.css";
 
-export const ActionBarContainer = React.memo(({
+export const ActionBarContainer = ({
   expandAll,
   onHighlightUnmapped,
   onClick
@@ -57,7 +57,7 @@ export const ActionBarContainer = React.memo(({
       </ButtonGroup>
     </Col>
   );
-});
+};
 
 ActionBarContainer.propTypes = {
   expandAll: func.isRequired,
@@ -65,4 +65,4 @@ ActionBarContainer.propTypes = {
   onHighlightUnmapped: func.isRequired
 };
 
-export default ActionBarContainer;
+export default React.memo(ActionBarContainer);

@@ -77,7 +77,7 @@ class TreeContainer extends React.PureComponent {
     let newActiveNodeInfo;
     if (initialTreeIndex === treeIndex) {
       activeNodeInfo.node.expanded = expanded;
-      newActiveNodeInfo = activeNodeInfo;
+      newActiveNodeInfo = {...activeNodeInfo};
     } else {
       newActiveNodeInfo = _getActiveNodeInfo(treeData, treeIndex);
     }

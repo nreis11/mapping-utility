@@ -17,6 +17,6 @@ const OptionsContainer = props => {
       </Panel>
     </Col>
   );
-});
+};
 
 export default React.memo(OptionsContainer);

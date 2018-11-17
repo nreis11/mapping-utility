@@ -38,7 +38,7 @@ class AddModal extends React.PureComponent {
             bsSize="small"
             onClick={this.handleShow}
           >
-            <FaPlus className="react-icons" /> Add Nodes
+            <FaPlus className="react-icons" />&nbsp;Add Nodes
           </Button>
         )}
         <Modal show={this.props.show || this.state.show} onHide={this.handleClose} bsSize="large">

@@ -1,7 +1,12 @@
 #help-link {
-    width: 60px;
-    height: 34px;
-    color: white;
-    text-align: center;
-    line-height: 34px;
+  width: 60px;
+  height: 34px;
+  color: white;
+  text-align: center;
+  line-height: 34px;
+}
+
+#version-txt {
+  text-align: center;
+  margin-right: 5px;
 }

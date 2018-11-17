@@ -1,10 +1,10 @@
 {
   "name": "mapping-utility",
-  "version": "0.5.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "file-saver": "^1.3.8",
+    "file-saver": "^2.0.0",
     "firebase": "^5.5.8",
     "js-yaml": "^3.12.0",
     "prop-types": "^15.6.2",

@@ -80,7 +80,7 @@ class EditModal extends React.PureComponent {
               bsSize="small"
               onClick={this.handleFileOnClick}
             >
-              <FaUpload className="react-icons" /> Import YAML
+              <FaUpload className="react-icons" />&nbsp;Import YAML
             </Button>
 
             <Button

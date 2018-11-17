@@ -46,10 +46,10 @@ class ExportModal extends React.PureComponent {
     return (
       <React.Fragment>
         <Button
+          id="export-btn"
           onClick={this.handleShow}
           bsStyle="success"
           bsSize="small"
-          style={{ lineHeight: "12px", marginTop: -6 }}
         >
           <strong>Export</strong>
         </Button>
@@ -68,7 +68,7 @@ class ExportModal extends React.PureComponent {
               className="pull-left"
             >
               <span>
-                <FaDownload className="react-icons" /> Download
+                <FaDownload className="react-icons" />&nbsp;Download
               </span>
             </Button>
             <CopyToClipboard
@@ -77,7 +77,7 @@ class ExportModal extends React.PureComponent {
               onCopy={() => this.setState({ copied: true })}
             >
               <Button title="Copy">
-                <FaCopy className="react-icons" /> Copy
+                <FaCopy className="react-icons" />&nbsp;Copy
               </Button>
             </CopyToClipboard>
             {this.state.copied && (

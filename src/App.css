@@ -8,3 +8,11 @@ body {
 .react-icons {
   vertical-align: middle;
 }
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}

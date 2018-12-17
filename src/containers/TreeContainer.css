@@ -16,6 +16,15 @@
 
 .well {
   border: solid;
-  height: inherit;
+  height: 70vh;
 }
 
+#edit-tree-container {
+  padding: 10px 15px;
+}
+
+@media only screen and (min-height: 1150px) {
+  .well {
+    height: 78vh;
+  }
+}

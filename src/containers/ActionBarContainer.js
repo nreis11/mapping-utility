@@ -15,7 +15,7 @@ export const ActionBarContainer = ({
   onClick
 }) => {
   return (
-    <Col md={2} className="text-center action-container">
+    <Col className="text-center action-container">
       <div>
         <ActionButton dataCmd="space" onClick={onClick}>
           <FaForward className="react-icons" /> Map{" "}

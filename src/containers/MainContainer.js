@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Row } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 import "./MainContainer.css";
 import {
   toggleExpandedForAll,
@@ -440,7 +440,7 @@ class MainContainer extends Component {
       boardName
     } = this.state;
 
-    // console.log("RENDERED");
+    console.log("RENDERED");
 
     const internalName = "eQuest";
     const activeIntTreeData = intTreeData[activeType];
@@ -474,81 +474,89 @@ class MainContainer extends Component {
         />
         <Grid fluid>
           <Row className="show-grid">
-            <HeaderContainer>
-              <Header>
-                <span className="pull-left">{internalName}</span>
-              </Header>
-              <TypeSelector
-                onSelect={this.handleTypeSelect}
-                activeType={activeType}
+            <Col md={5}>
+              <HeaderContainer
+                left={
+                  <Header>
+                    <span>{internalName}</span>
+                  </Header>
+                }
+                right={
+                  <TypeSelector
+                    onSelect={this.handleTypeSelect}
+                    activeType={activeType}
+                  />
+                }
               />
-            </HeaderContainer>
-            <HeaderContainer mdOffset={2}>
-              <Header>
-                <BoardNameForm
-                  name={boardName}
-                  handleInputChange={this.handleInputChange}
-                />
-              </Header>
-              <EditModal onClear={this.clearTrees}>
-                <TreeContainer
-                  treeKey={this.extTreeKey}
-                  treeData={activeExtTreeData}
-                  onChange={this.handleTreeChange}
-                  editMode={true}
-                  onAddNodes={this.handleAddNodes}
-                />
-              </EditModal>
-            </HeaderContainer>
-          </Row>
-          <Row className="show-grid tree-row">
-            <TreeContainer
-              treeKey={this.intTreeKey}
-              treeData={activeIntTreeData}
-              onChange={this.handleTreeChange}
-              onSelectNode={this.handleSelectNode}
-              activeNodeInfo={activeIntNodeInfo}
-              searchString={intSearchString}
-              searchFocusIndex={searchFocusIndex}
-              onSearchFinish={searchInternal && this.handleSearchFinish}
-              highlightUnmapped={highlightUnmapped}
-            />
-            <ActionBarContainer
-              onHighlightUnmapped={this.highlightUnmapped}
-              expandAll={this.expandAll}
-              onClick={this.handleKeyDown}
-            />
-            <TreeContainer
-              treeKey={this.extTreeKey}
-              treeData={activeExtTreeData}
-              onChange={this.handleTreeChange}
-              onSelectNode={this.handleSelectNode}
-              activeNodeInfo={activeExtNodeInfo}
-              searchString={extSearchString}
-              searchFocusIndex={searchFocusIndex}
-              onSearchFinish={!searchInternal && this.handleSearchFinish}
-            />
-          </Row>
-          <Row className="show-grid">
-            <NodeInfo heading={internalName} node={activeIntNode} />
-            <NodeInfo heading={boardName} node={activeExtNode} mdOffset={2} />
-          </Row>
-          <Row className="show-grid">
-            <NodeInfo heading={"Mapped to:"} node={mappedNode} />
-            <OptionsContainer
-              left={
-                <Options
-                  options={options}
-                  onOptionChange={this.handleOptionChange}
-                />
-              }
-              right={
-                <ExportModal
-                  handleExport={this.handleExport}
-                  boardName={boardName}
-                />
-              }
-            />
+              <TreeContainer
+                treeKey={this.intTreeKey}
+                treeData={activeIntTreeData}
+                onChange={this.handleTreeChange}
+                onSelectNode={this.handleSelectNode}
+                activeNodeInfo={activeIntNodeInfo}
+                searchString={intSearchString}
+                searchFocusIndex={searchFocusIndex}
+                onSearchFinish={searchInternal && this.handleSearchFinish}
+                highlightUnmapped={highlightUnmapped}
+              />
+              <NodeInfo heading={internalName} node={activeIntNode} />
+              <NodeInfo heading={"Mapped to:"} node={mappedNode} />
+            </Col>
+            <Col id="parent-action-container" md={2}>
+              <ActionBarContainer
+                onHighlightUnmapped={this.highlightUnmapped}
+                expandAll={this.expandAll}
+                onClick={this.handleKeyDown}
+              />
+            </Col>
+            <Col md={5}>
+              <HeaderContainer
+                left={
+                  <Header>
+                    <BoardNameForm
+                      name={boardName}
+                      handleInputChange={this.handleInputChange}
+                    />
+                  </Header>
+                }
+                right={
+                  <EditModal onClear={this.clearTrees}>
+                    <TreeContainer
+                      treeKey={this.extTreeKey}
+                      treeData={activeExtTreeData}
+                      onChange={this.handleTreeChange}
+                      editMode={true}
+                      onAddNodes={this.handleAddNodes}
+                    />
+                  </EditModal>
+                }
+              />
+              <TreeContainer
+                treeKey={this.extTreeKey}
+                treeData={activeExtTreeData}
+                onChange={this.handleTreeChange}
+                onSelectNode={this.handleSelectNode}
+                activeNodeInfo={activeExtNodeInfo}
+                searchString={extSearchString}
+                searchFocusIndex={searchFocusIndex}
+                onSearchFinish={!searchInternal && this.handleSearchFinish}
+              />
+              <NodeInfo heading={boardName} node={activeExtNode} />
+              <OptionsContainer
+                left={
+                  <Options
+                    options={options}
+                    onOptionChange={this.handleOptionChange}
+                  />
+                }
+                right={
+                  <ExportModal
+                    handleExport={this.handleExport}
+                    boardName={boardName}
+                  />
+                }
+              />
+            </Col>
           </Row>
         </Grid>
       </div>

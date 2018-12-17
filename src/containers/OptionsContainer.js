@@ -3,7 +3,7 @@ import { Col, Panel } from "react-bootstrap";
 
 const OptionsContainer = props => {
   return (
-    <Col md={5} mdOffset={2}>
+    <Col>
       <Panel bsStyle="info">
         <Panel.Heading>
           <Panel.Title componentClass="h3">Options</Panel.Title>

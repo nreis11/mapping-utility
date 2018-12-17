@@ -1,6 +1,6 @@
 .navbar {
   padding: 0px 15px;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
   border-radius: 0px;
 }
 
@@ -11,4 +11,3 @@
 .navbar-brand {
   padding: 15px 5px 15px 0px;
 }
-

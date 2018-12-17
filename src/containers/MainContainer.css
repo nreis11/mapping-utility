@@ -1,10 +1,10 @@
-.tree-row {
-    height: 65vh;
-    margin-bottom: 10px;
+#parent-action-container {
+  margin: auto 0;
+  height: 70vh;
 }
 
-@media only screen and (min-height: 850px) {
-    .tree-row {
-        height: 70vh;
-    }
+@media only screen and (max-width: 1024px) {
+  #parent-action-container {
+    padding: 0;
+  }
 }

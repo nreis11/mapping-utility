@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Modal, Button } from "react-bootstrap";
 import guide from "../../assets/user_guide.pdf";
-import {version} from "../../../package.json";
+import { version } from "../../../package.json";
 import { FaQuestion, FaDownload } from "react-icons/fa";
 import "./HelpModal.css";
 
@@ -123,7 +123,8 @@ class HelpModal extends React.PureComponent {
               className="pull-left"
             >
               <span>
-                <FaDownload className="react-icons" />&nbsp;User Guide
+                <FaDownload className="react-icons" />
+                &nbsp;User Guide
               </span>
             </Button>
             <span id="version-txt">{`v${version}`}</span>

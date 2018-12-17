@@ -1,22 +1,14 @@
 import React from "react";
 import { Col } from "react-bootstrap";
 
-import { number } from "prop-types";
-
-const HeaderContainer = props => {
+const HeaderContainer = ({ left, right }) => {
   return (
-    <Col md={5} mdOffset={props.mdOffset}>
-      {props.children}
+    <Col style={{ margin: "5px 0", height: 30 }}>
+      <Col className="left">{left}</Col>
+      <Col className="right">{right}</Col>
+      <div style={{ clear: "both" }} />
     </Col>
   );
-};
-
-HeaderContainer.propTypes = {
-  mdOffset: number
-};
-
-HeaderContainer.defaultProps = {
-  mdOffset: 0
 };
 
 export default React.memo(HeaderContainer);

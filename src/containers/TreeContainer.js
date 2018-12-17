@@ -18,7 +18,6 @@ import SortableTree from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
 import { FaPlus, FaTrash } from "react-icons/fa";
 
-
 import "./TreeContainer.css";
 
 class TreeContainer extends React.PureComponent {
@@ -77,7 +76,7 @@ class TreeContainer extends React.PureComponent {
     let newActiveNodeInfo;
     if (initialTreeIndex === treeIndex) {
       activeNodeInfo.node.expanded = expanded;
-      newActiveNodeInfo = {...activeNodeInfo};
+      newActiveNodeInfo = { ...activeNodeInfo };
     } else {
       newActiveNodeInfo = _getActiveNodeInfo(treeData, treeIndex);
     }
@@ -114,7 +113,7 @@ class TreeContainer extends React.PureComponent {
     const { treeKey, treeData, onChange, onAddNodes } = this.props;
 
     return (
-      <Col md={12} style={{ height: "98%" }}>
+      <Col id="edit-tree-container">
         {this.state.showAddModal && (
           <AddModal
             onAddNodes={onAddNodes}
@@ -127,6 +126,7 @@ class TreeContainer extends React.PureComponent {
           treeData={treeData}
           onChange={treeData => onChange(treeData, treeKey)}
           className="well"
+          style={{ height: "60vh" }}
           canDrag={false}
           canDrop={() => false}
           rowHeight={45}
@@ -179,14 +179,13 @@ class TreeContainer extends React.PureComponent {
 
       return (
         <Col
-          md={5}
           id={`tree-${treeKey}`}
-          style={{ height: "inherit" }}
+          // style={{ height: "70vh", marginBottom: 10 }}
+          className="well"
           onKeyDown={this.handleKeyDown}
         >
           <SortableTree
             treeData={treeData}
-            className="well"
             onChange={treeData => onChange(treeData, treeKey)}
             canDrag={false}
             canDrop={() => false}

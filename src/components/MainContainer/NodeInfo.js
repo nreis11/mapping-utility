@@ -1,11 +1,10 @@
 import React from "react";
-import { string, number, shape } from "prop-types";
+import { string, shape } from "prop-types";
 import "./NodeInfo.css";
 import { Col, Panel } from "react-bootstrap";
 import { delimiter } from "../../utilities/mappingHelpers";
 
-
-const NodeInfo = ({ mdOffset, heading, node }) => {
+const NodeInfo = ({ heading, node }) => {
   const nodeTitle = node ? node.title : null;
   let nodeKey = node ? node.id : null;
 
@@ -21,7 +20,7 @@ const NodeInfo = ({ mdOffset, heading, node }) => {
   }
 
   return (
-    <Col md={5} mdOffset={mdOffset}>
+    <Col>
       <Panel bsStyle="info">
         <Panel.Heading>
           <Panel.Title componentClass="h3">{heading}</Panel.Title>
@@ -45,12 +44,10 @@ const NodeInfo = ({ mdOffset, heading, node }) => {
 };
 
 NodeInfo.defaultProps = {
-  mdOffset: 0,
   node: null
 };
 
 NodeInfo.propTypes = {
-  mdOffset: number,
   heading: string.isRequired,
   node: shape({ id: string.isRequired, title: string.isRequired })
 };

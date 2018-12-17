@@ -73,7 +73,7 @@ class BoardNameForm extends React.PureComponent {
             name="boardName"
             disabled={disabled}
             value={boardName}
-            style={{ fontSize: "inherit" }}
+            style={{ fontSize: "inherit", maxWidth: 250 }}
             onChange={this.handleChange}
           />
         </FormGroup>

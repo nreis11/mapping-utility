@@ -10,11 +10,12 @@ import {
   oneOfType
 } from "prop-types";
 import { Col } from "react-bootstrap";
-
-import { removeNodeAtPath, getVisibleNodeCount } from "react-sortable-tree";
 import { getInBoundsTreeIndex } from "../utilities/helpers";
 import { _getActiveNodeInfo } from "../utilities/mappingHelpers";
-import SortableTree from "react-sortable-tree";
+import SortableTree, {
+  removeNodeAtPath,
+  getVisibleNodeCount
+} from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
 import { FaPlus, FaTrash } from "react-icons/fa";
 
@@ -180,7 +181,6 @@ class TreeContainer extends React.PureComponent {
       return (
         <Col
           id={`tree-${treeKey}`}
-          // style={{ height: "70vh", marginBottom: 10 }}
           className="well"
           onKeyDown={this.handleKeyDown}
         >

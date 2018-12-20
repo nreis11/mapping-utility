@@ -3,8 +3,42 @@
   height: 70vh;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 991px) {
   #parent-action-container {
-    padding: 0;
+    height: auto;
+  }
+
+  .action-btn-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 15px;
+  }
+
+  .action-btn {
+    width: 30%;
+    margin-top: 0;
+  }
+}
+
+@media only screen and (max-width: 1250px) {
+  .action-container .btn {
+    padding: 6px;
+    font-size: 0.8em;
+  }
+
+  .expand-info-btn {
+    width: 75px !important;
+  }
+}
+
+@media only screen and (max-height: 846px) {
+  .well {
+    height: 60vh !important;
+  }
+}
+
+@media only screen and (min-height: 1150px) {
+  .well {
+    height: 78vh !important;
   }
 }

@@ -54,18 +54,14 @@ class BoardNameForm extends React.PureComponent {
 
   handleEdit(e) {
     const { disabled } = this.state;
-    if (!disabled) {
-      this.handleSubmit(e);
-    } else {
-      this.toggleDisabled();
-    }
+    !disabled ? this.handleSubmit(e) : this.toggleDisabled();
   }
 
   render() {
     const { disabled, boardName } = this.state;
 
     return (
-      <Form className="pull-left" onSubmit={this.handleSubmit} inline>
+      <Form onSubmit={this.handleSubmit} inline>
         <FormGroup controlId="formBoardName">
           <FormControl
             type="text"
@@ -73,7 +69,7 @@ class BoardNameForm extends React.PureComponent {
             name="boardName"
             disabled={disabled}
             value={boardName}
-            style={{ fontSize: "inherit", maxWidth: 250 }}
+            style={{ fontSize: "1.5em", maxWidth: 250 }}
             onChange={this.handleChange}
           />
         </FormGroup>

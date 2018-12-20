@@ -16,8 +16,8 @@ export const ActionBarContainer = ({
 }) => {
   return (
     <Col className="text-center action-container">
-      <div>
-        <ActionButton dataCmd="space" onClick={onClick}>
+      <Col className="action-btn-container">
+        <ActionButton className="action-btn" dataCmd="space" onClick={onClick}>
           <FaForward className="react-icons" /> Map{" "}
           <FaForward className="react-icons" />
           <br />
@@ -35,9 +35,14 @@ export const ActionBarContainer = ({
           <br />
           (overwrite)
         </ActionButton>
-      </div>
-      <div>
-        <Button bsStyle="primary" onClick={onHighlightUnmapped} block>
+      </Col>
+      <Col className="action-btn-container">
+        <Button
+          className="action-btn"
+          bsStyle="primary"
+          onClick={onHighlightUnmapped}
+          block
+        >
           <FaBackward className="react-icons" /> Highlight Unmapped
         </Button>
         <ActionButton dataCmd="delete" onClick={onClick}>
@@ -46,7 +51,7 @@ export const ActionBarContainer = ({
         <ActionButton dataCmd="shift-delete" onClick={onClick}>
           <FaBackward className="react-icons" /> Clear Entire Node
         </ActionButton>
-      </div>
+      </Col>
       <ButtonGroup className="expand-btn-grp">
         <ExpandCollapseButtons expandAll={expandAll} expand={true}>
           Expand All

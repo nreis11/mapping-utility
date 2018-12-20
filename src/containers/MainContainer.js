@@ -512,12 +512,10 @@ class MainContainer extends Component {
             <Col md={5}>
               <HeaderContainer
                 left={
-                  <Header>
-                    <BoardNameForm
-                      name={boardName}
-                      handleInputChange={this.handleInputChange}
-                    />
-                  </Header>
+                  <BoardNameForm
+                    name={boardName}
+                    handleInputChange={this.handleInputChange}
+                  />
                 }
                 right={
                   <EditModal onClear={this.clearTrees}>

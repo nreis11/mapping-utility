@@ -17,14 +17,9 @@
 .well {
   border: solid;
   height: 70vh;
+  clear: both;
 }
 
 #edit-tree-container {
   padding: 10px 15px;
-}
-
-@media only screen and (min-height: 1150px) {
-  .well {
-    height: 78vh;
-  }
 }

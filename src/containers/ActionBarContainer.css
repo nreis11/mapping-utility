@@ -5,22 +5,11 @@
   justify-content: space-evenly;
 }
 
-#expand-info-btn {
+.expand-info-btn {
   border-radius: 0px !important;
   width: 100px;
 }
 
 .expand-btn-grp > :first-child {
   margin-bottom: 5px;
-}
-
-@media only screen and (max-width: 1024px) {
-  .action-container .btn {
-    padding: 6px;
-    font-size: 0.8em;
-  }
-
-  #expand-info-btn {
-    width: 80px;
-  }
 }

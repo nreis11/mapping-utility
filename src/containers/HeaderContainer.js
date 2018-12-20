@@ -6,7 +6,6 @@ const HeaderContainer = ({ left, right }) => {
     <Col style={{ margin: "5px 0", height: 30 }}>
       <Col className="left">{left}</Col>
       <Col className="right">{right}</Col>
-      <div style={{ clear: "both" }} />
     </Col>
   );
 };

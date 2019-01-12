@@ -1,5 +1,6 @@
 .panel {
     margin-bottom: 10px;
+    flex: 1;
 }
 
 .panel-heading {

@@ -474,7 +474,7 @@ class MainContainer extends Component {
         />
         <Grid fluid>
           <Row className="show-grid">
-            <Col md={5}>
+            <Col className="parent-tree-container" md={5}>
               <HeaderContainer
                 left={
                   <Header>
@@ -509,7 +509,7 @@ class MainContainer extends Component {
                 onClick={this.handleKeyDown}
               />
             </Col>
-            <Col md={5}>
+            <Col className="parent-tree-container" md={5}>
               <HeaderContainer
                 left={
                   <BoardNameForm

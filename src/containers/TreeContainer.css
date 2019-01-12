@@ -14,12 +14,6 @@
   color: red;
 }
 
-.well {
-  border: solid;
-  height: 70vh;
-  clear: both;
-}
-
 #edit-tree-container {
   padding: 10px 15px;
 }

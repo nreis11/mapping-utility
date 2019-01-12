@@ -1,7 +1,7 @@
 import React from "react";
 import { string, shape } from "prop-types";
 import "./NodeInfo.css";
-import { Col, Panel } from "react-bootstrap";
+import { Panel } from "react-bootstrap";
 import { delimiter } from "../../utilities/mappingHelpers";
 
 const NodeInfo = ({ heading, node }) => {
@@ -20,26 +20,24 @@ const NodeInfo = ({ heading, node }) => {
   }
 
   return (
-    <Col>
-      <Panel bsStyle="info">
-        <Panel.Heading>
-          <Panel.Title componentClass="h3">{heading}</Panel.Title>
-        </Panel.Heading>
-        <Panel.Body>
-          <div className="pull-left">
-            <span>
-              <strong>{nodeTitle}</strong>
-            </span>
-          </div>
-          <div className="pull-right">
-            <span>
-              <strong>{nodeKey}</strong>
-            </span>
-          </div>
-          <div className="clearfix" />
-        </Panel.Body>
-      </Panel>
-    </Col>
+    <Panel bsStyle="info">
+      <Panel.Heading>
+        <Panel.Title componentClass="h3">{heading}</Panel.Title>
+      </Panel.Heading>
+      <Panel.Body>
+        <div className="pull-left">
+          <span>
+            <strong>{nodeTitle}</strong>
+          </span>
+        </div>
+        <div className="pull-right">
+          <span>
+            <strong>{nodeKey}</strong>
+          </span>
+        </div>
+        <div className="clearfix" />
+      </Panel.Body>
+    </Panel>
   );
 };
 

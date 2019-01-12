@@ -1,9 +1,10 @@
 import React from "react";
 import { Col } from "react-bootstrap";
+import "./HeaderContainer.css";
 
 const HeaderContainer = ({ left, right }) => {
   return (
-    <Col style={{ margin: "5px 0", height: 30 }}>
+    <Col className="header-container">
       <Col className="left">{left}</Col>
       <Col className="right">{right}</Col>
     </Col>

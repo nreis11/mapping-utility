@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Modal, Button } from "react-bootstrap";
 import guide from "../../assets/user_guide.pdf";
-import { version } from "../../../package.json";
 import { FaQuestion, FaDownload } from "react-icons/fa";
 import "./HelpModal.css";
 
@@ -37,6 +36,7 @@ class HelpModal extends React.PureComponent {
   }
 
   render() {
+    const version = "1.0.3";
     return (
       <Col>
         <div id="help-link" onClick={this.handleShow}>

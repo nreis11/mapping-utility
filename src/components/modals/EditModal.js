@@ -6,7 +6,7 @@ import { FaPlus, FaUpload } from "react-icons/fa";
 import AddModal from "./AddModal";
 import FileInput from "../misc/FileInput";
 import { importYaml } from "../../utilities/fileHelpers";
-import { func } from "prop-types";
+import { func, string } from "prop-types";
 
 class EditModal extends React.PureComponent {
   constructor(props, context) {
@@ -50,7 +50,7 @@ class EditModal extends React.PureComponent {
   }
 
   render() {
-    const { onClear } = this.props;
+    const { onClear, activeType } = this.props;
     const { onAddNodes } = this.props.children.props;
 
     return (
@@ -81,12 +81,12 @@ class EditModal extends React.PureComponent {
 
             <Button
               className="pull-left"
-              style={{ marginLeft: 5 }}
+              style={{ marginLeft: 5, textTransform: "capitalize" }}
               bsStyle="danger"
               bsSize="small"
               onClick={() => onClear(false)}
             >
-              Clear Data
+              Clear {activeType}
             </Button>
 
             <Button
@@ -103,9 +103,6 @@ class EditModal extends React.PureComponent {
                 className="pull-left"
                 bsStyle="danger"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginLeft: 5,
                   fontSize: 12,
                   height: 30
                 }}
@@ -123,7 +120,8 @@ class EditModal extends React.PureComponent {
 }
 
 EditModal.propTypes = {
-  onClear: func.isRequired
+  onClear: func.isRequired,
+  activeType: string.isRequired
 };
 
 export default EditModal;

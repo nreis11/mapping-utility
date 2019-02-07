@@ -518,7 +518,7 @@ class MainContainer extends Component {
                   />
                 }
                 right={
-                  <EditModal onClear={this.clearTrees}>
+                  <EditModal onClear={this.clearTrees} activeType={activeType}>
                     <TreeContainer
                       treeKey={this.extTreeKey}
                       treeData={activeExtTreeData}

@@ -1,9 +1,13 @@
 import React from "react";
+import { FaCheck } from "react-icons/fa";
+import { Alert } from "react-bootstrap";
+import "./CopyConfirmation.css";
 
 const CopyConfirmation = () => (
-  <span className="pull-left" style={{ paddingLeft: 5, lineHeight: "34px" }}>
-    Copied.
-  </span>
+  <Alert className="pull-left" bsStyle="success">
+    <FaCheck className="react-icons" />
+    &nbsp;Copied.
+  </Alert>
 );
 
 export default CopyConfirmation;

@@ -37,6 +37,7 @@ class RawDataForm extends React.PureComponent {
           placeholder="Ex. Value|Label"
           onChange={onChange}
           style={{ height: "55vh" }}
+          autoFocus
         />
         <FormControl.Feedback />
       </FormGroup>

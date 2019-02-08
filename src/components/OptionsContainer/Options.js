@@ -1,5 +1,5 @@
 import React from "react";
-import { func } from "prop-types";
+import { func, shape, bool } from "prop-types";
 import { Popover, OverlayTrigger } from "react-bootstrap";
 import "./Options.css";
 
@@ -55,7 +55,11 @@ const Options = props => {
 };
 
 Options.propTypes = {
-  onOptionChange: func.isRequired
+  onOptionChange: func.isRequired,
+  options: shape({
+    parentsSelectable: bool.isRequired,
+    outputParents: bool.isRequired
+  })
 };
 
 export default React.memo(Options);

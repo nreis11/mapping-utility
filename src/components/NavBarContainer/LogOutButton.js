@@ -12,7 +12,8 @@ const LogOutButton = () => {
 
   return (
     <Button onClick={logOut}>
-      <FaSignOutAlt className="react-icons" /> Log Out
+      <FaSignOutAlt className="react-icons" />
+      &nbsp;Log Out
     </Button>
   );
 };

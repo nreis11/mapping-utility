@@ -6833,7 +6833,7 @@ export const states = [
     { id: "eqCA-ON", title: "Ontario", parent: "eqCA" },
     {
         id: "eqCA-PE",
-        title: "Printe Edward Island (Île-du-Prince-Édouard)",
+        title: "Prince Edward Island (Île-du-Prince-Édouard)",
         parent: "eqCA"
     },
     { id: "eqCA-QC", title: "Quebec (Québec)", parent: "eqCA" },

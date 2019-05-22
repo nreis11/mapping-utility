@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, FormGroup, FormControl, Button } from "react-bootstrap";
 import { string, func } from "prop-types";
+import { FaPencilAlt } from "react-icons/fa";
 
 class BoardNameForm extends React.PureComponent {
   constructor(props) {
@@ -73,7 +74,9 @@ class BoardNameForm extends React.PureComponent {
             onChange={this.handleChange}
           />
         </FormGroup>
-        <Button onClick={this.handleEdit}>{disabled ? "Edit" : "Save"}</Button>
+        <Button onClick={this.handleEdit}>
+          <FaPencilAlt className="react-icons" />
+        </Button>
       </Form>
     );
   }

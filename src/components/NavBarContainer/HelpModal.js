@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Modal, Button } from "react-bootstrap";
+import { Col, Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import guide from "../../assets/user_guide.pdf";
 import { FaQuestion, FaDownload } from "react-icons/fa";
 import "./HelpModal.css";
@@ -36,11 +36,15 @@ class HelpModal extends React.PureComponent {
   }
 
   render() {
-    const version = "1.0.5";
+    const version = "1.0.6";
+    const tooltip = text => <Tooltip id={`tooltip-${text}`}>{text}</Tooltip>;
+
     return (
       <Col>
         <div id="help-link" onClick={this.handleShow}>
-          Help <FaQuestion className="react-icons" />
+          <OverlayTrigger placement="bottom" overlay={tooltip("Help")}>
+            <FaQuestion size="1.25em" className="react-icons" />
+          </OverlayTrigger>
         </div>
 
         <Modal show={this.state.show} onHide={this.handleClose}>

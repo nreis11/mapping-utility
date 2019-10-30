@@ -1,11 +1,10 @@
 .navbar {
-  padding: 0px 15px;
   margin-bottom: 5px;
   border-radius: 0px;
 }
 
 .navbar-nav > li > a {
-  padding: 10px 5px;
+  padding: 10px 0px;
 }
 
 .navbar-brand {

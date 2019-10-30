@@ -8,7 +8,6 @@ import {
   OverlayTrigger
 } from "react-bootstrap";
 import { FaFolderOpen, FaSave } from "react-icons/fa";
-import LogOutButton from "./LogOutButton";
 import SearchBar from "./SearchBar";
 import HelpModal from "./HelpModal";
 import FileInput from "../misc/FileInput";
@@ -28,9 +27,6 @@ const NavBar = props => {
 
   return (
     <Navbar inverse fluid>
-      <Navbar.Header>
-        <Navbar.Brand>Mapping Utility</Navbar.Brand>
-      </Navbar.Header>
       <Nav>
         <FileInput handleOpen={handleOpen} type="json" />
         <NavItem>
@@ -52,9 +48,6 @@ const NavBar = props => {
       <Nav pullRight>
         <NavItem>
           <HelpModal />
-        </NavItem>
-        <NavItem>
-          <LogOutButton />
         </NavItem>
       </Nav>
     </Navbar>

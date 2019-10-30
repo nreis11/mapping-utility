@@ -1,8 +1,9 @@
 .header-container {
-  flex: 1 1 30px;
+  flex: 1 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 5px 0px;
 }
 
 .header-container h2 {

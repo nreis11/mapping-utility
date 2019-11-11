@@ -30,9 +30,12 @@ class AddNodesForm extends React.PureComponent {
     const { delimiter, valueIdx, labelIdx, rawData } = this.state;
     const { nodeInfo, handleClose, onAddNodes } = this.props;
     let parentId;
+    let tier = 1;
 
+    // Adding children
     if (nodeInfo) {
       parentId = nodeInfo.node.id;
+      tier = parseInt(parentId.split(idDelimiter)[0]) + 1;
     }
 
     if (!rawData) {
@@ -46,15 +49,15 @@ class AddNodesForm extends React.PureComponent {
       return;
     }
 
-    // Create array of flat data
+    // Create array of flat data, add tier for unique IDs
     const idIdx = valueIdx < labelIdx ? 0 : 1;
     const titleIdx = valueIdx < labelIdx ? 1 : 0;
     const flatData = rawData.split("\n").map(line => {
       let lineArr = line.split(delimiter);
       return {
-        id: parentId ? `${parentId}${idDelimiter}${lineArr[idIdx]}` : lineArr[idIdx],
+        id: `${tier}${idDelimiter}${lineArr[idIdx]}`,
         title: lineArr[titleIdx],
-        parent: parentId ? parentId : null
+        parent: parentId || null
       };
     });
 
@@ -101,7 +104,9 @@ class AddNodesForm extends React.PureComponent {
 AddNodesForm.propTypes = {
   onAddNodes: func.isRequired,
   handleClose: func.isRequired,
-  nodeInfo: shape({node: shape({id: string.isRequired, title: string.isRequired})})
+  nodeInfo: shape({
+    node: shape({ id: string.isRequired, title: string.isRequired })
+  })
 };
 
 AddNodesForm.defaultProps = {

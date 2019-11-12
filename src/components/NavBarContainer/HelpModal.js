@@ -55,7 +55,7 @@ class HelpModal extends React.PureComponent {
             <p>
               <strong>Up, Down, Left, Right:</strong>
               <br />
-              Move through nodes.
+              Navigate nodes.
             </p>
 
             <p>
@@ -77,29 +77,15 @@ class HelpModal extends React.PureComponent {
             </p>
 
             <p>
-              <strong>Delete:</strong>
-              <br />
-              Delete current node mapping and move down to the next node.
-            </p>
-
-            <p>
-              <strong>Shift+Delete:</strong>
-              <br />
-              Delete current node &amp; everything under that node, then move
-              down to the next node.
-            </p>
-
-            <p>
               <strong>Backspace:</strong>
               <br />
-              Delete current node mapping and move up to the previous node.
+              Delete current node mapping.
             </p>
 
             <p>
               <strong>Shift+Backspace:</strong>
               <br />
-              Delete current node &amp; everything under that node, then move up
-              to the previous node.
+              Delete current node &amp; everything under that node.
             </p>
 
             <p>

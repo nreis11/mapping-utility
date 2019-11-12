@@ -272,6 +272,7 @@ class MainContainer extends Component {
     }
 
     const activeIntTreeData = intTreeData[activeType];
+    const activeExtTreeData = extTreeData[activeType];
     let treeIndex = activeIntNodeInfo ? activeIntNodeInfo.treeIndex : null;
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
@@ -316,24 +317,20 @@ class MainContainer extends Component {
       }
 
       const path = activeExtNodeInfo.path;
-      const nodeInfo = _handleMapAction({
+      newNode = _handleMapAction({
         e,
         activeIntNode,
         path,
-        treeIndex
+        activeExtTreeData
       });
-      newNode = nodeInfo.newNode;
-      treeIndex = nodeInfo.treeIndex;
+      treeIndex += 1;
     } else if (deleteKeys.includes(key)) {
       // handle delete actions
       e.preventDefault();
-      const nodeInfo = _handleDeleteAction({
+      newNode = _handleDeleteAction({
         e,
-        activeIntNode,
-        treeIndex
+        activeIntNode
       });
-      newNode = nodeInfo.newNode;
-      treeIndex = nodeInfo.treeIndex;
     } else if ((e.ctrlKey || e.metaKey) && searchKeys.includes(key)) {
       e.preventDefault();
       const searchValues = _handleSearchAction({
@@ -457,11 +454,9 @@ class MainContainer extends Component {
     };
     let mappedNode = null;
     if (activeIntNode && activeIntNode.mapping) {
-      mappedNode = getNodeAtPath({
-        treeData: activeExtTreeData,
-        path: activeIntNode.mapping,
-        getNodeKey
-      }).node;
+      // Last idx is actual node needed
+      const { mapping } = activeIntNode;
+      mappedNode = mapping[mapping.length - 1];
     }
 
     return (

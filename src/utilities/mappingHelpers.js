@@ -9,66 +9,67 @@ import {
 import xmlbuilder from "xmlbuilder";
 
 const getNodeKey = ({ node }) => node.id;
-export const delimiter = "~~";
+export const delimiter = "|";
 
-export const _handleMapAction = ({ e, activeIntNode, path, treeIndex }) => {
+const getPathNodes = (treeData, path) => {
+  let nodes = path.map((nodeId, idx) => {
+    return getNodeAtPath({
+      treeData,
+      path: path.slice(0, idx + 1),
+      getNodeKey
+    }).node;
+  });
+  return nodes;
+};
+
+export const _handleMapAction = ({
+  e,
+  activeIntNode,
+  path,
+  activeExtTreeData
+}) => {
   let newNode;
+  let pathNodes = getPathNodes(activeExtTreeData, path);
   let key = e.keyCode || e.target.dataset.cmd;
   if ((e.shiftKey && key === 32) || key === "shift-space") {
     // "Select node and its children. Preserve existing mappings"
-    newNode = _mapNode([activeIntNode], path, false);
-    treeIndex += 1;
+    newNode = _mapNode([activeIntNode], pathNodes, false);
   } else if ((e.ctrlKey && key === 32) || key === "ctrl-space") {
     // "Select node and its children. Overwrite any existing mappings."
-    newNode = _mapNode([activeIntNode], path, true);
-    treeIndex += 1;
+    newNode = _mapNode([activeIntNode], pathNodes, true);
   } else if (key === 32 || key === "space") {
     // "Map single node"
-    activeIntNode.mapping = path;
-    newNode = activeIntNode;
-    treeIndex += 1;
+    newNode = { ...activeIntNode, mapping: pathNodes };
   }
-  return { newNode, treeIndex };
+  return newNode;
 };
 
-export const _handleDeleteAction = ({ e, activeIntNode, treeIndex }) => {
+export const _handleDeleteAction = ({ e, activeIntNode }) => {
   let newNode;
   let key = e.keyCode || e.target.dataset.cmd;
-  if (e.shiftKey && e.keyCode === 8) {
+  if ((e.shiftKey && e.keyCode === 8) || key === "shift-delete") {
     // "SHIFT BACKSPACE";
-    // "Delete current node & everything under that node, then move up to the previous node."
+    // "Delete current node & everything under that node"
     newNode = _mapNode([activeIntNode], null, true);
-    treeIndex -= 1;
-  } else if (e.keyCode === 46 || key === "delete") {
-    // "DELETE: Delete current node mapping and move down to the next node."
-    activeIntNode.mapping = null;
-    newNode = activeIntNode;
-    treeIndex += 1;
-  } else if ((e.shiftKey && e.keyCode === 46) || key === "shift-delete") {
-    // "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
-    newNode = _mapNode([activeIntNode], null, true);
-    treeIndex += 1;
-  } else if (e.keyCode === 8) {
-    // "BACKSPACE Delete current node mapping and move up to the previous node."
-    activeIntNode.mapping = null;
-    newNode = activeIntNode;
-    treeIndex -= 1;
+  } else if (e.keyCode === 8 || key === "delete") {
+    // "BACKSPACE Delete current node mapping."
+    newNode = { ...activeIntNode, mapping: null };
   } else {
     return false;
   }
-  return { newNode, treeIndex };
+  return newNode;
 };
 
 export const _handleSearchAction = ({ e, activeIntNode, activeExtNode }) => {
   let searchInternal, searchString;
   const key = e.keyCode;
   if (key === 70) {
-    // console.log("CTRL + F");
+    // "CTRL + F";
     // Autocomplete search field with active node title
     searchString = activeIntNode ? activeIntNode.title : "";
     searchInternal = false;
   } else if (key === 71) {
-    // console.log("CTRL + G");
+    // "CTRL + G";
     searchString = activeExtNode ? activeExtNode.title : "";
     searchInternal = true;
   }
@@ -114,8 +115,8 @@ export const _mapNode = (treeData, mapping, overwrite = false) => {
 };
 
 export const _sortTree = treeData => {
-  return treeData.sort(
-    (a, b) => (a.title === b.title ? 0 : a.title < b.title ? -1 : 1)
+  return treeData.sort((a, b) =>
+    a.title === b.title ? 0 : a.title < b.title ? -1 : 1
   );
 };
 
@@ -192,20 +193,12 @@ export const _exportMappingsToXML = ({
 const _createNode = ({
   mappingNode,
   node,
-  extTreeData,
   outputParents = false,
   testing = false
 }) => {
-  const getNodeTitle = path =>
-    getNodeAtPath({
-      treeData: extTreeData,
-      path,
-      getNodeKey
-    }).node.title;
-
   // If testing, use plain text node. Otherwise, use CDATA
   // Mapping is path array with node ids
-  let mapping = node.mapping;
+  let { mapping } = node;
   const childNode = mappingNode.ele(
     node.id === "eqDEFAULT" ? "default" : "map"
   );
@@ -217,31 +210,28 @@ const _createNode = ({
 
   if (outputParents) {
     // Multi-tier
-    mapping.forEach((tierMapping, idx) => {
+    mapping.forEach((tierNode, idx) => {
       // Get path up to node
-      const path = mapping.slice(0, idx + 1);
-      const extNodeTitle = getNodeTitle(path);
-      // Actual value is last id
-      const idArr = tierMapping.split(delimiter);
-      tierMapping = idArr[idArr.length - 1];
+      const { title } = tierNode;
+      const idArr = tierNode.id.split(delimiter);
+      const id = idArr[1];
       const boardValueNode = childNode
         .ele("boardvalue")
         .att("tier", idx + 1)
-        .att("label", extNodeTitle);
-      testing
-        ? boardValueNode.txt(tierMapping)
-        : boardValueNode.dat(tierMapping);
+        .att("label", title);
+      testing ? boardValueNode.txt(id) : boardValueNode.dat(id);
     });
   } else {
-    // Grab last value. Only single tier
-    const extNodeTitle = getNodeTitle(mapping);
-    let lastIdArr = mapping[mapping.length - 1].split(delimiter);
-    mapping = lastIdArr[lastIdArr.length - 1];
+    // Single tier
+    const lastNode = mapping[mapping.length - 1];
+    let { id, title } = lastNode;
+    // Ex. 1|55
+    id = id.split(delimiter)[1];
     const boardValueNode = childNode
       .ele("boardvalue")
       .att("tier", 1)
-      .att("label", extNodeTitle);
-    testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
+      .att("label", title);
+    testing ? boardValueNode.txt(id) : boardValueNode.dat(id);
   }
 
   return mappingNode;

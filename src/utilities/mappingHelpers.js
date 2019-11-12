@@ -150,7 +150,6 @@ export const _changeNodeAtPath = (treeData, path, newNode) => {
 
 export const _exportMappingsToXML = ({
   intTreeData,
-  extTreeData,
   outputParents,
   testing = false
 }) => {
@@ -174,7 +173,6 @@ export const _exportMappingsToXML = ({
       return _createNode({
         mappingNode,
         node,
-        extTreeData: extTreeData[type],
         outputParents,
         testing
       });

@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { Grid, Row, Col } from "react-bootstrap";
 import "./MainContainer.css";
-import {
-  toggleExpandedForAll,
-  getNodeAtPath,
-  getVisibleNodeCount
-} from "react-sortable-tree";
+import { toggleExpandedForAll, getVisibleNodeCount } from "react-sortable-tree";
 
 import {
   _getActiveNodeInfo,
@@ -44,8 +40,6 @@ import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import OptionsContainer from "./OptionsContainer";
 import NavBar from "../components/NavBarContainer/NavBar";
 import BoardNameForm from "../components/HeaderContainer/BoardNameForm";
-
-const getNodeKey = ({ node }) => node.id;
 
 class MainContainer extends Component {
   constructor(props) {
@@ -332,6 +326,7 @@ class MainContainer extends Component {
         activeIntNode
       });
     } else if ((e.ctrlKey || e.metaKey) && searchKeys.includes(key)) {
+      // handle search actions
       e.preventDefault();
       const searchValues = _handleSearchAction({
         e,

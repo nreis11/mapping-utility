@@ -1,11 +1,12 @@
 import { saveToJson, traverse } from "./fileHelpers";
+import { delimeter } from "./mappingHelpers";
 
 describe("saveToJson", () => {
   const intTreeData = {
     categories: [
       {
         id: "eqDEFAULT",
-        mapping: ["200", "200~~201"]
+        mapping: [`1${delimeter}200`, `2${delimeter}201`]
       },
       {
         id: "eq17000000",
@@ -66,7 +67,7 @@ describe("saveToJson", () => {
     Object.keys(stateObj).forEach(key => {
       const value = jsonObj[key];
       expect(value).toEqual(stateObj[key]);
-    })
+    });
   });
 });
 

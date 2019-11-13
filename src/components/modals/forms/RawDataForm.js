@@ -11,11 +11,7 @@ class RawDataForm extends React.PureComponent {
         .trim()
         .split("\n")
         .filter(line => !line.includes(delimiter));
-      if (missingDelimiterArr.length) {
-        return "error";
-      } else {
-        return "success";
-      }
+      return missingDelimiterArr.length ? "error" : "success";
     }
     return null;
   }

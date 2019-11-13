@@ -9,12 +9,12 @@
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-bootstrap": "^0.32.4",
-    "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.11.0",
-    "react-icons": "^3.8.0",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-scripts": "3.2.0",
-    "react-sortable-tree": "^2.6.2",
-    "xmlbuilder": "^13.0.2"
+    "react-icons": "^3.8.0",
+    "xmlbuilder": "^13.0.2",
+    "react-sortable-tree": "^2.6.2"
   },
   "scripts": {
     "start": "react-scripts start",

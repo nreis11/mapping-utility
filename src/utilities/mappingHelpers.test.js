@@ -2,7 +2,8 @@ import {
   _getActiveNodeInfo,
   _mapNode,
   _isMapped,
-  _exportMappingsToXML
+  _exportMappingsToXML,
+  delimiter
 } from "./mappingHelpers";
 
 describe("_getActiveNodeInfo", () => {
@@ -111,46 +112,45 @@ describe("_exportMappingsToXML", () => {
     categories: [
       {
         id: "eqDEFAULT",
-        mapping: ["200", "200~~201"]
+        mapping: [
+          {
+            id: `1${delimiter}200`,
+            title: "Managers"
+          },
+          { id: `2${delimiter}201`, title: "Operation Manager" }
+        ]
       },
       {
         id: "eq17000000",
-        mapping: ["100"],
+        mapping: [
+          { id: `1${delimiter}201`, title: "Architecture and Engineering" }
+        ],
         children: [
           {
             id: "eq17100000",
-            mapping: ["100", "100~~101"]
+            title: "Architect",
+            mapping: [
+              { id: `2${delimiter}201`, title: "Architecture and Engineering" },
+              { id: `2${delimiter}255`, title: "Architect" }
+            ]
           }
         ]
       }
     ],
     industries: [
-      { id: "eqDEFAULT", mapping: ["1000"] },
-      { id: "eq1", mapping: ["24000"] }
+      {
+        id: "eqDEFAULT",
+        mapping: [{ id: `1${delimiter}1000`, title: "General" }]
+      },
+      {
+        id: "eq1",
+        mapping: [
+          { id: `1${delimiter}34`, title: "Advertising, Communication & PR" }
+        ]
+      }
     ],
     states: [{ id: "eqDEFAULT" }],
     countries: [{ id: "eqDEFAULT" }]
-  };
-
-  const extTreeData = {
-    categories: [
-      {
-        id: "200",
-        title: "Managers",
-        children: [{ id: "200~~201", title: "Operation Manager" }]
-      },
-      {
-        id: "100",
-        title: "Community and Social Services",
-        children: [{ id: "100~~101", title: "Religious Workers" }]
-      }
-    ],
-    industries: [
-      { id: "24000", title: "Advertising, Communication & PR", parent: null },
-      { id: "1000", title: "Agriculture, Fishing & Forestry", parent: null }
-    ],
-    states: [],
-    countries: []
   };
 
   const types = {
@@ -164,7 +164,6 @@ describe("_exportMappingsToXML", () => {
 
   let result = _exportMappingsToXML({
     intTreeData,
-    extTreeData,
     outputParents: false,
     testing: true
   });
@@ -206,16 +205,15 @@ describe("_exportMappingsToXML", () => {
     expect(firstMapChild.getAttribute("equestvalue")).toEqual("17000000");
     expect(firstBoardValueChild.getAttribute("tier")).toEqual("1");
     expect(firstBoardValueChild.getAttribute("label")).toEqual(
-      "Community and Social Services"
+      "Architecture and Engineering"
     );
-    expect(firstBoardValueChild.textContent).toEqual("100");
+    expect(firstBoardValueChild.textContent).toEqual("201");
   });
 
   describe("_exportMappingsToXML with outputParents", () => {
     // Output parents
     const result = _exportMappingsToXML({
       intTreeData,
-      extTreeData,
       outputParents: true,
       testing: true
     });

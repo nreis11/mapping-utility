@@ -11,7 +11,9 @@ const BasicAlert = props => {
         <Modal.Header>
           <Modal.Title>Alert</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{message}</Modal.Body>
+        <Modal.Body style={{ color: "red" }}>
+          <strong>{message}</strong>
+        </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => handleClose()}>Close</Button>
         </Modal.Footer>

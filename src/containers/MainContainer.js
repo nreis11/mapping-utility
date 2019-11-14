@@ -40,6 +40,7 @@ import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import OptionsContainer from "./OptionsContainer";
 import NavBar from "../components/NavBarContainer/NavBar";
 import BoardNameForm from "../components/HeaderContainer/BoardNameForm";
+import BasicAlert from "../components/modals/BasicAlert";
 
 class MainContainer extends Component {
   constructor(props) {
@@ -59,7 +60,8 @@ class MainContainer extends Component {
       searchString: "",
       searchFocusIndex: 0,
       searchFoundCount: 0,
-      searchInternal: false
+      searchInternal: false,
+      alert: null
     };
 
     this.intTreeKey = "intTreeData";
@@ -79,6 +81,7 @@ class MainContainer extends Component {
     this.handleOpen = this.handleOpen.bind(this);
     this.clearTrees = this.clearTrees.bind(this);
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
+    this.handleCloseAlert = this.handleCloseAlert.bind(this);
   }
 
   componentDidMount() {
@@ -301,12 +304,16 @@ class MainContainer extends Component {
       const parentsAlert = "Parents are not selectable.";
 
       if (!bothNodesAreSelected(activeIntNodeInfo, activeExtNodeInfo)) {
-        alert(bothNodesAlert);
+        this.setState({
+          alert: bothNodesAlert
+        });
         return;
       }
 
       if (parentsAreNotSelectable(parentsSelectable, activeExtNode)) {
-        alert(parentsAlert);
+        this.setState({
+          alert: parentsAlert
+        });
         return;
       }
 
@@ -416,6 +423,12 @@ class MainContainer extends Component {
     saveToJson(this.state);
   }
 
+  handleCloseAlert() {
+    this.setState({
+      alert: null
+    });
+  }
+
   render() {
     const {
       intTreeData,
@@ -429,7 +442,8 @@ class MainContainer extends Component {
       searchFocusIndex,
       searchFoundCount,
       searchInternal,
-      boardName
+      boardName,
+      alert
     } = this.state;
 
     console.log("RENDERED");
@@ -456,6 +470,9 @@ class MainContainer extends Component {
 
     return (
       <div id="main-container">
+        {alert && (
+          <BasicAlert handleClose={this.handleCloseAlert} message={alert} />
+        )}
         <NavBar
           searchValues={searchValues}
           handleSave={this.handleSave}

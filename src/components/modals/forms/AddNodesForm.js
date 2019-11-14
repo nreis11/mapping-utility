@@ -12,7 +12,9 @@ class AddNodesForm extends React.PureComponent {
 
     this.state = {
       rawData: "",
-      delimiter: "|"
+      delimiter: "|",
+      valueIdx: "1",
+      labelIdx: "2"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,13 +35,7 @@ class AddNodesForm extends React.PureComponent {
 
   handleSubmit(e) {
     e.preventDefault();
-    const valueIdx = parseInt(
-      document.getElementById(`form${this.valueName}`).value
-    );
-    const labelIdx = parseInt(
-      document.getElementById(`form${this.labelName}`).value
-    );
-    const { delimiter, rawData } = this.state;
+    const { delimiter, rawData, valueIdx, labelIdx } = this.state;
     const { nodeInfo, handleClose, onAddNodes } = this.props;
     let parentId;
     let tier = 1;
@@ -86,9 +82,9 @@ class AddNodesForm extends React.PureComponent {
   }
 
   render() {
-    const { rawData, delimiter } = this.state;
+    const { rawData, delimiter, valueIdx, labelIdx } = this.state;
     const rawDataValidationState = this.getRawDataValidationState();
-    const validated = rawDataValidationState === "success";
+    const isValidated = rawDataValidationState === "success";
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -98,16 +94,24 @@ class AddNodesForm extends React.PureComponent {
           validationState={rawDataValidationState}
         />
         <Row>
-          <IdxForm name={this.valueName} />
+          <IdxForm
+            name={this.valueName}
+            onChange={this.handleChange}
+            idx={valueIdx}
+          />
           <DelimiterForm onChange={this.handleChange} delimiter={delimiter} />
-          <IdxForm name={this.labelName} />
+          <IdxForm
+            name={this.labelName}
+            onChange={this.handleChange}
+            idx={labelIdx}
+          />
         </Row>
         <Button
           style={{ marginLeft: 5 }}
           bsStyle="info"
           className="pull-right"
           type="submit"
-          disabled={validated ? false : true}
+          disabled={isValidated ? false : true}
         >
           Import Nodes
         </Button>

@@ -1,10 +1,10 @@
 import React from "react";
 import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
-import { string } from "prop-types";
+import { string, func } from "prop-types";
 
 class IdxForm extends React.PureComponent {
   render() {
-    const { name } = this.props;
+    const { name, onChange, idx } = this.props;
 
     return (
       <Col md={4}>
@@ -12,7 +12,10 @@ class IdxForm extends React.PureComponent {
           <ControlLabel>Value Position</ControlLabel>
           <FormControl
             componentClass="select"
-            value={name === "valueIdx" ? "1" : "2"}
+            placeholder="select"
+            value={idx}
+            onChange={onChange}
+            name={name}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -24,7 +27,9 @@ class IdxForm extends React.PureComponent {
 }
 
 IdxForm.propTypes = {
-  name: string.isRequired
+  name: string.isRequired,
+  idx: string.isRequired,
+  onChange: func.isRequired
 };
 
 export default IdxForm;

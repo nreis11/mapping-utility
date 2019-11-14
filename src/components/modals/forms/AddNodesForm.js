@@ -12,22 +12,34 @@ class AddNodesForm extends React.PureComponent {
 
     this.state = {
       rawData: "",
-      delimiter: "|",
-      valueIdx: 1,
-      labelIdx: 2
+      delimiter: "|"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getRawDataValidationState = this.getRawDataValidationState.bind(this);
+
+    this.valueName = "valueIdx";
+    this.labelName = "labelIdx";
   }
 
   handleChange(e) {
     const { name, value } = e.target;
+    // Force delimiter validation
+    if (name === "delimiter" && value.length > 1) {
+      return;
+    }
     this.setState({ [name]: value });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { delimiter, valueIdx, labelIdx, rawData } = this.state;
+    const valueIdx = parseInt(
+      document.getElementById(`form${this.valueName}`).value
+    );
+    const labelIdx = parseInt(
+      document.getElementById(`form${this.labelName}`).value
+    );
+    const { delimiter, rawData } = this.state;
     const { nodeInfo, handleClose, onAddNodes } = this.props;
     let parentId;
     let tier = 1;
@@ -38,11 +50,6 @@ class AddNodesForm extends React.PureComponent {
       tier = parseInt(parentId.split(idDelimiter)[0]) + 1;
     }
 
-    if (!rawData) {
-      handleClose();
-      return;
-    }
-
     // Check for validation errors
     const formError = document.querySelector(".has-error");
     if (formError) {
@@ -50,8 +57,8 @@ class AddNodesForm extends React.PureComponent {
     }
 
     // Create array of flat data, add tier for unique IDs
-    const idIdx = valueIdx < labelIdx ? 0 : 1;
-    const titleIdx = valueIdx < labelIdx ? 1 : 0;
+    const idIdx = valueIdx <= labelIdx ? 0 : 1;
+    const titleIdx = valueIdx <= labelIdx ? 1 : 0;
     const flatData = rawData.split("\n").map(line => {
       let lineArr = line.split(delimiter);
       return {
@@ -65,34 +72,42 @@ class AddNodesForm extends React.PureComponent {
     handleClose();
   }
 
+  getRawDataValidationState() {
+    // Check that every line has a delimiter
+    const { delimiter, rawData } = this.state;
+    if (delimiter && rawData) {
+      const missingDelimiterArr = rawData
+        .trim()
+        .split("\n")
+        .filter(line => !line.includes(delimiter));
+      return missingDelimiterArr.length ? "error" : "success";
+    }
+    return null;
+  }
+
   render() {
-    const { rawData, delimiter, valueIdx, labelIdx } = this.state;
+    const { rawData, delimiter } = this.state;
+    const rawDataValidationState = this.getRawDataValidationState();
+    const validated = rawDataValidationState === "success";
 
     return (
       <Form onSubmit={this.handleSubmit}>
         <RawDataForm
           onChange={this.handleChange}
           rawData={rawData}
-          delimiter={delimiter}
+          validationState={rawDataValidationState}
         />
         <Row>
-          <IdxForm
-            onChange={this.handleChange}
-            idx={valueIdx}
-            name="valueIdx"
-          />
+          <IdxForm name={this.valueName} />
           <DelimiterForm onChange={this.handleChange} delimiter={delimiter} />
-          <IdxForm
-            onChange={this.handleChange}
-            idx={labelIdx}
-            name="labelIdx"
-          />
+          <IdxForm name={this.labelName} />
         </Row>
         <Button
           style={{ marginLeft: 5 }}
           bsStyle="info"
           className="pull-right"
           type="submit"
+          disabled={validated ? false : true}
         >
           Import Nodes
         </Button>

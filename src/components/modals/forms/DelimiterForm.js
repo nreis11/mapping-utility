@@ -3,23 +3,12 @@ import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
 import { string, func } from "prop-types";
 
 class DelimiterForm extends React.PureComponent {
-  getValidationState() {
-    const { delimiter } = this.props;
-    const length = delimiter.length;
-    if (length === 1) return "success";
-    else if (length > 1) return "error";
-    return null;
-  }
-
   render() {
     const { delimiter, onChange } = this.props;
 
     return (
       <Col md={4}>
-        <FormGroup
-          controlId="formDelimiter"
-          validationState={this.getValidationState()}
-        >
+        <FormGroup controlId="formDelimiter">
           <ControlLabel>Delimiter</ControlLabel>
           <FormControl
             type="text"

@@ -3,27 +3,11 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { string, func } from "prop-types";
 
 class RawDataForm extends React.PureComponent {
-  getValidationState() {
-    // Check that every line has a delimiter
-    const { delimiter, rawData } = this.props;
-    if (delimiter && rawData) {
-      const missingDelimiterArr = rawData
-        .trim()
-        .split("\n")
-        .filter(line => !line.includes(delimiter));
-      return missingDelimiterArr.length ? "error" : "success";
-    }
-    return null;
-  }
-
   render() {
-    const { rawData, onChange } = this.props;
+    const { rawData, onChange, validationState } = this.props;
 
     return (
-      <FormGroup
-        controlId="formAddNodes"
-        validationState={this.getValidationState()}
-      >
+      <FormGroup controlId="formAddNodes" validationState={validationState}>
         <ControlLabel>Data</ControlLabel>
         <FormControl
           type="text"
@@ -44,7 +28,11 @@ class RawDataForm extends React.PureComponent {
 RawDataForm.propTypes = {
   rawData: string.isRequired,
   onChange: func.isRequired,
-  delimiter: string.isRequired
+  validationState: string
+};
+
+RawDataForm.defaultProps = {
+  validationState: null
 };
 
 export default RawDataForm;

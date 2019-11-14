@@ -1,40 +1,22 @@
 import React from "react";
 import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
-import { number, func } from "prop-types";
+import { string } from "prop-types";
 
 class IdxForm extends React.PureComponent {
-  getValidationState() {
-    const { idx } = this.props;
-
-    if (isNaN(idx) || idx.toString().length > 1) {
-      return "error";
-    }
-    if (idx.toString().length === 1) {
-      return "success";
-    }
-    return null;
-  }
-
   render() {
-    const { idx, onChange, name } = this.props;
+    const { name } = this.props;
 
     return (
       <Col md={4}>
-        <FormGroup
-          controlId={`form${name}`}
-          validationState={this.getValidationState()}
-        >
-          <ControlLabel>
-            {name === "valueIdx" ? "Value" : "Label"} Position
-          </ControlLabel>
+        <FormGroup controlId={`form${name}`}>
+          <ControlLabel>Value Position</ControlLabel>
           <FormControl
-            type="text"
-            name={name}
-            value={idx}
-            placeholder="1 or 2"
-            onChange={onChange}
-          />
-          <FormControl.Feedback />
+            componentClass="select"
+            value={name === "valueIdx" ? "1" : "2"}
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </FormControl>
         </FormGroup>
       </Col>
     );
@@ -42,8 +24,7 @@ class IdxForm extends React.PureComponent {
 }
 
 IdxForm.propTypes = {
-  idx: number.isRequired,
-  onChange: func.isRequired
+  name: string.isRequired
 };
 
 export default IdxForm;

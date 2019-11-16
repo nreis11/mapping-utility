@@ -9,7 +9,9 @@ class IdxForm extends React.PureComponent {
     return (
       <Col md={4}>
         <FormGroup controlId={`form${name}`}>
-          <ControlLabel>Value Position</ControlLabel>
+          <ControlLabel>
+            {name === "valueIdx" ? "Value" : "Label"} Position
+          </ControlLabel>
           <FormControl
             componentClass="select"
             placeholder="select"

@@ -14,7 +14,7 @@ const Options = props => {
 
   const selectablePopover = (
     <Popover id="popover-trigger-hover-focus" title="Parents Selectable">
-      All values can be mapped.
+      All tiers can be mapped.
     </Popover>
   );
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-
 import { func, string } from "prop-types";
 
 const BasicAlert = props => {

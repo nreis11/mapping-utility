@@ -20,7 +20,7 @@ const Options = props => {
 
   const labelPopover = (
     <Popover id="popover-trigger-hover-focus" title="Output Labels">
-      Replace eQuest value with label in output.
+      Export eQuest label as board value.
     </Popover>
   );
 

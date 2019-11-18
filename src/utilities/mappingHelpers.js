@@ -167,7 +167,7 @@ export const _exportMappingsToXML = ({
     const mappingNode = rootNode.ele("mapping").att("type", types[type]);
 
     const callback = ({ node }) => {
-      if (!node.mapping) {
+      if (!outputLabels && !node.mapping) {
         return;
       }
 
@@ -194,7 +194,7 @@ const _createNode = ({
   mappingNode,
   node,
   outputParents = false,
-  outputLabels,
+  outputLabels = false,
   testing = false
 }) => {
   // If testing, use plain text node. Otherwise, use CDATA
@@ -205,16 +205,18 @@ const _createNode = ({
   );
 
   if (node.id !== "eqDEFAULT") {
-    if (outputLabels) {
-      // Use label as value
-      childNode.att("equestvalue", node.title);
-    } else {
-      // Each equest node has 'eq' prefix
-      childNode.att("equestvalue", node.id.slice(2));
-    }
+    // Each equest node has 'eq' prefix
+    childNode.att("equestvalue", node.id.slice(2));
   }
 
-  if (outputParents) {
+  if (outputLabels) {
+    const id = node.title;
+    const boardValueNode = childNode
+      .ele("boardvalue")
+      .att("tier", 1)
+      .att("label", id);
+    testing ? boardValueNode.txt(id) : boardValueNode.dat(id);
+  } else if (outputParents) {
     // Multi-tier
     mapping.forEach((tierNode, idx) => {
       // Get path up to node

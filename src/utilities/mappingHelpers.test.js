@@ -164,7 +164,6 @@ describe("_exportMappingsToXML", () => {
 
   let result = _exportMappingsToXML({
     intTreeData,
-    outputParents: false,
     testing: true
   });
   xmlObj = xmlParser.parseFromString(result, "text/xml");

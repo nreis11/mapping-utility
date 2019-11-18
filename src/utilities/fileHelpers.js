@@ -13,7 +13,7 @@ export const saveToJson = (state, testing = false) => {
   }
   // FileSaver solves cross-browser compatibility
   const file = new Blob([jsonString], { type: "application/json" });
-  const fileName = `${state.boardName}.json`;
+  const fileName = `MU-${state.boardName}.json`;
   FileSaver.saveAs(file, fileName);
 };
 

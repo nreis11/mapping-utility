@@ -150,9 +150,10 @@ export const _changeNodeAtPath = (treeData, path, newNode) => {
 
 export const _exportMappingsToXML = ({
   intTreeData,
-  outputParents,
+  options,
   testing = false
 }) => {
+  const { outputParents, outputLabels } = options;
   const types = {
     categories: "function",
     industries: "industry",
@@ -174,6 +175,7 @@ export const _exportMappingsToXML = ({
         mappingNode,
         node,
         outputParents,
+        outputLabels,
         testing
       });
     };
@@ -192,6 +194,7 @@ const _createNode = ({
   mappingNode,
   node,
   outputParents = false,
+  outputLabels,
   testing = false
 }) => {
   // If testing, use plain text node. Otherwise, use CDATA
@@ -202,8 +205,13 @@ const _createNode = ({
   );
 
   if (node.id !== "eqDEFAULT") {
-    // Each equest node has 'eq' prefix
-    childNode.att("equestvalue", node.id.slice(2));
+    if (outputLabels) {
+      // Use label as value
+      childNode.att("equestvalue", node.title);
+    } else {
+      // Each equest node has 'eq' prefix
+      childNode.att("equestvalue", node.id.slice(2));
+    }
   }
 
   if (outputParents) {

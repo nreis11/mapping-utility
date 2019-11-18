@@ -4,7 +4,7 @@ import { Popover, OverlayTrigger } from "react-bootstrap";
 import "./Options.css";
 
 const Options = props => {
-  const { outputParents, parentsSelectable } = props.options;
+  const { outputParents, parentsSelectable, outputLabels } = props.options;
 
   const outputPopover = (
     <Popover id="popover-trigger-hover-focus" title="Output Parents">
@@ -15,6 +15,12 @@ const Options = props => {
   const selectablePopover = (
     <Popover id="popover-trigger-hover-focus" title="Parents Selectable">
       All tiers can be mapped.
+    </Popover>
+  );
+
+  const labelPopover = (
+    <Popover id="popover-trigger-hover-focus" title="Output Labels">
+      Replace eQuest value with label in output.
     </Popover>
   );
 
@@ -50,6 +56,21 @@ const Options = props => {
           />
         </label>
       </OverlayTrigger>
+      <OverlayTrigger
+        trigger={["hover"]}
+        placement="top"
+        overlay={labelPopover}
+      >
+        <label className="options-label">
+          Output Labels
+          <input
+            type="checkbox"
+            name="outputLabels"
+            checked={outputLabels}
+            onChange={event => props.onOptionChange(event)}
+          />
+        </label>
+      </OverlayTrigger>
     </form>
   );
 };
@@ -58,7 +79,8 @@ Options.propTypes = {
   onOptionChange: func.isRequired,
   options: shape({
     parentsSelectable: bool.isRequired,
-    outputParents: bool.isRequired
+    outputParents: bool.isRequired,
+    outputLabels: bool.isRequired
   })
 };
 

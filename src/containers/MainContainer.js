@@ -54,7 +54,8 @@ class MainContainer extends Component {
       activeType: "categories",
       options: {
         outputParents: false,
-        parentsSelectable: false
+        parentsSelectable: false,
+        outputLabels: false
       },
       highlightUnmapped: false,
       searchString: "",
@@ -236,15 +237,10 @@ class MainContainer extends Component {
   }
 
   handleExport() {
-    const {
-      intTreeData,
-      extTreeData,
-      options: { outputParents }
-    } = this.state;
+    const { intTreeData, options } = this.state;
     return _exportMappingsToXML({
       intTreeData,
-      extTreeData,
-      outputParents
+      options
     });
   }
 

@@ -217,12 +217,8 @@ const _createNode = ({
   }
 
   if (outputLabels) {
-    const id = node.title;
-    const boardValueNode = childNode
-      .ele("boardvalue")
-      .att("tier", 1)
-      .att("label", id);
-    testing ? boardValueNode.txt(id) : boardValueNode.dat(id);
+    const boardValueNode = childNode.ele("boardvalue").att("tier", 1);
+    testing ? boardValueNode.txt(node.title) : boardValueNode.dat(node.title);
   } else if (outputParents) {
     // Multi-tier
     mapping.forEach((tierNode, idx) => {

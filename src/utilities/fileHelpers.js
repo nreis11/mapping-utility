@@ -1,5 +1,5 @@
 import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
-import { _sortTree, delimiter } from "./mappingHelpers";
+import { _sortTree, DELIMITER, TYPES } from "./mappingHelpers";
 import * as eqValues from "../values/eqValues";
 import FileSaver from "file-saver";
 import yaml from "js-yaml";
@@ -17,6 +17,7 @@ export const saveToJson = (state, testing = false) => {
   FileSaver.saveAs(file, fileName);
 };
 
+// Returns all treeData or only a certain type
 export const getInitialTreeData = (type = false) => {
   let treeData = {};
   if (type) {
@@ -36,6 +37,12 @@ export const getTreeDataFromFlatData = flatData => {
     getParentKey: node => node.parent, // resolve a node's parent's key
     rootKey: null // The value of the parent key when there is no parent (i.e., at root level)
   });
+};
+
+export const getInitialExtTreeData = () => {
+  const treeData = {};
+  Object.keys(TYPES).map(type => (treeData[type] = []));
+  return treeData;
 };
 
 export const getFlatData = treeData => {
@@ -88,7 +95,7 @@ export const traverse = (jsonObj, parent = null, nodes = [], tier = 0) => {
     }
 
     // Create uid with delimiter. Avoids duplicate keys.
-    let curr = `${tier}${delimiter}${key}`;
+    let curr = `${tier}${DELIMITER}${key}`;
 
     let node = {
       id: curr,

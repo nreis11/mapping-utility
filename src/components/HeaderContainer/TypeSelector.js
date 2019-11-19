@@ -1,13 +1,7 @@
 import React from "react";
 import { Col, ButtonToolbar, DropdownButton, MenuItem } from "react-bootstrap";
 import { func, string } from "prop-types";
-
-const TYPES = {
-  categories: "Category",
-  industries: "Industry",
-  states: "State",
-  countries: "Country"
-};
+import { TYPES } from "../../utilities/mappingHelpers";
 
 const TypeSelector = ({ activeType, onSelect }) => {
   return (

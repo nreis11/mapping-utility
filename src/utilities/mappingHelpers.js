@@ -8,8 +8,15 @@ import {
 } from "react-sortable-tree";
 import xmlbuilder from "xmlbuilder";
 
+export const TYPES = {
+  categories: "Category",
+  industries: "Industry",
+  states: "State",
+  countries: "Country"
+};
+
 const getNodeKey = ({ node }) => node.id;
-export const delimiter = "|";
+export const DELIMITER = "|";
 
 const getPathNodes = (treeData, path) => {
   let nodes = path.map((nodeId, idx) => {
@@ -221,7 +228,7 @@ const _createNode = ({
     mapping.forEach((tierNode, idx) => {
       // Get path up to node
       const { title } = tierNode;
-      const idArr = tierNode.id.split(delimiter);
+      const idArr = tierNode.id.split(DELIMITER);
       const id = idArr[1];
       const boardValueNode = childNode
         .ele("boardvalue")
@@ -234,7 +241,7 @@ const _createNode = ({
     const lastNode = mapping[mapping.length - 1];
     let { id, title } = lastNode;
     // Ex. 1|55
-    id = id.split(delimiter)[1];
+    id = id.split(DELIMITER)[1];
     const boardValueNode = childNode
       .ele("boardvalue")
       .att("tier", 1)

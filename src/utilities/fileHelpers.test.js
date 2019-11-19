@@ -1,5 +1,5 @@
 import { saveToJson, traverse } from "./fileHelpers";
-import { delimiter } from "./mappingHelpers";
+import { DELIMITER } from "./mappingHelpers";
 
 describe("saveToJson", () => {
   const intTreeData = {
@@ -8,19 +8,19 @@ describe("saveToJson", () => {
         id: "eqDEFAULT",
         mapping: [
           {
-            id: `1${delimiter}200`,
+            id: `1${DELIMITER}200`,
             title: "Managers"
           },
-          { id: `2${delimiter}201`, title: "Operation Manager" }
+          { id: `2${DELIMITER}201`, title: "Operation Manager" }
         ]
       },
       {
         id: "eq17000000",
-        mapping: [{ id: `1${delimiter}201`, title: "Banker" }],
+        mapping: [{ id: `1${DELIMITER}201`, title: "Banker" }],
         children: [
           {
             id: "eq17100000",
-            mapping: [{ id: `2${delimiter}255`, title: "Teller" }]
+            mapping: [{ id: `2${DELIMITER}255`, title: "Teller" }]
           }
         ]
       }
@@ -28,12 +28,12 @@ describe("saveToJson", () => {
     industries: [
       {
         id: "eqDEFAULT",
-        mapping: [{ id: `1${delimiter}1000`, title: "General" }]
+        mapping: [{ id: `1${DELIMITER}1000`, title: "General" }]
       },
       {
         id: "eq1",
         mapping: [
-          { id: `1${delimiter}34`, title: "Advertising, Communication & PR" }
+          { id: `1${DELIMITER}34`, title: "Advertising, Communication & PR" }
         ]
       }
     ],
@@ -44,23 +44,23 @@ describe("saveToJson", () => {
   const extTreeData = {
     categories: [
       {
-        id: `1${delimiter}200`,
+        id: `1${DELIMITER}200`,
         title: "Managers",
-        children: [{ id: `2${delimiter}201`, title: "Operation Manager" }]
+        children: [{ id: `2${DELIMITER}201`, title: "Operation Manager" }]
       },
       {
-        id: `1${delimiter}100`,
+        id: `1${DELIMITER}100`,
         title: "Community and Social Services",
-        children: [{ id: `2${delimiter}101`, title: "Religious Workers" }]
+        children: [{ id: `2${DELIMITER}101`, title: "Religious Workers" }]
       }
     ],
     industries: [
       {
-        id: `1${delimiter}34`,
+        id: `1${DELIMITER}34`,
         title: "Advertising, Communication & PR",
         parent: null
       },
-      { id: `1${delimiter}1000`, title: "General", parent: null }
+      { id: `1${DELIMITER}1000`, title: "General", parent: null }
     ],
     states: [],
     countries: []
@@ -106,7 +106,7 @@ describe("traverse", () => {
   const result = traverse(jsonObj);
 
   it("Creates a root node with parent as null", () => {
-    const rootNode = result.find(node => node.id === `1${delimiter}600`);
+    const rootNode = result.find(node => node.id === `1${DELIMITER}600`);
     expect(rootNode.title).toEqual("Computer Skills");
     expect(rootNode.parent).toEqual(null);
   });
@@ -116,8 +116,8 @@ describe("traverse", () => {
   });
 
   it("Creates the correct child node with corresponding parent", () => {
-    const arabicChild = result.find(node => node.id === `3${delimiter}999`);
+    const arabicChild = result.find(node => node.id === `3${DELIMITER}999`);
     expect(arabicChild.title).toEqual("Arabic-Child");
-    expect(arabicChild.parent).toEqual(`2${delimiter}83`);
+    expect(arabicChild.parent).toEqual(`2${DELIMITER}83`);
   });
 });

@@ -24,6 +24,7 @@ import {
 import {
   saveToJson,
   getInitialTreeData,
+  getInitialExtTreeData,
   getTreeDataFromFlatData,
   getFlatData
 } from "../utilities/fileHelpers";
@@ -47,7 +48,7 @@ class MainContainer extends Component {
     super(props);
     this.state = {
       intTreeData: getInitialTreeData(),
-      extTreeData: {},
+      extTreeData: getInitialExtTreeData(),
       boardName: "Board",
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
@@ -142,11 +143,16 @@ class MainContainer extends Component {
   }
 
   handleTypeSelect(type) {
-    const newActiveTreeData = this.state.intTreeData[type];
+    const activeIntTreeData = this.state.intTreeData[type];
+    const activeExtTreeData = this.state.extTreeData[type];
+    const activeExtNodeInfo = activeExtTreeData.length
+      ? _getActiveNodeInfo(activeExtTreeData, 0)
+      : null;
     // Reset active node
     this.setState({
       activeType: type,
-      activeIntNodeInfo: _getActiveNodeInfo(newActiveTreeData, 0)
+      activeIntNodeInfo: _getActiveNodeInfo(activeIntTreeData, 0),
+      activeExtNodeInfo: activeExtNodeInfo
     });
   }
 
@@ -178,7 +184,7 @@ class MainContainer extends Component {
     let newFlatData;
     const { activeType, extTreeData } = this.state;
     // Check if values already exist
-    if (extTreeData[activeType]) {
+    if (extTreeData[activeType].length) {
       const extFlatData = getFlatData(extTreeData[activeType]);
       newFlatData = _sortTree(extFlatData.concat(newNodes));
     } else {
@@ -217,8 +223,8 @@ class MainContainer extends Component {
 
     if (all) {
       this.setState({
-        extTreeData: {},
         intTreeData: initialTreeData,
+        extTreeData: getInitialExtTreeData(),
         activeIntNodeInfo: activeNodeInfo,
         activeExtNodeInfo: null
       });

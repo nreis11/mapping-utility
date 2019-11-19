@@ -4,7 +4,7 @@ import RawDataForm from "./RawDataForm";
 import DelimiterForm from "./DelimiterForm";
 import IdxForm from "./IdxForm";
 import { func, shape, string } from "prop-types";
-import { delimiter as idDelimiter } from "../../../utilities/mappingHelpers";
+import { DELIMITER as idDelimiter } from "../../../utilities/mappingHelpers";
 
 class AddNodesForm extends React.PureComponent {
   constructor(props) {

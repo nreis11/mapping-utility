@@ -3,7 +3,7 @@ import {
   _mapNode,
   _isMapped,
   _exportMappingsToXML,
-  delimiter
+  DELIMITER
 } from "./mappingHelpers";
 
 describe("_getActiveNodeInfo", () => {
@@ -114,24 +114,24 @@ describe("_exportMappingsToXML", () => {
         id: "eqDEFAULT",
         mapping: [
           {
-            id: `1${delimiter}200`,
+            id: `1${DELIMITER}200`,
             title: "Managers"
           },
-          { id: `2${delimiter}201`, title: "Operation Manager" }
+          { id: `2${DELIMITER}201`, title: "Operation Manager" }
         ]
       },
       {
         id: "eq17000000",
         mapping: [
-          { id: `1${delimiter}201`, title: "Architecture and Engineering" }
+          { id: `1${DELIMITER}201`, title: "Architecture and Engineering" }
         ],
         children: [
           {
             id: "eq17100000",
             title: "Architect",
             mapping: [
-              { id: `2${delimiter}201`, title: "Architecture and Engineering" },
-              { id: `2${delimiter}255`, title: "Architect" }
+              { id: `2${DELIMITER}201`, title: "Architecture and Engineering" },
+              { id: `2${DELIMITER}255`, title: "Architect" }
             ]
           }
         ]
@@ -140,12 +140,12 @@ describe("_exportMappingsToXML", () => {
     industries: [
       {
         id: "eqDEFAULT",
-        mapping: [{ id: `1${delimiter}1000`, title: "General" }]
+        mapping: [{ id: `1${DELIMITER}1000`, title: "General" }]
       },
       {
         id: "eq1",
         mapping: [
-          { id: `1${delimiter}34`, title: "Advertising, Communication & PR" }
+          { id: `1${DELIMITER}34`, title: "Advertising, Communication & PR" }
         ]
       }
     ],
@@ -161,9 +161,15 @@ describe("_exportMappingsToXML", () => {
   };
 
   let xmlObj, defaultNode, functionMappingNode;
+  const options = {
+    outputParents: false,
+    parentsSelectable: false,
+    outputLabels: false
+  };
 
   let result = _exportMappingsToXML({
     intTreeData,
+    options,
     testing: true
   });
   xmlObj = xmlParser.parseFromString(result, "text/xml");
@@ -210,10 +216,15 @@ describe("_exportMappingsToXML", () => {
   });
 
   describe("_exportMappingsToXML with outputParents", () => {
-    // Output parents
+    const options = {
+      outputParents: true,
+      parentsSelectable: false,
+      outputLabels: false
+    };
+
     const result = _exportMappingsToXML({
       intTreeData,
-      outputParents: true,
+      options,
       testing: true
     });
     const xmlObj = xmlParser.parseFromString(result, "text/xml");

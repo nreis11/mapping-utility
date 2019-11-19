@@ -2,7 +2,7 @@ import React from "react";
 import { string, shape } from "prop-types";
 import "./NodeInfo.css";
 import { Panel } from "react-bootstrap";
-import { delimiter } from "../../utilities/mappingHelpers";
+import { DELIMITER } from "../../utilities/mappingHelpers";
 
 const NodeInfo = ({ heading, node }) => {
   const nodeTitle = node ? node.title : null;
@@ -15,7 +15,7 @@ const NodeInfo = ({ heading, node }) => {
 
   // Remove parent prefix
   if (heading !== "eQuest" && nodeKey) {
-    const keyArr = nodeKey.split(delimiter);
+    const keyArr = nodeKey.split(DELIMITER);
     nodeKey = keyArr[keyArr.length - 1];
   }
 

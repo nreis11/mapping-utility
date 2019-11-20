@@ -1,4 +1,4 @@
-export const categories = [
+export const functions = [
   { id: "DEFAULT", title: "(Default)", parent: null },
   {
     id: "17000000",

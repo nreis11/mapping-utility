@@ -109,7 +109,7 @@ describe("_isMapped", () => {
 describe("_exportMappingsToXML", () => {
   const xmlParser = new DOMParser();
   const intTreeData = {
-    categories: [
+    functions: [
       {
         id: "DEFAULT",
         title: "(Default)",
@@ -163,7 +163,7 @@ describe("_exportMappingsToXML", () => {
   };
 
   const typeAttr = {
-    categories: "function",
+    functions: "function",
     industries: "industry",
     states: "state",
     countries: "country"
@@ -198,7 +198,7 @@ describe("_exportMappingsToXML", () => {
   });
 
   it("Returns a default node with correct mapping", () => {
-    const sourceNode = intTreeData.categories[0];
+    const sourceNode = intTreeData.functions[0];
     const mappedNode = sourceNode.mapping[sourceNode.mapping.length - 1];
     expect(defaultNode.nodeName).toEqual("default");
     const firstChild = defaultNode.firstChild;
@@ -242,7 +242,7 @@ describe("_exportMappingsToXML", () => {
 
     it("Returns correct default node mapping", () => {
       expect(defaultNode.nodeName).toEqual("default");
-      const tieredMappings = intTreeData.categories[0].mapping.map(
+      const tieredMappings = intTreeData.functions[0].mapping.map(
         tier => tier.id.split(DELIMITER)[1]
       );
       defaultNode.childNodes.forEach((boardValueNode, i) => {
@@ -258,7 +258,7 @@ describe("_exportMappingsToXML", () => {
     });
 
     it("Returns correct default node label", () => {
-      const labels = intTreeData.categories[0].mapping.map(tier => tier.title);
+      const labels = intTreeData.functions[0].mapping.map(tier => tier.title);
       expect(defaultNode.nodeName).toEqual("default");
       defaultNode.childNodes.forEach((boardValueNode, i) => {
         expect(boardValueNode.getAttribute("label")).toEqual(labels[i]);
@@ -284,14 +284,14 @@ describe("_exportMappingsToXML", () => {
     const functionMappingNode = xmlObj.getElementsByTagName("mapping")[0];
 
     it("Returns a default node with correct mapping", () => {
-      const sourceNode = intTreeData.categories[0];
+      const sourceNode = intTreeData.functions[0];
       expect(defaultNode.nodeName).toEqual("default");
       const firstChild = defaultNode.firstChild;
       expect(firstChild.textContent).toEqual(sourceNode.title);
     });
 
     it("Returns the proper map for the first non-default mapping", () => {
-      const sourceNode = intTreeData.categories[1];
+      const sourceNode = intTreeData.functions[1];
       const firstMapChild = functionMappingNode.getElementsByTagName("map")[0];
       const firstBoardValueChild = firstMapChild.getElementsByTagName(
         "boardvalue"

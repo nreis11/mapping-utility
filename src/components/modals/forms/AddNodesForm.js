@@ -55,14 +55,17 @@ class AddNodesForm extends React.PureComponent {
     // Create array of flat data, add tier for unique IDs
     const idIdx = valueIdx <= labelIdx ? 0 : 1;
     const titleIdx = valueIdx <= labelIdx ? 1 : 0;
-    const flatData = rawData.split("\n").map(line => {
-      let lineArr = line.split(delimiter);
-      return {
-        id: `${tier}${idDelimiter}${lineArr[idIdx]}`,
-        title: lineArr[titleIdx],
-        parent: parentId || null
-      };
-    });
+    const flatData = rawData
+      .trim()
+      .split("\n")
+      .map(line => {
+        let lineArr = line.split(delimiter);
+        return {
+          id: `${tier}${idDelimiter}${lineArr[idIdx]}`,
+          title: lineArr[titleIdx],
+          parent: parentId || null
+        };
+      });
 
     onAddNodes(flatData);
     handleClose();

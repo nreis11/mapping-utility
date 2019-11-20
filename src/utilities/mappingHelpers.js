@@ -9,7 +9,7 @@ import {
 import xmlbuilder from "xmlbuilder";
 
 export const TYPES = {
-  categories: "Category",
+  functions: "Function",
   industries: "Industry",
   states: "State",
   countries: "Country"
@@ -161,17 +161,13 @@ export const _exportMappingsToXML = ({
   testing = false
 }) => {
   const { outputParents, outputLabels } = options;
-  const types = {
-    categories: "function",
-    industries: "industry",
-    states: "state",
-    countries: "country"
-  };
 
   let rootNode = xmlbuilder.create("maps", { encoding: "UTF-8" });
 
   Object.keys(intTreeData).forEach(type => {
-    const mappingNode = rootNode.ele("mapping").att("type", types[type]);
+    const mappingNode = rootNode
+      .ele("mapping")
+      .att("type", TYPES[type].toLowerCase());
 
     const callback = ({ node }) => {
       if (!outputLabels && !node.mapping) {

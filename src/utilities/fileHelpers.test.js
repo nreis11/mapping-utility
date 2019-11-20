@@ -3,7 +3,7 @@ import { DELIMITER } from "./mappingHelpers";
 
 describe("saveToJson", () => {
   const intTreeData = {
-    categories: [
+    functions: [
       {
         id: "eqDEFAULT",
         mapping: [
@@ -42,7 +42,7 @@ describe("saveToJson", () => {
   };
 
   const extTreeData = {
-    categories: [
+    functions: [
       {
         id: `1${DELIMITER}200`,
         title: "Managers",
@@ -68,7 +68,7 @@ describe("saveToJson", () => {
 
   const options = { outputParents: false, parentsSelectable: true };
   const boardName = "testBoard";
-  const activeType = "categories";
+  const activeType = "functions";
   const stateObj = {
     intTreeData,
     extTreeData,

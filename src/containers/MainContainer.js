@@ -10,7 +10,8 @@ import {
   _exportMappingsToXML,
   _handleDeleteAction,
   _handleMapAction,
-  _handleSearchAction
+  _handleSearchAction,
+  TYPES
 } from "../utilities/mappingHelpers";
 
 import {
@@ -52,7 +53,7 @@ class MainContainer extends Component {
       boardName: "Board",
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
-      activeType: "categories",
+      activeType: Object.keys(TYPES)[0],
       options: {
         outputParents: false,
         parentsSelectable: false,

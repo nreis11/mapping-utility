@@ -207,13 +207,11 @@ const _createNode = ({
   // If testing, use plain text node. Otherwise, use CDATA
   // Mapping is path array with node ids
   let { mapping } = node;
-  const childNode = mappingNode.ele(
-    node.id === "eqDEFAULT" ? "default" : "map"
-  );
+  const childNode = mappingNode.ele(node.id === "DEFAULT" ? "default" : "map");
 
-  if (node.id !== "eqDEFAULT") {
+  if (node.id !== "DEFAULT") {
     // Each equest node has 'eq' prefix
-    childNode.att("equestvalue", node.id.slice(2));
+    childNode.att("equestvalue", node.id);
   }
 
   if (outputLabels) {

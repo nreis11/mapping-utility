@@ -111,7 +111,7 @@ describe("_exportMappingsToXML", () => {
   const intTreeData = {
     categories: [
       {
-        id: "eqDEFAULT",
+        id: "DEFAULT",
         title: "(Default)",
         parent: null,
         mapping: [
@@ -123,7 +123,7 @@ describe("_exportMappingsToXML", () => {
         ]
       },
       {
-        id: "eq17000000",
+        id: "17000000",
         title: "Architecture and Engineering",
         parent: null,
         mapping: [
@@ -131,9 +131,9 @@ describe("_exportMappingsToXML", () => {
         ],
         children: [
           {
-            id: "eq17100000",
+            id: "17100000",
             title: "Architect",
-            parent: "eq17000000",
+            parent: "17000000",
             mapping: [
               { id: `2${DELIMITER}201`, title: "Architecture and Engineering" },
               { id: `2${DELIMITER}255`, title: "Architect" }
@@ -144,13 +144,13 @@ describe("_exportMappingsToXML", () => {
     ],
     industries: [
       {
-        id: "eqDEFAULT",
+        id: "DEFAULT",
         title: "(Default)",
         parent: null,
         mapping: [{ id: `1${DELIMITER}1000`, title: "General" }]
       },
       {
-        id: "eq1",
+        id: "1",
         title: "Advertising/Public Relations",
         parent: null,
         mapping: [
@@ -158,8 +158,8 @@ describe("_exportMappingsToXML", () => {
         ]
       }
     ],
-    states: [{ id: "eqDEFAULT", title: "(Default)", parent: null }],
-    countries: [{ id: "eqDEFAULT", title: "(Default)", parent: null }]
+    states: [{ id: "DEFAULT", title: "(Default)", parent: null }],
+    countries: [{ id: "DEFAULT", title: "(Default)", parent: null }]
   };
 
   const typeAttr = {
@@ -297,9 +297,7 @@ describe("_exportMappingsToXML", () => {
         "boardvalue"
       )[0];
       expect(firstMapChild.nodeName).toEqual("map");
-      expect(firstMapChild.getAttribute("equestvalue")).toEqual(
-        sourceNode.id.slice(2)
-      );
+      expect(firstMapChild.getAttribute("equestvalue")).toEqual(sourceNode.id);
       expect(firstBoardValueChild.getAttribute("tier")).toEqual("1");
       expect(firstBoardValueChild.textContent).toEqual(sourceNode.title);
     });

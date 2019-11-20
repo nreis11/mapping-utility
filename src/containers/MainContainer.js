@@ -109,7 +109,7 @@ class MainContainer extends Component {
   }
 
   componentDidUpdate() {
-    this.saveToLocalStorage();
+    // this.saveToLocalStorage();
   }
 
   saveToLocalStorage() {

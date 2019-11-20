@@ -8,12 +8,7 @@ const NodeInfo = ({ heading, node }) => {
   const nodeTitle = node ? node.title : null;
   let nodeKey = node ? node.id : null;
 
-  // Remove eq prefix on equest values
-  if (heading === "eQuest" && nodeKey) {
-    nodeKey = nodeKey.slice(2);
-  }
-
-  // Remove parent prefix
+  // Remove tier prefix
   if (heading !== "eQuest" && nodeKey) {
     const keyArr = nodeKey.split(DELIMITER);
     nodeKey = keyArr[keyArr.length - 1];

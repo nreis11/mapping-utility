@@ -69,6 +69,7 @@ class MainContainer extends Component {
 
     this.intTreeKey = "intTreeData";
     this.extTreeKey = "extTreeData";
+    this.localStorageKey = "mappingUtilityState";
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
     this.handleTreeChange = this.handleTreeChange.bind(this);
     this.expandAll = this.expandAll.bind(this);
@@ -97,7 +98,7 @@ class MainContainer extends Component {
     }
 
     const localStorageRef = JSON.parse(
-      localStorage.getItem("mappingUtilityState")
+      localStorage.getItem(this.localStorageKey)
     );
     // Check if save state in local storage
     if (localStorage && localStorageRef) {
@@ -119,7 +120,7 @@ class MainContainer extends Component {
     });
     try {
       // Long lists can hit localStorage max.
-      localStorage.setItem("mappingUtilityState", jsonStr);
+      localStorage.setItem(this.localStorageKey, jsonStr);
     } catch (e) {
       console.log(e);
     }
@@ -169,9 +170,11 @@ class MainContainer extends Component {
   handleOptionChange(event) {
     event.target.blur();
     const optionKey = event.target.name;
-    const options = { ...this.state.options };
-    options[optionKey] = event.target.checked;
-    this.setState({ options });
+    const newOptions = {
+      ...this.state.options,
+      [optionKey]: event.target.checked
+    };
+    this.setState({ options: newOptions });
   }
 
   highlightUnmapped() {

@@ -1,4 +1,4 @@
-export const isABootstrapModalOpen = () => {
+export const isBootstrapModalOpen = () => {
   return document.querySelectorAll(".modal.in").length > 0;
 };
 

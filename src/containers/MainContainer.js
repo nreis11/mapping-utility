@@ -15,7 +15,7 @@ import {
 } from "../utilities/mappingHelpers";
 
 import {
-  isABootstrapModalOpen,
+  isBootstrapModalOpen,
   bothNodesAreSelected,
   scrollIfNeeded,
   getInBoundsTreeIndex,
@@ -272,7 +272,7 @@ class MainContainer extends Component {
     // no ext tree data
     if (
       document.activeElement.nodeName === "INPUT" ||
-      isABootstrapModalOpen() ||
+      isBootstrapModalOpen() ||
       !extTreeData[activeType]
     ) {
       return;

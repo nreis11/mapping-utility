@@ -100,7 +100,8 @@ export const traverse = (jsonObj, parent = null, nodes = [], tier = 0) => {
     let node = {
       id: curr,
       title: value.label,
-      parent: parent
+      parent: parent,
+      isInternal: false
     };
     nodes.push(node);
 

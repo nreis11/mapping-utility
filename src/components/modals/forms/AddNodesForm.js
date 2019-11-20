@@ -63,7 +63,8 @@ class AddNodesForm extends React.PureComponent {
         return {
           id: `${tier}${idDelimiter}${lineArr[idIdx]}`,
           title: lineArr[titleIdx],
-          parent: parentId || null
+          parent: parentId || null,
+          isInternal: false
         };
       });
 

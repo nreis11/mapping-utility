@@ -53,7 +53,7 @@ class TreeContainer extends React.PureComponent {
       return;
     }
 
-    const { treeData, activeNodeInfo, treeKey, onSelectNode } = this.props;
+    const { treeData, activeNodeInfo, onSelectNode } = this.props;
     let { treeIndex } = activeNodeInfo;
     const initialTreeIndex = treeIndex;
     let expanded = activeNodeInfo.node.expanded;
@@ -81,7 +81,7 @@ class TreeContainer extends React.PureComponent {
     } else {
       newActiveNodeInfo = _getActiveNodeInfo(treeData, treeIndex);
     }
-    onSelectNode(newActiveNodeInfo, treeKey);
+    onSelectNode(newActiveNodeInfo);
   }
 
   handleRemoveNode(path) {
@@ -212,7 +212,7 @@ class TreeContainer extends React.PureComponent {
                 : className.push(highlightUnmapped ? "un-mapped" : "");
 
               return {
-                onClick: () => onSelectNode(rowInfo, treeKey),
+                onClick: () => onSelectNode(rowInfo),
                 className: className.join(" "),
                 id: node.id
               };

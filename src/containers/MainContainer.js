@@ -70,6 +70,8 @@ class MainContainer extends Component {
     this.intTreeKey = "intTreeData";
     this.extTreeKey = "extTreeData";
     this.localStorageKey = "mappingUtilityState";
+    this.activeIntNodeKey = "activeIntNodeInfo";
+    this.activeExtNodeKey = "activeExtNodeInfo";
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
     this.handleTreeChange = this.handleTreeChange.bind(this);
     this.expandAll = this.expandAll.bind(this);
@@ -158,10 +160,12 @@ class MainContainer extends Component {
     });
   }
 
-  handleSelectNode(nodeInfo, treeKey) {
+  handleSelectNode(nodeInfo) {
     // console.log("Node Info", nodeInfo);
-    const activeKey =
-      treeKey === this.intTreeKey ? "activeIntNodeInfo" : "activeExtNodeInfo";
+    const { isInternal } = nodeInfo.node;
+    const activeKey = isInternal
+      ? this.activeIntNodeKey
+      : this.activeExtNodeKey;
     this.setState({
       [activeKey]: nodeInfo
     });
@@ -206,7 +210,7 @@ class MainContainer extends Component {
       () => {
         this.expandAll(true, false);
         const activeNode = _getActiveNodeInfo(newTreeData[activeType], 0);
-        this.handleSelectNode(activeNode, this.extTreeKey);
+        this.handleSelectNode(activeNode);
       }
     );
   }
@@ -378,7 +382,7 @@ class MainContainer extends Component {
 
     // Scroll active node into view if needed
     scrollIfNeeded(newActiveIntNodeInfo.node.id);
-    this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);
+    this.handleSelectNode(newActiveIntNodeInfo);
   }
 
   handleInputChange(event) {

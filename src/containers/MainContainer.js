@@ -110,10 +110,15 @@ class MainContainer extends Component {
     }
 
     document.addEventListener("keydown", this.handleKeyDown);
+    const { activeType } = this.state;
+    const activeIntTreeData = this.state.intTreeData[activeType];
+    this.setState({
+      activeIntNodeInfo: _getActiveNodeInfo(activeIntTreeData, 0)
+    });
   }
 
   componentDidUpdate() {
-    // this.saveToLocalStorage();
+    this.saveToLocalStorage();
   }
 
   saveToLocalStorage() {
@@ -405,8 +410,8 @@ class MainContainer extends Component {
     const searchFocusIndex = this.state.searchFocusIndex;
     const newActiveNodeInfo = matches[searchFocusIndex] || null;
     const activeNodeKey = this.state.searchInternal
-      ? "activeIntNodeInfo"
-      : "activeExtNodeInfo";
+      ? this.activeIntNodeKey
+      : this.activeExtNodeKey;
     const currActiveNodeInfo = this.state[activeNodeKey];
     this.setState({
       [activeNodeKey]: newActiveNodeInfo || currActiveNodeInfo,

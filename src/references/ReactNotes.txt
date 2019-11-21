@@ -40,8 +40,12 @@ Then change .eslintrc file to { extends: "react-app"}
 To tidy up JS code:
 Install JsPrettier
 
-To test:
-CI=true npm test
+TESTING
+For Enzyme:
+- When debugging, use .debug() on obj to see stringed version
+    const modal = wrapper.find("Modal");
+    // console.log(modal.debug());
+
 
 To make a copy of an array before setting state, use .slice()
 

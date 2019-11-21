@@ -55,7 +55,12 @@ class EditModal extends React.PureComponent {
 
     return (
       <Col>
-        <Button bsStyle="info" bsSize="small" onClick={this.handleShow}>
+        <Button
+          id="edit-modal-btn"
+          bsStyle="info"
+          bsSize="small"
+          onClick={this.handleShow}
+        >
           <FaPlus className="react-icons" /> Add/Edit
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">

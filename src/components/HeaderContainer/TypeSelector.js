@@ -11,7 +11,7 @@ const TypeSelector = ({ activeType, onSelect }) => {
           title={TYPES[activeType]}
           bsStyle="info"
           bsSize="small"
-          id={`dropdown-basic-type`}
+          id={"dropdown-basic-type"}
           style={{ width: 82 }}
         >
           {Object.keys(TYPES).map(type => (

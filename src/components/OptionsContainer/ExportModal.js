@@ -63,6 +63,7 @@ class ExportModal extends React.PureComponent {
           </Modal.Body>
           <Modal.Footer>
             <Button
+              id="download-btn"
               title="Download"
               onClick={this.handleDownload}
               className="pull-left"
@@ -77,7 +78,7 @@ class ExportModal extends React.PureComponent {
               className="pull-left"
               onCopy={() => this.setState({ copied: true })}
             >
-              <Button title="Copy">
+              <Button id="copy-btn" title="Copy">
                 <FaCopy className="react-icons" />
                 &nbsp;Copy
               </Button>

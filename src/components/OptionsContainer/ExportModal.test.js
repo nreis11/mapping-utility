@@ -3,6 +3,12 @@ import { shallow } from "enzyme";
 import ExportModal from "./ExportModal";
 import CopyConfirmation from "./CopyConfirmation";
 import CopyToClipboard from "react-copy-to-clipboard";
+import FileSaver from "file-saver";
+
+// Mock the 3rd party func
+jest.mock("file-saver", () => ({
+  saveAs: jest.fn()
+}));
 
 describe("<ExportModal/>", () => {
   let wrapper;
@@ -10,7 +16,7 @@ describe("<ExportModal/>", () => {
   beforeEach(
     () =>
       (wrapper = shallow(
-        <ExportModal boardName="test" handleExport={() => testData} />
+        <ExportModal boardName="testBoard" handleExport={() => testData} />
       ))
   );
 
@@ -41,9 +47,8 @@ describe("<ExportModal/>", () => {
   });
 
   it("downloads file successfully when download button is clicked", () => {
-    // const downloadBtn = wrapper.find("#download-btn");
-    // downloadBtn.simulate("click");
-    // const confirmation = wrapper.find(CopyConfirmation);
-    // expect(confirmation).toHaveLength(1);
+    const downloadBtn = wrapper.find("#download-btn");
+    downloadBtn.simulate("click");
+    expect(FileSaver.saveAs).toHaveBeenCalled();
   });
 });

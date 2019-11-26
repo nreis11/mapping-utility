@@ -1,4 +1,5 @@
 import React from "react";
+import { func, bool } from "prop-types";
 import { Button } from "react-bootstrap";
 import { FaBackward, FaForward } from "react-icons/fa";
 
@@ -25,3 +26,8 @@ export const ExpandCollapseButtons = React.memo(
     </div>
   )
 );
+
+ExpandCollapseButtons.propTypes = {
+  expandAll: func.isRequired,
+  expand: bool.isRequired
+};

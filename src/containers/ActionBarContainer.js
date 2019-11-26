@@ -1,7 +1,7 @@
 import React from "react";
 import { func } from "prop-types";
 
-import { Col, Button, ButtonGroup } from "react-bootstrap";
+import { Col, ButtonGroup } from "react-bootstrap";
 import { FaBackward, FaForward } from "react-icons/fa";
 
 import { ExpandCollapseButtons } from "../components/ActionBar/ExpandCollapseButtons";
@@ -37,14 +37,9 @@ export const ActionBarContainer = ({
         </ActionButton>
       </Col>
       <Col className="action-btn-container">
-        <Button
-          className="action-btn"
-          bsStyle="primary"
-          onClick={onHighlightUnmapped}
-          block
-        >
+        <ActionButton dataCmd={"highlight"} onClick={onHighlightUnmapped}>
           <FaBackward className="react-icons" /> Highlight Unmapped
-        </Button>
+        </ActionButton>
         <ActionButton dataCmd="delete" onClick={onClick}>
           <FaBackward className="react-icons" /> Clear This Mapping
         </ActionButton>

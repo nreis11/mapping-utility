@@ -14,7 +14,7 @@ const BasicAlert = props => {
           <strong>{message}</strong>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => handleClose()}>Close</Button>
+          <Button onClick={() => handleClose(null)}>Close</Button>
         </Modal.Footer>
       </Modal.Dialog>
     </div>

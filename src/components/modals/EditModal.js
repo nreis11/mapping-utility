@@ -71,7 +71,11 @@ class EditModal extends React.PureComponent {
             {this.props.children}
           </Modal.Body>
           <Modal.Footer>
-            <FileInput handleOpen={this.handleYamlImport} type="yaml" />
+            <FileInput
+              handleOpen={this.handleYamlImport}
+              handleAlert={this.handleError}
+              type="yaml"
+            />
             <AddModal onAddNodes={onAddNodes} />
             <Button
               className="pull-left"

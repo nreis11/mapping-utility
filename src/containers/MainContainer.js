@@ -87,7 +87,7 @@ class MainContainer extends Component {
     this.handleOpen = this.handleOpen.bind(this);
     this.clearTrees = this.clearTrees.bind(this);
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
-    this.handleCloseAlert = this.handleCloseAlert.bind(this);
+    this.handleAlert = this.handleAlert.bind(this);
   }
 
   componentDidMount() {
@@ -319,16 +319,12 @@ class MainContainer extends Component {
       const parentsAlert = "Parents are not selectable.";
 
       if (!bothNodesAreSelected(activeIntNodeInfo, activeExtNodeInfo)) {
-        this.setState({
-          alert: bothNodesAlert
-        });
+        this.handleAlert(bothNodesAlert);
         return;
       }
 
       if (parentsAreNotSelectable(parentsSelectable, activeExtNode)) {
-        this.setState({
-          alert: parentsAlert
-        });
+        this.handleAlert(parentsAlert);
         return;
       }
 
@@ -438,9 +434,9 @@ class MainContainer extends Component {
     saveToJson(this.state);
   }
 
-  handleCloseAlert() {
+  handleAlert(alert) {
     this.setState({
-      alert: null
+      alert
     });
   }
 
@@ -485,14 +481,13 @@ class MainContainer extends Component {
 
     return (
       <div id="main-container">
-        {alert && (
-          <BasicAlert handleClose={this.handleCloseAlert} message={alert} />
-        )}
+        {alert && <BasicAlert handleClose={this.handleAlert} message={alert} />}
         <NavBar
           searchValues={searchValues}
           handleSave={this.handleSave}
           handleOpen={this.handleOpen}
           handleInputChange={this.handleInputChange}
+          handleAlert={this.handleAlert}
         />
         <Grid fluid>
           <Row className="show-grid">
@@ -540,7 +535,11 @@ class MainContainer extends Component {
                   />
                 }
                 right={
-                  <EditModal onClear={this.clearTrees} activeType={activeType}>
+                  <EditModal
+                    onClear={this.clearTrees}
+                    activeType={activeType}
+                    handleAlert={this.handleAlert}
+                  >
                     <TreeContainer
                       treeKey={this.extTreeKey}
                       treeData={activeExtTreeData}

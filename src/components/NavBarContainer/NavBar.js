@@ -15,7 +15,7 @@ import { func, string, number, bool, shape } from "prop-types";
 import "./NavBar.css";
 
 const NavBar = props => {
-  const { handleOpen, handleSave, ...restProps } = props;
+  const { handleOpen, handleSave, handleAlert, ...restProps } = props;
 
   const handleLoad = () => {
     // Prompt user for file. Simulate click. Keeping ugly default button hidden
@@ -28,7 +28,11 @@ const NavBar = props => {
   return (
     <Navbar inverse fluid>
       <Nav>
-        <FileInput handleOpen={handleOpen} type="json" />
+        <FileInput
+          handleOpen={handleOpen}
+          handleAlert={handleAlert}
+          type="json"
+        />
         <NavItem>
           <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
             <Button onClick={handleLoad}>
@@ -58,6 +62,7 @@ NavBar.propTypes = {
   handleOpen: func.isRequired,
   handleSave: func.isRequired,
   handleInputChange: func.isRequired,
+  handleAlert: func.isRequired,
   searchValues: shape({
     searchString: string.isRequired,
     searchFocusIndex: number.isRequired,

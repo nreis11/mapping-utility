@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import EditModal from "./EditModal";
 import TreeContainer from "../../containers/TreeContainer";
-import { TYPES } from "../../utilities/mappingHelpers";
+import { TYPES } from "../../utils/mappingHelpers";
 
 const activeType = Object.keys(TYPES)[0];
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
 import BoardNameForm from "./BoardNameForm";
+import { Form } from "react-bootstrap";
 
 describe("<BoardNameForm/>", () => {
   let wrapper;
@@ -10,6 +11,8 @@ describe("<BoardNameForm/>", () => {
     wrapper = shallow(
       <BoardNameForm handleInputChange={() => {}} name={boardName} />
     );
+    const form = wrapper.find(Form);
+    expect(form.length).toBe(1);
   });
 
   it("Renders changes", () => {

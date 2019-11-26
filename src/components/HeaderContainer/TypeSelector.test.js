@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
 import TypeSelector from "./TypeSelector";
-import { TYPES } from "../../utilities/mappingHelpers";
+import { TYPES } from "../../utils/mappingHelpers";
 
 const activeType = Object.keys(TYPES)[0];
 const handleSelect = () => {};

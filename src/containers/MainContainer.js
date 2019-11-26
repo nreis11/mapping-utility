@@ -12,7 +12,7 @@ import {
   _handleMapAction,
   _handleSearchAction,
   TYPES
-} from "../utilities/mappingHelpers";
+} from "../utils/mappingHelpers";
 
 import {
   isBootstrapModalOpen,
@@ -20,7 +20,7 @@ import {
   scrollIfNeeded,
   getInBoundsTreeIndex,
   parentsAreNotSelectable
-} from "../utilities/helpers";
+} from "../utils/helpers";
 
 import {
   saveToJson,
@@ -28,7 +28,7 @@ import {
   getInitialExtTreeData,
   getTreeDataFromFlatData,
   getFlatData
-} from "../utilities/fileHelpers";
+} from "../utils/fileHelpers";
 
 import TreeContainer from "./TreeContainer";
 import ActionBarContainer from "./ActionBarContainer";

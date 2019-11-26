@@ -10,8 +10,8 @@ import {
   oneOfType
 } from "prop-types";
 import { Col } from "react-bootstrap";
-import { getInBoundsTreeIndex } from "../utilities/helpers";
-import { _getActiveNodeInfo } from "../utilities/mappingHelpers";
+import { getInBoundsTreeIndex } from "../utils/helpers";
+import { _getActiveNodeInfo } from "../utils/mappingHelpers";
 import SortableTree, {
   removeNodeAtPath,
   getVisibleNodeCount

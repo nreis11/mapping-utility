@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, ButtonToolbar, DropdownButton, MenuItem } from "react-bootstrap";
 import { func, string } from "prop-types";
-import { TYPES } from "../../utilities/mappingHelpers";
+import { TYPES } from "../../utils/mappingHelpers";
 
 const TypeSelector = ({ activeType, onSelect }) => {
   return (

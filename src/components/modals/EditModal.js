@@ -5,7 +5,7 @@ import { FaPlus, FaUpload } from "react-icons/fa";
 
 import AddModal from "./AddModal";
 import FileInput from "../misc/FileInput";
-import { importYaml } from "../../utilities/fileHelpers";
+import { importYaml } from "../../utils/fileHelpers";
 import { func, string } from "prop-types";
 
 class EditModal extends React.PureComponent {

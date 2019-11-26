@@ -2,7 +2,7 @@ import React from "react";
 import { string, shape } from "prop-types";
 import "./NodeInfo.css";
 import { Panel } from "react-bootstrap";
-import { DELIMITER } from "../../utilities/mappingHelpers";
+import { DELIMITER } from "../../utils/mappingHelpers";
 
 const NodeInfo = ({ heading, node }) => {
   const nodeTitle = node ? node.title : null;

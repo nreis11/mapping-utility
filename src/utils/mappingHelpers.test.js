@@ -32,33 +32,37 @@ describe("_getActiveNodeInfo", () => {
 
 describe("_mapNode", () => {
   let treeData;
-  const oldMapping = "OLD";
-  const newMapping = "NEW";
+  const oldMapping = [{ id: `2${DELIMITER}110`, title: "Operation Manager" }];
+  const newMapping = [{ id: `1${DELIMITER}133`, title: "Engineer" }];
   beforeEach(() => {
     treeData = [
       {
         id: "1",
-        mapping: null,
+        mapping: [],
+        parent: null,
         children: [
           {
             id: "2",
-            mapping: oldMapping
+            mapping: oldMapping,
+            parent: "1"
           },
           {
             id: "3",
-            mapping: oldMapping
+            mapping: oldMapping,
+            parent: "1"
           }
         ]
       }
     ];
   });
+
   it("should map the node and its descendants", () => {
     const result = _mapNode(treeData, newMapping, true);
 
     expect(result.mapping).toEqual(newMapping);
-    expect(
-      result.children.every(child => child.mapping === newMapping)
-    ).toBeTruthy();
+    expect(result.children.every(child => child.mapping === newMapping)).toBe(
+      true
+    );
   });
 
   it("should only map the nodes without mappings", () => {
@@ -75,11 +79,11 @@ describe("_isMapped", () => {
     const treeData = [
       {
         id: "1",
-        mapping: null,
+        mapping: [],
         children: [
           {
             id: "2",
-            mapping: null
+            mapping: []
           }
         ]
       }
@@ -92,11 +96,11 @@ describe("_isMapped", () => {
     const treeData = [
       {
         id: "1",
-        mapping: null,
+        mapping: [],
         children: [
           {
             id: "2",
-            mapping: "mapped"
+            mapping: [{ id: `2${DELIMITER}110`, title: "Operation Manager" }]
           }
         ]
       }

@@ -114,7 +114,9 @@ export const _mapNode = (treeData, mapping, overwrite = false) => {
       if (overwrite) {
         return { ...node, mapping: mapping };
       } else {
-        return node.mapping ? node : { ...node, mapping: mapping };
+        return node.mapping && node.mapping.length
+          ? node
+          : { ...node, mapping: mapping };
       }
     },
     ignoreCollapsed: false
@@ -130,7 +132,7 @@ export const _sortTree = treeData => {
 export const _isMapped = treeData => {
   let foundMapping = false;
   const callback = ({ node }) => {
-    if (node.mapping) {
+    if (node.mapping.length) {
       foundMapping = true;
     }
   };

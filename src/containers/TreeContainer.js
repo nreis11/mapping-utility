@@ -207,7 +207,7 @@ class TreeContainer extends React.PureComponent {
               activeNode &&
                 activeNode.id === node.id &&
                 className.push("active-node");
-              node.mapping
+              node.isInternal && node.mapping.length
                 ? className.push("mapped")
                 : className.push(highlightUnmapped ? "un-mapped" : "");
 

@@ -20,11 +20,21 @@ export const saveToJson = (state, testing = false) => {
 // Returns all treeData or only a certain type
 export const getInitialTreeData = (type = false) => {
   let treeData = {};
+  const injectFlatData = flatData => {
+    const newFlatData = flatData.map(node => ({
+      ...node,
+      isInternal: true,
+      mapping: []
+    }));
+    return newFlatData;
+  };
   if (type) {
-    treeData[type] = getTreeDataFromFlatData(eqValues[type]);
+    const newFlatData = injectFlatData(eqValues[type]);
+    treeData[type] = getTreeDataFromFlatData(newFlatData);
   } else {
     Object.keys(eqValues).forEach(type => {
-      treeData[type] = getTreeDataFromFlatData(eqValues[type]);
+      const newFlatData = injectFlatData(eqValues[type]);
+      treeData[type] = getTreeDataFromFlatData(newFlatData);
     });
   }
   return treeData;

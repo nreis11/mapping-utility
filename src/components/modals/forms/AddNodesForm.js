@@ -26,10 +26,6 @@ class AddNodesForm extends React.PureComponent {
 
   handleChange(e) {
     const { name, value } = e.target;
-    // Force delimiter validation
-    if (name === "delimiter" && value.length > 1) {
-      return;
-    }
     this.setState({ [name]: value });
   }
 
@@ -44,12 +40,6 @@ class AddNodesForm extends React.PureComponent {
     if (nodeInfo) {
       parentId = nodeInfo.node.id;
       tier = parseInt(parentId.split(idDelimiter)[0]) + 1;
-    }
-
-    // Check for validation errors
-    const formError = document.querySelector(".has-error");
-    if (formError) {
-      return;
     }
 
     // Create array of flat data, add tier for unique IDs
@@ -117,7 +107,7 @@ class AddNodesForm extends React.PureComponent {
           type="submit"
           disabled={isValidated ? false : true}
         >
-          Import Nodes
+          Done
         </Button>
       </Form>
     );

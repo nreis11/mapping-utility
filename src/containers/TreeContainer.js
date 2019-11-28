@@ -11,7 +11,7 @@ import {
 } from "prop-types";
 import { Col } from "react-bootstrap";
 import { getInBoundsTreeIndex } from "../utils/helpers";
-import { _getActiveNodeInfo } from "../utils/mappingHelpers";
+import { _getActiveNodeInfo, getNodeKey } from "../utils/mappingHelpers";
 import SortableTree, {
   removeNodeAtPath,
   getVisibleNodeCount
@@ -86,7 +86,6 @@ class TreeContainer extends React.PureComponent {
 
   handleRemoveNode(path) {
     const { treeData, treeKey, onChange } = this.props;
-    const getNodeKey = ({ node }) => node.id;
     const newTreeData = removeNodeAtPath({
       treeData,
       path,
@@ -207,7 +206,7 @@ class TreeContainer extends React.PureComponent {
               activeNode &&
                 activeNode.id === node.id &&
                 className.push("active-node");
-              node.isInternal && node.mapping.length
+              node.isInternal && node.mapping
                 ? className.push("mapped")
                 : className.push(highlightUnmapped ? "un-mapped" : "");
 

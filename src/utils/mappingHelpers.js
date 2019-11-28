@@ -15,7 +15,7 @@ export const TYPES = {
   countries: "Country"
 };
 
-const getNodeKey = ({ node }) => node.id;
+export const getNodeKey = ({ node }) => node.id;
 export const DELIMITER = "|";
 
 const getPathNodes = (treeData, path) => {
@@ -36,8 +36,8 @@ export const _handleMapAction = ({
   activeExtTreeData
 }) => {
   let newNode;
-  let pathNodes = getPathNodes(activeExtTreeData, path);
-  let key = e.keyCode || e.target.dataset.cmd;
+  const pathNodes = getPathNodes(activeExtTreeData, path);
+  const key = e.keyCode || e.target.dataset.cmd;
   if ((e.shiftKey && key === 32) || key === "shift-space") {
     // "Select node and its children. Preserve existing mappings"
     newNode = _mapNode([activeIntNode], pathNodes, false);
@@ -53,7 +53,7 @@ export const _handleMapAction = ({
 
 export const _handleDeleteAction = ({ e, activeIntNode }) => {
   let newNode;
-  let key = e.keyCode || e.target.dataset.cmd;
+  const key = e.keyCode || e.target.dataset.cmd;
   if ((e.shiftKey && e.keyCode === 8) || key === "shift-delete") {
     // "SHIFT BACKSPACE";
     // "Delete current node & everything under that node"
@@ -114,9 +114,7 @@ export const _mapNode = (treeData, mapping, overwrite = false) => {
       if (overwrite) {
         return { ...node, mapping: mapping };
       } else {
-        return node.mapping && node.mapping.length
-          ? node
-          : { ...node, mapping: mapping };
+        return node.mapping ? node : { ...node, mapping: mapping };
       }
     },
     ignoreCollapsed: false
@@ -132,7 +130,7 @@ export const _sortTree = treeData => {
 export const _isMapped = treeData => {
   let foundMapping = false;
   const callback = ({ node }) => {
-    if (node.mapping.length) {
+    if (node.mapping) {
       foundMapping = true;
     }
   };

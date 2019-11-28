@@ -118,7 +118,7 @@ class MainContainer extends Component {
   }
 
   componentDidUpdate() {
-    this.saveToLocalStorage();
+    // this.saveToLocalStorage();
   }
 
   saveToLocalStorage() {
@@ -360,11 +360,6 @@ class MainContainer extends Component {
     } else {
       // Ignore other input
       return;
-    }
-
-    // Unfocus buttons once clicked
-    if (e.target.dataset.cmd) {
-      e.target.blur();
     }
 
     // Replace active node with new mapping

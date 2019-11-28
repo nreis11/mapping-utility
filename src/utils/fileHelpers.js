@@ -24,7 +24,7 @@ export const getInitialTreeData = (type = false) => {
     const newFlatData = flatData.map(node => ({
       ...node,
       isInternal: true,
-      mapping: []
+      mapping: null
     }));
     return newFlatData;
   };

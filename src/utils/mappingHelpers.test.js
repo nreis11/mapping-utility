@@ -38,7 +38,7 @@ describe("_mapNode", () => {
     treeData = [
       {
         id: "1",
-        mapping: [],
+        mapping: null,
         parent: null,
         children: [
           {
@@ -79,11 +79,11 @@ describe("_isMapped", () => {
     const treeData = [
       {
         id: "1",
-        mapping: [],
+        mapping: null,
         children: [
           {
             id: "2",
-            mapping: []
+            mapping: null
           }
         ]
       }
@@ -96,7 +96,7 @@ describe("_isMapped", () => {
     const treeData = [
       {
         id: "1",
-        mapping: [],
+        mapping: null,
         children: [
           {
             id: "2",

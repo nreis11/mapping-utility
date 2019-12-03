@@ -74,3 +74,13 @@ Proposed Changes
 
 Benefits
 - When exporting, all information is available to export
+
+2019-12-03
+feat_bsUpgrade branch
+https://react-bootstrap.netlify.com/migrating/
+Breaking Changes
+- Checkbox -> FormCheck
+- ControlLabel -> FormLabel
+- Grid -> Container
+- MenuItem -> DropdownItem
+- Panel -> Card

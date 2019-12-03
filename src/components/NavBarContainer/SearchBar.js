@@ -2,10 +2,10 @@ import React from "react";
 import {
   Form,
   FormControl,
-  FormGroup,
   Button,
   InputGroup,
-  Checkbox
+  FormCheck,
+  Col
 } from "react-bootstrap";
 import { shape, string, func, number, bool } from "prop-types";
 import { FaSearch } from "react-icons/fa";
@@ -71,16 +71,17 @@ class SearchBar extends React.PureComponent {
       // Can't use Navbar.Form. It doesn't allow next match on Enter.
       <Form
         inline
-        style={{ display: "inline-block" }}
         onSubmit={e => {
           e.preventDefault();
         }}
       >
-        <FormGroup controlId="searchInput">
+        <Form.Group controlId="searchInput">
           <InputGroup>
-            <InputGroup.Addon>
-              <FaSearch />
-            </InputGroup.Addon>
+            <InputGroup.Prepend>
+              <InputGroup.Text id="basic-addon1">
+                <FaSearch />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
             <FormControl
               type="text"
               placeholder={
@@ -92,7 +93,7 @@ class SearchBar extends React.PureComponent {
               onKeyDown={this.handleKeyDown}
             />
           </InputGroup>
-        </FormGroup>
+        </Form.Group>
         <Button
           type="button"
           name="searchFocusIndex"
@@ -115,15 +116,23 @@ class SearchBar extends React.PureComponent {
           &nbsp;/&nbsp;
           {searchFoundCount || 0}
         </span>
-        <FormGroup style={{ marginLeft: 10, color: "white" }}>
-          {/* Needed to create div to reflect change visually. State was updating, but
+        {/* <Form.Group style={{ marginLeft: 10, color: "white" }}> */}
+        {/* Needed to create div to reflect change visually. State was updating, but
         visually no change occured */}
-          <div onClick={this.handleChange}>
-            <Checkbox name="searchInternal" checked={searchInternal} onChange={() => {}} inline>
-              Search eQuest
-            </Checkbox>
-          </div>
-        </FormGroup>
+        {/* <div onClick={this.handleChange}> */}
+        <Col>
+          <FormCheck
+            // name="searchInternal"
+            style={{ color: "white" }}
+            label="Search eQuest"
+            type="checkbox"
+            checked={searchInternal}
+            onChange={this.handleChange}
+            inline
+          ></FormCheck>
+        </Col>
+        {/* </div> */}
+        {/* </Form.Group> */}
       </Form>
     );
   }

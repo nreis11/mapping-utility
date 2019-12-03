@@ -1,7 +1,7 @@
 import React from "react";
 import { string, shape } from "prop-types";
 import "./NodeInfo.css";
-import { Panel } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { DELIMITER } from "../../utils/mappingHelpers";
 
 const NodeInfo = ({ heading, node }) => {
@@ -15,11 +15,11 @@ const NodeInfo = ({ heading, node }) => {
   }
 
   return (
-    <Panel bsStyle="info">
-      <Panel.Heading>
-        <Panel.Title componentClass="h3">{heading}</Panel.Title>
-      </Panel.Heading>
-      <Panel.Body>
+    <Card variant="info">
+      <Card.Header>
+        <Card.Title as="h3">{heading}</Card.Title>
+      </Card.Header>
+      <Card.Body>
         <div className="pull-left">
           <span>
             <strong>{nodeTitle}</strong>
@@ -31,8 +31,8 @@ const NodeInfo = ({ heading, node }) => {
           </span>
         </div>
         <div className="clearfix" />
-      </Panel.Body>
-    </Panel>
+      </Card.Body>
+    </Card>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "./MainContainer.css";
 import { toggleExpandedForAll, getVisibleNodeCount } from "react-sortable-tree";
 
@@ -484,8 +484,8 @@ class MainContainer extends Component {
           handleInputChange={this.handleInputChange}
           handleAlert={this.handleAlert}
         />
-        <Grid fluid>
-          <Row className="show-grid">
+        <Container fluid>
+          <Row className="show-Container">
             <Col className="parent-tree-container" md={5}>
               <HeaderContainer
                 left={
@@ -572,7 +572,7 @@ class MainContainer extends Component {
               />
             </Col>
           </Row>
-        </Grid>
+        </Container>
       </div>
     );
   }

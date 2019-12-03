@@ -45,12 +45,7 @@ class ExportModal extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
-        <Button
-          id="export-btn"
-          onClick={this.handleShow}
-          bsStyle="success"
-          bsSize="small"
-        >
+        <Button id="export-btn" onClick={this.handleShow} variant="success">
           <strong>Export</strong>
         </Button>
 

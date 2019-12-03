@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel, Col } from "react-bootstrap";
 import { string, func } from "prop-types";
 
 class IdxForm extends React.PureComponent {
@@ -9,11 +9,11 @@ class IdxForm extends React.PureComponent {
     return (
       <Col md={4}>
         <FormGroup controlId={`form${name}`}>
-          <ControlLabel>
+          <FormLabel>
             {name === "valueIdx" ? "Value" : "Label"} Position
-          </ControlLabel>
+          </FormLabel>
           <FormControl
-            componentClass="select"
+            as="select"
             placeholder="select"
             value={idx}
             onChange={onChange}

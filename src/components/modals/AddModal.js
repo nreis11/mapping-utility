@@ -34,14 +34,18 @@ class AddModal extends React.PureComponent {
         {!nodeInfo && (
           <Button
             className="pull-left"
-            bsStyle="info"
-            bsSize="small"
+            variant="info"
             onClick={this.handleShow}
           >
-            <FaPlus className="react-icons" />&nbsp;Add Nodes
+            <FaPlus className="react-icons" />
+            &nbsp;Add Nodes
           </Button>
         )}
-        <Modal show={this.props.show || this.state.show} onHide={this.handleClose} bsSize="large">
+        <Modal
+          show={this.props.show || this.state.show}
+          onHide={this.handleClose}
+          bsSize="lg"
+        >
           <Modal.Header closeButton>
             <Modal.Title>Add Nodes</Modal.Title>
           </Modal.Header>

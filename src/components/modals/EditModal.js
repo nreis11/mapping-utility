@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Modal, Col, Button, Alert } from "react-bootstrap";
+import { Modal, Button, Alert } from "react-bootstrap";
 import { FaPlus, FaUpload } from "react-icons/fa";
 
 import AddModal from "./AddModal";
@@ -54,16 +54,11 @@ class EditModal extends React.PureComponent {
     const { onAddNodes } = this.props.children.props;
 
     return (
-      <Col>
-        <Button
-          id="edit-modal-btn"
-          bsStyle="info"
-          bsSize="small"
-          onClick={this.handleShow}
-        >
+      <React.Fragment>
+        <Button id="edit-modal-btn" variant="info" onClick={this.handleShow}>
           <FaPlus className="react-icons" /> Add/Edit
         </Button>
-        <Modal show={this.state.show} onHide={this.handleClose} bsSize="large">
+        <Modal show={this.state.show} onHide={this.handleClose} bsSize="lg">
           <Modal.Header closeButton>
             <Modal.Title>Add/Edit</Modal.Title>
           </Modal.Header>
@@ -80,8 +75,7 @@ class EditModal extends React.PureComponent {
             <Button
               className="pull-left"
               style={{ marginLeft: 5 }}
-              bsStyle="success"
-              bsSize="small"
+              variant="success"
               onClick={this.handleFileOnClick}
             >
               <FaUpload className="react-icons" />
@@ -91,8 +85,7 @@ class EditModal extends React.PureComponent {
             <Button
               className="pull-left"
               style={{ marginLeft: 5, textTransform: "capitalize" }}
-              bsStyle="danger"
-              bsSize="small"
+              variant="danger"
               onClick={() => onClear(false)}
             >
               Clear {activeType}
@@ -101,8 +94,7 @@ class EditModal extends React.PureComponent {
             <Button
               className="pull-left"
               style={{ marginLeft: 5 }}
-              bsStyle="danger"
-              bsSize="small"
+              variant="danger"
               onClick={() => onClear(true)}
             >
               Clear All
@@ -110,7 +102,7 @@ class EditModal extends React.PureComponent {
             {this.state.error && (
               <Alert
                 className="pull-left"
-                bsStyle="danger"
+                variant="danger"
                 style={{
                   fontSize: 12,
                   height: 30
@@ -123,7 +115,7 @@ class EditModal extends React.PureComponent {
             <Button onClick={this.handleClose}>Close</Button>
           </Modal.Footer>
         </Modal>
-      </Col>
+      </React.Fragment>
     );
   }
 }

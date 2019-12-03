@@ -5,7 +5,8 @@ import {
   Button,
   Nav,
   Tooltip,
-  OverlayTrigger
+  OverlayTrigger,
+  Col
 } from "react-bootstrap";
 import { FaFolderOpen, FaSave } from "react-icons/fa";
 import SearchBar from "./SearchBar";
@@ -26,8 +27,8 @@ const NavBar = props => {
   const tooltip = text => <Tooltip id={`tooltip-${text}`}>{text}</Tooltip>;
 
   return (
-    <Navbar inverse fluid>
-      <Nav>
+    <Navbar bg="dark" variant="dark">
+      <Nav className="mr-auto">
         <FileInput
           handleOpen={handleOpen}
           handleAlert={handleAlert}
@@ -36,20 +37,22 @@ const NavBar = props => {
         <NavItem>
           <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
             <Button onClick={handleLoad}>
-              <FaFolderOpen size="1.25em" className="react-icons" />
+              <FaFolderOpen className="react-icons" />
             </Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={tooltip("Save")}>
             <Button onClick={handleSave}>
-              <FaSave size="1.25em" className="react-icons" />
+              <FaSave className="react-icons" />
             </Button>
           </OverlayTrigger>
         </NavItem>
         <NavItem>
-          <SearchBar {...restProps} />
+          <Col>
+            <SearchBar {...restProps} />
+          </Col>
         </NavItem>
       </Nav>
-      <Nav pullRight>
+      <Nav className="mr-sm-2">
         <NavItem>
           <HelpModal />
         </NavItem>

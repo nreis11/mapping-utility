@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel, Col } from "react-bootstrap";
 import { string, func } from "prop-types";
 
 class DelimiterForm extends React.PureComponent {
@@ -10,7 +10,7 @@ class DelimiterForm extends React.PureComponent {
     return (
       <Col md={4}>
         <FormGroup controlId="formDelimiter" validationState={validationState}>
-          <ControlLabel>Delimiter</ControlLabel>
+          <FormLabel>Delimiter</FormLabel>
           <FormControl
             type="text"
             name="delimiter"

@@ -4,9 +4,21 @@
   justify-content: space-between;
   align-items: center;
   margin: 5px 0px;
+  padding: 3px 0px;
 }
 
 .header-container h2 {
   font-size: 1.5em;
   display: inline;
+}
+
+.left,
+.right {
+  display: flex;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.right {
+  justify-content: flex-end;
 }

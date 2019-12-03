@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import { string, func } from "prop-types";
 
 class RawDataForm extends React.PureComponent {
@@ -8,11 +8,11 @@ class RawDataForm extends React.PureComponent {
 
     return (
       <FormGroup controlId="formAddNodes" validationState={validationState}>
-        <ControlLabel>Data</ControlLabel>
+        <FormLabel>Data</FormLabel>
         <FormControl
           type="text"
           name="rawData"
-          componentClass="textarea"
+          as="textarea"
           value={rawData}
           placeholder="Ex. Value|Label"
           onChange={onChange}

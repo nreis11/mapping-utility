@@ -4,7 +4,7 @@ import { Alert } from "react-bootstrap";
 import "./CopyConfirmation.css";
 
 const CopyConfirmation = () => (
-  <Alert className="pull-left" bsStyle="success">
+  <Alert className="pull-left" variant="success">
     <FaCheck className="react-icons" />
     &nbsp;Copied.
   </Alert>

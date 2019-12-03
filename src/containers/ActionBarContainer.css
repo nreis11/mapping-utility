@@ -3,10 +3,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  width: 250px;
 }
 
-.expand-info-btn {
-  border-radius: 0px !important;
+.expand-info-txt {
   width: 100px;
 }
 

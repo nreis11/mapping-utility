@@ -49,7 +49,7 @@ class ExportModal extends React.PureComponent {
           <strong>Export</strong>
         </Button>
 
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={this.state.show} onHide={this.handleClose} size="lg">
           <Modal.Header closeButton>
             <Modal.Title>Export</Modal.Title>
           </Modal.Header>

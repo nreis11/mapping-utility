@@ -5,7 +5,7 @@ import { FaBackward, FaForward } from "react-icons/fa";
 
 export const ExpandCollapseButtons = React.memo(
   ({ expandAll, expand, children }) => (
-    <div>
+    <React.Fragment>
       <Button
         className="action-btn"
         variant="primary"
@@ -13,9 +13,7 @@ export const ExpandCollapseButtons = React.memo(
       >
         <FaBackward className="react-icons" />
       </Button>
-      <Button className="expand-info-btn" disabled>
-        {children}
-      </Button>
+      <span className="expand-info-txt">{children}</span>
       <Button
         className="action-btn"
         variant="primary"
@@ -23,7 +21,7 @@ export const ExpandCollapseButtons = React.memo(
       >
         <FaForward className="react-icons" />
       </Button>
-    </div>
+    </React.Fragment>
   )
 );
 

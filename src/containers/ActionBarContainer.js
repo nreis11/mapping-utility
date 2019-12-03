@@ -15,7 +15,7 @@ export const ActionBarContainer = ({
   onClick
 }) => {
   return (
-    <Col className="text-center action-container">
+    <div className="text-center action-container">
       <Col className="action-btn-container">
         <ActionButton className="action-btn" dataCmd="space" onClick={onClick}>
           <FaForward className="react-icons" /> Map{" "}
@@ -47,15 +47,19 @@ export const ActionBarContainer = ({
           <FaBackward className="react-icons" /> Clear Entire Node
         </ActionButton>
       </Col>
-      <ButtonGroup className="expand-btn-grp">
-        <ExpandCollapseButtons expandAll={expandAll} expand={true}>
-          Expand All
-        </ExpandCollapseButtons>
-        <ExpandCollapseButtons expandAll={expandAll} expand={false}>
-          Collapse All
-        </ExpandCollapseButtons>
-      </ButtonGroup>
-    </Col>
+      <Col className="action-btn-container">
+        <ButtonGroup className="expand-btn-grp" size="sm">
+          <ExpandCollapseButtons expandAll={expandAll} expand={true}>
+            Expand All
+          </ExpandCollapseButtons>
+        </ButtonGroup>
+        <ButtonGroup className="expand-btn-grp" size="sm">
+          <ExpandCollapseButtons expandAll={expandAll} expand={false}>
+            Collapse All
+          </ExpandCollapseButtons>
+        </ButtonGroup>
+      </Col>
+    </div>
   );
 };
 

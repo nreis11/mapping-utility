@@ -36,12 +36,12 @@ const NavBar = props => {
         />
         <NavItem>
           <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
-            <Button onClick={handleLoad}>
+            <Button variant="light" onClick={handleLoad}>
               <FaFolderOpen className="react-icons" />
             </Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={tooltip("Save")}>
-            <Button onClick={handleSave}>
+            <Button variant="light" onClick={handleSave}>
               <FaSave className="react-icons" />
             </Button>
           </OverlayTrigger>

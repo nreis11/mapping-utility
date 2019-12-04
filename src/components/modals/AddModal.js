@@ -32,22 +32,18 @@ class AddModal extends React.PureComponent {
       <Col>
         {/* Main Add Button */}
         {!nodeInfo && (
-          <Button
-            className="pull-left"
-            variant="info"
-            onClick={this.handleShow}
-          >
+          <Button variant="info" onClick={this.handleShow}>
             <FaPlus className="react-icons" />
-            &nbsp;Add Nodes
+            &nbsp;Add Data
           </Button>
         )}
         <Modal
           show={this.props.show || this.state.show}
           onHide={this.handleClose}
-          bsSize="lg"
+          size="lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title>Add Nodes</Modal.Title>
+            <Modal.Title>Add Data</Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ height: "70vh" }}>
             <AddNodesForm
@@ -55,9 +51,7 @@ class AddModal extends React.PureComponent {
               handleClose={this.handleClose}
               nodeInfo={nodeInfo}
             />
-            <Button className="pull-right" onClick={this.handleClose}>
-              Cancel
-            </Button>
+            <Button onClick={this.handleClose}>Cancel</Button>
           </Modal.Body>
           <Modal.Footer />
         </Modal>

@@ -73,8 +73,7 @@ class EditModal extends React.PureComponent {
             />
             <AddModal onAddNodes={onAddNodes} />
             <Button
-              className="pull-left"
-              style={{ marginLeft: 5 }}
+              // className="pull-left"
               variant="success"
               onClick={this.handleFileOnClick}
             >
@@ -83,8 +82,8 @@ class EditModal extends React.PureComponent {
             </Button>
 
             <Button
-              className="pull-left"
-              style={{ marginLeft: 5, textTransform: "capitalize" }}
+              // className="pull-left"
+              style={{ textTransform: "capitalize" }}
               variant="danger"
               onClick={() => onClear(false)}
             >
@@ -92,8 +91,7 @@ class EditModal extends React.PureComponent {
             </Button>
 
             <Button
-              className="pull-left"
-              style={{ marginLeft: 5 }}
+              // className="pull-left"
               variant="danger"
               onClick={() => onClear(true)}
             >
@@ -101,7 +99,7 @@ class EditModal extends React.PureComponent {
             </Button>
             {this.state.error && (
               <Alert
-                className="pull-left"
+                // className="pull-left"
                 variant="danger"
                 style={{
                   fontSize: 12,

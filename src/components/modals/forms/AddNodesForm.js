@@ -103,7 +103,6 @@ class AddNodesForm extends React.PureComponent {
         <Button
           style={{ marginLeft: 5 }}
           variant="info"
-          className="pull-right"
           type="submit"
           disabled={isValidated ? false : true}
         >

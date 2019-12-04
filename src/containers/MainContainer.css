@@ -14,6 +14,8 @@
 .well {
   flex: 15 15 500px;
   border: solid;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 @media only screen and (max-width: 991px) {

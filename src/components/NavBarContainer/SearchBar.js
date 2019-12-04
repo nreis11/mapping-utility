@@ -19,7 +19,7 @@ class SearchBar extends React.PureComponent {
   }
 
   handleChange(e) {
-    e.stopPropagation();
+    // e.stopPropagation();
     this.props.handleInputChange(e);
   }
 
@@ -99,6 +99,7 @@ class SearchBar extends React.PureComponent {
           name="searchFocusIndex"
           disabled={!searchFoundCount}
           onClick={selectPrevMatch}
+          variant="light"
         >
           &lt;
         </Button>
@@ -107,6 +108,7 @@ class SearchBar extends React.PureComponent {
           name="searchFocusIndex"
           disabled={!searchFoundCount}
           onClick={selectNextMatch}
+          variant="light"
         >
           &gt;
         </Button>
@@ -116,14 +118,11 @@ class SearchBar extends React.PureComponent {
           &nbsp;/&nbsp;
           {searchFoundCount || 0}
         </span>
-        {/* <Form.Group style={{ marginLeft: 10, color: "white" }}> */}
-        {/* Needed to create div to reflect change visually. State was updating, but
-        visually no change occured */}
-        {/* <div onClick={this.handleChange}> */}
         <Col>
           <FormCheck
-            // name="searchInternal"
+            name="searchInternal"
             style={{ color: "white" }}
+            as="input"
             label="Search eQuest"
             type="checkbox"
             checked={searchInternal}
@@ -131,8 +130,6 @@ class SearchBar extends React.PureComponent {
             inline
           ></FormCheck>
         </Col>
-        {/* </div> */}
-        {/* </Form.Group> */}
       </Form>
     );
   }

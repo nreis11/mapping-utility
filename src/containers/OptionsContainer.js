@@ -1,17 +1,20 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
+import "./OptionsContainer.css";
 
 const OptionsContainer = props => {
   return (
-    <Card variant="info">
+    <Card id="options-container" variant="info">
       <Card.Header>
-        <Card.Title as="h3">Options</Card.Title>
+        <Card.Title as="p">Options</Card.Title>
       </Card.Header>
       <Card.Body>
-        <span className="pull-left">
-          <strong>{props.left}</strong>
-        </span>
-        <span className="pull-right">{props.right}</span>
+        <Row className="d-flex align-items-center" noGutters>
+          <Col md={8}>{props.left}</Col>
+          <Col className="d-flex justify-content-end" md={4}>
+            {props.right}
+          </Col>
+        </Row>
       </Card.Body>
     </Card>
   );

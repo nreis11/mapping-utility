@@ -11,5 +11,6 @@
 #export-btn {
   position: relative;
   bottom: 4px;
-  line-height: 12px;
+  padding: 2px 8px;
+  /* line-height: 12px; */
 }

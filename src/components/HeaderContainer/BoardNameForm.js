@@ -1,7 +1,14 @@
 import React from "react";
-import { Form, FormGroup, FormControl, Button } from "react-bootstrap";
+import {
+  Form,
+  FormGroup,
+  FormControl,
+  Button,
+  InputGroup
+} from "react-bootstrap";
 import { string, func } from "prop-types";
 import { FaPencilAlt } from "react-icons/fa";
+import "./BoardNameForm.css";
 
 class BoardNameForm extends React.PureComponent {
   constructor(props) {
@@ -70,13 +77,16 @@ class BoardNameForm extends React.PureComponent {
             name="boardName"
             disabled={disabled}
             value={boardName}
-            style={{ fontSize: "1.5em", maxWidth: 250 }}
             onChange={this.handleChange}
           />
         </FormGroup>
-        <Button onClick={this.handleEdit}>
-          <FaPencilAlt className="react-icons" />
-        </Button>
+        <InputGroup.Append>
+          <InputGroup.Text id="board-name-addon1">
+            <Button variant="light" onClick={this.handleEdit}>
+              <FaPencilAlt />
+            </Button>
+          </InputGroup.Text>
+        </InputGroup.Append>
       </Form>
     );
   }

@@ -1,7 +1,9 @@
 #parent-action-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  /* margin: 30px 0; */
+  border: 2px solid red;
+  margin: 38px 0;
   /* height: 70vh; */
 }
 
@@ -16,6 +18,7 @@
   border: solid;
   border-radius: 5px;
   padding: 10px;
+  background-color: #f5f5f5;
 }
 
 @media only screen and (max-width: 991px) {

@@ -1,5 +1,8 @@
+.card {
+  margin: 5px 0px;
+}
+
 .card-title {
-  /* padding: 5px; */
   margin-bottom: 0px;
 }
 

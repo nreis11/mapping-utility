@@ -1,15 +1,21 @@
 .action-container {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  width: 250px;
+  justify-content: center;
+  height: 100%;
+  border: 2px solid red;
+}
+
+.action-container > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .expand-info-txt {
   width: 100px;
 }
 
-.expand-btn-grp > :first-child {
+.expand-btn-grp > button {
   margin-bottom: 5px;
 }

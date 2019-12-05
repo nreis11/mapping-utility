@@ -9,14 +9,3 @@
   font-size: 1.5em;
   display: inline;
 }
-
-.left,
-.right {
-  display: flex;
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
-.right {
-  justify-content: flex-end;
-}

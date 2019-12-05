@@ -6,30 +6,24 @@ import "./Options.css";
 const Options = props => {
   const { outputParents, parentsSelectable, outputLabels } = props.options;
 
-  const outputPopover = (
-    <Popover id="popover-trigger-hover-focus" title="Output Parents">
-      Export all tiers.
-    </Popover>
-  );
-
-  const selectablePopover = (
-    <Popover id="popover-trigger-hover-focus" title="Parents Selectable">
-      All tiers can be mapped.
-    </Popover>
-  );
-
-  const labelPopover = (
-    <Popover id="popover-trigger-hover-focus" title="Output Labels">
-      Export eQuest label as board value.
+  const createPopover = ({ title, content }) => (
+    <Popover id={`popover-${title}`}>
+      <Popover.Title as="h3">
+        <strong>{title}</strong>
+      </Popover.Title>
+      <Popover.Content>{content}</Popover.Content>
     </Popover>
   );
 
   return (
-    <form>
+    <React.Fragment>
       <OverlayTrigger
-        trigger={["hover"]}
+        trigger={"hover"}
         placement="top"
-        overlay={outputPopover}
+        overlay={createPopover({
+          title: "Output Parents",
+          content: "Export all tiers."
+        })}
       >
         <label className="options-label">
           Output Parents
@@ -44,7 +38,10 @@ const Options = props => {
       <OverlayTrigger
         trigger={["hover"]}
         placement="top"
-        overlay={selectablePopover}
+        overlay={createPopover({
+          title: "Parents Selectable",
+          content: "All tiers can be mapped."
+        })}
       >
         <label className="options-label">
           Parents Selectable
@@ -59,7 +56,10 @@ const Options = props => {
       <OverlayTrigger
         trigger={["hover"]}
         placement="top"
-        overlay={labelPopover}
+        overlay={createPopover({
+          title: "Output Labels",
+          content: "Export eQuest label as board value."
+        })}
       >
         <label className="options-label">
           Output Labels
@@ -71,7 +71,7 @@ const Options = props => {
           />
         </label>
       </OverlayTrigger>
-    </form>
+    </React.Fragment>
   );
 };
 

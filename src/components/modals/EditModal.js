@@ -1,12 +1,13 @@
 import React from "react";
 
-import { Modal, Button, Alert } from "react-bootstrap";
+import { Modal, Button, Alert, Col } from "react-bootstrap";
 import { FaPlus, FaUpload } from "react-icons/fa";
 
 import AddModal from "./AddModal";
 import FileInput from "../misc/FileInput";
 import { importYaml } from "../../utils/fileHelpers";
 import { func, string } from "prop-types";
+import "./EditModal.css";
 
 class EditModal extends React.PureComponent {
   constructor(props, context) {
@@ -55,12 +56,29 @@ class EditModal extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <Button id="edit-modal-btn" variant="info" onClick={this.handleShow}>
+        <Button
+          id="edit-modal-btn"
+          variant="info"
+          size="sm"
+          onClick={this.handleShow}
+        >
           <FaPlus className="react-icons" /> Add/Edit
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose} size="lg">
           <Modal.Header closeButton>
-            <Modal.Title>Add/Edit</Modal.Title>
+            <Modal.Title>
+              Add/Edit{" "}
+              {this.state.error && (
+                <Alert
+                  id="yaml-error"
+                  variant="danger"
+                  onClose={() => this.handleError(null)}
+                  dismissible
+                >
+                  <p>{this.state.error}</p>
+                </Alert>
+              )}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ height: "65vh" }}>
             {this.props.children}
@@ -71,46 +89,35 @@ class EditModal extends React.PureComponent {
               handleAlert={this.handleError}
               type="yaml"
             />
-            <AddModal onAddNodes={onAddNodes} />
-            <Button
-              // className="pull-left"
-              variant="success"
-              onClick={this.handleFileOnClick}
-            >
-              <FaUpload className="react-icons" />
-              &nbsp;Import YAML
-            </Button>
-
-            <Button
-              // className="pull-left"
-              style={{ textTransform: "capitalize" }}
-              variant="danger"
-              onClick={() => onClear(false)}
-            >
-              Clear {activeType}
-            </Button>
-
-            <Button
-              // className="pull-left"
-              variant="danger"
-              onClick={() => onClear(true)}
-            >
-              Clear All
-            </Button>
-            {this.state.error && (
-              <Alert
-                // className="pull-left"
-                variant="danger"
-                style={{
-                  fontSize: 12,
-                  height: 30
-                }}
+            <Col md={8} className="left">
+              <AddModal onAddNodes={onAddNodes} />
+              <Button
+                variant="success"
+                onClick={this.handleFileOnClick}
+                size="sm"
               >
-                {this.state.error}
-              </Alert>
-            )}
+                <FaUpload className="react-icons" />
+                &nbsp;Import YAML
+              </Button>
 
-            <Button onClick={this.handleClose}>Close</Button>
+              <Button
+                style={{ textTransform: "capitalize" }}
+                variant="danger"
+                onClick={() => onClear(false)}
+                size="sm"
+              >
+                Clear {activeType}
+              </Button>
+
+              <Button variant="danger" size="sm" onClick={() => onClear(true)}>
+                Clear All
+              </Button>
+            </Col>
+            <Col className="right">
+              <Button size="sm" onClick={this.handleClose}>
+                Close
+              </Button>
+            </Col>
           </Modal.Footer>
         </Modal>
       </React.Fragment>

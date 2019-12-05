@@ -5,11 +5,10 @@ import { string, func } from "prop-types";
 class DelimiterForm extends React.PureComponent {
   render() {
     const { delimiter, onChange } = this.props;
-    const validationState = delimiter ? "success" : "error";
 
     return (
       <Col md={4}>
-        <FormGroup controlId="formDelimiter" validationState={validationState}>
+        <FormGroup controlId="formDelimiter">
           <FormLabel>Delimiter</FormLabel>
           <FormControl
             type="text"

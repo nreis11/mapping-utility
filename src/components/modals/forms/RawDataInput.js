@@ -1,18 +1,20 @@
 import React from "react";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import { string, func } from "prop-types";
+import { string, func, bool } from "prop-types";
 
-class RawDataForm extends React.PureComponent {
+class RawDataInput extends React.PureComponent {
   render() {
     const { rawData, onChange, validationState } = this.props;
 
     return (
-      <FormGroup controlId="formAddNodes" validationState={validationState}>
+      <FormGroup controlId="formAddNodes">
         <FormLabel>Data</FormLabel>
         <FormControl
-          type="text"
           name="rawData"
+          type="text"
           as="textarea"
+          isInvalid={rawData && !validationState}
+          isValid={validationState}
           value={rawData}
           placeholder="Ex. Value|Label"
           onChange={onChange}
@@ -25,14 +27,14 @@ class RawDataForm extends React.PureComponent {
   }
 }
 
-RawDataForm.propTypes = {
+RawDataInput.propTypes = {
   rawData: string.isRequired,
   onChange: func.isRequired,
-  validationState: string
+  validationState: bool
 };
 
-RawDataForm.defaultProps = {
+RawDataInput.defaultProps = {
   validationState: null
 };
 
-export default RawDataForm;
+export default RawDataInput;

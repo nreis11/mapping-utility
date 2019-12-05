@@ -9,6 +9,7 @@ const TypeSelector = ({ activeType, onSelect }) => {
       <Dropdown.Toggle
         variant="info"
         id="dropdown-basic-type"
+        size="sm"
         style={{ width: 100 }}
       >
         {TYPES[activeType]}

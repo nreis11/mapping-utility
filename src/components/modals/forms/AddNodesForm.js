@@ -1,10 +1,11 @@
 import React from "react";
-import { Form, Button, Row } from "react-bootstrap";
-import RawDataForm from "./RawDataForm";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import RawDataInput from "./RawDataInput";
 import DelimiterForm from "./DelimiterForm";
 import IdxForm from "./IdxForm";
 import { func, shape, string } from "prop-types";
 import { DELIMITER as idDelimiter } from "../../../utils/mappingHelpers";
+import "./AddNodesForm.css";
 
 class AddNodesForm extends React.PureComponent {
   constructor(props) {
@@ -70,7 +71,7 @@ class AddNodesForm extends React.PureComponent {
         .trim()
         .split("\n")
         .filter(line => !line.includes(delimiter));
-      return missingDelimiterArr.length ? "error" : "success";
+      return missingDelimiterArr.length ? false : true;
     }
     return null;
   }
@@ -78,11 +79,11 @@ class AddNodesForm extends React.PureComponent {
   render() {
     const { rawData, delimiter, valueIdx, labelIdx } = this.state;
     const rawDataValidationState = this.getRawDataValidationState();
-    const isValidated = rawDataValidationState === "success";
+    const isValidated = rawDataValidationState;
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <RawDataForm
+        <RawDataInput
           onChange={this.handleChange}
           rawData={rawData}
           validationState={rawDataValidationState}
@@ -100,14 +101,18 @@ class AddNodesForm extends React.PureComponent {
             idx={labelIdx}
           />
         </Row>
-        <Button
-          style={{ marginLeft: 5 }}
-          variant="info"
-          type="submit"
-          disabled={isValidated ? false : true}
-        >
-          Done
-        </Button>
+        <Row>
+          <Col id="add-data-btn-container" className="right">
+            <Button
+              variant="info"
+              type="submit"
+              disabled={isValidated ? false : true}
+            >
+              Done
+            </Button>
+            <Button onClick={this.props.handleClose}>Cancel</Button>
+          </Col>
+        </Row>
       </Form>
     );
   }

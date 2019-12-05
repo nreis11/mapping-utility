@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Col } from "react-bootstrap";
 import { func, string } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy, FaDownload } from "react-icons/fa";
@@ -57,30 +57,32 @@ class ExportModal extends React.PureComponent {
             <p className="pretty-print">{this.state.output}</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              id="download-btn"
-              title="Download"
-              onClick={this.handleDownload}
-              className="pull-left"
-            >
-              <span>
-                <FaDownload className="react-icons" />
-                &nbsp;Download
-              </span>
-            </Button>
-            <CopyToClipboard
-              text={this.state.output}
-              className="pull-left"
-              onCopy={() => this.setState({ copied: true })}
-            >
-              <Button id="copy-btn" title="Copy">
-                <FaCopy className="react-icons" />
-                &nbsp;Copy
+            <Col className="left">
+              <Button
+                id="download-btn"
+                title="Download"
+                variant="outline-dark"
+                onClick={this.handleDownload}
+              >
+                <span>
+                  <FaDownload />
+                  &nbsp;Download
+                </span>
               </Button>
-            </CopyToClipboard>
-            {this.state.copied && <CopyConfirmation />}
-
-            <Button onClick={this.handleClose}>Close</Button>
+              <CopyToClipboard
+                text={this.state.output}
+                onCopy={() => this.setState({ copied: true })}
+              >
+                <Button id="copy-btn" title="Copy" variant="outline-dark">
+                  <FaCopy />
+                  &nbsp;Copy
+                </Button>
+              </CopyToClipboard>
+              {this.state.copied && <CopyConfirmation />}
+            </Col>
+            <Col className="right">
+              <Button onClick={this.handleClose}>Close</Button>
+            </Col>
           </Modal.Footer>
         </Modal>
       </React.Fragment>

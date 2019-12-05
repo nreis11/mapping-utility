@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Col } from "react-bootstrap";
 import { func, string } from "prop-types";
 
 const BasicAlert = props => {
@@ -13,7 +13,9 @@ const BasicAlert = props => {
         <strong>{message}</strong>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => handleClose(null)}>Close</Button>
+        <Col className="right">
+          <Button onClick={() => handleClose(null)}>Close</Button>
+        </Col>
       </Modal.Footer>
     </Modal>
   );

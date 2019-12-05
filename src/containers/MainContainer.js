@@ -456,7 +456,7 @@ class MainContainer extends Component {
 
     const internalName = "eQuest";
     const activeIntTreeData = intTreeData[activeType];
-    const activeExtTreeData = extTreeData[activeType] || [];
+    const activeExtTreeData = extTreeData[activeType];
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     const intSearchString = searchInternal ? searchString : "";
@@ -525,7 +525,7 @@ class MainContainer extends Component {
               <HeaderContainer
                 left={
                   <BoardNameForm
-                    name={boardName}
+                    boardName={boardName}
                     handleInputChange={this.handleInputChange}
                   />
                 }

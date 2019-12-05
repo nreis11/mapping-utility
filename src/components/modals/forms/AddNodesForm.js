@@ -103,14 +103,16 @@ class AddNodesForm extends React.PureComponent {
         </Row>
         <Row>
           <Col id="add-data-btn-container" className="right">
+            <Button variant="light" onClick={this.props.handleClose}>
+              Cancel
+            </Button>
             <Button
-              variant="info"
+              variant="primary"
               type="submit"
               disabled={isValidated ? false : true}
             >
               Done
             </Button>
-            <Button onClick={this.props.handleClose}>Cancel</Button>
           </Col>
         </Row>
       </Form>

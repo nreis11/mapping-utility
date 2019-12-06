@@ -13,7 +13,9 @@ export const ExpandCollapseButtons = React.memo(
       >
         <FaBackward className="react-icons" />
       </Button>
-      <span className="expand-info-txt">{children}</span>
+      <Button disabled className="expand-info-txt">
+        {children}
+      </Button>
       <Button
         className="action-btn"
         variant="primary"

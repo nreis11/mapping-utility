@@ -67,6 +67,7 @@ class MainContainer extends Component {
       alert: null
     };
 
+    this.internalName = "eQuest";
     this.intTreeKey = "intTreeData";
     this.extTreeKey = "extTreeData";
     this.localStorageKey = "mappingUtilityState";
@@ -454,7 +455,6 @@ class MainContainer extends Component {
 
     console.log("RENDERED");
 
-    const internalName = "eQuest";
     const activeIntTreeData = intTreeData[activeType];
     const activeExtTreeData = extTreeData[activeType];
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
@@ -490,7 +490,7 @@ class MainContainer extends Component {
               <HeaderContainer
                 left={
                   <Header>
-                    <span>{internalName}</span>
+                    <span>{this.internalName}</span>
                   </Header>
                 }
                 right={
@@ -511,7 +511,7 @@ class MainContainer extends Component {
                 onSearchFinish={searchInternal && this.handleSearchFinish}
                 highlightUnmapped={highlightUnmapped}
               />
-              <NodeInfo heading={internalName} node={activeIntNode} />
+              <NodeInfo heading={this.internalName} node={activeIntNode} />
               <NodeInfo heading={"Mapped to:"} node={mappedNode} />
             </Col>
             <Col id="parent-action-container" md={2}>

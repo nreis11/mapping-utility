@@ -5,8 +5,12 @@ import "./HeaderContainer.css";
 const HeaderContainer = ({ left, right }) => {
   return (
     <Col className="header-container">
-      <Col className="left">{left}</Col>
-      <Col className="right">{right}</Col>
+      <Col md={8} className="left">
+        {left}
+      </Col>
+      <Col md={4} className="right">
+        {right}
+      </Col>
     </Col>
   );
 };

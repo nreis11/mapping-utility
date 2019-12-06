@@ -15,6 +15,7 @@ class HelpModal extends React.PureComponent {
     this.state = {
       show: false
     };
+    this.version = "2.0.0";
   }
 
   handleClose() {
@@ -36,16 +37,15 @@ class HelpModal extends React.PureComponent {
   }
 
   render() {
-    const version = "1.0.6";
     const tooltip = text => <Tooltip id={`tooltip-${text}`}>{text}</Tooltip>;
 
     return (
       <Col>
-        <div id="help-link" onClick={this.handleShow}>
+        <Col id="help-link" onClick={this.handleShow}>
           <OverlayTrigger placement="bottom" overlay={tooltip("Help")}>
-            <FaQuestion size="1.25em" className="react-icons" />
+            <FaQuestion size="1.25em" />
           </OverlayTrigger>
-        </div>
+        </Col>
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
@@ -107,19 +107,18 @@ class HelpModal extends React.PureComponent {
             </p>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              title="Download"
-              onClick={this.handleDownload}
-              className="pull-left"
-            >
-              <span>
-                <FaDownload className="react-icons" />
-                &nbsp;User Guide
-              </span>
-            </Button>
-            <span id="version-txt">{`v${version}`}</span>
-
-            <Button onClick={this.handleClose}>Close</Button>
+            <Col className="left">
+              <Button title="Download" onClick={this.handleDownload}>
+                <span>
+                  <FaDownload className="react-icons" />
+                  &nbsp;User Guide
+                </span>
+              </Button>
+            </Col>
+            <Col id="help-footer-right" className="right">
+              <span id="version-txt">{`v${this.version}`}</span>
+              <Button onClick={this.handleClose}>Close</Button>
+            </Col>
           </Modal.Footer>
         </Modal>
       </Col>

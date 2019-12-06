@@ -15,7 +15,7 @@ export const ActionBarContainer = ({
   onClick
 }) => {
   return (
-    <div className="text-center action-container">
+    <Col className="text-center action-container">
       <Col className="action-btn-container">
         <ActionButton className="action-btn" dataCmd="space" onClick={onClick}>
           <FaForward className="react-icons" /> Map{" "}
@@ -59,7 +59,7 @@ export const ActionBarContainer = ({
           </ExpandCollapseButtons>
         </ButtonGroup>
       </Col>
-    </div>
+    </Col>
   );
 };
 

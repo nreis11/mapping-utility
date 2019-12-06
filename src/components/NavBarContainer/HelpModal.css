@@ -11,3 +11,7 @@
   text-align: center;
   margin-right: 5px;
 }
+
+#help-footer-right {
+  align-items: center;
+}

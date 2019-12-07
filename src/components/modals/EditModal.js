@@ -84,11 +84,6 @@ class EditModal extends React.PureComponent {
             {this.props.children}
           </Modal.Body>
           <Modal.Footer>
-            <FileInput
-              handleOpen={this.handleYamlImport}
-              handleAlert={this.handleError}
-              type="yaml"
-            />
             <Col md={8} className="left">
               <AddModal onAddNodes={onAddNodes} />
               <Button
@@ -112,6 +107,11 @@ class EditModal extends React.PureComponent {
               <Button variant="danger" size="sm" onClick={() => onClear(true)}>
                 Clear All
               </Button>
+              <FileInput
+                handleOpen={this.handleYamlImport}
+                handleAlert={this.handleError}
+                type="yaml"
+              />
             </Col>
             <Col className="right">
               <Button size="sm" onClick={this.handleClose}>

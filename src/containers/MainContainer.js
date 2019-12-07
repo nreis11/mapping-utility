@@ -111,8 +111,8 @@ class MainContainer extends Component {
     }
 
     document.addEventListener("keydown", this.handleKeyDown);
-    const { activeType } = this.state;
-    const activeIntTreeData = this.state.intTreeData[activeType];
+    const { activeType, intTreeData } = this.state;
+    const activeIntTreeData = intTreeData[activeType];
     this.setState({
       activeIntNodeInfo: _getActiveNodeInfo(activeIntTreeData, 0)
     });
@@ -167,7 +167,6 @@ class MainContainer extends Component {
   }
 
   handleSelectNode(nodeInfo) {
-    // console.log("Node Info", nodeInfo);
     const { isInternal } = nodeInfo.node;
     const activeKey = isInternal
       ? this.activeIntNodeKey
@@ -300,7 +299,6 @@ class MainContainer extends Component {
     ];
 
     const deleteKeys = [
-      46, // del,
       8, // backspace
       "delete",
       "shift-delete"
@@ -426,7 +424,6 @@ class MainContainer extends Component {
   }
 
   handleSave() {
-    // Save state to JSON
     saveToJson(this.state);
   }
 
@@ -567,6 +564,7 @@ class MainContainer extends Component {
                   <ExportModal
                     handleExport={this.handleExport}
                     boardName={boardName}
+                    options={options}
                   />
                 }
               />

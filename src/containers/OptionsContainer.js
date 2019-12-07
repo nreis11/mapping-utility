@@ -10,8 +10,8 @@ const OptionsContainer = props => {
       </Card.Header>
       <Card.Body>
         <Row className="d-flex align-items-center" noGutters>
-          <Col md={8}>{props.left}</Col>
-          <Col className="d-flex justify-content-end" md={4}>
+          <Col md={10}>{props.left}</Col>
+          <Col className="d-flex justify-content-end" md={2}>
             {props.right}
           </Col>
         </Row>

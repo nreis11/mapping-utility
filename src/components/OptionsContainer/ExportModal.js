@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button, Col } from "react-bootstrap";
-import { func, string } from "prop-types";
+import { func, string, object } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy, FaDownload } from "react-icons/fa";
 import CopyConfirmation from "./CopyConfirmation";
@@ -43,6 +43,7 @@ class ExportModal extends React.PureComponent {
   }
 
   render() {
+    const { outputLabels } = this.props.options;
     return (
       <React.Fragment>
         <Button id="export-btn" onClick={this.handleShow} variant="success">
@@ -72,6 +73,8 @@ class ExportModal extends React.PureComponent {
               <CopyToClipboard
                 text={this.state.output}
                 onCopy={() => this.setState({ copied: true })}
+                // She can't take it captain if everything is exported
+                disabled={outputLabels}
               >
                 <Button id="copy-btn" title="Copy" variant="outline-dark">
                   <FaCopy />
@@ -92,7 +95,8 @@ class ExportModal extends React.PureComponent {
 
 ExportModal.propTypes = {
   handleExport: func.isRequired,
-  boardName: string.isRequired
+  boardName: string.isRequired,
+  options: object.isRequired
 };
 
 export default ExportModal;

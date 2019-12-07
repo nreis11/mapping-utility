@@ -17,13 +17,14 @@
   background-color: #337ab7;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus {
   background-color: #265a88;
 }
 
 .btn-light,
 .btn-light:hover {
-  border: 1px solid black;
+  border: 1px solid #ccc;
 }
 /*  */
 
@@ -52,7 +53,7 @@
 }
 
 .modal-footer {
-  padding: 10px 16px;
+  padding: 15px 16px;
   justify-content: flex-start;
 }
 
@@ -89,5 +90,9 @@
 
   .expand-info-btn {
     width: 75px !important;
+  }
+
+  #options-container .options-label {
+    font-size: 0.8rem;
   }
 }

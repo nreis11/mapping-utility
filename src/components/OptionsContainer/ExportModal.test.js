@@ -12,11 +12,18 @@ jest.mock("file-saver", () => ({
 
 describe("<ExportModal/>", () => {
   let wrapper;
+  const options = {
+    outputLabels: false
+  };
   const testData = "Test Data";
   beforeEach(
     () =>
       (wrapper = shallow(
-        <ExportModal boardName="testBoard" handleExport={() => testData} />
+        <ExportModal
+          boardName="testBoard"
+          handleExport={() => testData}
+          options={options}
+        />
       ))
   );
 
@@ -28,7 +35,7 @@ describe("<ExportModal/>", () => {
   it("opens modal when button is clicked", () => {
     const modalBtn = wrapper.find("#export-btn");
     modalBtn.simulate("click");
-    const modal = wrapper.find("Modal");
+    const modal = wrapper.find("Bootstrap(Modal)");
     expect(modal.prop("show")).toEqual(true);
   });
 

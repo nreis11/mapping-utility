@@ -31,7 +31,7 @@ describe("<EditModal/>", () => {
   it("opens modal when button is clicked", () => {
     const modalBtn = wrapper.find("#edit-modal-btn");
     modalBtn.simulate("click");
-    const modal = wrapper.find("Modal");
+    const modal = wrapper.find("Bootstrap(Modal)");
     // console.log(modal.debug());
     expect(modal.prop("show")).toEqual(true);
   });

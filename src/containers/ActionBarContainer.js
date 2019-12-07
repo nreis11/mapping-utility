@@ -18,33 +18,30 @@ export const ActionBarContainer = ({
     <Col className="text-center action-container">
       <Col className="action-btn-container">
         <ActionButton className="action-btn" dataCmd="space" onClick={onClick}>
-          <FaForward className="react-icons" /> Map{" "}
-          <FaForward className="react-icons" />
+          <FaForward /> Map <FaForward />
           <br />
           (single)
         </ActionButton>
         <ActionButton dataCmd="shift-space" onClick={onClick}>
-          <FaForward className="react-icons" /> Map Node{" "}
-          <FaForward className="react-icons" />
+          <FaForward /> Map Node <FaForward />
           <br />
           (preserve)
         </ActionButton>
         <ActionButton dataCmd="ctrl-space" onClick={onClick}>
-          <FaForward className="react-icons" /> Map Node{" "}
-          <FaForward className="react-icons" />
+          <FaForward /> Map Node <FaForward />
           <br />
           (overwrite)
         </ActionButton>
       </Col>
       <Col className="action-btn-container">
         <ActionButton dataCmd={"highlight"} onClick={onHighlightUnmapped}>
-          <FaBackward className="react-icons" /> Highlight Unmapped
+          <FaBackward /> Highlight Unmapped
         </ActionButton>
         <ActionButton dataCmd="delete" onClick={onClick}>
-          <FaBackward className="react-icons" /> Clear This Mapping
+          <FaBackward /> Clear This Mapping
         </ActionButton>
         <ActionButton dataCmd="shift-delete" onClick={onClick}>
-          <FaBackward className="react-icons" /> Clear Entire Node
+          <FaBackward /> Clear Entire Node
         </ActionButton>
       </Col>
       <Col className="action-btn-container">

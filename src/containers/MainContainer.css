@@ -11,23 +11,6 @@
   height: 90vh;
 }
 
-/* Bootstrap buttons */
-.btn-primary,
-.btn-primary:disabled {
-  background-color: #337ab7;
-}
-
-.btn-primary:hover,
-.btn-primary:focus {
-  background-color: #265a88;
-}
-
-.btn-light,
-.btn-light:hover {
-  border: 1px solid #ccc;
-}
-/*  */
-
 /* Layout */
 .left,
 .right {

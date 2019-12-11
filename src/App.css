@@ -2,9 +2,52 @@ html,
 body {
   margin: 0;
   min-height: 100%;
+  font-size: 0.9rem;
   background-color: #eee;
 }
 
-.react-icons {
-  vertical-align: middle;
+/* Bootstrap buttons */
+.btn {
+  text-shadow: -1px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, 0.15),
+    0 1px 1px rgba(0, 0, 0, 0.075);
+  background-repeat: repeat-x;
 }
+
+.btn-primary,
+.btn-primary:disabled {
+  background-image: linear-gradient(180deg, #337ab7 0, #265a88);
+  background-color: #337ab7;
+  border-color: #245580;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #265a88;
+  background-position: 0 -15px;
+  border-color: #204d74;
+}
+
+.btn-info {
+  background-color: #5bc0de;
+  background-image: linear-gradient(180deg, #5bc0de 0, #2aabd2);
+  border-color: #28a4c9;
+}
+
+.btn-success {
+  background-color: #5cb85c;
+  background-image: linear-gradient(180deg, #5cb85c 0, #419641);
+  border-color: #3e8f3e;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  background-image: linear-gradient(180deg, #d9534f 0, #c12e2a);
+  border-color: #b92c28;
+}
+
+.btn-light,
+.btn-light:hover {
+  border: 1px solid #ccc;
+}
+/*  */

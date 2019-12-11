@@ -5,7 +5,7 @@ import "./CopyConfirmation.css";
 
 const CopyConfirmation = () => (
   <Alert className="pull-left" variant="success">
-    <FaCheck className="react-icons" />
+    <FaCheck />
     &nbsp;Copied.
   </Alert>
 );

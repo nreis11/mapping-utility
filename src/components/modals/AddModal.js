@@ -33,7 +33,7 @@ class AddModal extends React.PureComponent {
         {/* Main Add Button */}
         {!nodeInfo && (
           <Button variant="info" size="sm" onClick={this.handleShow}>
-            <FaPlus className="react-icons" />
+            <FaPlus />
             &nbsp;Add Data
           </Button>
         )}

@@ -110,7 +110,7 @@ class HelpModal extends React.PureComponent {
             <Col className="left">
               <Button title="Download" onClick={this.handleDownload}>
                 <span>
-                  <FaDownload className="react-icons" />
+                  <FaDownload />
                   &nbsp;User Guide
                 </span>
               </Button>

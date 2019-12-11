@@ -11,7 +11,7 @@ export const ExpandCollapseButtons = React.memo(
         variant="primary"
         onClick={() => expandAll(expand, true)}
       >
-        <FaBackward className="react-icons" />
+        <FaBackward />
       </Button>
       <Button disabled className="expand-info-txt">
         {children}
@@ -21,7 +21,7 @@ export const ExpandCollapseButtons = React.memo(
         variant="primary"
         onClick={() => expandAll(expand, false)}
       >
-        <FaForward className="react-icons" />
+        <FaForward />
       </Button>
     </React.Fragment>
   )

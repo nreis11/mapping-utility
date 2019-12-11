@@ -62,7 +62,7 @@ class EditModal extends React.PureComponent {
           size="sm"
           onClick={this.handleShow}
         >
-          <FaPlus className="react-icons" /> Add/Edit
+          <FaPlus /> Add/Edit
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose} size="lg">
           <Modal.Header closeButton>
@@ -91,7 +91,7 @@ class EditModal extends React.PureComponent {
                 onClick={this.handleFileOnClick}
                 size="sm"
               >
-                <FaUpload className="react-icons" />
+                <FaUpload />
                 &nbsp;Import YAML
               </Button>
 

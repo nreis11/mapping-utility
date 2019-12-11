@@ -136,11 +136,11 @@ class TreeContainer extends React.PureComponent {
             const { path } = nodeInfo;
             const buttons = [
               <button onClick={() => this.handleShowAddModal(nodeInfo)}>
-                <FaPlus className="react-icons" />
+                <FaPlus />
               </button>,
 
               <button onClick={() => this.handleRemoveNode(path)}>
-                <FaTrash className="react-icons" />
+                <FaTrash />
               </button>
             ];
 

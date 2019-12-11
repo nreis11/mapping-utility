@@ -162,8 +162,12 @@ describe("_exportMappingsToXML", () => {
         ]
       }
     ],
-    states: [{ id: "DEFAULT", title: "(Default)", parent: null }],
-    countries: [{ id: "DEFAULT", title: "(Default)", parent: null }]
+    states: [
+      { id: "DEFAULT", title: "(Default)", parent: null, mapping: null }
+    ],
+    countries: [
+      { id: "DEFAULT", title: "(Default)", parent: null, mapping: null }
+    ]
   };
 
   const typeAttr = {

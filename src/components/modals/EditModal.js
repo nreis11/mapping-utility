@@ -67,7 +67,7 @@ class EditModal extends React.PureComponent {
         <Modal show={this.state.show} onHide={this.handleClose} size="lg">
           <Modal.Header closeButton>
             <Modal.Title>
-              Add/Edit{" "}
+              Edit{" "}
               {this.state.error && (
                 <Alert
                   id="yaml-error"

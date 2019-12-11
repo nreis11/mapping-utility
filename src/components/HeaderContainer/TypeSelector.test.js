@@ -28,8 +28,7 @@ describe("<TypeSelector/>", () => {
 
   it("Calls proper event handler on select", () => {
     const firstChild = wrapper.find(Dropdown.Item).at(0);
-    console.log("firstChild: ", firstChild.debug());
     firstChild.simulate("select");
-    expect(firstChild.prop("onSelect")).toHaveBeenCalled();
+    expect(handleSelect).toHaveBeenCalled();
   });
 });

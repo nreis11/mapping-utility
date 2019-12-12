@@ -11,7 +11,10 @@ describe("<NodeInfo />", () => {
   it("should render with a node prop", () => {
     const div = document.createElement("div");
     ReactDOM.render(
-      <NodeInfo heading="Test" node={{ id: "1", title: "Title" }} />,
+      <NodeInfo
+        heading="Test"
+        node={{ id: "1", title: "Title", isInternal: true }}
+      />,
       div
     );
   });

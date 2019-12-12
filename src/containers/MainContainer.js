@@ -394,7 +394,7 @@ class MainContainer extends Component {
   }
 
   handleSearchFinish(matches) {
-    const searchFocusIndex = this.state.searchFocusIndex;
+    const { searchFocusIndex } = this.state;
     const newActiveNodeInfo = matches[searchFocusIndex] || null;
     const activeNodeKey = this.state.searchInternal
       ? this.activeIntNodeKey

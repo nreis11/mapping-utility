@@ -80,9 +80,7 @@ class EditModal extends React.PureComponent {
               )}
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ height: "65vh" }}>
-            {this.props.children}
-          </Modal.Body>
+          <Modal.Body>{this.props.children}</Modal.Body>
           <Modal.Footer>
             <Col md={8} className="left">
               <AddModal onAddNodes={onAddNodes} />

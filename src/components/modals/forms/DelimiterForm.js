@@ -14,7 +14,7 @@ class DelimiterForm extends React.PureComponent {
             type="text"
             name="delimiter"
             value={delimiter}
-            placeholder="What separates the value from the label?"
+            placeholder="Value/label separator"
             onChange={onChange}
           />
           <FormControl.Feedback />

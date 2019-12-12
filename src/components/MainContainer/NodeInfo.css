@@ -8,6 +8,7 @@
 }
 
 .card-header {
+  height: 26px;
   padding: 3px 15px;
   color: #31708f;
   background-color: #d9edf7;

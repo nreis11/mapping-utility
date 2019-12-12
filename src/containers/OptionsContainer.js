@@ -11,9 +11,7 @@ const OptionsContainer = props => {
       <Card.Body>
         <Row noGutters>
           <Col md={10}>{props.left}</Col>
-          <Col className="d-flex justify-content-end" md={2}>
-            {props.right}
-          </Col>
+          <Col className="right">{props.right}</Col>
         </Row>
       </Card.Body>
     </Card>

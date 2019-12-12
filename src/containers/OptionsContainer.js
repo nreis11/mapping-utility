@@ -4,12 +4,12 @@ import "./OptionsContainer.css";
 
 const OptionsContainer = props => {
   return (
-    <Card id="options-container" variant="info">
+    <Card id="options-container">
       <Card.Header>
         <Card.Title as="p">Options</Card.Title>
       </Card.Header>
       <Card.Body>
-        <Row className="d-flex align-items-center" noGutters>
+        <Row noGutters>
           <Col md={10}>{props.left}</Col>
           <Col className="d-flex justify-content-end" md={2}>
             {props.right}

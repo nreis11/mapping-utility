@@ -21,12 +21,13 @@ body {
   border-color: #245580;
 }
 
-.btn-primary:hover,
+/* .btn-primary:hover,
 .btn-primary:focus {
+  color: #fff;
   background-color: #265a88;
   background-position: 0 -15px;
   border-color: #204d74;
-}
+} */
 
 .btn-info {
   background-color: #5bc0de;

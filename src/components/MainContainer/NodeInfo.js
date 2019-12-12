@@ -1,5 +1,5 @@
 import React from "react";
-import { string, shape } from "prop-types";
+import { string, shape, bool } from "prop-types";
 import "./NodeInfo.css";
 import { Row, Col, Card } from "react-bootstrap";
 import { DELIMITER } from "../../utils/mappingHelpers";
@@ -9,7 +9,7 @@ const NodeInfo = ({ heading, node }) => {
   let nodeKey = node ? node.id : null;
 
   // Remove tier prefix
-  if (heading !== "eQuest" && nodeKey) {
+  if (nodeKey && !node.isInternal) {
     const keyArr = nodeKey.split(DELIMITER);
     nodeKey = keyArr[keyArr.length - 1];
   }
@@ -43,7 +43,11 @@ NodeInfo.defaultProps = {
 
 NodeInfo.propTypes = {
   heading: string.isRequired,
-  node: shape({ id: string.isRequired, title: string.isRequired })
+  node: shape({
+    id: string.isRequired,
+    title: string.isRequired,
+    isInternal: bool.isRequired
+  })
 };
 
 export default React.memo(NodeInfo);

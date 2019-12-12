@@ -22,7 +22,7 @@ class FileInput extends React.PureComponent {
 
   isValidated(file) {
     const { type, handleAlert } = this.props;
-    const typeAlert = `File must be in ${type} format.`;
+    const typeAlert = `Invalid type. File must be in ${type} format.`;
     const fileName = file.name.toLowerCase();
 
     switch (type) {

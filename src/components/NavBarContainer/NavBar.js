@@ -52,7 +52,7 @@ const NavBar = props => {
           </Col>
         </NavItem>
       </Nav>
-      <Nav className="mr-sm-2">
+      <Nav>
         <NavItem>
           <HelpModal />
         </NavItem>

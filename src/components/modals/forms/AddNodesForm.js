@@ -111,7 +111,7 @@ class AddNodesForm extends React.PureComponent {
               type="submit"
               disabled={isValidated ? false : true}
             >
-              Done
+              Import
             </Button>
           </Col>
         </Row>

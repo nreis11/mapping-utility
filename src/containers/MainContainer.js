@@ -370,10 +370,7 @@ class MainContainer extends Component {
     treeIndex = getInBoundsTreeIndex(treeIndex, nodeCount);
 
     // Set the new active node
-    const newActiveIntNodeInfo = _getActiveNodeInfo(
-      activeIntTreeData,
-      treeIndex
-    );
+    const newActiveIntNodeInfo = _getActiveNodeInfo(newTreeData, treeIndex);
 
     // Scroll active node into view if needed
     scrollIfNeeded(newActiveIntNodeInfo.node.id);

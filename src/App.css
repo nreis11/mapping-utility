@@ -21,13 +21,15 @@ body {
   border-color: #245580;
 }
 
-/* .btn-primary:hover,
-.btn-primary:focus {
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-image: none;
   color: #fff;
   background-color: #265a88;
   background-position: 0 -15px;
   border-color: #204d74;
-} */
+}
 
 .btn-info {
   background-color: #5bc0de;
@@ -47,8 +49,17 @@ body {
   border-color: #b92c28;
 }
 
-.btn-light,
-.btn-light:hover {
+.btn-light {
+  background-image: linear-gradient(180deg, #fff 0, #e0e0e0);
   border: 1px solid #ccc;
+}
+
+.btn-light:hover,
+.btn-light:focus {
+  background-position: 0 -15px;
+  background-image: none;
+  background-color: #e0e0e0;
+  color: #333;
+  border-color: #adadad;
 }
 /*  */

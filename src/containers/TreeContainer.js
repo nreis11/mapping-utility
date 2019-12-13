@@ -56,7 +56,7 @@ class TreeContainer extends React.PureComponent {
     const { treeData, activeNodeInfo, onSelectNode } = this.props;
     let { treeIndex } = activeNodeInfo;
     const initialTreeIndex = treeIndex;
-    let expanded = activeNodeInfo.node.expanded;
+    let { expanded } = activeNodeInfo.node;
     const { children } = activeNodeInfo.node;
     const nodeCount = getVisibleNodeCount({ treeData });
 

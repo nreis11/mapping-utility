@@ -54,7 +54,7 @@ class BoardNameForm extends React.PureComponent {
 
     return (
       <Form onSubmit={this.handleSubmit} inline>
-        <FormGroup controlId="formBoardName">
+        <FormGroup controlId="form-board-name">
           <FormControl
             type="text"
             placeholder="Board Name"

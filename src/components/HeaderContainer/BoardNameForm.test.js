@@ -5,6 +5,7 @@ import { Form } from "react-bootstrap";
 
 describe("<BoardNameForm/>", () => {
   let wrapper;
+  const boardNameId = "#form-board-name";
   const props = {
     boardName: "Board",
     handleInputChange: jest.fn()
@@ -19,8 +20,8 @@ describe("<BoardNameForm/>", () => {
   it("Handles changes", () => {
     const newBoardName = "NEW";
     wrapper = mount(<BoardNameForm {...props} />);
-    const stateKey = wrapper.find("#formBoardName").prop("name");
-    wrapper.find("#formBoardName").simulate("change", {
+    const stateKey = wrapper.find(boardNameId).prop("name");
+    wrapper.find(boardNameId).simulate("change", {
       target: { name: stateKey, value: newBoardName }
     });
     expect(wrapper.prop("handleInputChange")).toHaveBeenCalled();
@@ -28,9 +29,9 @@ describe("<BoardNameForm/>", () => {
 
   it("allows editing when edit button is clicked", () => {
     wrapper = mount(<BoardNameForm {...props} />);
-    expect(wrapper.find("#formBoardName").prop("disabled")).toBe(true);
+    expect(wrapper.find(boardNameId).prop("disabled")).toBe(true);
     // HandleEdit button
     wrapper.find(".btn").simulate("click");
-    expect(wrapper.find("#formBoardName").prop("disabled")).toBe(false);
+    expect(wrapper.find(boardNameId).prop("disabled")).toBe(false);
   });
 });

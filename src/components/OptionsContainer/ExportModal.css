@@ -12,3 +12,7 @@
   padding: 4px 8px;
   line-height: 15px;
 }
+
+.btn-outline-dark:disabled {
+  cursor: not-allowed;
+}

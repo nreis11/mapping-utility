@@ -5,10 +5,10 @@ import "./HeaderContainer.css";
 const HeaderContainer = ({ left, right }) => {
   return (
     <Col className="header-container">
-      <Col md={8} className="left">
+      <Col md={9} className="left">
         {left}
       </Col>
-      <Col md={4} className="right">
+      <Col md={3} className="right">
         {right}
       </Col>
     </Col>

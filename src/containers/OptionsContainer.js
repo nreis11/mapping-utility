@@ -11,7 +11,9 @@ const OptionsContainer = props => {
       <Card.Body>
         <Row noGutters>
           <Col md={10}>{props.left}</Col>
-          <Col className="right">{props.right}</Col>
+          <Col md={2} className="right">
+            {props.right}
+          </Col>
         </Row>
       </Card.Body>
     </Card>

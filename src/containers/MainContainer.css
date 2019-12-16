@@ -40,10 +40,15 @@
   justify-content: flex-start;
 }
 
+@media only screen and (max-width: 1268px) {
+  .action-container .btn {
+    font-size: 0.8em;
+  }
+}
+
 @media only screen and (max-width: 1568px) {
   .action-container .btn {
-    padding: 6px;
-    font-size: 0.8em;
+    padding: 3px 5px;
   }
 
   .expand-info-btn {

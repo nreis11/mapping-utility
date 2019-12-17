@@ -24,7 +24,6 @@ class SearchBar extends React.PureComponent {
   }
 
   handleKeyDown(e) {
-    // Needed because handleChange does not fire with ESC
     const { searchInternal } = this.props.searchValues;
     e.stopPropagation();
     if (e.keyCode === 27) {
@@ -38,7 +37,6 @@ class SearchBar extends React.PureComponent {
         scrollableTreeContainer.focus();
       }
     }
-    return;
   }
 
   render() {
@@ -68,7 +66,6 @@ class SearchBar extends React.PureComponent {
     };
 
     return (
-      // Can't use Navbar.Form. It doesn't allow next match on Enter.
       <Form
         inline
         onSubmit={e => {

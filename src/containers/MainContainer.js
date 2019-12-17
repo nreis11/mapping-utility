@@ -85,7 +85,7 @@ class MainContainer extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
     this.handleSave = this.handleSave.bind(this);
-    this.handleOpen = this.handleOpen.bind(this);
+    this.handleOpenFile = this.handleOpenFile.bind(this);
     this.clearTrees = this.clearTrees.bind(this);
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
     this.handleAlert = this.handleAlert.bind(this);
@@ -408,7 +408,7 @@ class MainContainer extends Component {
     });
   }
 
-  handleOpen(fileInput) {
+  handleOpenFile(fileInput) {
     const fileReader = new FileReader();
     fileReader.onload = e => {
       // Convert string result to JSON after loading
@@ -474,12 +474,12 @@ class MainContainer extends Component {
         <NavBar
           searchValues={searchValues}
           handleSave={this.handleSave}
-          handleOpen={this.handleOpen}
+          handleOpen={this.handleOpenFile}
           handleInputChange={this.handleInputChange}
           handleAlert={this.handleAlert}
         />
         <Container fluid>
-          <Row className="show-Container">
+          <Row>
             <Col className="parent-tree-container" md={5}>
               <HeaderContainer
                 left={

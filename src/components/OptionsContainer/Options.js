@@ -40,7 +40,7 @@ const Options = props => {
         placement="top"
         overlay={createPopover({
           title: "Parents Selectable",
-          content: "All tiers can be mapped."
+          content: "All parents can be mapped."
         })}
       >
         <label className="options-label">

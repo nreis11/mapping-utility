@@ -4,7 +4,7 @@ import { string, func, bool } from "prop-types";
 
 class RawDataInput extends React.PureComponent {
   render() {
-    const { rawData, onChange, validationState } = this.props;
+    const { rawData, onChange, isValidated } = this.props;
 
     return (
       <FormGroup controlId="formAddNodes">
@@ -13,8 +13,8 @@ class RawDataInput extends React.PureComponent {
           name="rawData"
           type="text"
           as="textarea"
-          isInvalid={rawData && !validationState}
-          isValid={validationState}
+          isInvalid={rawData && !isValidated}
+          isValid={isValidated}
           value={rawData}
           placeholder="Ex. Value|Label"
           onChange={onChange}
@@ -30,11 +30,11 @@ class RawDataInput extends React.PureComponent {
 RawDataInput.propTypes = {
   rawData: string.isRequired,
   onChange: func.isRequired,
-  validationState: bool
+  isValidated: bool
 };
 
 RawDataInput.defaultProps = {
-  validationState: null
+  isValidated: null
 };
 
 export default RawDataInput;

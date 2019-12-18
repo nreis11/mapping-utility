@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Modal, Button, Alert, Col } from "react-bootstrap";
-import { FaPlus, FaUpload } from "react-icons/fa";
+import { FaUpload, FaPencilAlt } from "react-icons/fa";
 
 import AddModal from "./AddModal";
 import FileInput from "../misc/FileInput";
@@ -62,7 +62,7 @@ class EditModal extends React.PureComponent {
           size="sm"
           onClick={this.handleShow}
         >
-          <FaPlus /> Add/Edit
+          <FaPencilAlt /> Edit
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose} size="lg">
           <Modal.Header closeButton>

@@ -17,12 +17,21 @@ class AddNodesForm extends React.PureComponent {
       valueIdx: "1",
       labelIdx: "2"
     };
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getRawDataValidationState = this.getRawDataValidationState.bind(this);
 
     this.valueName = "valueIdx";
     this.labelName = "labelIdx";
+  }
+
+  handleKeyDown(e) {
+    // Allow CTRL + ENTER to submit
+    const isValidated = this.getRawDataValidationState();
+    if (isValidated && e.ctrlKey && e.keyCode === 13) {
+      this.handleSubmit(e);
+    }
   }
 
   handleChange(e) {
@@ -78,15 +87,14 @@ class AddNodesForm extends React.PureComponent {
 
   render() {
     const { rawData, delimiter, valueIdx, labelIdx } = this.state;
-    const rawDataValidationState = this.getRawDataValidationState();
-    const isValidated = rawDataValidationState;
+    const isValidated = this.getRawDataValidationState();
 
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit} onKeyDown={this.handleKeyDown}>
         <RawDataInput
           onChange={this.handleChange}
           rawData={rawData}
-          validationState={rawDataValidationState}
+          isValidated={isValidated}
         />
         <Row>
           <IdxForm

@@ -5,7 +5,8 @@ import {
   Button,
   Nav,
   Tooltip,
-  OverlayTrigger
+  OverlayTrigger,
+  Col
 } from "react-bootstrap";
 import { FaFolderOpen, FaSave } from "react-icons/fa";
 import SearchBar from "./SearchBar";
@@ -15,7 +16,7 @@ import { func, string, number, bool, shape } from "prop-types";
 import "./NavBar.css";
 
 const NavBar = props => {
-  const { handleOpen, handleSave, ...restProps } = props;
+  const { handleOpen, handleSave, handleAlert, ...restProps } = props;
 
   const handleLoad = () => {
     // Prompt user for file. Simulate click. Keeping ugly default button hidden
@@ -26,26 +27,32 @@ const NavBar = props => {
   const tooltip = text => <Tooltip id={`tooltip-${text}`}>{text}</Tooltip>;
 
   return (
-    <Navbar inverse fluid>
-      <Nav>
-        <FileInput handleOpen={handleOpen} type="json" />
+    <Navbar bg="dark" variant="dark">
+      <Nav className="mr-auto">
+        <FileInput
+          handleOpen={handleOpen}
+          handleAlert={handleAlert}
+          type="json"
+        />
         <NavItem>
           <OverlayTrigger placement="bottom" overlay={tooltip("Open")}>
-            <Button onClick={handleLoad}>
-              <FaFolderOpen size="1.25em" className="react-icons" />
+            <Button variant="light" onClick={handleLoad}>
+              <FaFolderOpen />
             </Button>
           </OverlayTrigger>
           <OverlayTrigger placement="bottom" overlay={tooltip("Save")}>
-            <Button onClick={handleSave}>
-              <FaSave size="1.25em" className="react-icons" />
+            <Button variant="light" onClick={handleSave}>
+              <FaSave />
             </Button>
           </OverlayTrigger>
         </NavItem>
         <NavItem>
-          <SearchBar {...restProps} />
+          <Col>
+            <SearchBar {...restProps} />
+          </Col>
         </NavItem>
       </Nav>
-      <Nav pullRight>
+      <Nav>
         <NavItem>
           <HelpModal />
         </NavItem>
@@ -58,6 +65,7 @@ NavBar.propTypes = {
   handleOpen: func.isRequired,
   handleSave: func.isRequired,
   handleInputChange: func.isRequired,
+  handleAlert: func.isRequired,
   searchValues: shape({
     searchString: string.isRequired,
     searchFocusIndex: number.isRequired,

@@ -1,8 +1,5 @@
-.alert {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 5px;
-    margin-bottom: 0;
-    height: 34px;
+#copy-confirmation {
+  display: inline;
+  padding: 9px;
+  /* height: 33px; */
 }

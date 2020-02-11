@@ -1,5 +1,5 @@
 import { getFlatDataFromTree, getTreeFromFlatData } from "react-sortable-tree";
-import { _sortTree, delimiter } from "./mappingHelpers";
+import { _sortTree, DELIMITER, TYPES } from "./mappingHelpers";
 import * as eqValues from "../values/eqValues";
 import FileSaver from "file-saver";
 import yaml from "js-yaml";
@@ -13,17 +13,28 @@ export const saveToJson = (state, testing = false) => {
   }
   // FileSaver solves cross-browser compatibility
   const file = new Blob([jsonString], { type: "application/json" });
-  const fileName = `${state.boardName}.json`;
+  const fileName = `MU-${state.boardName}.json`;
   FileSaver.saveAs(file, fileName);
 };
 
+// Returns all treeData or only a certain type
 export const getInitialTreeData = (type = false) => {
   let treeData = {};
+  const injectFlatData = flatData => {
+    const newFlatData = flatData.map(node => ({
+      ...node,
+      isInternal: true,
+      mapping: null
+    }));
+    return newFlatData;
+  };
   if (type) {
-    treeData[type] = getTreeDataFromFlatData(eqValues[type]);
+    const newFlatData = injectFlatData(eqValues[type]);
+    treeData[type] = getTreeDataFromFlatData(newFlatData);
   } else {
     Object.keys(eqValues).forEach(type => {
-      treeData[type] = getTreeDataFromFlatData(eqValues[type]);
+      const newFlatData = injectFlatData(eqValues[type]);
+      treeData[type] = getTreeDataFromFlatData(newFlatData);
     });
   }
   return treeData;
@@ -31,11 +42,17 @@ export const getInitialTreeData = (type = false) => {
 
 export const getTreeDataFromFlatData = flatData => {
   return getTreeFromFlatData({
-    flatData: flatData.map(node => ({ ...node })),
+    flatData,
     getKey: node => node.id, // resolve a node's key
     getParentKey: node => node.parent, // resolve a node's parent's key
     rootKey: null // The value of the parent key when there is no parent (i.e., at root level)
   });
+};
+
+export const getInitialExtTreeData = () => {
+  const treeData = {};
+  Object.keys(TYPES).map(type => (treeData[type] = []));
+  return treeData;
 };
 
 export const getFlatData = treeData => {
@@ -76,7 +93,8 @@ export const importYaml = ({ yamlFile, treeKey, onChange, handleError }) => {
 };
 
 // Recursive func used to create flat data from JSON
-export const traverse = (jsonObj, parent = null, nodes = []) => {
+export const traverse = (jsonObj, parent = null, nodes = [], tier = 0) => {
+  tier++;
   Object.entries(jsonObj).forEach(([key, value]) => {
     if (key === "label") {
       return;
@@ -86,17 +104,18 @@ export const traverse = (jsonObj, parent = null, nodes = []) => {
       throw new Error(`No label found for key ${key}. Cannot continue.`);
     }
 
-    // Using parent to create UID with delimiter. Avoids duplicate keys.
-    let curr = parent ? `${parent}${delimiter}${key}` : key;
+    // Create uid with delimiter. Avoids duplicate keys.
+    let curr = `${tier}${DELIMITER}${key}`;
 
     let node = {
       id: curr,
       title: value.label,
-      parent: parent
+      parent: parent,
+      isInternal: false
     };
     nodes.push(node);
 
-    traverse(value, curr, nodes);
+    traverse(value, curr, nodes, tier);
   });
   return nodes;
 };

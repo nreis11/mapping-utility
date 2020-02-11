@@ -1,3 +1,11 @@
+.well {
+  flex: 10 1 500px;
+  border: solid;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
 .rst__rowContents {
   padding-right: 0 !important;
 }

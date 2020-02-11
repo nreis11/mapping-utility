@@ -21,14 +21,14 @@ class FileInput extends React.PureComponent {
   }
 
   isValidated(file) {
-    const { type } = this.props;
-    const typeAlert = type => alert(`File must be in ${type} format.`);
+    const { type, handleAlert } = this.props;
+    const typeAlert = `Invalid type. File must be in ${type} format.`;
     const fileName = file.name.toLowerCase();
 
     switch (type) {
       case "json":
         if (fileName.indexOf(".json") === -1) {
-          typeAlert(type);
+          handleAlert(typeAlert);
           return false;
         }
         break;
@@ -37,7 +37,7 @@ class FileInput extends React.PureComponent {
           fileName.indexOf(".yaml") === -1 &&
           fileName.indexOf(".yml") === -1
         ) {
-          typeAlert(type);
+          handleAlert(typeAlert);
           return false;
         }
         break;
@@ -67,7 +67,8 @@ class FileInput extends React.PureComponent {
 
 FileInput.propTypes = {
   type: string.isRequired,
-  handleOpen: func.isRequired
+  handleOpen: func.isRequired,
+  handleAlert: func.isRequired
 };
 
 export default FileInput;

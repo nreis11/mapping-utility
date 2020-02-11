@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Col, Button } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import { func, shape, arrayOf, string, bool } from "prop-types";
 import AddNodesForm from "./forms/AddNodesForm";
@@ -29,35 +29,31 @@ class AddModal extends React.PureComponent {
     const { onAddNodes, nodeInfo } = this.props;
 
     return (
-      <Col>
+      <React.Fragment>
         {/* Main Add Button */}
         {!nodeInfo && (
-          <Button
-            className="pull-left"
-            bsStyle="info"
-            bsSize="small"
-            onClick={this.handleShow}
-          >
-            <FaPlus className="react-icons" />&nbsp;Add Nodes
+          <Button variant="info" size="sm" onClick={this.handleShow}>
+            <FaPlus />
+            &nbsp;Add Data
           </Button>
         )}
-        <Modal show={this.props.show || this.state.show} onHide={this.handleClose} bsSize="large">
+        <Modal
+          show={this.props.show || this.state.show}
+          onHide={this.handleClose}
+          size="lg"
+        >
           <Modal.Header closeButton>
-            <Modal.Title>Add Nodes</Modal.Title>
+            <Modal.Title>Add Data</Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ height: "70vh" }}>
+          <Modal.Body>
             <AddNodesForm
               onAddNodes={onAddNodes}
               handleClose={this.handleClose}
               nodeInfo={nodeInfo}
             />
-            <Button className="pull-right" onClick={this.handleClose}>
-              Cancel
-            </Button>
           </Modal.Body>
-          <Modal.Footer />
         </Modal>
-      </Col>
+      </React.Fragment>
     );
   }
 }

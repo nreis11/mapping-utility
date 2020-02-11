@@ -1,5 +1,5 @@
-export const isABootstrapModalOpen = () => {
-  return document.querySelectorAll(".modal.in").length > 0;
+export const isBootstrapModalOpen = () => {
+  return document.querySelectorAll(".modal").length > 0;
 };
 
 export const bothNodesAreSelected = (activeIntNodeInfo, activeExtNodeInfo) => {

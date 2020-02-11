@@ -1,15 +1,21 @@
 import React from "react";
-import { Form, FormGroup, FormControl, Button } from "react-bootstrap";
+import {
+  Form,
+  FormGroup,
+  FormControl,
+  Button,
+  InputGroup
+} from "react-bootstrap";
 import { string, func } from "prop-types";
 import { FaPencilAlt } from "react-icons/fa";
+import "./BoardNameForm.css";
 
 class BoardNameForm extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      disabled: true,
-      boardName: "Board"
+      disabled: true
     };
     this.handleEdit = this.handleEdit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -17,34 +23,18 @@ class BoardNameForm extends React.PureComponent {
     this.toggleDisabled = this.toggleDisabled.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.name !== this.state.boardName) {
-      this.setState({
-        boardName: nextProps.name
-      });
-    }
-  }
-
   handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    this.props.handleInputChange(e);
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const { boardName } = this.state;
 
-    if (!boardName) {
+    if (!this.props.boardName) {
       return;
     }
 
-    const eventObj = {
-      target: { name: "boardName", type: "text", value: boardName }
-    };
-
     this.toggleDisabled();
-    this.props.handleInputChange(eventObj);
   }
 
   toggleDisabled() {
@@ -59,24 +49,29 @@ class BoardNameForm extends React.PureComponent {
   }
 
   render() {
-    const { disabled, boardName } = this.state;
+    const { disabled } = this.state;
+    const { boardName } = this.props;
 
     return (
       <Form onSubmit={this.handleSubmit} inline>
-        <FormGroup controlId="formBoardName">
+        <FormGroup id="form-board-name-container" controlId="form-board-name">
           <FormControl
             type="text"
             placeholder="Board Name"
             name="boardName"
+            isInvalid={!boardName}
             disabled={disabled}
             value={boardName}
-            style={{ fontSize: "1.5em", maxWidth: 250 }}
             onChange={this.handleChange}
           />
         </FormGroup>
-        <Button onClick={this.handleEdit}>
-          <FaPencilAlt className="react-icons" />
-        </Button>
+        <InputGroup.Append>
+          <InputGroup.Text id="board-name-addon1">
+            <Button variant="light" onClick={this.handleEdit}>
+              <FaPencilAlt />
+            </Button>
+          </InputGroup.Text>
+        </InputGroup.Append>
       </Form>
     );
   }
@@ -84,7 +79,7 @@ class BoardNameForm extends React.PureComponent {
 
 BoardNameForm.propTypes = {
   handleInputChange: func.isRequired,
-  name: string.isRequired
+  boardName: string.isRequired
 };
 
 export default BoardNameForm;

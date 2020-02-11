@@ -4,26 +4,26 @@ import { Popover, OverlayTrigger } from "react-bootstrap";
 import "./Options.css";
 
 const Options = props => {
-  const { outputParents, parentsSelectable } = props.options;
+  const { outputParents, parentsSelectable, outputLabels } = props.options;
 
-  const outputPopover = (
-    <Popover id="popover-trigger-hover-focus" title="Output Parents">
-      Export all tiers.
-    </Popover>
-  );
-
-  const selectablePopover = (
-    <Popover id="popover-trigger-hover-focus" title="Parents Selectable">
-      All values can be mapped.
+  const createPopover = ({ title, content }) => (
+    <Popover id={`popover-${title}`}>
+      <Popover.Title as="h3">
+        <strong>{title}</strong>
+      </Popover.Title>
+      <Popover.Content>{content}</Popover.Content>
     </Popover>
   );
 
   return (
-    <form>
+    <React.Fragment>
       <OverlayTrigger
-        trigger={["hover"]}
+        trigger={"hover"}
         placement="top"
-        overlay={outputPopover}
+        overlay={createPopover({
+          title: "Output Parents",
+          content: "Export all tiers."
+        })}
       >
         <label className="options-label">
           Output Parents
@@ -38,7 +38,10 @@ const Options = props => {
       <OverlayTrigger
         trigger={["hover"]}
         placement="top"
-        overlay={selectablePopover}
+        overlay={createPopover({
+          title: "Parents Selectable",
+          content: "All parents can be mapped."
+        })}
       >
         <label className="options-label">
           Parents Selectable
@@ -50,7 +53,25 @@ const Options = props => {
           />
         </label>
       </OverlayTrigger>
-    </form>
+      <OverlayTrigger
+        trigger={["hover"]}
+        placement="top"
+        overlay={createPopover({
+          title: "Output Labels",
+          content: "Export eQuest label as board value."
+        })}
+      >
+        <label className="options-label">
+          Output Labels
+          <input
+            type="checkbox"
+            name="outputLabels"
+            checked={outputLabels}
+            onChange={event => props.onOptionChange(event)}
+          />
+        </label>
+      </OverlayTrigger>
+    </React.Fragment>
   );
 };
 
@@ -58,7 +79,8 @@ Options.propTypes = {
   onOptionChange: func.isRequired,
   options: shape({
     parentsSelectable: bool.isRequired,
-    outputParents: bool.isRequired
+    outputParents: bool.isRequired,
+    outputLabels: bool.isRequired
   })
 };
 

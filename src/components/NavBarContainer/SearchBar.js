@@ -2,10 +2,10 @@ import React from "react";
 import {
   Form,
   FormControl,
-  FormGroup,
   Button,
   InputGroup,
-  Checkbox
+  FormCheck,
+  Col
 } from "react-bootstrap";
 import { shape, string, func, number, bool } from "prop-types";
 import { FaSearch } from "react-icons/fa";
@@ -19,12 +19,11 @@ class SearchBar extends React.PureComponent {
   }
 
   handleChange(e) {
-    e.stopPropagation();
+    // e.stopPropagation();
     this.props.handleInputChange(e);
   }
 
   handleKeyDown(e) {
-    // Needed because handleChange does not fire with ESC
     const { searchInternal } = this.props.searchValues;
     e.stopPropagation();
     if (e.keyCode === 27) {
@@ -38,7 +37,6 @@ class SearchBar extends React.PureComponent {
         scrollableTreeContainer.focus();
       }
     }
-    return;
   }
 
   render() {
@@ -68,19 +66,19 @@ class SearchBar extends React.PureComponent {
     };
 
     return (
-      // Can't use Navbar.Form. It doesn't allow next match on Enter.
       <Form
         inline
-        style={{ display: "inline-block" }}
         onSubmit={e => {
           e.preventDefault();
         }}
       >
-        <FormGroup controlId="searchInput">
+        <Form.Group controlId="searchInput">
           <InputGroup>
-            <InputGroup.Addon>
-              <FaSearch />
-            </InputGroup.Addon>
+            <InputGroup.Prepend>
+              <InputGroup.Text id="basic-addon1">
+                <FaSearch />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
             <FormControl
               type="text"
               placeholder={
@@ -92,12 +90,13 @@ class SearchBar extends React.PureComponent {
               onKeyDown={this.handleKeyDown}
             />
           </InputGroup>
-        </FormGroup>
+        </Form.Group>
         <Button
           type="button"
           name="searchFocusIndex"
           disabled={!searchFoundCount}
           onClick={selectPrevMatch}
+          variant="light"
         >
           &lt;
         </Button>
@@ -106,6 +105,7 @@ class SearchBar extends React.PureComponent {
           name="searchFocusIndex"
           disabled={!searchFoundCount}
           onClick={selectNextMatch}
+          variant="light"
         >
           &gt;
         </Button>
@@ -115,15 +115,18 @@ class SearchBar extends React.PureComponent {
           &nbsp;/&nbsp;
           {searchFoundCount || 0}
         </span>
-        <FormGroup style={{ marginLeft: 10, color: "white" }}>
-          {/* Needed to create div to reflect change visually. State was updating, but
-        visually no change occured */}
-          <div onClick={this.handleChange}>
-            <Checkbox name="searchInternal" checked={searchInternal} onChange={() => {}} inline>
-              Search eQuest
-            </Checkbox>
-          </div>
-        </FormGroup>
+        <Col>
+          <FormCheck
+            name="searchInternal"
+            style={{ color: "white" }}
+            as="input"
+            label="Search eQuest"
+            type="checkbox"
+            checked={searchInternal}
+            onChange={this.handleChange}
+            inline
+          ></FormCheck>
+        </Col>
       </Form>
     );
   }

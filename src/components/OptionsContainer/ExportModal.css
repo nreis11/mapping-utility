@@ -9,7 +9,10 @@
 }
 
 #export-btn {
-  position: relative;
-  bottom: 4px;
-  line-height: 12px;
+  padding: 4px 8px;
+  line-height: 15px;
+}
+
+.btn-outline-dark:disabled {
+  cursor: not-allowed;
 }

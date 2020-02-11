@@ -1,7 +1,8 @@
 .options-label {
-    margin-right: 5px;
+  margin-right: 5px;
+  font-weight: bold;
 }
 
 .options-label > input[type="checkbox"] {
-    margin: 0 5px;
+  margin: 0 5px;
 }

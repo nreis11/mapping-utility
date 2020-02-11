@@ -10,8 +10,8 @@ import {
   oneOfType
 } from "prop-types";
 import { Col } from "react-bootstrap";
-import { getInBoundsTreeIndex } from "../utilities/helpers";
-import { _getActiveNodeInfo } from "../utilities/mappingHelpers";
+import { getInBoundsTreeIndex } from "../utils/helpers";
+import { _getActiveNodeInfo, getNodeKey } from "../utils/mappingHelpers";
 import SortableTree, {
   removeNodeAtPath,
   getVisibleNodeCount
@@ -53,10 +53,10 @@ class TreeContainer extends React.PureComponent {
       return;
     }
 
-    const { treeData, activeNodeInfo, treeKey, onSelectNode } = this.props;
+    const { treeData, activeNodeInfo, onSelectNode } = this.props;
     let { treeIndex } = activeNodeInfo;
     const initialTreeIndex = treeIndex;
-    let expanded = activeNodeInfo.node.expanded;
+    let { expanded } = activeNodeInfo.node;
     const { children } = activeNodeInfo.node;
     const nodeCount = getVisibleNodeCount({ treeData });
 
@@ -81,12 +81,11 @@ class TreeContainer extends React.PureComponent {
     } else {
       newActiveNodeInfo = _getActiveNodeInfo(treeData, treeIndex);
     }
-    onSelectNode(newActiveNodeInfo, treeKey);
+    onSelectNode(newActiveNodeInfo);
   }
 
   handleRemoveNode(path) {
     const { treeData, treeKey, onChange } = this.props;
-    const getNodeKey = ({ node }) => node.id;
     const newTreeData = removeNodeAtPath({
       treeData,
       path,
@@ -137,11 +136,11 @@ class TreeContainer extends React.PureComponent {
             const { path } = nodeInfo;
             const buttons = [
               <button onClick={() => this.handleShowAddModal(nodeInfo)}>
-                <FaPlus className="react-icons" />
+                <FaPlus />
               </button>,
 
               <button onClick={() => this.handleRemoveNode(path)}>
-                <FaTrash className="react-icons" />
+                <FaTrash />
               </button>
             ];
 
@@ -207,12 +206,12 @@ class TreeContainer extends React.PureComponent {
               activeNode &&
                 activeNode.id === node.id &&
                 className.push("active-node");
-              node.mapping
+              node.isInternal && node.mapping
                 ? className.push("mapped")
                 : className.push(highlightUnmapped ? "un-mapped" : "");
 
               return {
-                onClick: () => onSelectNode(rowInfo, treeKey),
+                onClick: () => onSelectNode(rowInfo),
                 className: className.join(" "),
                 id: node.id
               };

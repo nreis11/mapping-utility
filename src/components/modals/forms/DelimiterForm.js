@@ -1,31 +1,20 @@
 import React from "react";
-import { FormGroup, FormControl, ControlLabel, Col } from "react-bootstrap";
+import { FormGroup, FormControl, FormLabel, Col } from "react-bootstrap";
 import { string, func } from "prop-types";
 
 class DelimiterForm extends React.PureComponent {
-  getValidationState() {
-    const { delimiter } = this.props;
-    const length = delimiter.length;
-    if (length === 1) return "success";
-    else if (length > 1) return "error";
-    return null;
-  }
-
   render() {
     const { delimiter, onChange } = this.props;
 
     return (
       <Col md={4}>
-        <FormGroup
-          controlId="formDelimiter"
-          validationState={this.getValidationState()}
-        >
-          <ControlLabel>Delimiter</ControlLabel>
+        <FormGroup controlId="formDelimiter">
+          <FormLabel>Delimiter</FormLabel>
           <FormControl
             type="text"
             name="delimiter"
             value={delimiter}
-            placeholder="What separates the value from the label?"
+            placeholder="Value/label separator"
             onChange={onChange}
           />
           <FormControl.Feedback />

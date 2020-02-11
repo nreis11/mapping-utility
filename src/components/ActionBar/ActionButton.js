@@ -6,7 +6,7 @@ export const ActionButton = React.memo(({ dataCmd, children, onClick }) => (
   // Sending onClick to handleKeyDown on MainContainer to map commands
   <Button
     className="action-btn"
-    bsStyle="primary"
+    variant="primary"
     data-cmd={dataCmd}
     onClick={onClick}
     block

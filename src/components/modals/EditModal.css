@@ -1,0 +1,11 @@
+#edit-modal-btn {
+  width: 85px;
+}
+
+#yaml-error {
+  font-size: 0.8rem;
+  height: 30px;
+  margin-left: 5px;
+  display: inline-block;
+  padding: 5px 40px 5px 5px;
+}

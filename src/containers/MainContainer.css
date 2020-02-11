@@ -1,6 +1,8 @@
 #parent-action-container {
-  margin: 30px 0;
-  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 52px 0px 136px 0px;
 }
 
 .parent-tree-container {
@@ -9,35 +11,51 @@
   height: 90vh;
 }
 
-.well {
-  flex: 15 15 500px;
-  border: solid;
+/* Layout */
+.left,
+.right {
+  padding: 0px;
 }
 
-@media only screen and (max-width: 991px) {
-  #parent-action-container {
-    height: auto;
-  }
-
-  .action-btn-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 15px;
-  }
-
-  .action-btn {
-    width: 30%;
-    margin-top: 0;
-  }
+.left > * {
+  margin-right: 5px;
 }
 
-@media only screen and (max-width: 1250px) {
+.right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.right > * {
+  margin-left: 5px;
+}
+/*  */
+
+.modal-title {
+  display: flex;
+}
+
+.modal-footer {
+  padding: 15px 16px;
+  justify-content: flex-start;
+}
+
+@media only screen and (max-width: 1268px) {
   .action-container .btn {
-    padding: 6px;
     font-size: 0.8em;
+  }
+}
+
+@media only screen and (max-width: 1568px) {
+  .action-container .btn {
+    padding: 3px 5px;
   }
 
   .expand-info-btn {
     width: 75px !important;
+  }
+
+  #options-container .options-label {
+    font-size: 0.8rem;
   }
 }

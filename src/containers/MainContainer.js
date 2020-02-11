@@ -1,11 +1,7 @@
 import React, { Component } from "react";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "./MainContainer.css";
-import {
-  toggleExpandedForAll,
-  getNodeAtPath,
-  getVisibleNodeCount
-} from "react-sortable-tree";
+import { toggleExpandedForAll, getVisibleNodeCount } from "react-sortable-tree";
 
 import {
   _getActiveNodeInfo,
@@ -14,23 +10,25 @@ import {
   _exportMappingsToXML,
   _handleDeleteAction,
   _handleMapAction,
-  _handleSearchAction
-} from "../utilities/mappingHelpers";
+  _handleSearchAction,
+  TYPES
+} from "../utils/mappingHelpers";
 
 import {
-  isABootstrapModalOpen,
+  isBootstrapModalOpen,
   bothNodesAreSelected,
   scrollIfNeeded,
   getInBoundsTreeIndex,
   parentsAreNotSelectable
-} from "../utilities/helpers";
+} from "../utils/helpers";
 
 import {
   saveToJson,
   getInitialTreeData,
+  getInitialExtTreeData,
   getTreeDataFromFlatData,
   getFlatData
-} from "../utilities/fileHelpers";
+} from "../utils/fileHelpers";
 
 import TreeContainer from "./TreeContainer";
 import ActionBarContainer from "./ActionBarContainer";
@@ -44,32 +42,37 @@ import TypeSelector from "../components/HeaderContainer/TypeSelector";
 import OptionsContainer from "./OptionsContainer";
 import NavBar from "../components/NavBarContainer/NavBar";
 import BoardNameForm from "../components/HeaderContainer/BoardNameForm";
-
-const getNodeKey = ({ node }) => node.id;
+import BasicAlert from "../components/modals/BasicAlert";
 
 class MainContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       intTreeData: getInitialTreeData(),
-      extTreeData: {},
+      extTreeData: getInitialExtTreeData(),
       boardName: "Board",
       activeIntNodeInfo: null,
       activeExtNodeInfo: null,
-      activeType: "categories",
+      activeType: Object.keys(TYPES)[0],
       options: {
         outputParents: false,
-        parentsSelectable: false
+        parentsSelectable: false,
+        outputLabels: false
       },
       highlightUnmapped: false,
       searchString: "",
       searchFocusIndex: 0,
       searchFoundCount: 0,
-      searchInternal: false
+      searchInternal: false,
+      alert: null
     };
 
+    this.internalName = "eQuest";
     this.intTreeKey = "intTreeData";
     this.extTreeKey = "extTreeData";
+    this.localStorageKey = "mappingUtilityState";
+    this.activeIntNodeKey = "activeIntNodeInfo";
+    this.activeExtNodeKey = "activeExtNodeInfo";
     this.handleTypeSelect = this.handleTypeSelect.bind(this);
     this.handleTreeChange = this.handleTreeChange.bind(this);
     this.expandAll = this.expandAll.bind(this);
@@ -82,9 +85,10 @@ class MainContainer extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSearchFinish = this.handleSearchFinish.bind(this);
     this.handleSave = this.handleSave.bind(this);
-    this.handleOpen = this.handleOpen.bind(this);
+    this.handleOpenFile = this.handleOpenFile.bind(this);
     this.clearTrees = this.clearTrees.bind(this);
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
+    this.handleAlert = this.handleAlert.bind(this);
   }
 
   componentDidMount() {
@@ -97,7 +101,7 @@ class MainContainer extends Component {
     }
 
     const localStorageRef = JSON.parse(
-      localStorage.getItem("mappingUtilityState")
+      localStorage.getItem(this.localStorageKey)
     );
     // Check if save state in local storage
     if (localStorage && localStorageRef) {
@@ -107,6 +111,11 @@ class MainContainer extends Component {
     }
 
     document.addEventListener("keydown", this.handleKeyDown);
+    const { activeType, intTreeData } = this.state;
+    const activeIntTreeData = intTreeData[activeType];
+    this.setState({
+      activeIntNodeInfo: _getActiveNodeInfo(activeIntTreeData, 0)
+    });
   }
 
   componentDidUpdate() {
@@ -119,7 +128,7 @@ class MainContainer extends Component {
     });
     try {
       // Long lists can hit localStorage max.
-      localStorage.setItem("mappingUtilityState", jsonStr);
+      localStorage.setItem(this.localStorageKey, jsonStr);
     } catch (e) {
       console.log(e);
     }
@@ -144,18 +153,24 @@ class MainContainer extends Component {
   }
 
   handleTypeSelect(type) {
-    const newActiveTreeData = this.state.intTreeData[type];
+    const activeIntTreeData = this.state.intTreeData[type];
+    const activeExtTreeData = this.state.extTreeData[type];
+    const activeExtNodeInfo = activeExtTreeData.length
+      ? _getActiveNodeInfo(activeExtTreeData, 0)
+      : null;
     // Reset active node
     this.setState({
       activeType: type,
-      activeIntNodeInfo: _getActiveNodeInfo(newActiveTreeData, 0)
+      activeIntNodeInfo: _getActiveNodeInfo(activeIntTreeData, 0),
+      activeExtNodeInfo: activeExtNodeInfo
     });
   }
 
-  handleSelectNode(nodeInfo, treeKey) {
-    // console.log("Node Info", nodeInfo);
-    const activeKey =
-      treeKey === this.intTreeKey ? "activeIntNodeInfo" : "activeExtNodeInfo";
+  handleSelectNode(nodeInfo) {
+    const { isInternal } = nodeInfo.node;
+    const activeKey = isInternal
+      ? this.activeIntNodeKey
+      : this.activeExtNodeKey;
     this.setState({
       [activeKey]: nodeInfo
     });
@@ -164,9 +179,11 @@ class MainContainer extends Component {
   handleOptionChange(event) {
     event.target.blur();
     const optionKey = event.target.name;
-    const options = { ...this.state.options };
-    options[optionKey] = event.target.checked;
-    this.setState({ options });
+    const newOptions = {
+      ...this.state.options,
+      [optionKey]: event.target.checked
+    };
+    this.setState({ options: newOptions });
   }
 
   highlightUnmapped() {
@@ -180,7 +197,7 @@ class MainContainer extends Component {
     let newFlatData;
     const { activeType, extTreeData } = this.state;
     // Check if values already exist
-    if (extTreeData[activeType]) {
+    if (extTreeData[activeType].length) {
       const extFlatData = getFlatData(extTreeData[activeType]);
       newFlatData = _sortTree(extFlatData.concat(newNodes));
     } else {
@@ -198,7 +215,7 @@ class MainContainer extends Component {
       () => {
         this.expandAll(true, false);
         const activeNode = _getActiveNodeInfo(newTreeData[activeType], 0);
-        this.handleSelectNode(activeNode, this.extTreeKey);
+        this.handleSelectNode(activeNode);
       }
     );
   }
@@ -219,8 +236,8 @@ class MainContainer extends Component {
 
     if (all) {
       this.setState({
-        extTreeData: {},
         intTreeData: initialTreeData,
+        extTreeData: getInitialExtTreeData(),
         activeIntNodeInfo: activeNodeInfo,
         activeExtNodeInfo: null
       });
@@ -239,15 +256,10 @@ class MainContainer extends Component {
   }
 
   handleExport() {
-    const {
-      intTreeData,
-      extTreeData,
-      options: { outputParents }
-    } = this.state;
+    const { intTreeData, options } = this.state;
     return _exportMappingsToXML({
       intTreeData,
-      extTreeData,
-      outputParents
+      options
     });
   }
 
@@ -265,13 +277,14 @@ class MainContainer extends Component {
     // no ext tree data
     if (
       document.activeElement.nodeName === "INPUT" ||
-      isABootstrapModalOpen() ||
+      isBootstrapModalOpen() ||
       !extTreeData[activeType]
     ) {
       return;
     }
 
     const activeIntTreeData = intTreeData[activeType];
+    const activeExtTreeData = extTreeData[activeType];
     let treeIndex = activeIntNodeInfo ? activeIntNodeInfo.treeIndex : null;
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
@@ -286,7 +299,6 @@ class MainContainer extends Component {
     ];
 
     const deleteKeys = [
-      46, // del,
       8, // backspace
       "delete",
       "shift-delete"
@@ -306,35 +318,32 @@ class MainContainer extends Component {
       const parentsAlert = "Parents are not selectable.";
 
       if (!bothNodesAreSelected(activeIntNodeInfo, activeExtNodeInfo)) {
-        alert(bothNodesAlert);
+        this.handleAlert(bothNodesAlert);
         return;
       }
 
       if (parentsAreNotSelectable(parentsSelectable, activeExtNode)) {
-        alert(parentsAlert);
+        this.handleAlert(parentsAlert);
         return;
       }
 
       const path = activeExtNodeInfo.path;
-      const nodeInfo = _handleMapAction({
+      newNode = _handleMapAction({
         e,
         activeIntNode,
         path,
-        treeIndex
+        activeExtTreeData
       });
-      newNode = nodeInfo.newNode;
-      treeIndex = nodeInfo.treeIndex;
+      treeIndex += 1;
     } else if (deleteKeys.includes(key)) {
       // handle delete actions
       e.preventDefault();
-      const nodeInfo = _handleDeleteAction({
+      newNode = _handleDeleteAction({
         e,
-        activeIntNode,
-        treeIndex
+        activeIntNode
       });
-      newNode = nodeInfo.newNode;
-      treeIndex = nodeInfo.treeIndex;
     } else if ((e.ctrlKey || e.metaKey) && searchKeys.includes(key)) {
+      // handle search actions
       e.preventDefault();
       const searchValues = _handleSearchAction({
         e,
@@ -352,11 +361,6 @@ class MainContainer extends Component {
       return;
     }
 
-    // Unfocus buttons once clicked
-    if (e.target.dataset.cmd) {
-      e.target.blur();
-    }
-
     // Replace active node with new mapping
     const { path } = activeIntNodeInfo;
     const newTreeData = _changeNodeAtPath(activeIntTreeData, path, newNode);
@@ -366,14 +370,11 @@ class MainContainer extends Component {
     treeIndex = getInBoundsTreeIndex(treeIndex, nodeCount);
 
     // Set the new active node
-    const newActiveIntNodeInfo = _getActiveNodeInfo(
-      activeIntTreeData,
-      treeIndex
-    );
+    const newActiveIntNodeInfo = _getActiveNodeInfo(newTreeData, treeIndex);
 
     // Scroll active node into view if needed
     scrollIfNeeded(newActiveIntNodeInfo.node.id);
-    this.handleSelectNode(newActiveIntNodeInfo, this.intTreeKey);
+    this.handleSelectNode(newActiveIntNodeInfo);
   }
 
   handleInputChange(event) {
@@ -393,11 +394,11 @@ class MainContainer extends Component {
   }
 
   handleSearchFinish(matches) {
-    const searchFocusIndex = this.state.searchFocusIndex;
+    const { searchFocusIndex } = this.state;
     const newActiveNodeInfo = matches[searchFocusIndex] || null;
     const activeNodeKey = this.state.searchInternal
-      ? "activeIntNodeInfo"
-      : "activeExtNodeInfo";
+      ? this.activeIntNodeKey
+      : this.activeExtNodeKey;
     const currActiveNodeInfo = this.state[activeNodeKey];
     this.setState({
       [activeNodeKey]: newActiveNodeInfo || currActiveNodeInfo,
@@ -407,7 +408,7 @@ class MainContainer extends Component {
     });
   }
 
-  handleOpen(fileInput) {
+  handleOpenFile(fileInput) {
     const fileReader = new FileReader();
     fileReader.onload = e => {
       // Convert string result to JSON after loading
@@ -420,8 +421,13 @@ class MainContainer extends Component {
   }
 
   handleSave() {
-    // Save state to JSON
     saveToJson(this.state);
+  }
+
+  handleAlert(alert) {
+    this.setState({
+      alert
+    });
   }
 
   render() {
@@ -437,14 +443,14 @@ class MainContainer extends Component {
       searchFocusIndex,
       searchFoundCount,
       searchInternal,
-      boardName
+      boardName,
+      alert
     } = this.state;
 
     console.log("RENDERED");
 
-    const internalName = "eQuest";
     const activeIntTreeData = intTreeData[activeType];
-    const activeExtTreeData = extTreeData[activeType] || [];
+    const activeExtTreeData = extTreeData[activeType];
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;
     const activeExtNode = activeExtNodeInfo ? activeExtNodeInfo.node : null;
     const intSearchString = searchInternal ? searchString : "";
@@ -457,28 +463,28 @@ class MainContainer extends Component {
     };
     let mappedNode = null;
     if (activeIntNode && activeIntNode.mapping) {
-      mappedNode = getNodeAtPath({
-        treeData: activeExtTreeData,
-        path: activeIntNode.mapping,
-        getNodeKey
-      }).node;
+      // Last idx is actual node needed
+      const { mapping } = activeIntNode;
+      mappedNode = mapping[mapping.length - 1];
     }
 
     return (
       <div id="main-container">
+        {alert && <BasicAlert handleClose={this.handleAlert} message={alert} />}
         <NavBar
           searchValues={searchValues}
           handleSave={this.handleSave}
-          handleOpen={this.handleOpen}
+          handleOpen={this.handleOpenFile}
           handleInputChange={this.handleInputChange}
+          handleAlert={this.handleAlert}
         />
-        <Grid fluid>
-          <Row className="show-grid">
+        <Container fluid>
+          <Row>
             <Col className="parent-tree-container" md={5}>
               <HeaderContainer
                 left={
                   <Header>
-                    <span>{internalName}</span>
+                    <span>{this.internalName}</span>
                   </Header>
                 }
                 right={
@@ -499,7 +505,7 @@ class MainContainer extends Component {
                 onSearchFinish={searchInternal && this.handleSearchFinish}
                 highlightUnmapped={highlightUnmapped}
               />
-              <NodeInfo heading={internalName} node={activeIntNode} />
+              <NodeInfo heading={this.internalName} node={activeIntNode} />
               <NodeInfo heading={"Mapped to:"} node={mappedNode} />
             </Col>
             <Col id="parent-action-container" md={2}>
@@ -513,12 +519,16 @@ class MainContainer extends Component {
               <HeaderContainer
                 left={
                   <BoardNameForm
-                    name={boardName}
+                    boardName={boardName}
                     handleInputChange={this.handleInputChange}
                   />
                 }
                 right={
-                  <EditModal onClear={this.clearTrees} activeType={activeType}>
+                  <EditModal
+                    onClear={this.clearTrees}
+                    activeType={activeType}
+                    handleAlert={this.handleAlert}
+                  >
                     <TreeContainer
                       treeKey={this.extTreeKey}
                       treeData={activeExtTreeData}
@@ -551,12 +561,13 @@ class MainContainer extends Component {
                   <ExportModal
                     handleExport={this.handleExport}
                     boardName={boardName}
+                    options={options}
                   />
                 }
               />
             </Col>
           </Row>
-        </Grid>
+        </Container>
       </div>
     );
   }

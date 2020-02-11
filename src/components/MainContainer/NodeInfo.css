@@ -1,13 +1,27 @@
-.panel {
-    margin-bottom: 10px;
-    flex: 1;
+.card {
+  margin-top: 10px;
+  border: 1px solid #bce8f1;
 }
 
-.panel-heading {
-    padding: 4px;
+.card-title {
+  margin-bottom: 0px;
 }
 
-.panel-body {
-    padding: 8px;
-    height: 32px;
+.card-header {
+  height: 26px;
+  padding: 3px 15px;
+  color: #31708f;
+  background-color: #d9edf7;
+  background-image: linear-gradient(180deg, #d9edf7 0, #c4e3f3);
+  background-repeat: repeat-x;
+}
+
+.card-body {
+  padding: 3px 15px;
+  height: 35px;
+}
+
+.card-body > .row {
+  height: 100%;
+  align-items: center;
 }

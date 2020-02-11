@@ -8,67 +8,75 @@ import {
 } from "react-sortable-tree";
 import xmlbuilder from "xmlbuilder";
 
-const getNodeKey = ({ node }) => node.id;
-export const delimiter = "~~";
-
-export const _handleMapAction = ({ e, activeIntNode, path, treeIndex }) => {
-  let newNode;
-  let key = e.keyCode || e.target.dataset.cmd;
-  if ((e.shiftKey && key === 32) || key === "shift-space") {
-    // "Select node and its children. Preserve existing mappings"
-    newNode = _mapNode([activeIntNode], path, false);
-    treeIndex += 1;
-  } else if ((e.ctrlKey && key === 32) || key === "ctrl-space") {
-    // "Select node and its children. Overwrite any existing mappings."
-    newNode = _mapNode([activeIntNode], path, true);
-    treeIndex += 1;
-  } else if (key === 32 || key === "space") {
-    // "Map single node"
-    activeIntNode.mapping = path;
-    newNode = activeIntNode;
-    treeIndex += 1;
-  }
-  return { newNode, treeIndex };
+export const TYPES = {
+  functions: "Function",
+  industries: "Industry",
+  states: "State",
+  countries: "Country"
 };
 
-export const _handleDeleteAction = ({ e, activeIntNode, treeIndex }) => {
+export const getNodeKey = ({ node }) => node.id;
+export const DELIMITER = "|";
+
+const getPathNodes = (treeData, path) => {
+  let nodes = path.map((nodeId, idx) => {
+    return getNodeAtPath({
+      treeData,
+      path: path.slice(0, idx + 1),
+      getNodeKey
+    }).node;
+  });
+  return nodes;
+};
+
+export const _handleMapAction = ({
+  e,
+  activeIntNode,
+  path,
+  activeExtTreeData
+}) => {
   let newNode;
-  let key = e.keyCode || e.target.dataset.cmd;
-  if (e.shiftKey && e.keyCode === 8) {
+  const pathNodes = getPathNodes(activeExtTreeData, path);
+  const key = e.keyCode || e.target.dataset.cmd;
+  if ((e.shiftKey && key === 32) || key === "shift-space") {
+    // "Select node and its children. Preserve existing mappings"
+    newNode = _mapNode([activeIntNode], pathNodes, false);
+  } else if ((e.ctrlKey && key === 32) || key === "ctrl-space") {
+    // "Select node and its children. Overwrite any existing mappings."
+    newNode = _mapNode([activeIntNode], pathNodes, true);
+  } else if (key === 32 || key === "space") {
+    // "Map single node"
+    newNode = { ...activeIntNode, mapping: pathNodes };
+  }
+  return newNode;
+};
+
+export const _handleDeleteAction = ({ e, activeIntNode }) => {
+  let newNode;
+  const key = e.keyCode || e.target.dataset.cmd;
+  if ((e.shiftKey && e.keyCode === 8) || key === "shift-delete") {
     // "SHIFT BACKSPACE";
-    // "Delete current node & everything under that node, then move up to the previous node."
+    // "Delete current node & everything under that node"
     newNode = _mapNode([activeIntNode], null, true);
-    treeIndex -= 1;
-  } else if (e.keyCode === 46 || key === "delete") {
-    // "DELETE: Delete current node mapping and move down to the next node."
-    activeIntNode.mapping = null;
-    newNode = activeIntNode;
-    treeIndex += 1;
-  } else if ((e.shiftKey && e.keyCode === 46) || key === "shift-delete") {
-    // "SHIFT DELETE: Delete current node & everything under that node, then move down to the next node."
-    newNode = _mapNode([activeIntNode], null, true);
-    treeIndex += 1;
-  } else if (e.keyCode === 8) {
-    // "BACKSPACE Delete current node mapping and move up to the previous node."
-    activeIntNode.mapping = null;
-    newNode = activeIntNode;
-    treeIndex -= 1;
+  } else if (e.keyCode === 8 || key === "delete") {
+    // "BACKSPACE Delete current node mapping."
+    newNode = { ...activeIntNode, mapping: null };
   } else {
     return false;
   }
-  return { newNode, treeIndex };
+  return newNode;
 };
 
 export const _handleSearchAction = ({ e, activeIntNode, activeExtNode }) => {
   let searchInternal, searchString;
   const key = e.keyCode;
   if (key === 70) {
-    // console.log("CTRL + F");
+    // "CTRL + F";
     // Autocomplete search field with active node title
     searchString = activeIntNode ? activeIntNode.title : "";
     searchInternal = false;
   } else if (key === 71) {
-    // console.log("CTRL + G");
+    // "CTRL + G";
     searchString = activeExtNode ? activeExtNode.title : "";
     searchInternal = true;
   }
@@ -114,8 +122,8 @@ export const _mapNode = (treeData, mapping, overwrite = false) => {
 };
 
 export const _sortTree = treeData => {
-  return treeData.sort(
-    (a, b) => (a.title === b.title ? 0 : a.title < b.title ? -1 : 1)
+  return treeData.sort((a, b) =>
+    a.title === b.title ? 0 : a.title < b.title ? -1 : 1
   );
 };
 
@@ -149,32 +157,28 @@ export const _changeNodeAtPath = (treeData, path, newNode) => {
 
 export const _exportMappingsToXML = ({
   intTreeData,
-  extTreeData,
-  outputParents,
+  options,
   testing = false
 }) => {
-  const types = {
-    categories: "function",
-    industries: "industry",
-    states: "state",
-    countries: "country"
-  };
+  const { outputParents, outputLabels } = options;
 
   let rootNode = xmlbuilder.create("maps", { encoding: "UTF-8" });
 
   Object.keys(intTreeData).forEach(type => {
-    const mappingNode = rootNode.ele("mapping").att("type", types[type]);
+    const mappingNode = rootNode
+      .ele("mapping")
+      .att("type", TYPES[type].toLowerCase());
 
     const callback = ({ node }) => {
-      if (!node.mapping) {
+      if (!outputLabels && !node.mapping) {
         return;
       }
 
       return _createNode({
         mappingNode,
         node,
-        extTreeData: extTreeData[type],
         outputParents,
+        outputLabels,
         testing
       });
     };
@@ -192,56 +196,47 @@ export const _exportMappingsToXML = ({
 const _createNode = ({
   mappingNode,
   node,
-  extTreeData,
   outputParents = false,
+  outputLabels = false,
   testing = false
 }) => {
-  const getNodeTitle = path =>
-    getNodeAtPath({
-      treeData: extTreeData,
-      path,
-      getNodeKey
-    }).node.title;
-
   // If testing, use plain text node. Otherwise, use CDATA
   // Mapping is path array with node ids
-  let mapping = node.mapping;
-  const childNode = mappingNode.ele(
-    node.id === "eqDEFAULT" ? "default" : "map"
-  );
+  let { mapping } = node;
+  const childNode = mappingNode.ele(node.id === "DEFAULT" ? "default" : "map");
 
-  if (node.id !== "eqDEFAULT") {
+  if (node.id !== "DEFAULT") {
     // Each equest node has 'eq' prefix
-    childNode.att("equestvalue", node.id.slice(2));
+    childNode.att("equestvalue", node.id);
   }
 
-  if (outputParents) {
+  if (outputLabels) {
+    const boardValueNode = childNode.ele("boardvalue").att("tier", 1);
+    testing ? boardValueNode.txt(node.title) : boardValueNode.dat(node.title);
+  } else if (outputParents) {
     // Multi-tier
-    mapping.forEach((tierMapping, idx) => {
+    mapping.forEach((tierNode, idx) => {
       // Get path up to node
-      const path = mapping.slice(0, idx + 1);
-      const extNodeTitle = getNodeTitle(path);
-      // Actual value is last id
-      const idArr = tierMapping.split(delimiter);
-      tierMapping = idArr[idArr.length - 1];
+      const { title } = tierNode;
+      const idArr = tierNode.id.split(DELIMITER);
+      const id = idArr[1];
       const boardValueNode = childNode
         .ele("boardvalue")
         .att("tier", idx + 1)
-        .att("label", extNodeTitle);
-      testing
-        ? boardValueNode.txt(tierMapping)
-        : boardValueNode.dat(tierMapping);
+        .att("label", title);
+      testing ? boardValueNode.txt(id) : boardValueNode.dat(id);
     });
   } else {
-    // Grab last value. Only single tier
-    const extNodeTitle = getNodeTitle(mapping);
-    let lastIdArr = mapping[mapping.length - 1].split(delimiter);
-    mapping = lastIdArr[lastIdArr.length - 1];
+    // Single tier
+    const lastNode = mapping[mapping.length - 1];
+    let { id, title } = lastNode;
+    // Ex. 1|55
+    id = id.split(DELIMITER)[1];
     const boardValueNode = childNode
       .ele("boardvalue")
       .att("tier", 1)
-      .att("label", extNodeTitle);
-    testing ? boardValueNode.txt(mapping) : boardValueNode.dat(mapping);
+      .att("label", title);
+    testing ? boardValueNode.txt(id) : boardValueNode.dat(id);
   }
 
   return mappingNode;

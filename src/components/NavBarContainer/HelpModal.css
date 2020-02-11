@@ -4,9 +4,14 @@
   color: white;
   text-align: center;
   line-height: 34px;
+  cursor: pointer;
 }
 
 #version-txt {
   text-align: center;
   margin-right: 5px;
+}
+
+#help-footer-right {
+  align-items: center;
 }

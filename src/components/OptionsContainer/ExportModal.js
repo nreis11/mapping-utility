@@ -1,6 +1,6 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
-import { func, string } from "prop-types";
+import { Modal, Button, Col } from "react-bootstrap";
+import { func, string, object } from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy, FaDownload } from "react-icons/fa";
 import CopyConfirmation from "./CopyConfirmation";
@@ -43,18 +43,14 @@ class ExportModal extends React.PureComponent {
   }
 
   render() {
+    const { outputLabels } = this.props.options;
     return (
       <React.Fragment>
-        <Button
-          id="export-btn"
-          onClick={this.handleShow}
-          bsStyle="success"
-          bsSize="small"
-        >
+        <Button id="export-btn" onClick={this.handleShow} variant="success">
           <strong>Export</strong>
         </Button>
 
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={this.state.show} onHide={this.handleClose} size="lg">
           <Modal.Header closeButton>
             <Modal.Title>Export</Modal.Title>
           </Modal.Header>
@@ -62,29 +58,34 @@ class ExportModal extends React.PureComponent {
             <p className="pretty-print">{this.state.output}</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              title="Download"
-              onClick={this.handleDownload}
-              className="pull-left"
-            >
-              <span>
-                <FaDownload className="react-icons" />
-                &nbsp;Download
-              </span>
-            </Button>
-            <CopyToClipboard
-              text={this.state.output}
-              className="pull-left"
-              onCopy={() => this.setState({ copied: true })}
-            >
-              <Button title="Copy">
-                <FaCopy className="react-icons" />
-                &nbsp;Copy
+            <Col className="left">
+              <Button
+                id="download-btn"
+                title="Download"
+                variant="outline-dark"
+                onClick={this.handleDownload}
+              >
+                <span>
+                  <FaDownload />
+                  &nbsp;Download
+                </span>
               </Button>
-            </CopyToClipboard>
-            {this.state.copied && <CopyConfirmation />}
-
-            <Button onClick={this.handleClose}>Close</Button>
+              <CopyToClipboard
+                text={this.state.output}
+                onCopy={() => this.setState({ copied: true })}
+                // She can't take it captain if everything is exported
+                disabled={outputLabels}
+              >
+                <Button id="copy-btn" title="Copy" variant="outline-dark">
+                  <FaCopy />
+                  &nbsp;Copy
+                </Button>
+              </CopyToClipboard>
+              {this.state.copied && <CopyConfirmation />}
+            </Col>
+            <Col className="right">
+              <Button onClick={this.handleClose}>Close</Button>
+            </Col>
           </Modal.Footer>
         </Modal>
       </React.Fragment>
@@ -94,7 +95,8 @@ class ExportModal extends React.PureComponent {
 
 ExportModal.propTypes = {
   handleExport: func.isRequired,
-  boardName: string.isRequired
+  boardName: string.isRequired,
+  options: object.isRequired
 };
 
 export default ExportModal;

@@ -1,38 +1,33 @@
 import React from "react";
-import { Col, ButtonToolbar, DropdownButton, MenuItem } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import { func, string } from "prop-types";
-
-const TYPES = {
-  categories: "Category",
-  industries: "Industry",
-  states: "State",
-  countries: "Country"
-};
+import { TYPES } from "../../utils/mappingHelpers";
 
 const TypeSelector = ({ activeType, onSelect }) => {
   return (
-    <Col className="pull-right">
-      <ButtonToolbar>
-        <DropdownButton
-          title={TYPES[activeType]}
-          bsStyle="info"
-          bsSize="small"
-          id={`dropdown-basic-type`}
-          style={{ width: 82 }}
-        >
-          {Object.keys(TYPES).map(type => (
-            <MenuItem
-              key={type}
-              eventKey={type}
-              onSelect={type => onSelect(type)}
-              active={activeType === type ? true : false}
-            >
-              {TYPES[type]}
-            </MenuItem>
-          ))}
-        </DropdownButton>
-      </ButtonToolbar>
-    </Col>
+    <Dropdown>
+      <Dropdown.Toggle
+        variant="info"
+        id="dropdown-basic-type"
+        size="sm"
+        style={{ width: 85 }}
+      >
+        {TYPES[activeType]}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        {Object.keys(TYPES).map(type => (
+          <Dropdown.Item
+            key={type}
+            eventKey={type}
+            onSelect={type => onSelect(type)}
+            active={activeType === type ? true : false}
+          >
+            {TYPES[type]}
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 

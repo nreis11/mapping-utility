@@ -2,7 +2,7 @@ import React from "react";
 import { func } from "prop-types";
 
 import { Col, ButtonGroup } from "react-bootstrap";
-import { FaBackward, FaForward } from "react-icons/fa";
+import { FaArrowLeft, FaArrowsAltH } from "react-icons/fa";
 
 import { ExpandCollapseButtons } from "../components/ActionBar/ExpandCollapseButtons";
 import { ActionButton } from "../components/ActionBar/ActionButton";
@@ -12,36 +12,45 @@ import "./ActionBarContainer.css";
 export const ActionBarContainer = ({
   expandAll,
   onHighlightUnmapped,
-  onClick
+  onClick,
 }) => {
   return (
     <Col className="text-center action-container">
       <Col className="action-btn-container">
         <ActionButton className="action-btn" dataCmd="space" onClick={onClick}>
-          <FaForward /> Map <FaForward />
+          <FaArrowsAltH />
+          &nbsp;Map&nbsp;
+          <FaArrowsAltH />
           <br />
           (single)
         </ActionButton>
         <ActionButton dataCmd="shift-space" onClick={onClick}>
-          <FaForward /> Map Node <FaForward />
+          <FaArrowsAltH />
+          &nbsp;Map Node&nbsp;
+          <FaArrowsAltH />
           <br />
           (preserve)
         </ActionButton>
         <ActionButton dataCmd="ctrl-space" onClick={onClick}>
-          <FaForward /> Map Node <FaForward />
+          <FaArrowsAltH />
+          &nbsp;Map Node&nbsp;
+          <FaArrowsAltH />
           <br />
           (overwrite)
         </ActionButton>
       </Col>
       <Col className="action-btn-container">
         <ActionButton dataCmd={"highlight"} onClick={onHighlightUnmapped}>
-          <FaBackward /> Highlight Unmapped
+          <FaArrowLeft />
+          &nbsp;Highlight Unmapped
         </ActionButton>
         <ActionButton dataCmd="delete" onClick={onClick}>
-          <FaBackward /> Clear This Mapping
+          <FaArrowLeft />
+          &nbsp;Clear This Mapping
         </ActionButton>
         <ActionButton dataCmd="shift-delete" onClick={onClick}>
-          <FaBackward /> Clear Entire Node
+          <FaArrowLeft />
+          &nbsp;Clear Entire Node
         </ActionButton>
       </Col>
       <Col className="action-btn-container">
@@ -63,7 +72,7 @@ export const ActionBarContainer = ({
 ActionBarContainer.propTypes = {
   expandAll: func.isRequired,
   onClick: func.isRequired,
-  onHighlightUnmapped: func.isRequired
+  onHighlightUnmapped: func.isRequired,
 };
 
 export default React.memo(ActionBarContainer);

@@ -1,7 +1,7 @@
 import React from "react";
 import { func, bool } from "prop-types";
 import { Button } from "react-bootstrap";
-import { FaBackward, FaForward } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export const ExpandCollapseButtons = React.memo(
   ({ expandAll, expand, children }) => (
@@ -11,7 +11,7 @@ export const ExpandCollapseButtons = React.memo(
         variant="primary"
         onClick={() => expandAll(expand, true)}
       >
-        <FaBackward />
+        <FaArrowLeft />
       </Button>
       <Button disabled className="expand-info-txt">
         {children}
@@ -21,7 +21,7 @@ export const ExpandCollapseButtons = React.memo(
         variant="primary"
         onClick={() => expandAll(expand, false)}
       >
-        <FaForward />
+        <FaArrowRight />
       </Button>
     </React.Fragment>
   )
@@ -29,5 +29,5 @@ export const ExpandCollapseButtons = React.memo(
 
 ExpandCollapseButtons.propTypes = {
   expandAll: func.isRequired,
-  expand: bool.isRequired
+  expand: bool.isRequired,
 };

@@ -7,17 +7,17 @@ import {
   bool,
   shape,
   number,
-  oneOfType
+  oneOfType,
 } from "prop-types";
 import { Col } from "react-bootstrap";
 import { getInBoundsTreeIndex } from "../utils/helpers";
 import { _getActiveNodeInfo, getNodeKey } from "../utils/mappingHelpers";
 import SortableTree, {
   removeNodeAtPath,
-  getVisibleNodeCount
+  getVisibleNodeCount,
 } from "react-sortable-tree";
 import AddModal from "../components/modals/AddModal";
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { FaPlus, FaTrashAlt } from "react-icons/fa";
 
 import "./TreeContainer.css";
 
@@ -26,7 +26,7 @@ class TreeContainer extends React.PureComponent {
     super(props);
     this.state = {
       showAddModal: false,
-      extNodeInfo: null
+      extNodeInfo: null,
     };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -46,7 +46,7 @@ class TreeContainer extends React.PureComponent {
       37, // left,
       38, // up,
       39, // right,
-      40 // down,
+      40, // down,
     ];
     const key = e.keyCode;
     if (!keyboard.includes(key)) {
@@ -89,7 +89,7 @@ class TreeContainer extends React.PureComponent {
     const newTreeData = removeNodeAtPath({
       treeData,
       path,
-      getNodeKey
+      getNodeKey,
     });
     onChange(newTreeData, treeKey);
   }
@@ -97,14 +97,14 @@ class TreeContainer extends React.PureComponent {
   handleShowAddModal(nodeInfo) {
     this.setState({
       showAddModal: true,
-      extNodeInfo: nodeInfo
+      extNodeInfo: nodeInfo,
     });
   }
 
   handleHideAddModal() {
     this.setState({
       showAddModal: false,
-      extNodeInfo: null
+      extNodeInfo: null,
     });
   }
 
@@ -124,7 +124,7 @@ class TreeContainer extends React.PureComponent {
         )}
         <SortableTree
           treeData={treeData}
-          onChange={treeData => onChange(treeData, treeKey)}
+          onChange={(treeData) => onChange(treeData, treeKey)}
           className="well"
           style={{ height: "60vh" }}
           canDrag={false}
@@ -132,7 +132,7 @@ class TreeContainer extends React.PureComponent {
           rowHeight={45}
           scaffoldBlockPxWidth={35}
           getNodeKey={({ node }) => node.id}
-          generateNodeProps={nodeInfo => {
+          generateNodeProps={(nodeInfo) => {
             const { path } = nodeInfo;
             const buttons = [
               <button onClick={() => this.handleShowAddModal(nodeInfo)}>
@@ -140,12 +140,12 @@ class TreeContainer extends React.PureComponent {
               </button>,
 
               <button onClick={() => this.handleRemoveNode(path)}>
-                <FaTrash />
-              </button>
+                <FaTrashAlt />
+              </button>,
             ];
 
             return {
-              buttons: buttons
+              buttons: buttons,
             };
           }}
         />
@@ -164,7 +164,7 @@ class TreeContainer extends React.PureComponent {
       highlightUnmapped,
       searchString,
       searchFocusIndex,
-      onSearchFinish
+      onSearchFinish,
     } = this.props;
 
     if (editMode) {
@@ -185,7 +185,7 @@ class TreeContainer extends React.PureComponent {
         >
           <SortableTree
             treeData={treeData}
-            onChange={treeData => onChange(treeData, treeKey)}
+            onChange={(treeData) => onChange(treeData, treeKey)}
             canDrag={false}
             canDrop={() => false}
             rowHeight={45}
@@ -195,12 +195,12 @@ class TreeContainer extends React.PureComponent {
             // onlyExpandSearchedNodes={true}
             searchQuery={searchString}
             searchFocusOffset={searchFocusIndex}
-            searchFinishCallback={matches => {
+            searchFinishCallback={(matches) => {
               // Only run if the func is passed through
               // to avoid search overrides
               onSearchFinish && onSearchFinish(matches);
             }}
-            generateNodeProps={rowInfo => {
+            generateNodeProps={(rowInfo) => {
               const { node } = rowInfo;
               const className = [];
               activeNode &&
@@ -213,7 +213,7 @@ class TreeContainer extends React.PureComponent {
               return {
                 onClick: () => onSelectNode(rowInfo),
                 className: className.join(" "),
-                id: node.id
+                id: node.id,
               };
             }}
           />
@@ -233,11 +233,11 @@ TreeContainer.propTypes = {
   onAddNodes: func,
   activeNodeInfo: shape({
     node: shape({ id: string.isRequired, title: string.isRequired }),
-    path: arrayOf(string).isRequired
+    path: arrayOf(string).isRequired,
   }),
   onSearchFinish: oneOfType([func, bool]),
   searchString: string,
-  searchFocusIndex: number
+  searchFocusIndex: number,
 };
 
 TreeContainer.defaultProps = {
@@ -248,7 +248,7 @@ TreeContainer.defaultProps = {
   activeNodeInfo: null,
   onSearchFinish: false,
   searchString: "",
-  searchFocusIndex: 0
+  searchFocusIndex: 0,
 };
 
 export default TreeContainer;

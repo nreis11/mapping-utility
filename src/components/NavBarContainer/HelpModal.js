@@ -1,5 +1,6 @@
 import React from "react";
-import { Col, Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Col, Modal, Button, OverlayTrigger } from "react-bootstrap";
+import tooltip from "../misc/Tooltip";
 import guide from "../../assets/user_guide.pdf";
 import { FaQuestion, FaDownload } from "react-icons/fa";
 import "./HelpModal.css";
@@ -13,7 +14,7 @@ class HelpModal extends React.PureComponent {
     this.handleDownload = this.handleDownload.bind(this);
 
     this.state = {
-      show: false
+      show: false,
     };
     this.version = "2.0.0";
   }
@@ -37,8 +38,6 @@ class HelpModal extends React.PureComponent {
   }
 
   render() {
-    const tooltip = text => <Tooltip id={`tooltip-${text}`}>{text}</Tooltip>;
-
     return (
       <Col>
         <Col id="help-link" onClick={this.handleShow}>

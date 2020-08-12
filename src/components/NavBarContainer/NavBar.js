@@ -4,10 +4,10 @@ import {
   NavItem,
   Button,
   Nav,
-  Tooltip,
   OverlayTrigger,
-  Col
+  Col,
 } from "react-bootstrap";
+import tooltip from "../misc/Tooltip";
 import { FaFolderOpen, FaSave } from "react-icons/fa";
 import SearchBar from "./SearchBar";
 import HelpModal from "./HelpModal";
@@ -15,7 +15,7 @@ import FileInput from "../misc/FileInput";
 import { func, string, number, bool, shape } from "prop-types";
 import "./NavBar.css";
 
-const NavBar = props => {
+const NavBar = (props) => {
   const { handleOpen, handleSave, handleAlert, ...restProps } = props;
 
   const handleLoad = () => {
@@ -23,8 +23,6 @@ const NavBar = props => {
     let fileInput = document.getElementById("file-input-json");
     fileInput.click();
   };
-
-  const tooltip = text => <Tooltip id={`tooltip-${text}`}>{text}</Tooltip>;
 
   return (
     <Navbar bg="dark" variant="dark">
@@ -70,8 +68,8 @@ NavBar.propTypes = {
     searchString: string.isRequired,
     searchFocusIndex: number.isRequired,
     searchFoundCount: number.isRequired,
-    searchInternal: bool.isRequired
-  })
+    searchInternal: bool.isRequired,
+  }),
 };
 
 export default React.memo(NavBar);

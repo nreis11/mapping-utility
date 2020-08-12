@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Modal, Button, Alert, Col } from "react-bootstrap";
-import { FaUpload, FaPencilAlt } from "react-icons/fa";
+import { FaUpload, FaPencilAlt, FaWindowClose } from "react-icons/fa";
 
 import AddModal from "./AddModal";
 import FileInput from "../misc/FileInput";
@@ -21,7 +21,7 @@ class EditModal extends React.PureComponent {
 
     this.state = {
       show: false,
-      error: null
+      error: null,
     };
   }
 
@@ -46,7 +46,7 @@ class EditModal extends React.PureComponent {
 
   handleError(error) {
     this.setState({
-      error: error
+      error: error,
     });
   }
 
@@ -99,11 +99,13 @@ class EditModal extends React.PureComponent {
                 onClick={() => onClear(false)}
                 size="sm"
               >
-                Clear {activeType}
+                <FaWindowClose />
+                &nbsp;Clear {activeType}
               </Button>
 
               <Button variant="danger" size="sm" onClick={() => onClear(true)}>
-                Clear All
+                <FaWindowClose />
+                &nbsp;Clear All
               </Button>
               <FileInput
                 handleOpen={this.handleYamlImport}
@@ -125,7 +127,7 @@ class EditModal extends React.PureComponent {
 
 EditModal.propTypes = {
   onClear: func.isRequired,
-  activeType: string.isRequired
+  activeType: string.isRequired,
 };
 
 export default EditModal;

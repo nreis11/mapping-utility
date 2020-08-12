@@ -5,6 +5,8 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCopy, FaDownload } from "react-icons/fa";
 import CopyConfirmation from "./CopyConfirmation";
 import FileSaver from "file-saver";
+import { OverlayTrigger } from "react-bootstrap";
+import tooltip from "../misc/Tooltip";
 
 import "./ExportModal.css";
 
@@ -19,7 +21,7 @@ class ExportModal extends React.PureComponent {
     this.state = {
       show: false,
       output: "",
-      copied: false
+      copied: false,
     };
   }
 
@@ -31,7 +33,7 @@ class ExportModal extends React.PureComponent {
     const output = this.props.handleExport();
     this.setState({
       show: true,
-      output
+      output,
     });
   }
 
@@ -44,11 +46,14 @@ class ExportModal extends React.PureComponent {
 
   render() {
     const { outputLabels } = this.props.options;
+
     return (
       <React.Fragment>
-        <Button id="export-btn" onClick={this.handleShow} variant="success">
-          <strong>Export</strong>
-        </Button>
+        <OverlayTrigger placement="top" overlay={tooltip("Export to XML")}>
+          <Button id="export-btn" onClick={this.handleShow} variant="success">
+            <strong>Export</strong>
+          </Button>
+        </OverlayTrigger>
 
         <Modal show={this.state.show} onHide={this.handleClose} size="lg">
           <Modal.Header closeButton>
@@ -96,7 +101,7 @@ class ExportModal extends React.PureComponent {
 ExportModal.propTypes = {
   handleExport: func.isRequired,
   boardName: string.isRequired,
-  options: object.isRequired
+  options: object.isRequired,
 };
 
 export default ExportModal;

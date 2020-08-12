@@ -7,13 +7,13 @@ import FileSaver from "file-saver";
 
 // Mock the 3rd party func
 jest.mock("file-saver", () => ({
-  saveAs: jest.fn()
+  saveAs: jest.fn(),
 }));
 
 describe("<ExportModal/>", () => {
   let wrapper;
   const options = {
-    outputLabels: false
+    outputLabels: false,
   };
   const testData = "Test Data";
   beforeEach(
@@ -35,7 +35,7 @@ describe("<ExportModal/>", () => {
   it("opens modal when button is clicked", () => {
     const modalBtn = wrapper.find("#export-btn");
     modalBtn.simulate("click");
-    const modal = wrapper.find("Bootstrap(Modal)");
+    const modal = wrapper.find("Modal");
     expect(modal.prop("show")).toEqual(true);
   });
 

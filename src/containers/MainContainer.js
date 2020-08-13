@@ -447,8 +447,6 @@ class MainContainer extends Component {
       alert,
     } = this.state;
 
-    console.log("RENDERED");
-
     const activeIntTreeData = intTreeData[activeType];
     const activeExtTreeData = extTreeData[activeType];
     const activeIntNode = activeIntNodeInfo ? activeIntNodeInfo.node : null;

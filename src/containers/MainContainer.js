@@ -11,7 +11,7 @@ import {
   _handleDeleteAction,
   _handleMapAction,
   _handleSearchAction,
-  TYPES
+  TYPES,
 } from "../utils/mappingHelpers";
 
 import {
@@ -19,7 +19,7 @@ import {
   bothNodesAreSelected,
   scrollIfNeeded,
   getInBoundsTreeIndex,
-  parentsAreNotSelectable
+  parentsAreNotSelectable,
 } from "../utils/helpers";
 
 import {
@@ -27,7 +27,7 @@ import {
   getInitialTreeData,
   getInitialExtTreeData,
   getTreeDataFromFlatData,
-  getFlatData
+  getFlatData,
 } from "../utils/fileHelpers";
 
 import TreeContainer from "./TreeContainer";
@@ -57,14 +57,14 @@ class MainContainer extends Component {
       options: {
         outputParents: false,
         parentsSelectable: false,
-        outputLabels: false
+        outputLabels: false,
       },
       highlightUnmapped: false,
       searchString: "",
       searchFocusIndex: 0,
       searchFoundCount: 0,
       searchInternal: false,
-      alert: null
+      alert: null,
     };
 
     this.internalName = "eQuest";
@@ -106,7 +106,7 @@ class MainContainer extends Component {
     // Check if save state in local storage
     if (localStorage && localStorageRef) {
       this.setState({
-        ...localStorageRef
+        ...localStorageRef,
       });
     }
 
@@ -114,7 +114,7 @@ class MainContainer extends Component {
     const { activeType, intTreeData } = this.state;
     const activeIntTreeData = intTreeData[activeType];
     this.setState({
-      activeIntNodeInfo: _getActiveNodeInfo(activeIntTreeData, 0)
+      activeIntNodeInfo: _getActiveNodeInfo(activeIntTreeData, 0),
     });
   }
 
@@ -124,7 +124,7 @@ class MainContainer extends Component {
 
   saveToLocalStorage() {
     const jsonStr = JSON.stringify({
-      ...this.state
+      ...this.state,
     });
     try {
       // Long lists can hit localStorage max.
@@ -144,11 +144,11 @@ class MainContainer extends Component {
     const treeData = this.state[treeKey];
     const toggledActiveTreeData = toggleExpandedForAll({
       treeData: treeData[activeType],
-      expanded
+      expanded,
     });
     const newTreeData = { ...treeData, [activeType]: toggledActiveTreeData };
     this.setState({
-      [treeKey]: newTreeData
+      [treeKey]: newTreeData,
     });
   }
 
@@ -162,7 +162,7 @@ class MainContainer extends Component {
     this.setState({
       activeType: type,
       activeIntNodeInfo: _getActiveNodeInfo(activeIntTreeData, 0),
-      activeExtNodeInfo: activeExtNodeInfo
+      activeExtNodeInfo: activeExtNodeInfo,
     });
   }
 
@@ -172,7 +172,7 @@ class MainContainer extends Component {
       ? this.activeIntNodeKey
       : this.activeExtNodeKey;
     this.setState({
-      [activeKey]: nodeInfo
+      [activeKey]: nodeInfo,
     });
   }
 
@@ -181,14 +181,14 @@ class MainContainer extends Component {
     const optionKey = event.target.name;
     const newOptions = {
       ...this.state.options,
-      [optionKey]: event.target.checked
+      [optionKey]: event.target.checked,
     };
     this.setState({ options: newOptions });
   }
 
   highlightUnmapped() {
-    this.setState(prevState => ({
-      highlightUnmapped: !prevState.highlightUnmapped
+    this.setState((prevState) => ({
+      highlightUnmapped: !prevState.highlightUnmapped,
     }));
     this.expandAll(true, true);
   }
@@ -205,11 +205,11 @@ class MainContainer extends Component {
     }
     const newTreeData = {
       ...extTreeData,
-      [activeType]: getTreeDataFromFlatData(newFlatData)
+      [activeType]: getTreeDataFromFlatData(newFlatData),
     };
     this.setState(
       {
-        extTreeData: newTreeData
+        extTreeData: newTreeData,
       },
       // Callback. Get first node
       () => {
@@ -225,7 +225,7 @@ class MainContainer extends Component {
     const { activeType } = this.state;
     const newTreeData = { ...currTreeData, [activeType]: activeTreeData };
     this.setState({
-      [treeKey]: newTreeData
+      [treeKey]: newTreeData,
     });
   }
 
@@ -239,18 +239,18 @@ class MainContainer extends Component {
         intTreeData: initialTreeData,
         extTreeData: getInitialExtTreeData(),
         activeIntNodeInfo: activeNodeInfo,
-        activeExtNodeInfo: null
+        activeExtNodeInfo: null,
       });
     } else {
       // Clear int and ext data for active type
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         extTreeData: { ...prevState.extTreeData, [activeType]: [] },
         intTreeData: {
           ...prevState.intTreeData,
-          [activeType]: initialTreeData[activeType]
+          [activeType]: initialTreeData[activeType],
         },
         activeIntNodeInfo: activeNodeInfo,
-        activeExtNodeInfo: null
+        activeExtNodeInfo: null,
       }));
     }
   }
@@ -259,7 +259,7 @@ class MainContainer extends Component {
     const { intTreeData, options } = this.state;
     return _exportMappingsToXML({
       intTreeData,
-      options
+      options,
     });
   }
 
@@ -270,7 +270,7 @@ class MainContainer extends Component {
       activeType,
       activeIntNodeInfo,
       activeExtNodeInfo,
-      options: { parentsSelectable }
+      options: { parentsSelectable },
     } = this.state;
 
     // Ignore if any input is in focus, if bootstrap modal is open, or
@@ -295,18 +295,18 @@ class MainContainer extends Component {
       32, // space,
       "shift-space",
       "ctrl-space",
-      "space"
+      "space",
     ];
 
     const deleteKeys = [
       8, // backspace
       "delete",
-      "shift-delete"
+      "shift-delete",
     ];
 
     const searchKeys = [
       70, // F
-      71 // G,
+      71, // G,
     ];
 
     // Can handle key or command from action bar click
@@ -332,7 +332,7 @@ class MainContainer extends Component {
         e,
         activeIntNode,
         path,
-        activeExtTreeData
+        activeExtTreeData,
       });
       treeIndex += 1;
     } else if (deleteKeys.includes(key)) {
@@ -340,7 +340,7 @@ class MainContainer extends Component {
       e.preventDefault();
       newNode = _handleDeleteAction({
         e,
-        activeIntNode
+        activeIntNode,
       });
     } else if ((e.ctrlKey || e.metaKey) && searchKeys.includes(key)) {
       // handle search actions
@@ -348,11 +348,11 @@ class MainContainer extends Component {
       const searchValues = _handleSearchAction({
         e,
         activeIntNode,
-        activeExtNode
+        activeExtNode,
       });
       this.setState({
         searchInternal: searchValues.searchInternal,
-        searchString: searchValues.searchString
+        searchString: searchValues.searchString,
       });
       document.getElementById("searchInput").focus();
       return;
@@ -381,7 +381,7 @@ class MainContainer extends Component {
     // Handle multiple input changes e.g. searchInput, searchFocus, boardName
     const {
       target,
-      target: { name }
+      target: { name },
     } = event;
     let value = target.type === "checkbox" ? target.checked : target.value;
 
@@ -389,7 +389,7 @@ class MainContainer extends Component {
     value = name === "searchFocusIndex" ? parseInt(value, 10) : value;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
@@ -404,17 +404,17 @@ class MainContainer extends Component {
       [activeNodeKey]: newActiveNodeInfo || currActiveNodeInfo,
       searchFoundCount: matches.length,
       searchFocusIndex:
-        matches.length > 0 ? searchFocusIndex % matches.length : 0
+        matches.length > 0 ? searchFocusIndex % matches.length : 0,
     });
   }
 
   handleOpenFile(fileInput) {
     const fileReader = new FileReader();
-    fileReader.onload = e => {
+    fileReader.onload = (e) => {
       // Convert string result to JSON after loading
       const savedState = JSON.parse(e.target.result);
       this.setState({
-        ...savedState
+        ...savedState,
       });
     };
     fileReader.readAsText(fileInput);
@@ -426,7 +426,7 @@ class MainContainer extends Component {
 
   handleAlert(alert) {
     this.setState({
-      alert
+      alert,
     });
   }
 
@@ -444,7 +444,7 @@ class MainContainer extends Component {
       searchFoundCount,
       searchInternal,
       boardName,
-      alert
+      alert,
     } = this.state;
 
     console.log("RENDERED");
@@ -459,7 +459,8 @@ class MainContainer extends Component {
       searchString,
       searchFocusIndex,
       searchFoundCount,
-      searchInternal
+      searchInternal,
+      boardName,
     };
     let mappedNode = null;
     if (activeIntNode && activeIntNode.mapping) {

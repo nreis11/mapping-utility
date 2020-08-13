@@ -69,6 +69,7 @@ NavBar.propTypes = {
     searchFocusIndex: number.isRequired,
     searchFoundCount: number.isRequired,
     searchInternal: bool.isRequired,
+    boardName: string.isRequired,
   }),
 };
 

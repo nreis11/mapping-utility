@@ -5,7 +5,7 @@ import {
   Button,
   InputGroup,
   FormCheck,
-  Col
+  Col,
 } from "react-bootstrap";
 import { shape, string, func, number, bool } from "prop-types";
 import { FaSearch } from "react-icons/fa";
@@ -44,10 +44,11 @@ class SearchBar extends React.PureComponent {
       searchString,
       searchFocusIndex,
       searchFoundCount,
-      searchInternal
+      searchInternal,
+      boardName,
     } = this.props.searchValues;
 
-    const selectPrevMatch = e => {
+    const selectPrevMatch = (e) => {
       const idx =
         searchFocusIndex !== null
           ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
@@ -56,7 +57,7 @@ class SearchBar extends React.PureComponent {
       this.props.handleInputChange(e);
     };
 
-    const selectNextMatch = e => {
+    const selectNextMatch = (e) => {
       const idx =
         searchFocusIndex !== null
           ? (searchFocusIndex + 1) % searchFoundCount
@@ -68,7 +69,7 @@ class SearchBar extends React.PureComponent {
     return (
       <Form
         inline
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
         }}
       >
@@ -82,7 +83,7 @@ class SearchBar extends React.PureComponent {
             <FormControl
               type="text"
               placeholder={
-                searchInternal ? "Search eQuest..." : "Search Board..."
+                searchInternal ? "Search eQuest..." : `Search ${boardName}...`
               }
               value={searchString}
               name={"searchString"}
@@ -138,8 +139,9 @@ SearchBar.propTypes = {
     searchString: string.isRequired,
     searchFocusIndex: number.isRequired,
     searchFoundCount: number.isRequired,
-    searchInternal: bool.isRequired
-  })
+    searchInternal: bool.isRequired,
+    boardName: string.isRequired,
+  }),
 };
 
 export default SearchBar;

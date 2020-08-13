@@ -16,7 +16,7 @@ class HelpModal extends React.PureComponent {
     this.state = {
       show: false,
     };
-    this.version = "2.0.0";
+    this.version = "2.0.1";
   }
 
   handleClose() {
